@@ -1,0 +1,39 @@
+/** This is the css file for the plug load icon and name. **/
+
+/** green outer circle **/
+.green {
+  background: #47ff38;
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+  border: 1px solid #707070;
+  margin-left: 36.5px;
+}
+
+/** grey outer circle **/
+.grey {
+  background: #BFBFBF;
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+  border: 1px solid #707070;
+  margin-left: 36.5px;
+}
+
+/** white inner circle **/
+.white {
+  background: white;
+  border-radius: 50%;
+  width: 65px;
+  height: 65px;
+  border: 1px solid #707070;
+  margin-left: 4px;
+  margin-top: 4px;
+}
+
+/** icon **/
+img {
+  height: 40px;
+  margin-left: 12.5px;
+  margin-top: 12.5px;
+}
