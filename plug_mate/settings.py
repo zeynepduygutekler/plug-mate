@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,12 +22,14 @@ TEMPLATE_DIR = [os.path.join(BASE_DIR,'control-interface test/build'), os.path.j
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
+SECRET_KEY = os.environ.get('SECRET_KEY')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'plugmate.herokuapp.com']
 
 
 # Application definition
@@ -44,6 +47,7 @@ INSTALLED_APPS = [
     'channels_redis',
     'dpd_static_support',
     'bootstrap4',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +61,6 @@ MIDDLEWARE = [
     'django_plotly_dash.middleware.BaseMiddleware',
     'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
 ]
 
 ROOT_URLCONF = 'plug_mate.urls'
@@ -103,6 +106,9 @@ DATABASES = {
         'HOST': 'ec2-52-31-233-101.eu-west-1.compute.amazonaws.com'
     }
 }
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -170,7 +176,7 @@ PLOTLY_COMPONENTS = [
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATICFILES_LOCATION='static'
 STATIC_URL = '/static/'
-# STATIC_ROOT=os.path.join(BASE_DIR, 'static')
+STATIC_ROOT=os.path.join(BASE_DIR, 'plug_mate/static')
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR, 'static/static'),
     os.path.join(BASE_DIR, 'static'),
@@ -179,6 +185,10 @@ STATICFILES_DIRS=[
     # os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/'),
     # os.path.join(BASE_DIR, 'static/css')
 ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_URL = '/media/'
 
 LOGIN_URL = '/plug_mate/user_login'
 
