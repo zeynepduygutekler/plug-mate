@@ -1,1 +1,0 @@
-{"version":3,"sources":["index.js"],"names":["__webpack_require__","r","__webpack_exports__"],"mappings":"wHAAAA,EAAAC,EAAAC,GAAAF,EAAA,GAAAA,EAAA","file":"static/js/main.9b81caea.chunk.js","sourcesContent":["import React from 'react';\nimport ReactDOM from 'react-dom';\n"],"sourceRoot":""}
