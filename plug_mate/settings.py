@@ -22,16 +22,16 @@ TEMPLATE_DIR = [os.path.join(BASE_DIR, 'control_interface/build'), os.path.join(
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ.get('SECRET_KEY')
-# EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-SECRET_KEY = ''
+SECRET_KEY = os.environ.get('SECRET_KEY')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+# SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'plugmate.herokuapp.com']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'plugmate.herokuapp.com']
+# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -92,21 +92,13 @@ WSGI_APPLICATION = 'plug_mate.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'plug_mate',
+        'USER': 'raymondlow',
+        'PASSWORD': 'password123',
+        'HOST': 'localhost',
     }
 }
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'd84nk025ucmb3t',
-#         'USER': 'vrpdzrntrrqvja',
-#         'PASSWORD': '481d7fa3f5b96064bf7b6fed6af6d7e91c9ef00ca24a524b0a69b6b2b204ba51',
-#         'HOST': 'ec2-52-31-233-101.eu-west-1.compute.amazonaws.com'
-#     }
-# }
 
 # db_from_env = dj_database_url.config(conn_max_age=600)
 # DATABASES['default'].update(db_from_env)
@@ -177,46 +169,21 @@ PLOTLY_COMPONENTS = [
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATICFILES_LOCATION='static'
 STATIC_URL = '/static/'
-# STATIC_ROOT=os.path.join(BASE_DIR, 'static/')
-STATIC_ROOT=os.path.join(BASE_DIR, 'plug_mate/static')
+STATIC_ROOT=os.path.join(BASE_DIR, 'static/')
+# STATIC_ROOT=os.path.join(BASE_DIR, 'plug_mate/static')
 STATICFILES_DIRS=[
-    os.path.join(BASE_DIR, 'static/static'),
-    os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'control_interface/build'),
-    # os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/assets/')
+    os.path.join(BASE_DIR, 'plug_mate/static'),
+    # os.path.join(BASE_DIR, 'plug_mate/static/static'),
+    # os.path.join(BASE_DIR, 'plug_mate/control_interface/build'),
+    # os.path.join(BASE_DIR, 'static/static'),
+    # os.path.join(BASE_DIR, 'static'),
+    # os.path.join(BASE_DIR, 'control_interface/build'),
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/plug_mate/user_login'
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
-
-# PLOTLY_DASH = {
-#
-#     # Route used for the message pipe websocket connection
-#     "ws_route" :   "dpd/ws/channel",
-#
-#     # Route used for direct http insertion of pipe messages
-#     "http_route" : "dpd/views",
-#
-#     # Flag controlling existince of http poke endpoint
-#     "http_poke_enabled" : True,
-#
-#     # Insert data for the demo when migrating
-#     "insert_demo_migrations" : True,
-#
-#     # Timeout for caching of initial arguments in seconds
-#     "cache_timeout_initial_arguments": 60,
-#
-#     # Name of view wrapping function
-#     "view_decorator": None,
-#
-#     # Flag to control location of initial argument storage
-#     "cache_arguments": True,
-#
-#     # Flag controlling local serving of assets
-#     "serve_locally": True,
-# }
