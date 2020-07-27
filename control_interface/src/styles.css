@@ -1,0 +1,61 @@
+/** styles the popup box **/
+.containerpopup {
+  border: 1px solid black;
+  width: 200px;
+  height: 375px;
+  box-shadow: 3px 3px 5px 6px #ccc;
+  font-size: 12px;
+  padding: 5px 5px;
+  background: white;
+  position: absolute;
+  top: 100px;
+  right: 20px; /** Update **/
+  z-index: 200; /** Update **/
+}
+
+
+
+/** class to change color for selected day tab **/
+.selected {
+  background-color: #47FF38;
+}
+
+/** style the information icon **/
+#infoIcon {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+/** style the information box popup **/
+#informationBox {
+  border: 1px solid black;
+  padding: 0px 10px;
+  background-color: white;
+  font-size: 10.5px;
+  z-index: 1000;
+}
+
+/** style the checkboxes for the repeat options **/
+.checkbox-container {
+  width: 45%;
+  display: inline-block;
+  margin-right: 1%;
+  height: 75px;
+}
+
+.right {
+  float: right;
+}
+
+
+.cover {
+  position:fixed;
+  top:0;
+  left:0;
+  background:rgba(0,0,0,0.6);
+  z-index:5;
+  width:100%;
+  height:100%;
+}

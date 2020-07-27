@@ -1,0 +1,42 @@
+/** Styling the icon and plug load name **/
+
+/** Green outer circle **/
+.greenPresence {
+  background: #47ff38;
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+  border: 1px solid #707070;
+}
+
+/** Red outer circle **/
+.redPresence {
+  background: red;
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+  border: 1px solid #707070;
+}
+
+/** White inner circle **/
+.whitePresence {
+  background: white;
+  border-radius: 50%;
+  width: 65px;
+  height: 65px;
+  border: 1px solid #707070;
+  margin-left: 4px;
+  margin-top: 4px;
+}
+
+.PresencePlugLoadIcon {
+  height: 40px;
+  margin-left: 12.5px;
+  margin-top: 12.5px;
+}
+
+/** Plug load name **/
+.wordPresence {
+  font-size: 12px;
+
+}

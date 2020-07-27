@@ -16,7 +16,7 @@ import dj_database_url
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # TEMPLATE_DIR= os.path.join(BASE_DIR,'templates')
-TEMPLATE_DIR = [os.path.join(BASE_DIR,'control-interface test/build'), os.path.join(BASE_DIR, 'templates')]
+TEMPLATE_DIR = [os.path.join(BASE_DIR, 'control_interface/build'), os.path.join(BASE_DIR, 'templates')]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -25,7 +25,6 @@ TEMPLATE_DIR = [os.path.join(BASE_DIR,'control-interface test/build'), os.path.j
 # SECRET_KEY = os.environ.get('SECRET_KEY')
 # EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 # EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-SECRET_KEY = '$4r^m&ig1mduh97%0mt@96v*(eztm%$l54(hk36)j5e126a8up'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -182,7 +181,7 @@ STATIC_ROOT=os.path.join(BASE_DIR, 'plug_mate/static')
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR, 'static/static'),
     os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'control-interface test/build'),
+    os.path.join(BASE_DIR, 'control_interface/build'),
     # os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/assets/')
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

@@ -1,0 +1,63 @@
+/** style the information icon **/
+#infoIconRemote {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+/** style the information box popup **/
+#informationBoxRemote {
+  border: 1px solid black;
+  padding: 0px 10px;
+  background-color: white;
+  font-size: 10.5px;
+  z-index: 1000;
+}
+
+/** style the information icon **/
+#infoIconPresence {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+/** style the information box popup **/
+#informationBoxPresence {
+  border: 1px solid black;
+  padding: 0px 10px;
+  background-color: white;
+  font-size: 10.5px;
+  text-align: left;
+  z-index: 1000;
+}
+
+
+
+/** position the popups **/
+#DesktopPopupPresence, #MonitorPopupPresence, #LaptopPopupPresence, #TaskLampPopupPresence, #FanPopupPresence{
+  position: absolute;
+  top: 80px;
+  left: 80px;
+}
+
+/** class for popup when hidden **/
+.invisiblePresence {
+  display: none;
+}
+
+/** class for popup when shown **/
+.visiblePresence {
+  border: 1px solid #707070;
+  box-shadow: 3px 3px 3px 3px #ccc;
+  padding: 15px 5px;
+  text-align: center;
+  width: 125px;
+  height: 100px;
+  margin-left: 10px;
+}
+
+#DesktopBoxPresence, #MonitorBoxPresence, #LaptopBoxPresence, #TasklampBoxPresence, #FanBoxPresence {
+  display:inline-block;
+}

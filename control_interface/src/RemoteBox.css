@@ -1,0 +1,12 @@
+/** This is the css file for the final component for each plug load,
+containing the plug load icon and name and the toggle switch **/
+
+.containerRemote {
+  border: 1px solid black;
+  height: 200px;
+  width: 150px;
+  border-radius: 5%;
+  display: inline-block;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
