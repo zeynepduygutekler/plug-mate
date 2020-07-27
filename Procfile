@@ -1,1 +1,1 @@
-web: gunicorn plug_mate.wsgi --log-file-
+web: gunicorn plug_mate.wsgi --log-file -
