@@ -15,9 +15,13 @@ from django.contrib.auth.decorators import login_required
 def plug_mate_app(requests):
     return render(requests, 'plug_mate_app/index.html')
 
+
 def control_interface(requests):
     return render(requests, 'index.html')
 
+
+def rewards(requests):
+    return render(requests, 'plug_mate_app/rewards.html')
 
 
 @login_required

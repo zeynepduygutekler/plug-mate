@@ -12,23 +12,35 @@ from django_plotly_dash import DjangoDash
 # static_image_route = '/static/'
 # img_style = {'height': '50%', 'width': '50%'}
 
-app = DjangoDash('progress', external_stylesheets=["https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"], serve_locally=True, add_bootstrap_links=True)
+app = DjangoDash('progress',
+                 external_stylesheets=["https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"],
+                 serve_locally=True, add_bootstrap_links=True)
 
 app.layout = html.Div([
-    dbc.Row([dbc.Col(html.P('280 more points to Gold. Keep going!',
-                            style={'text-align': 'center', 'font-size': '1.4em', 'font-weight': 'bold',
-                                   'vertical-align': 'middle', 'display': 'flex'}), width=7,style={'padding-left':'50px'}),
-             dbc.Col(html.Img(src="https://i.ibb.co/gj4mK5d/gold.png", style={'height': '20%','width':'40%'}),
-                     style={'line-height': '5'})], style={'align-items':'baseline'}
-            ),
+    # dbc.Row([dbc.Col([html.P('6 daily and 5 weekly achievements left to claim. Keep going!',
+    #                          style={'text-align': 'center', 'font-size': '1.3em', 'font-weight': 'bold',
+    #                                 'vertical-align': 'middle', 'display': 'table-cell'}),
+    #                   # html.P('Keep going!',
+    #                   #        style={'text-align': 'center', 'font-size': '1.3em', 'font-weight': 'bold',
+    #                   #               'vertical-align': 'middle'}),
+    #                   html.Br(),
+    #                   html.A("Check your wallet", href='#realtime_card')], width=8,
+    #                  style={'padding-left': '50px', 'text-align': 'center'}),
+    #          dbc.Col(html.Img(src="https://image.flaticon.com/icons/svg/860/860511.svg", style={'height': '6rem'}),
+    #                  style={'margin': 'auto'}, width=4)],
+    #         style={'height': '50%', 'align-items': 'baseline', 'margin': 'auto'}
+    #         ),
 
-    dbc.Row([dbc.Col(dbc.Progress(children='53%', id='progress-bar', value=320,
-                                  max=600, style={'height': '30px', 'font-size': '15px'}, striped=True, color='warning',
+    dbc.Row([dbc.Col(dbc.Progress(children='9%', id='progress-bar', value=140,
+                                  max=1500, style={'height': '40px', 'font-size': '15px'}, striped=True,
+                                  color='warning',
                                   animated=True), width=10),
              dbc.Col(
-                 html.P('320/600', style={'font-weight':'bold','marginLeft': 0, 'text-align': 'left', 'padding': 0, 'line-height': '40px',
-                                          'height': '30px'}), width=1, style={'padding': 0})
-             ]),
+                 html.P('140/1500', style={'font-weight': 'bold', 'marginLeft': 0, 'text-align': 'left', 'padding': 0,
+                                           'line-height': '40px',
+                                           'height': '40px'}), width=2, style={'padding': 0})
+             ], style={'margin': 'auto'}),
+
     html.Div([
         html.Table(className='table',
                    children=
@@ -36,32 +48,87 @@ app.layout = html.Div([
                        html.Tr([html.Th('Daily Achievements'), html.Th("Points")],
                                style={'background-color': '#1cc88a', 'color': 'white'})
                    ] + [
-                       html.Tr([html.Td('Clock a lower energy usage than yesterday'), html.Td('100 points')]),
+                       html.Tr([html.Td('Clock a lower cost savings than yesterday'), html.Td('20 points')]),
                        html.Tr([html.Td('Turn off your plug loads using the remote feature', style={'opacity': 0.3}),
-                                html.Td(html.Img(src='https://image.flaticon.com/icons/svg/3112/3112946.svg',
-                                                 style={'height': '5%'}))]),
-                       html.Tr([html.Td('Set a schedule-based setting'), html.Td('50 points')]),
-                       html.Tr([html.Td('Set a presence-based setting'), html.Td('50 points')])
+                                html.Td(html.Img(src='https://i.ibb.co/qJqjkk8/trophy.png',
+                                                 style={'height': '6%'}))]),
+                       html.Tr([html.Td('Turn off your plug loads during lunch'), html.Td(html.P('40 points'))]),
+                       html.Tr([html.Td('Complete all daily achievements'), html.Td('100 points')])
                    ] + [
                        html.Tr([html.Th('Weekly Achievements'), html.Th("Points")],
                                style={'background-color': '#4e73df', 'color': 'white'})
                    ] + [
-                       html.Tr([html.Td('Clock a lower energy usage than last week'), html.Td('100 points')]),
-                       html.Tr([html.Td("Set next week's schedule-based controls"), html.Td('50 points')])
+                       html.Tr([html.Td('Clock a lower cost savings  than last week'), html.Td('100 points')]),
+                       html.Tr([html.Td("Set next week's schedule-based controls"), html.Td('100 points')]),
+                       html.Tr([html.Td("Complete all weekly achievements"), html.Td('300 points')])
                    ] + [
                        html.Tr([html.Th('Bonus Achievements'), html.Th("Points")],
                                style={'background-color': '#6f42c1', 'color': 'white'})
                    ] + [
                        html.Tr([html.Td('Save your first tree', style={'opacity': 0.3}), html.Td(
-                           html.Img(src='https://image.flaticon.com/icons/svg/3112/3112946.svg',
-                                    style={'height': '5%'}))]),
-                                           html.Tr([html.Td('Try out our simulation feature'), html.Td('50 points')])
-                                ]
+                           html.Img(src='https://i.ibb.co/qJqjkk8/trophy.png',
+                                    style={'height': '6%'}))]),
+                       html.Tr([html.Td('Try out our simulation feature'), html.Td('100 points')], ),
+                       html.Tr([html.Td('Set your first schedule-based setting', style={'opacity': 0.3}),
+                                html.Td(html.Img(src='https://i.ibb.co/qJqjkk8/trophy.png',
+                                                 style={'height': '6%'}))]),
+                       html.Tr([html.Td('Set your first presence-based setting'), html.Td('100 points')]),
+                       html.Tr([html.Td('Complete all achievements'), html.Td('500 points')]),
 
+                   ]
                    )
-    ], style={"height": "25rem", "overflow": "scroll"})
+    ], style={"maxHeight": "19rem", "overflow": "scroll"})
 
 ], style={'display': 'inline-block', 'vertical-align': 'middle'})
+
+# app.layout = html.Div([
+#     dbc.Row([dbc.Col(html.P('280 more points to Gold. Keep going!',
+#                             style={'text-align': 'center', 'font-size': '1.4em', 'font-weight': 'bold',
+#                                    'vertical-align': 'middle', 'display': 'flex'}), width=7,style={'padding-left':'50px'}),
+#              dbc.Col(html.Img(src="https://i.ibb.co/gj4mK5d/gold.png", style={'height': '20%','width':'40%'}),
+#                      style={'line-height': '5'})], style={'align-items':'baseline'}
+#             ),
+#
+#     dbc.Row([dbc.Col(dbc.Progress(children='53%', id='progress-bar', value=320,
+#                                   max=600, style={'height': '30px', 'font-size': '15px'}, striped=True, color='warning',
+#                                   animated=True), width=10),
+#              dbc.Col(
+#                  html.P('320/600', style={'font-weight':'bold','marginLeft': 0, 'text-align': 'left', 'padding': 0, 'line-height': '40px',
+#                                           'height': '30px'}), width=1, style={'padding': 0})
+#              ]),
+#     html.Div([
+#         html.Table(className='table',
+#                    children=
+#                    [
+#                        html.Tr([html.Th('Daily Achievements'), html.Th("Points")],
+#                                style={'background-color': '#1cc88a', 'color': 'white'})
+#                    ] + [
+#                        html.Tr([html.Td('Clock a lower energy usage than yesterday'), html.Td('100 points')]),
+#                        html.Tr([html.Td('Turn off your plug loads using the remote feature', style={'opacity': 0.3}),
+#                                 html.Td(html.Img(src='https://image.flaticon.com/icons/svg/3112/3112946.svg',
+#                                                  style={'height': '5%'}))]),
+#                        html.Tr([html.Td('Set a schedule-based setting'), html.Td('50 points')]),
+#                        html.Tr([html.Td('Set a presence-based setting'), html.Td('50 points')])
+#                    ] + [
+#                        html.Tr([html.Th('Weekly Achievements'), html.Th("Points")],
+#                                style={'background-color': '#4e73df', 'color': 'white'})
+#                    ] + [
+#                        html.Tr([html.Td('Clock a lower energy usage than last week'), html.Td('100 points')]),
+#                        html.Tr([html.Td("Set next week's schedule-based controls"), html.Td('50 points')])
+#                    ] + [
+#                        html.Tr([html.Th('Bonus Achievements'), html.Th("Points")],
+#                                style={'background-color': '#6f42c1', 'color': 'white'})
+#                    ] + [
+#                        html.Tr([html.Td('Save your first tree', style={'opacity': 0.3}), html.Td(
+#                            html.Img(src='https://image.flaticon.com/icons/svg/3112/3112946.svg',
+#                                     style={'height': '5%'}))]),
+#                                            html.Tr([html.Td('Try out our simulation feature'), html.Td('50 points')])
+#                                 ]
+#
+#                    )
+#     ], style={"height": "25rem", "overflow": "scroll"})
+#
+# ], style={'display': 'inline-block', 'vertical-align': 'middle'})
 
 
 

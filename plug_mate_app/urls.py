@@ -13,4 +13,5 @@ urlpatterns = [
     path('', views.plug_mate_app, name='index'),
     path('user_login/', views.user_login, name='user_login'),
     path('control_interface/', views.control_interface, name='control_interface'),
+    path('rewards/', views.rewards, name='rewards')
 ]

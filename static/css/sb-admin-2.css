@@ -44,7 +44,12 @@
 *,
 *::before,
 *::after {
-  box-sizing: border-bo
+  box-sizing: border-box
+}
+
+.cstm-height-card .card-img-top {
+  height: 100px;
+  object-fit: cover;
 }
 
 html {
@@ -10804,6 +10809,7 @@ a:focus {
 }
 
 .bg-login-image {
+  /*background: url('/static/plug_mate_app/static/images/login_image.png');*/
   background: url("https://source.unsplash.com/K4mSJ7kc0As/600x800");
   background-position: center;
   background-size: cover;

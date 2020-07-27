@@ -16,20 +16,22 @@ import dj_database_url
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # TEMPLATE_DIR= os.path.join(BASE_DIR,'templates')
-TEMPLATE_DIR = [os.path.join(BASE_DIR,'control-interface test/build'), os.path.join(BASE_DIR,'templates')]
+TEMPLATE_DIR = [os.path.join(BASE_DIR,'control-interface test/build'), os.path.join(BASE_DIR, 'templates')]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+# EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+SECRET_KEY = '$4r^m&ig1mduh97%0mt@96v*(eztm%$l54(hk36)j5e126a8up'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'plugmate.herokuapp.com']
+# ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'plugmate.herokuapp.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -87,28 +89,27 @@ WSGI_APPLICATION = 'plug_mate.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-"""
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd84nk025ucmb3t',
-        'USER': 'vrpdzrntrrqvja',
-        'PASSWORD': '481d7fa3f5b96064bf7b6fed6af6d7e91c9ef00ca24a524b0a69b6b2b204ba51',
-        'HOST': 'ec2-52-31-233-101.eu-west-1.compute.amazonaws.com'
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'd84nk025ucmb3t',
+#         'USER': 'vrpdzrntrrqvja',
+#         'PASSWORD': '481d7fa3f5b96064bf7b6fed6af6d7e91c9ef00ca24a524b0a69b6b2b204ba51',
+#         'HOST': 'ec2-52-31-233-101.eu-west-1.compute.amazonaws.com'
+#     }
+# }
 
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db_from_env)
+# db_from_env = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -176,14 +177,13 @@ PLOTLY_COMPONENTS = [
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATICFILES_LOCATION='static'
 STATIC_URL = '/static/'
-STATIC_ROOT=os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT=os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT=os.path.join(BASE_DIR, 'plug_mate/static')
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR, 'static/static'),
-    os.path.join(BASE_DIR, 'plug_mate/static'),
+    os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'control-interface test/build'),
-
-    # os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/'),
-    # os.path.join(BASE_DIR, 'static/css')
+    # os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/assets/')
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 

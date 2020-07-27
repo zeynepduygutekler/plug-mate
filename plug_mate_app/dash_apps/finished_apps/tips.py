@@ -8,7 +8,7 @@ from django_plotly_dash import DjangoDash
 app = DjangoDash('tips', external_stylesheets=["https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"], serve_locally=True, add_bootstrap_links=True)
 
 app.layout = html.Div([
-    dcc.Interval(id='interval', interval=5000),
+    dcc.Interval(id='interval', interval=8000),
     html.Div([html.P(id='carousel',
                      style={
                          'font-weight': '500',
