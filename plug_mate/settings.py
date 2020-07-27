@@ -24,7 +24,7 @@ TEMPLATE_DIR = [os.path.join(BASE_DIR, 'control_interface/build'), os.path.join(
 # SECRET_KEY = os.environ.get('SECRET_KEY')
 # EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 # EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-SECRET_KEY = '$4r^m&ig1mduh97%0mt@96v*(eztm%$l54(hk36)j5e126a8up'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
