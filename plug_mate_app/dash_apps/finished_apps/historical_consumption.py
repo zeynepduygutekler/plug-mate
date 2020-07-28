@@ -450,11 +450,15 @@ app = DjangoDash('historical_consumption',
 # C) App Layout
 app.layout = \
     html.Div([
+        html.Link(
+            rel='stylesheet',
+            href='/static/assets/custom_style.css'
+        ),
         html.Div([
-            html.Link(
-                rel='stylesheet',
-                href='/static/assets/custom_style.css'
-            ),
+            # html.Link(
+            #     rel='stylesheet',
+            #     href='/static/assets/custom_style.css'
+            # ),
 
             dbc.Row([html.H5("View By:", id='lineTitle')],
                     style={'justify-content': 'center', 'margin': 'auto'}),

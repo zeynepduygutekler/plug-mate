@@ -40,8 +40,6 @@ def cost_savings(file, frequency):
     return df[-7:-1]
 
 
-# df_week = pd.read_excel('.\\plug_mate_app\\dash_apps\\finished_apps\\test_data.xlsx', sheet_name='bar_week', index_col='week')
-# df_month = pd.read_excel('.\\plug_mate_app\\dash_apps\\finished_apps\\test_data.xlsx', sheet_name='bar_month', index_col='month')
 
 df_week = cost_savings('./plug_mate_app/dash_apps/finished_apps/generator_6m.csv', 'W-MON')
 df_month = cost_savings('./plug_mate_app/dash_apps/finished_apps/generator_6m.csv', 'M')
@@ -50,7 +48,7 @@ df_month = cost_savings('./plug_mate_app/dash_apps/finished_apps/generator_6m.cs
 
 app = DjangoDash('cost_savings',
                  external_stylesheets=["https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"],
-                 serve_locally=True, add_bootstrap_links=True)
+                 add_bootstrap_links=True)
 
 app.layout = html.Div([
     # Toggle button
@@ -60,7 +58,7 @@ app.layout = html.Div([
     ),
     dbc.Row([
         dbc.Button('Week', id='week', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'}, color="primary",
-                   className="mr-1"),
+                   className="mr-1", active=True),
         dbc.Button('Month', id='month', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
                    color="primary", className="mr-1")
     ], style={'margin': 'auto', 'justify-content': 'center'}),
@@ -76,7 +74,9 @@ app.layout = html.Div([
 
 @app.callback(
     [dash.dependencies.Output('cost-savings', 'figure'),  # update graph
-     dash.dependencies.Output('placeholder', 'children')],  # update graph
+     dash.dependencies.Output('placeholder', 'children'),
+     dash.dependencies.Output('week','active'),
+     dash.dependencies.Output('month','active')],  # update graph
     [dash.dependencies.Input('week', 'n_clicks'),
      dash.dependencies.Input('month', 'n_clicks'),
      dash.dependencies.Input('interval-trigger', 'n_intervals')]
@@ -189,7 +189,6 @@ def update_bar_chart(n1, n2, int):
                             yanchor='bottom',
                             y=1,
                             font=dict(
-                                family="sans-serif",
                                 size=12,
                                 color="black"),
                             buttons=[dict(label="Current cost savings",
@@ -223,7 +222,6 @@ def update_bar_chart(n1, n2, int):
         xaxis=order,
         yaxis=dict(showgrid=True, zeroline=True),
         font=dict(
-            family="sans-serif",
             size=12,
             color="black"
         ),
@@ -239,4 +237,10 @@ def update_bar_chart(n1, n2, int):
     )
     fig.update_yaxes(tickprefix="$")
 
-    return fig, ''
+    if view == 'Week':
+        return fig, '', True, False
+    else:
+        return fig, '', False, True
+
+
+
