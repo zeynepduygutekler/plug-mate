@@ -48,7 +48,7 @@ app.layout = html.Div([
                        html.Tr([html.Th('Daily Achievements'), html.Th("Points")],
                                style={'background-color': '#1cc88a', 'color': 'white'})
                    ] + [
-                       html.Tr([html.Td('Clock a lower cost savings than yesterday'), html.Td('20 points')]),
+                       html.Tr([html.Td('Clock a higher cost savings than yesterday'), html.Td('20 points')]),
                        html.Tr([html.Td('Turn off your plug loads using the remote feature', style={'opacity': 0.3}),
                                 html.Td(html.Img(src='https://i.ibb.co/qJqjkk8/trophy.png',
                                                  style={'height': '6%'}))]),
@@ -58,7 +58,7 @@ app.layout = html.Div([
                        html.Tr([html.Th('Weekly Achievements'), html.Th("Points")],
                                style={'background-color': '#4e73df', 'color': 'white'})
                    ] + [
-                       html.Tr([html.Td('Clock a lower cost savings  than last week'), html.Td('100 points')]),
+                       html.Tr([html.Td('Clock a higher cost savings than last week'), html.Td('100 points')]),
                        html.Tr([html.Td("Set next week's schedule-based controls"), html.Td('100 points')]),
                        html.Tr([html.Td("Complete all weekly achievements"), html.Td('300 points')])
                    ] + [
