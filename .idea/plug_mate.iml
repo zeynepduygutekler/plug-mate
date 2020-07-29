@@ -14,8 +14,11 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/control_interface/build" />
+      <excludeFolder url="file://$MODULE_DIR$/control_interface/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
+    <content url="file://$MODULE_DIR$/control_interface/node_modules" />
     <orderEntry type="jdk" jdkName="Python 3.6 (Downloads) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
