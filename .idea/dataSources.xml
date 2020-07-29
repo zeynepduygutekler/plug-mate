@@ -9,5 +9,11 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://ec2-52-31-233-101.eu-west-1.compute.amazonaws.com:5432/d84nk025ucmb3t</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="db" uuid="772824b4-0345-46dd-ae2c-15a2055717db">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/db.sqlite3</jdbc-url>
+    </data-source>
   </component>
 </project>
