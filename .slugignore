@@ -1,7 +1,14 @@
 *.log
 *.pot
 *.pyc
-__pycache__/
+__pycache__
+static/__pycache__
+plug_mate_app/dash_apps/finished_apps/__pycache__
+plug_mate_app/__pycache__
+plug_mate_app/migrations/__pycache__
+plug_mate/__pycache__
+
+
 local_settings.py
 db.sqlite3
 venv
@@ -29,3 +36,6 @@ control_interface/build
 control_interface/npm-debug.log*
 control_interface/yarn-debug.log*
 control_interface/yarn-error.log*
+
+static/trees
+plug_mate_app/dash_apps/finished_apps/trees
