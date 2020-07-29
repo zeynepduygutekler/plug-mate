@@ -1,4 +1,9 @@
+import os
+import glob
+from pandas.api.types import CategoricalDtype
+import reducing
 import dash
+import gc
 import string
 import plotly.io as pio
 import pandas as pd
@@ -11,6 +16,8 @@ import plotly.express as px
 import datetime as dt
 import dateutil.relativedelta
 import dash_daq as daq
+import gc
+gc.collect()
 from django_plotly_dash import DjangoDash
 
 
@@ -21,67 +28,21 @@ pio.templates.default = "simple_white"
 
 end_date = '24/7/2020'
 
+singapore_tariff_rate = 0.201
+
 
 def initialise_variables():
 
     # Initialise some variables
     global user1
-    global singapore_tariff_rate
-    singapore_tariff_rate = 0.201
-
     # Manipulate Data
 
-    user1 = pd.read_csv('plug_mate_app/dash_apps/finished_apps/generator_6m.csv')
-    hours = []
-    months = []
-    years = []
-    dates_AMPM = []
-
-    for unix_time in user1['unix_time']:
-        month = dt.datetime.utcfromtimestamp(unix_time).strftime('%B')
-        year = dt.datetime.utcfromtimestamp(unix_time).strftime('%Y')
-        date_AMPM = dt.datetime.utcfromtimestamp(unix_time).strftime('%I:%M%p')
-        hour = dt.datetime.utcfromtimestamp(unix_time).strftime('%H')
-
-        hours.append(hour)
-        months.append(month)
-        years.append(year)
-        dates_AMPM.append(date_AMPM)
-
-    user1['month'] = months
-    user1['year'] = years
-    user1['dates_AMPM'] = dates_AMPM
-    user1['hours'] = hours
-    user1.loc[user1.index.dropna()]
-
-    # Start to add kWh, Costs and Device Type Caps
-
-    # Add kWh
-    kWhList = []
-    for val in user1['power']:
-        kWhList.append(round(val/1000, 3))
-
-    user1['power_kWh'] = kWhList
-
-    # Add costs
-    cost = []
-    for kwh in user1['power_kWh']:
-        cost.append(round(kwh*singapore_tariff_rate, 3))
-
-    user1['cost'] = cost
-
-    # Add device type with Caps
-    typecapped = []
-    for type in user1['type']:
-        typecapped.append(string.capwords(type))
-    user1['type'] = typecapped
-
-    return user1
+    user1 = pd.concat(map(pd.read_csv, glob.glob(
+        os.path.join('', 'plug_mate_app/dash_apps/finished_apps/aggregated*.csv'))))
 
 
-initialise_variables()
 
-
+    
 def monthFunction():
     global df_month, df_month_pie
     # START OF MONTH FUNCTION
@@ -95,7 +56,8 @@ def monthFunction():
     aggregation_functions = {'power': 'sum', 'month': 'first', 'time': 'first',
                              'year': 'first', 'power_kWh': 'sum',
                              'cost': 'sum', 'unix_time': 'first'}  # sum power when combining rows.
-    df_month = df_month.groupby(['date'], as_index=False).aggregate(aggregation_functions)
+    df_month = df_month.groupby(
+        ['date'], as_index=False).aggregate(aggregation_functions)
     df_month.reset_index(drop=True, inplace=True)
 
     # Filter data for Last 6 months
@@ -105,7 +67,8 @@ def monthFunction():
     end_first_day_date = dt.datetime.strptime(
         end, '%d/%m/%Y').replace(day=1)
 
-    start = end_first_day_date - dateutil.relativedelta.relativedelta(months=6)
+    start = end_first_day_date - \
+        dateutil.relativedelta.relativedelta(months=6)
     mask = (df_month['date'] > start) & (df_month['date'] <= end)
     # Delete these row indexes from dataFrame
     df_month = df_month.loc[mask]
@@ -159,6 +122,8 @@ def monthFunction():
 
     # END OF MONTH FUNCTION
     return df_month, df_month_pie
+
+
 
 
 def dayFunction():
@@ -226,6 +191,8 @@ def dayFunction():
     return df_day, df_day_pie
 
 
+
+
 def hourFunction():
     global df_hour_pie, df_hour
 
@@ -283,6 +250,8 @@ def hourFunction():
     df_hour_pie['date'] = df_hour_pie['date'].dt.strftime('%d/%m/%Y')
     # End of hour function
     return df_hour, df_hour_pie
+
+
 
 
 def weekFunction():
@@ -372,6 +341,8 @@ def weekFunction():
     return df_week, df_week_pie, df_week_line, start, end
 
 
+
+
 def hourClickDataPiechart():
     # Aggregate df_hour_bytype separating type of device
     df_hour_bytype = user1
@@ -384,6 +355,8 @@ def hourClickDataPiechart():
     df_hour_bytype.reset_index(drop=True, inplace=True)
 
     return df_hour_bytype
+
+
 
 
 def weekClickDataPiechart():
@@ -401,6 +374,8 @@ def weekClickDataPiechart():
     return df_week_bytype
 
 
+
+
 def monthClickDataPiechart():
     # Aggregate df_month_bytype separating type of device
     df_month_bytype = user1
@@ -413,6 +388,7 @@ def monthClickDataPiechart():
     df_month_bytype.reset_index(drop=True, inplace=True)
 
     return df_month_bytype
+
 
 
 def dayClickDataPiechart():
@@ -429,6 +405,9 @@ def dayClickDataPiechart():
     df_day_bytype['date_withoutYear'] = df_day_bytype['date'].dt.strftime(
         '%d/%m')
     return df_day_bytype
+
+
+initialise_variables()
 
 
 df_week, df_week_pie, df_week_line, start, end = weekFunction()
