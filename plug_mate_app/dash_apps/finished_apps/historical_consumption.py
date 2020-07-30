@@ -1,7 +1,6 @@
+from django_plotly_dash import DjangoDash
 import os
 import glob
-from pandas.api.types import CategoricalDtype
-# import reducing
 import dash
 import gc
 import string
@@ -18,7 +17,6 @@ import dateutil.relativedelta
 import dash_daq as daq
 import gc
 gc.collect()
-from django_plotly_dash import DjangoDash
 
 
 pio.templates.default = "simple_white"
@@ -41,8 +39,6 @@ def initialise_variables():
         os.path.join('', 'plug_mate_app/dash_apps/finished_apps/aggregated*.csv'))))
 
 
-
-    
 def monthFunction():
     global df_month, df_month_pie
     # START OF MONTH FUNCTION
@@ -124,8 +120,6 @@ def monthFunction():
     return df_month, df_month_pie
 
 
-
-
 def dayFunction():
     global df_day, df_day_pie
     # Start of Day function
@@ -191,8 +185,6 @@ def dayFunction():
     return df_day, df_day_pie
 
 
-
-
 def hourFunction():
     global df_hour_pie, df_hour
 
@@ -250,8 +242,6 @@ def hourFunction():
     df_hour_pie['date'] = df_hour_pie['date'].dt.strftime('%d/%m/%Y')
     # End of hour function
     return df_hour, df_hour_pie
-
-
 
 
 def weekFunction():
@@ -341,8 +331,6 @@ def weekFunction():
     return df_week, df_week_pie, df_week_line, start, end
 
 
-
-
 def hourClickDataPiechart():
     # Aggregate df_hour_bytype separating type of device
     df_hour_bytype = user1
@@ -355,8 +343,6 @@ def hourClickDataPiechart():
     df_hour_bytype.reset_index(drop=True, inplace=True)
 
     return df_hour_bytype
-
-
 
 
 def weekClickDataPiechart():
@@ -374,8 +360,6 @@ def weekClickDataPiechart():
     return df_week_bytype
 
 
-
-
 def monthClickDataPiechart():
     # Aggregate df_month_bytype separating type of device
     df_month_bytype = user1
@@ -388,7 +372,6 @@ def monthClickDataPiechart():
     df_month_bytype.reset_index(drop=True, inplace=True)
 
     return df_month_bytype
-
 
 
 def dayClickDataPiechart():
@@ -423,7 +406,8 @@ df_week_bytype = weekClickDataPiechart()
 
 # B) Dash App initialisation
 app = DjangoDash('historical_consumption',
-                 external_stylesheets=["https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"],
+                 external_stylesheets=[
+                     "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"],
                  add_bootstrap_links=True)
 
 # C) App Layout
@@ -443,20 +427,20 @@ app.layout = \
                     style={'justify-content': 'center', 'margin': 'auto'}),
 
             dbc.Row([dbc.Col([
-                        dbc.Button('Today', id='hour', n_clicks=0, n_clicks_timestamp=0, style={
-                            'width': '100px'}, color="primary", className="mr-1"),
-                        dbc.Button('Days', id='day', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
-                                   color="primary",
-                                   className="mr-1"),
-                        dbc.Button('Weeks', id='week', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
-                                   color="primary", className="mr-1", active=True),
-                        dbc.Button('Months', id='month', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
-                                   color="primary", className="mr-1")], style={'text-align': 'right',
-                                                                               'margin': 'auto'}, width=7),
-                     dbc.Col([
-                         html.Div([daq.BooleanSwitch(id='btntoggle_units', on=False, color='#e6e6e6')],
-                                  style={'width': 'fit-content'})], style={'padding-left': '3%', 'text-align': 'left'},
-                         width=5)], style={'margin': 'auto'}),
+                dbc.Button('Today', id='hour', n_clicks=0, n_clicks_timestamp=0, style={
+                    'width': '100px'}, color="primary", className="mr-1"),
+                dbc.Button('Days', id='day', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
+                           color="primary",
+                           className="mr-1"),
+                dbc.Button('Weeks', id='week', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
+                           color="primary", className="mr-1", active=True),
+                dbc.Button('Months', id='month', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
+                           color="primary", className="mr-1")], style={'text-align': 'right',
+                                                                       'margin': 'auto'}, width=7),
+                dbc.Col([
+                    html.Div([daq.BooleanSwitch(id='btntoggle_units', on=False, color='#e6e6e6')],
+                             style={'width': 'fit-content'})], style={'padding-left': '3%', 'text-align': 'left'},
+                        width=5)], style={'margin': 'auto'}),
 
 
             # dbc.Row([
@@ -504,14 +488,16 @@ app.layout = \
             dbc.Row([
                     dbc.Col([
                         html.Div(dbc.Spinner(color="primary", id="loadingLine",
-                                             children=[dcc.Graph(id='line-chart', config={'displayModeBar': False})],
+                                             children=[
+                                                 dcc.Graph(id='line-chart', config={'displayModeBar': False})],
                                              spinner_style={"width": "3rem", "height": "3rem"}))
                     ], width=6),
 
                     dbc.Col([
                         html.Div(
                             dbc.Spinner(color="primary", id="loadingPie",
-                                        children=[dcc.Graph(id='pie-chart-2', config={'displayModeBar': False})],
+                                        children=[
+                                            dcc.Graph(id='pie-chart-2', config={'displayModeBar': False})],
                                         spinner_style={"width": "3rem", "height": "3rem"}))
                     ], width=3, style={'margin-top': '1%'}),
                     ], style={'justify-content': 'center', 'margin': 'auto', 'margin-left': '0px', 'padding-top': '0px'})
@@ -627,14 +613,18 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
             x_value = hoverData['points'][0]['x']
             xvalue_tohours = dt.datetime.strptime(
-                x_value, '%I:%M%p').strftime('%H')
+                x_value, '%I:%M%p').strftime('%#H')
 
             # Get last 24 hours only
+
             df_to_process = df_hour_bytype
-            mask = (df_to_process['hours'] == xvalue_tohours)
+
+            mask = (df_to_process['hours'] == int(xvalue_tohours))
 
             # Delete these row indexes from dataFrame
+
             df_to_process = df_to_process.loc[mask]
+
             df_to_process.reset_index(drop=True, inplace=True)
             df4 = df_to_process
             pie_middletext = x_value
@@ -707,6 +697,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             # x_value_withoutzero = dt.datetime.strptime(
             #     x_value, '%d/%m').strftime('%d/%#m')  # - doesnt work for windows.
             df_to_process = df_day_bytype
+
             mask = (df_to_process['date_withoutYear'] == x_value)
             # Delete these row indexes from dataFrame
             df_to_process = df_to_process.loc[mask]
