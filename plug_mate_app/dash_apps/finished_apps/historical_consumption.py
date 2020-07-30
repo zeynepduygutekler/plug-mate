@@ -642,8 +642,12 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             # Get last 24 hours only
 
             df_to_process = df_hour_bytype
-
-            mask = (df_to_process['hours'] == int(xvalue_tohours))
+            try:
+                mask = (df_to_process['hours'] == int(xvalue_tohours))
+            except ValueError:
+                xvalue_tohours = dt.datetime.strptime(
+                    x_value, '%I:%M%p').strftime('%-H')
+                mask = (df_to_process['hours'] == int(xvalue_tohours))
 
             # Delete these row indexes from dataFrame
 
