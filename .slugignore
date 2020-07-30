@@ -24,7 +24,7 @@ control_interface/node_modules
 control_interface/coverage
 
 # production
-control_interface/build
+# control_interface/build
 
 # misc
 .DS_Store

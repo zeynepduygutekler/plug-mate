@@ -18,15 +18,10 @@ def calculate_cost(power):
     return cost
 
 
-# def cost_savings(file, frequency):
-def cost_savings(frequency):
+def cost_savings(file, frequency):
     '''Takes in the raw data file and converts it into the last 6 week/month worth of aggregated data'''
 
-    df = pd.DataFrame()
-    for file in glob.glob(os.path.join('', 'plug_mate_app/dash_apps/finished_apps/aggregated*.csv')):
-        df = pd.concat([df, pd.read_csv(file, parse_dates=['date'])], ignore_index=True)
-
-    # df = pd.read_csv(file, parse_dates=['date'])
+    df = pd.read_csv(file, parse_dates=['date'])
     df = df.groupby(['date', 'type']).sum().reset_index()
     df = df.pivot(index='date', columns='type', values='power')
     for col in list(df):
@@ -48,11 +43,8 @@ def cost_savings(frequency):
     return df[-7:-1]
 
 
-# df_week = cost_savings('./plug_mate_app/dash_apps/finished_apps/generator_6m.csv', 'W-MON')
-# df_month = cost_savings('./plug_mate_app/dash_apps/finished_apps/generator_6m.csv', 'M')
-
-df_week = cost_savings('W-MON')
-df_month = cost_savings('M')
+df_week = cost_savings('./plug_mate_app/dash_apps/finished_apps/generator_6m.csv', 'W-MON')
+df_month = cost_savings('./plug_mate_app/dash_apps/finished_apps/generator_6m.csv', 'M')
 
 # external CSS stylesheets
 
