@@ -221,21 +221,19 @@ def hourFunction():
     df_hour_pie = user1
 
     # Aggregate data
+    df_hour_pie['date'] = pd.to_datetime(df_hour_pie['date'])
+    end = end_date  # String of todays date
+    end = dt.datetime.strptime(end, '%d/%m/%Y')
+    mask = (df_hour_pie['date'] == end)
+
+    # Delete these row indexes from dataFrame
+    df_hour_pie = df_hour_pie.loc[mask]
+    df_hour_pie.reset_index(drop=True, inplace=True)
 
     aggregation_functions = {'power': 'sum', 'month': 'first', 'time': 'first',
                              'year': 'first', 'power_kWh': 'sum', 'cost': 'sum', 'dates_AMPM': 'first'}  # sum power when combining rows.
     df_hour_pie = df_hour_pie.groupby(
         ['date', 'hours', 'type'], as_index=False).aggregate(aggregation_functions)
-    df_hour_pie.reset_index(drop=True, inplace=True)
-
-    # Get last 24 hours only
-
-    df_hour_pie['date'] = pd.to_datetime(df_hour_pie['date'])
-    end = end_date  # String of todays date
-    end = dt.datetime.strptime(end, '%d/%m/%Y')
-    mask = (df_hour_pie['date'] == end)
-    # Delete these row indexes from dataFrame
-    df_hour_pie = df_hour_pie.loc[mask]
     df_hour_pie.reset_index(drop=True, inplace=True)
 
     # Optional Convert to %d/%m/%Y
@@ -332,9 +330,19 @@ def weekFunction():
 
 
 def hourClickDataPiechart():
-    # Aggregate df_hour_bytype separating type of device
     df_hour_bytype = user1
+    # Get last 24 hours only
 
+    df_hour_bytype['date'] = pd.to_datetime(df_hour_bytype['date'])
+    end = end_date  # String of todays date
+    end = dt.datetime.strptime(end, '%d/%m/%Y')
+    mask = (df_hour_bytype['date'] == end)
+
+    # Delete these row indexes from dataFrame
+    df_hour_bytype = df_hour_bytype.loc[mask]
+    df_hour_bytype.reset_index(drop=True, inplace=True)
+
+    # Aggregate df_hour_bytype separating type of device
     aggregation_functions = {'power': 'sum', 'month': 'first', 'time': 'first',
                              'year': 'first', 'power_kWh': 'sum', 'cost': 'sum',
                              'dates_AMPM': 'first'}  # sum power when combining rows.
@@ -361,8 +369,24 @@ def weekClickDataPiechart():
 
 
 def monthClickDataPiechart():
-    # Aggregate df_month_bytype separating type of device
+
     df_month_bytype = user1
+
+    # Filter data for Last 6 months
+    # Get names of indexes for which column Date only has values 6 months before 1/2/2020
+    df_month_bytype['date'] = pd.to_datetime(df_month_bytype['date'])
+    end = end_date
+    end_first_day_date = dt.datetime.strptime(
+        end, '%d/%m/%Y').replace(day=1)
+
+    start = end_first_day_date - \
+        dateutil.relativedelta.relativedelta(months=6)
+    mask = (df_month_bytype['date'] > start) & (df_month_bytype['date'] <= end)
+    # Delete these row indexes from dataFrame
+    df_month_bytype = df_month_bytype.loc[mask]
+    df_month_bytype.reset_index(drop=True, inplace=True)
+
+    # Aggregate df_month_bytype separating type of device
 
     aggregation_functions = {'power': 'sum', 'time': 'first',
                              'power_kWh': 'sum', 'cost': 'sum',
@@ -631,6 +655,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
             if btnkwhdollars == False:
                 values_pie = df4['power_kWh']
+                print(values_pie)
 
             else:
                 values_pie = df4['cost']
