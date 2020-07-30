@@ -636,13 +636,13 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         if btn1 > btn4 and btn1 > btn3 and btn1 > btn2:
 
             x_value = hoverData['points'][0]['x']
-            xvalue_tohours = dt.datetime.strptime(
-                x_value, '%I:%M%p').strftime('%#H')
 
             # Get last 24 hours only
 
             df_to_process = df_hour_bytype
             try:
+                xvalue_tohours = dt.datetime.strptime(
+                    x_value, '%I:%M%p').strftime('%#H')
                 mask = (df_to_process['hours'] == int(xvalue_tohours))
             except ValueError:
                 xvalue_tohours = dt.datetime.strptime(
