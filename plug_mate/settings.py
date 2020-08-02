@@ -24,7 +24,7 @@ TEMPLATE_DIR = [os.path.join(BASE_DIR, 'control_interface/build'), os.path.join(
 # SECRET_KEY = os.environ.get('SECRET_KEY')
 # EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 # EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-SECRET_KEY = ''
+SECRET_KEY = '$4r^m&ig1mduh97%0mt@96v*(eztm%$l54(hk36)j5e126a8up'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'dpd_static_support',
     'bootstrap4',
     'whitenoise.runserver_nostatic',
+    'inspectdb_refactor',
 ]
 
 MIDDLEWARE = [
@@ -93,7 +94,7 @@ WSGI_APPLICATION = 'plug_mate.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'plug_mate',
+        'NAME': 'plug_mate_dev_db',
         'USER': 'raymondlow',
         'PASSWORD': 'password123',
         'HOST': 'localhost',
