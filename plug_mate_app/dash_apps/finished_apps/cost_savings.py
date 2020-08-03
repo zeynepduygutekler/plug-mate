@@ -24,11 +24,16 @@ def cost_savings(file, frequency):
     df = pd.read_csv(file, parse_dates=['date'])
     df = df.groupby(['date', 'type']).sum().reset_index()
     df = df.pivot(index='date', columns='type', values='power')
+
+    # Converts watts to dollars and finds the difference between each cell and the average
     for col in list(df):
         df[col] = df[col].apply(calculate_cost)
         df[col] = df[col] - df[col].mean()
+
+    # Calculate total
     df['total'] = df.sum(axis=1)
 
+    # Aggregate data based on view & set index
     df = df.groupby(pd.Grouper(freq=frequency)).sum()
     if frequency == 'W-MON':
         df['week'] = df.index
@@ -40,11 +45,10 @@ def cost_savings(file, frequency):
         df['month'] = df['month'].dt.strftime('%b')
         df = df.set_index('month')
 
+    # Truncate dataframe
     return df[-7:-1]
 
 
-df_week = cost_savings('./plug_mate_app/dash_apps/finished_apps/generator_6m.csv', 'W-MON')
-df_month = cost_savings('./plug_mate_app/dash_apps/finished_apps/generator_6m.csv', 'M')
 
 # external CSS stylesheets
 
@@ -92,12 +96,17 @@ def update_bar_chart(n1, n2, int):
    fig - main graph object
    sim - list of values corresponding to simulation inputs'''
 
-    # Calibrating inputs
+    # Checking buttons for view (week or month), store in var view
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
     view = changed_id.split('.')[0].capitalize()  # button's n_clicks acts as state toggle between week and month
     if n1 == 0 and n2 == 0:  # default
         view = 'Week'
-    df = df_week if view == 'Week' else df_month
+
+    # Process dataframe
+    ### SQL code can be inserted here and stored as df
+    df = cost_savings('./plug_mate_app/dash_apps/finished_apps/generator_6m.csv',
+                      'W-MON') if view == 'Week' else cost_savings(
+        './plug_mate_app/dash_apps/finished_apps/generator_6m.csv', 'M')
     series = df['total']
 
     def currency_format(value):
