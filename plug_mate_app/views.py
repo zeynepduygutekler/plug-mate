@@ -55,11 +55,7 @@ class HelloApiView(APIView):
 
 
 def plug_mate_app(requests):
-    user = Users.objects.get(user_name='Raymond')
-    context = {
-        'username': user.user_name,
-    }
-    return render(requests, 'plug_mate_app/index.html', context)
+    return render(requests, 'plug_mate_app/index.html')
 
 
 def control_interface(requests):
