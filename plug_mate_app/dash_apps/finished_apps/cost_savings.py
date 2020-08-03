@@ -6,11 +6,10 @@ import dash_core_components as dcc
 import dash_bootstrap_components as dbc
 from django_plotly_dash import DjangoDash
 from functools import lru_cache
-import time
 
 
 def calculate_cost(power):
-    '''Convert W into cost'''
+    """Convert W into cost"""
     kwh = power / 1000
     singapore_tariff_rate = 0.201
     cost = singapore_tariff_rate * kwh
@@ -24,8 +23,9 @@ def currency_format(value):
         return '-${:,.2f}'.format(abs(value))
 
 
+@lru_cache(maxsize=20)
 def cost_savings(file, frequency):
-    '''Takes in the raw data file and converts it into the last 6 week/month worth of aggregated data'''
+    """Takes in the raw data file and converts it into the last 6 week/month worth of aggregated data"""
 
     df = pd.read_csv(file, parse_dates=['date'])
     df = df.groupby(['date', 'type']).sum().reset_index()
@@ -93,21 +93,20 @@ app.layout = html.Div([
      dash.dependencies.Input('interval-trigger', 'n_intervals')]
 )
 def update_bar_chart(n1, n2, int):
-    '''This function checks whether user is looking for month/week view, and whether user requires simulation feature
+    """This function checks whether user is looking for month/week view, and whether user requires simulation feature
    and outputs a bar graph of the cost savings.
    Variables:
    view - whether user wants 'week' or 'month' view
    df - dataframe with columns of plug loads and values of cost savings
    fig - main graph object
-   sim - list of values corresponding to simulation inputs'''
+   sim - list of values corresponding to simulation inputs"""
 
     # Checking buttons for view (week or month), store in var view
-    if n1 == n2 == 0: # default
+    if n1 == n2 == 0:  # default
         view = 'Week'
     else:
         changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
         view = changed_id.split('.')[0].capitalize()  # button's n_clicks acts as state toggle between week and month
-
 
     # Process dataframe
     ### SQL code can be inserted here and stored as df
@@ -164,10 +163,8 @@ def update_bar_chart(n1, n2, int):
                           )
         return positive, negative, go.Layout(yaxis=dict(range=[min(ser) - 3, max(ser) * 1.4]))
 
-
     def create_frame(discount):
         return go.Frame({'data': create_trace(discount)[:2]}, layout=create_trace(discount)[-1])
-
 
     positive_trace, negative_trace = create_trace(0)[:2]
     frame0 = create_frame(0)
