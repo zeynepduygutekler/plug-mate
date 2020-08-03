@@ -27,7 +27,20 @@ def currency_format(value):
 def cost_savings(file, frequency):
     """Takes in the raw data file and converts it into the last 6 week/month worth of aggregated data"""
 
+    ### SQL CODE can be inserted here and stored as df
+
     df = pd.read_csv(file, parse_dates=['date'])
+
+    #         date      time     unix_time  meter_id  power  user_id     type
+    # 0 2020-01-01  00:00:20  1.577808e+09       250   0.10        1  desktop
+    # 1 2020-01-01  00:01:20  1.577808e+09       250   0.56        1  desktop
+    # 2 2020-01-01  00:02:20  1.577808e+09       250   0.07        1  desktop
+    # 3 2020-01-01  00:03:20  1.577808e+09       250   0.45        1  desktop
+    # 4 2020-01-01  00:04:20  1.577808e+09       250   0.04        1  desktop
+
+    ### SQL CODE
+    print(df.head())
+
     df = df.groupby(['date', 'type']).sum().reset_index()
     df = df.pivot(index='date', columns='type', values='power')
 
@@ -52,6 +65,16 @@ def cost_savings(file, frequency):
         df = df.set_index('month')
 
     # Truncate dataframe
+    # OUTPUT
+    # type     desktop       fan    laptop   monitor    others  tasklamp      total
+    # week
+    # 15 Jun  3.865136  0.545218  2.187076  2.932213  0.954045  0.818557  11.302246
+    # 22 Jun  3.960292  0.605160  2.273651  3.115004  1.019997  0.835306  11.809411
+    # 29 Jun  3.714227  0.578795  2.220233  3.133484  1.063669  0.864483  11.574892
+    # 6 Jul   1.200915  0.285653  0.723079  0.975235  0.391955  0.145605   3.722441
+    # 13 Jul  0.575940  0.048664  0.252067  0.380363  0.211953  0.129673   1.598661
+    # 20 Jul  0.376172  0.039548  0.301331  0.457742  0.091924  0.090983   1.357700
+
     return df[-7:-1]
 
 
@@ -109,7 +132,6 @@ def update_bar_chart(n1, n2, int):
         view = changed_id.split('.')[0].capitalize()  # button's n_clicks acts as state toggle between week and month
 
     # Process dataframe
-    ### SQL code can be inserted here and stored as df
     df = cost_savings('./plug_mate_app/dash_apps/finished_apps/generator_6m.csv',
                       'W-MON') if view == 'Week' else cost_savings(
         './plug_mate_app/dash_apps/finished_apps/generator_6m.csv', 'M')
