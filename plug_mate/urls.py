@@ -16,12 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from plug_mate_app import views
-from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('plug_mate_app.urls')),
     path('logout/', views.user_logout, name='logout'),
     path('django_plotly_dash/', include('django_plotly_dash.urls')),
-    path('test/', TemplateView.as_view(template_name='index.html')),
 ]

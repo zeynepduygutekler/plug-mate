@@ -2,18 +2,64 @@ from django.shortcuts import render
 from .forms import UserForm, UserProfileInfoForm
 from plotly.offline import plot
 import plotly.graph_objects as go
-# from django.views.generic import View
-
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from rest_framework import viewsets
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from . import serializers
+# from .serializers import UserSerializer
+from .models import Users, PowerEnergyConsumption
+import psycopg2
 
-# Create your views here.
+# class UserViewSet(viewsets.ModelViewSet):
+#     queryset = Users.objects.all().order_by('user_id')
+#     serializer_class = UserSerializer
+
+
+class HelloApiView(APIView):
+    serializer_class = serializers.HelloSerializer
+
+    def get(self, request, format=None):
+        an_apiview = [
+            'uses HTTP methods as function (get, post, patch, put, delete)',
+            'is similar to traditional django view',
+            'gives you most control over app logic',
+            'is mapped manually to urls',
+        ]
+
+        return Response({'message': 'Hello!', 'an_apiview': an_apiview})
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            name = serializer.validated_data.get('name')
+            message = f'Hello {name}'
+            return Response({'message': message})
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, pk=None):
+        return Response({'method': 'PUT'})
+
+    def patch(self, request, pk=None):
+        return Response({'method': 'PATCH'})
+
+    def delete(self, request, pk=None):
+        return Response({'method': 'DELETE'})
+
 
 
 def plug_mate_app(requests):
-    return render(requests, 'plug_mate_app/index.html')
+    user = Users.objects.get(user_name='Raymond')
+    context = {
+        'username': user.user_name,
+    }
+    return render(requests, 'plug_mate_app/index.html', context)
 
 
 def control_interface(requests):

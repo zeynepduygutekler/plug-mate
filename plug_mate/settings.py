@@ -31,7 +31,6 @@ DEBUG = True
 # DEBUG = False
 
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'plugmate.herokuapp.com']
-# ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -51,6 +50,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'whitenoise.runserver_nostatic',
     'inspectdb_refactor',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -171,14 +171,7 @@ PLOTLY_COMPONENTS = [
 STATICFILES_LOCATION='static'
 STATIC_URL = '/static/'
 STATIC_ROOT=os.path.join(BASE_DIR, 'static')
-# STATIC_ROOT=os.path.join(BASE_DIR, 'plug_mate/static')
 STATICFILES_DIRS=[
-    # os.path.join(BASE_DIR, 'plug_mate/static'),
-    # os.path.join(BASE_DIR, 'plug_mate/static/static'),
-    # os.path.join(BASE_DIR, 'plug_mate/control_interface/build'),
-    # os.path.join(BASE_DIR, 'static/static'),
-    # os.path.join(BASE_DIR, 'static'),
-    # os.path.join(BASE_DIR, 'control_interface/build'),
     os.path.join(BASE_DIR, 'control_interface/build/'),
     os.path.join(BASE_DIR, 'control_interface/build/static/'),
     os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/'),
