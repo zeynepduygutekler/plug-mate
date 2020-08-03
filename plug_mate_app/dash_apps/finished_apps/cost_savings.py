@@ -100,7 +100,6 @@ def update_bar_chart(n1, n2, int):
    df - dataframe with columns of plug loads and values of cost savings
    fig - main graph object
    sim - list of values corresponding to simulation inputs'''
-    t0 = time.time()
 
     # Checking buttons for view (week or month), store in var view
     if n1 == n2 == 0: # default
@@ -116,7 +115,6 @@ def update_bar_chart(n1, n2, int):
                       'W-MON') if view == 'Week' else cost_savings(
         './plug_mate_app/dash_apps/finished_apps/generator_6m.csv', 'M')
     series = df['total']
-    t1 = time.time()
     # Add the text that hovers over each bar for the normal graph
     hovertemplate = '<em>Week of %{x}</em><br>%{hovertext}' if view == 'Week' else '<em>Month of %{x}</em><br>%{hovertext}'
 
