@@ -1148,9 +1148,14 @@ desktoppresence.onclick = function() {
     desktop_presence_plugload_icon.src = "/static/Images/Desktop ON.png"
     desktopDropdown.childNodes[1].value = "5 minutes"
   } else {
-    desktoppresence.className = "redPresence";
-    desktop_presence_plugload_icon.src = "/static/Images/Desktop OFF.png"
-    desktopDropdown.childNodes[1].value = "off"
+    if (window.confirm("You are switching off presence-based control for Desktop.")) {
+        desktoppresence.className = "redPresence";
+        desktop_presence_plugload_icon.src = "/static/Images/Desktop OFF.png"
+        desktopDropdown.childNodes[1].value = "off"
+    } else {
+        desktoppresence.className = "greenPresence";
+        desktop_presence_plugload_icon.src = "/static/Images/Desktop ON.png";
+    }
   }
 }
 
@@ -1162,9 +1167,14 @@ monitorpresence.onclick = function() {
     monitorDropdown.childNodes[1].value = "5 minutes"
     monitor_presence_plugload_icon.src = "/static/Images/Monitor ON.png"
   } else {
-    monitorpresence.className = "redPresence";
-    monitor_presence_plugload_icon.src = "/static/Images/Monitor OFF.png"
-    monitorDropdown.childNodes[1].value = "off"
+    if (window.confirm("You are switching off presence-based control for Monitor.")) {
+        monitorpresence.className = "redPresence";
+        monitor_presence_plugload_icon.src = "/static/Images/Monitor OFF.png"
+        monitorDropdown.childNodes[1].value = "off"
+    } else {
+        monitorpresence.className = "greenPresence";
+        monitor_presence_plugload_icon.src = "/static/Images/Monitor ON.png";
+    }
   }
 }
 
@@ -1176,9 +1186,14 @@ laptoppresence.onclick = function() {
     laptopDropdown.childNodes[1].value = "5 minutes"
     laptop_presence_plugload_icon.src = "/static/Images/Laptop ON.png"
   } else {
-    laptoppresence.className = "redPresence";
-    laptop_presence_plugload_icon.src = "/static/Images/Laptop OFF.png"
-    laptopDropdown.childNodes[1].value = "off"
+    if (window.confirm("You are switching off presence-based control for Laptop.")) {
+        laptoppresence.className = "redPresence";
+        laptop_presence_plugload_icon.src = "/static/Images/Laptop OFF.png"
+        laptopDropdown.childNodes[1].value = "off"
+    } else {
+        laptoppresence.className = "greenPresence";
+        laptop_presence_plugload_icon.src = "/static/Images/Laptop ON.png";
+    }
   }
 }
 
@@ -1190,9 +1205,14 @@ tasklamppresence.onclick = function() {
     tasklamp_presence_plugload_icon.src = "/static/Images/Task Lamp ON.png"
     tasklampDropdown.childNodes[1].value = "5 minutes"
   } else {
-    tasklamppresence.className = "redPresence";
-    tasklamp_presence_plugload_icon.src = "/static/Images/Task Lamp OFF.png";
-    tasklampDropdown.childNodes[1].value = "off"
+    if (window.confirm("You are switching off presence-based control for Task Lamp.")) {
+        tasklamppresence.className = "redPresence";
+        tasklamp_presence_plugload_icon.src = "/static/Images/Task Lamp OFF.png"
+        tasklampDropdown.childNodes[1].value = "off"
+    } else {
+        tasklamppresence.className = "greenPresence";
+        tasklamp_presence_plugload_icon.src = "/static/Images/Task Lamp ON.png";
+    }
   }
 }
 
@@ -1204,9 +1224,14 @@ fanpresence.onclick = function() {
     fan_presence_plugload_icon.src = "/static/Images/Fan ON.png"
     fanDropdown.childNodes[1].value = "5 minutes"
   } else {
-    fanpresence.className = "redPresence";
-    fan_presence_plugload_icon.src = "/static/Images/Fan OFF.png"
-    fanDropdown.childNodes[1].value = "off"
+    if (window.confirm("You are switching off presence-based control for Fan.")) {
+        fanpresence.className = "redPresence";
+        fan_presence_plugload_icon.src = "/static/Images/Fan OFF.png"
+        fanDropdown.childNodes[1].value = "off"
+    } else {
+        fanpresence.className = "greenPresence";
+        fan_presence_plugload_icon.src = "/static/Images/Fan ON.png";
+    }
   }
 }
 
@@ -1219,6 +1244,7 @@ var presenceelement = document.getElementById("presencebasedrect");
 var infoiconpresence = document.getElementById("infoIconPresence");
 
 window.onload = function() {
+
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   var today = new Date();
   var day = days[today.getDay()];
@@ -1266,6 +1292,7 @@ window.onload = function() {
 }
 
 window.onresize = function() {
+
   let remotecontrolelemRect = remotecontrolelement.getBoundingClientRect();
   let infoiconremoteRect = infoiconremote.getBoundingClientRect();
   let offsetremote = remotecontrolelemRect.right - infoiconremoteRect.right - 10;
@@ -1305,4 +1332,45 @@ window.onresize = function() {
   infoiconpresence.onmouseout = function() {
     ReactDOM.unmountComponentAtNode(document.getElementById("infoBoxPresence"));
   }
+}
+
+
+// Added this 3 Aug
+var isChromium = window.chrome;
+var winNav = window.navigator;
+var vendorName = winNav.vendor;
+var isOpera = typeof window.opr !== "undefined";
+var isIEedge = winNav.userAgent.indexOf("Edge") > -1;
+var isIOSChrome = winNav.userAgent.match("CriOS");
+
+if (isIOSChrome) {
+   // is Google Chrome on IOS
+   document.onkeydown = function(event) {
+if (event.ctrlKey==true || (event.which == '61' || event.which == '107' || event.which == '173' || event.which == '109'  || event.which == '187'  || event.which == '189'  ) ) {
+        event.preventDefault();
+     }
+    // 107 Num Key  +
+    // 109 Num Key  -
+    // 173 Min Key  hyphen/underscore key
+    // 61 Plus key  +/= key
+};
+} else if(
+  isChromium !== null &&
+  typeof isChromium !== "undefined" &&
+  vendorName === "Google Inc." &&
+  isOpera === false &&
+  isIEedge === false
+) {
+   // is Google Chrome
+   document.onkeydown = function(event) {
+if (event.ctrlKey==true || (event.which == '61' || event.which == '107' || event.which == '173' || event.which == '109'  || event.which == '187'  || event.which == '189'  ) ) {
+        event.preventDefault();
+     }
+    // 107 Num Key  +
+    // 109 Num Key  -
+    // 173 Min Key  hyphen/underscore key
+    // 61 Plus key  +/= key
+};
+} else {
+   // not Google Chrome
 }
