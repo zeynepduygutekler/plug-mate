@@ -3,11 +3,10 @@ import plotly.graph_objects as go
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
-import plotly.graph_objs as go
 import dash_bootstrap_components as dbc
 from django_plotly_dash import DjangoDash
-import glob
-import os
+from functools import lru_cache
+import time
 
 
 def calculate_cost(power):
@@ -16,6 +15,13 @@ def calculate_cost(power):
     singapore_tariff_rate = 0.201
     cost = singapore_tariff_rate * kwh
     return cost
+
+
+def currency_format(value):
+    if value > 0:
+        return '${:,.2f}'.format(value)
+    else:
+        return '-${:,.2f}'.format(abs(value))
 
 
 def cost_savings(file, frequency):
@@ -49,7 +55,6 @@ def cost_savings(file, frequency):
     return df[-7:-1]
 
 
-
 # external CSS stylesheets
 
 app = DjangoDash('cost_savings',
@@ -81,8 +86,8 @@ app.layout = html.Div([
 @app.callback(
     [dash.dependencies.Output('cost-savings', 'figure'),  # update graph
      dash.dependencies.Output('placeholder', 'children'),
-     dash.dependencies.Output('week','active'),
-     dash.dependencies.Output('month','active')],  # update graph
+     dash.dependencies.Output('week', 'active'),
+     dash.dependencies.Output('month', 'active')],  # update graph
     [dash.dependencies.Input('week', 'n_clicks'),
      dash.dependencies.Input('month', 'n_clicks'),
      dash.dependencies.Input('interval-trigger', 'n_intervals')]
@@ -95,12 +100,15 @@ def update_bar_chart(n1, n2, int):
    df - dataframe with columns of plug loads and values of cost savings
    fig - main graph object
    sim - list of values corresponding to simulation inputs'''
+    t0 = time.time()
 
     # Checking buttons for view (week or month), store in var view
-    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
-    view = changed_id.split('.')[0].capitalize()  # button's n_clicks acts as state toggle between week and month
-    if n1 == 0 and n2 == 0:  # default
+    if n1 == n2 == 0: # default
         view = 'Week'
+    else:
+        changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+        view = changed_id.split('.')[0].capitalize()  # button's n_clicks acts as state toggle between week and month
+
 
     # Process dataframe
     ### SQL code can be inserted here and stored as df
@@ -108,15 +116,9 @@ def update_bar_chart(n1, n2, int):
                       'W-MON') if view == 'Week' else cost_savings(
         './plug_mate_app/dash_apps/finished_apps/generator_6m.csv', 'M')
     series = df['total']
-
-    def currency_format(value):
-        if value > 0:
-            return '${:,.2f}'.format(value)
-        else:
-            return '-${:,.2f}'.format(abs(value))
-
+    t1 = time.time()
+    print(t1-t0)
     # Add the text that hovers over each bar for the normal graph
-
     hovertemplate = '<em>Week of %{x}</em><br>%{hovertext}' if view == 'Week' else '<em>Month of %{x}</em><br>%{hovertext}'
 
     def create_trace(discount):
@@ -165,8 +167,10 @@ def update_bar_chart(n1, n2, int):
                           )
         return positive, negative, go.Layout(yaxis=dict(range=[min(ser) - 3, max(ser) * 1.4]))
 
+
     def create_frame(discount):
         return go.Frame({'data': create_trace(discount)[:2]}, layout=create_trace(discount)[-1])
+
 
     positive_trace, negative_trace = create_trace(0)[:2]
     frame0 = create_frame(0)
@@ -247,11 +251,10 @@ def update_bar_chart(n1, n2, int):
         margin=dict(t=20)
     )
     fig.update_yaxes(tickprefix="$")
+    print(f'Line 253: {time.time() - t0}')
+
 
     if view == 'Week':
         return fig, '', True, False
     else:
         return fig, '', False, True
-
-
-
