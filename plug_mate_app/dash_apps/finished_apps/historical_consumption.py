@@ -39,15 +39,15 @@ def initialise_variables():
     global singapore_tariff_rate
 
     # Manipulate Data
-    """ INSERT SQL CODE """
-    user1 = pd.concat(map(pd.read_csv, glob.glob(
-        os.path.join('', 'plug_mate_app/dash_apps/finished_apps/aggregated*.csv'))))
-    """ DONE SQL CODE """
+#     """ INSERT SQL CODE """
+#     user1 = pd.concat(map(pd.read_csv, glob.glob(
+#         os.path.join('', 'plug_mate_app/dash_apps/finished_apps/aggregated*.csv'))))
+#     """ DONE SQL CODE """
 
-    # """ INSERT SQL CODE """
-    # user1 = pd.read_csv(os.path.join(
-    #     '', 'plug_mate_app/dash_apps/finished_apps/generator_6m.csv'))
-    # """ DONE SQL CODE """
+    """ INSERT SQL CODE """
+    user1 = pd.read_csv(os.path.join(
+        '', 'plug_mate_app/dash_apps/finished_apps/generator_6m.csv'))
+    """ DONE SQL CODE """
 
     # user1
     #           date     time   unix_time  power              id      type
