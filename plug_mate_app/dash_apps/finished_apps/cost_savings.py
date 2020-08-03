@@ -117,7 +117,6 @@ def update_bar_chart(n1, n2, int):
         './plug_mate_app/dash_apps/finished_apps/generator_6m.csv', 'M')
     series = df['total']
     t1 = time.time()
-    print(t1-t0)
     # Add the text that hovers over each bar for the normal graph
     hovertemplate = '<em>Week of %{x}</em><br>%{hovertext}' if view == 'Week' else '<em>Month of %{x}</em><br>%{hovertext}'
 
@@ -251,8 +250,6 @@ def update_bar_chart(n1, n2, int):
         margin=dict(t=20)
     )
     fig.update_yaxes(tickprefix="$")
-    print(f'Line 253: {time.time() - t0}')
-
 
     if view == 'Week':
         return fig, '', True, False
