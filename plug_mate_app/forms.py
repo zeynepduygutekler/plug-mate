@@ -11,7 +11,7 @@ class UserForm(forms.ModelForm):
         fields = ('username', 'email', 'password')
 
 
-class UserProfileInfoForm(forms.ModelForm):
-    class Meta():
-        model = UserProfileInfo
-        fields = ('user_id_field',)
+# class UserProfileInfoForm(forms.ModelForm):
+#     class Meta():
+#         model = UserProfileInfo
+#         fields = ('user_id_field',)

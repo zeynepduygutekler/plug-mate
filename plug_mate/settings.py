@@ -91,11 +91,21 @@ WSGI_APPLICATION = 'plug_mate.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'plugmate',
+#         'USER': 'lucasng',
+#         'PASSWORD': 'password123',
+#         'HOST': 'localhost',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'plugmate',
-        'USER': 'lucasng',
+        'NAME': 'plug_mate_dev_db',
+        'USER': 'raymondlow',
         'PASSWORD': 'password123',
         'HOST': 'localhost',
     }

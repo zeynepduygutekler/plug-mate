@@ -21,7 +21,7 @@ class UserProfileInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
 
     # Add any additional attributes you want
-    user_id_field = models.ForeignKey(Users, on_delete=models.DO_NOTHING, related_name='user_id_profile')
+    # user_id_field = models.ForeignKey(Users, on_delete=models.DO_NOTHING, related_name='user_id_profile')
 
     def __str__(self):
         # Built-in attribute of django.contrib.auth.models.User !
@@ -31,7 +31,7 @@ class UserProfileInfo(models.Model):
 class Meters(models.Model):
     meter_id = models.IntegerField(primary_key=True)
     meter_name = models.CharField(max_length=255)
-    user = models.ForeignKey(Users, models.DO_NOTHING)
+    user = models.ForeignKey(Users, models.DO_NOTHING, related_name='user_id_meters')
 
     class Meta:
         managed = False
@@ -42,8 +42,8 @@ class PowerEnergyConsumption(models.Model):
     date = models.DateField()
     time = models.TimeField()
     unix_time = models.BigIntegerField()
-    meter = models.ForeignKey(Meters, models.DO_NOTHING)
-    user = models.ForeignKey(Users, models.DO_NOTHING)
+    meter = models.ForeignKey(Meters, models.DO_NOTHING, related_name='meter_id_power')
+    user = models.ForeignKey(Users, models.DO_NOTHING, related_name='user_id_power')
     energy = models.FloatField()
     power = models.FloatField()
     device_state = models.IntegerField()
@@ -58,7 +58,7 @@ class Presence(models.Model):
     date = models.DateField()
     time = models.TimeField()
     unix_time = models.BigIntegerField()
-    user = models.ForeignKey(Users, models.DO_NOTHING)
+    user = models.ForeignKey(Users, models.DO_NOTHING, related_name='user_id_presence')
     rssi = models.FloatField()
     presence = models.IntegerField()
 
@@ -67,4 +67,13 @@ class Presence(models.Model):
         db_table = 'presence'
 
 
+class PointsWallet(models.Model):
+    user = models.IntegerField(primary_key=True)
+    points = models.IntegerField()
 
+    class Meta:
+        managed = False
+        db_table = 'points_wallet'
+
+    def __str__(self):
+        return self.points

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import UserForm, UserProfileInfoForm
+# from .forms import UserForm, UserProfileInfoForm
 from plotly.offline import plot
 import plotly.graph_objects as go
 from django.contrib.auth import authenticate, login, logout
@@ -12,8 +12,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from . import serializers
 # from .serializers import UserSerializer
-from .models import Users, PowerEnergyConsumption
 import psycopg2
+from .models import Users, PowerEnergyConsumption, PointsWallet, Meters
+from django.db import connection
 
 # class UserViewSet(viewsets.ModelViewSet):
 #     queryset = Users.objects.all().order_by('user_id')
@@ -55,7 +56,13 @@ class HelloApiView(APIView):
 
 
 def plug_mate_app(requests):
-    return render(requests, 'plug_mate_app/index.html')
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s',[requests.user.id])
+        points = cursor.fetchone()[0]
+    context = {
+        'points': points,
+    }
+    return render(requests, 'plug_mate_app/index.html', context)
 
 
 def control_interface(requests):
