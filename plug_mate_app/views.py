@@ -12,7 +12,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from . import serializers
 # from .serializers import UserSerializer
-import psycopg2
 from .models import Users, PowerEnergyConsumption, PointsWallet, Meters
 from django.db import connection
 

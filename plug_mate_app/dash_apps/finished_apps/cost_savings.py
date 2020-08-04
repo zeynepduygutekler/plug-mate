@@ -6,6 +6,7 @@ import dash_core_components as dcc
 import dash_bootstrap_components as dbc
 from django_plotly_dash import DjangoDash
 from functools import lru_cache
+from django.db import connection
 
 
 def calculate_cost(power):
@@ -26,10 +27,19 @@ def currency_format(value):
 @lru_cache(maxsize=20)
 def cost_savings(file, frequency):
     """Takes in the raw data file and converts it into the last 6 week/month worth of aggregated data"""
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM power_energy_consumption "
+                       "WHERE user_id=%s AND "
+                       "date >= date_trunc('month', now()) - interval '6 month' AND "
+                       "date < date_trunc('month', now())", [1])
+        results = cursor.fetchall()
+
+    df = pd.DataFrame(results, columns=['date','time','unix_time','meter_id','user_id',
+                                        'energy','power','device_state','type'])
 
     ### SQL CODE can be inserted here and stored as df
 
-    df = pd.read_csv(file, parse_dates=['date'])
+    # df = pd.read_csv(file, parse_dates=['date'])
 
     #         date      time     unix_time  meter_id  power  user_id     type
     # 0 2020-01-01  00:00:20  1.577808e+09       250   0.10        1  desktop
@@ -39,7 +49,7 @@ def cost_savings(file, frequency):
     # 4 2020-01-01  00:04:20  1.577808e+09       250   0.04        1  desktop
 
     ### SQL CODE
-    print(df.head())
+    # print(df.head())
 
     df = df.groupby(['date', 'type']).sum().reset_index()
     df = df.pivot(index='date', columns='type', values='power')

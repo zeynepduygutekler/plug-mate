@@ -17,6 +17,7 @@ import dateutil.relativedelta
 import dash_daq as daq
 import gc
 gc.collect()
+from django.db import connection
 
 
 pio.templates.default = "simple_white"
@@ -45,8 +46,18 @@ def initialise_variables():
 #     """ DONE SQL CODE """
 
     """ INSERT SQL CODE """
-    user1 = pd.read_csv(os.path.join(
-        '', 'plug_mate_app/dash_apps/finished_apps/generator_6m.csv'))
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM power_energy_consumption "
+                       "WHERE user_id=%s AND "
+                       "date >= date_trunc('month', now()) - interval '6 month' AND "
+                       "date < date_trunc('month', now())", [1])
+        results = cursor.fetchall()
+
+    user1 = pd.DataFrame(results, columns=['date','time','unix_time','meter_id','user_id',
+                                           'energy','power','device_state','type'])
+
+    # user1 = pd.read_csv(os.path.join(
+    #     '', 'plug_mate_app/dash_apps/finished_apps/generator_6m.csv'))
     """ DONE SQL CODE """
 
     # user1
