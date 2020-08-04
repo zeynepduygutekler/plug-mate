@@ -1,3 +1,4 @@
+from memory_profiler import profile
 from django_plotly_dash import DjangoDash
 import os
 import glob
@@ -17,8 +18,6 @@ import dateutil.relativedelta
 import dash_daq as daq
 import gc
 gc.collect()
-from django.db import connection
-
 
 pio.templates.default = "simple_white"
 
@@ -31,6 +30,7 @@ singapore_tariff_rate = 0.201
 # A1. IMPORTING DATA
 
 
+@profile
 def initialise_variables():
     global w, x, y, z
     w, x, y, z = (0, 0, 0, 0)
@@ -40,25 +40,15 @@ def initialise_variables():
     global singapore_tariff_rate
 
     # Manipulate Data
-#     """ INSERT SQL CODE """
-#     user1 = pd.concat(map(pd.read_csv, glob.glob(
-#         os.path.join('', 'plug_mate_app/dash_apps/finished_apps/aggregated*.csv'))))
-#     """ DONE SQL CODE """
-
     """ INSERT SQL CODE """
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM power_energy_consumption "
-                       "WHERE user_id=%s AND "
-                       "date >= date_trunc('month', now()) - interval '6 month' AND "
-                       "date < date_trunc('month', now())", [1])
-        results = cursor.fetchall()
+    user1 = pd.concat(map(pd.read_csv, glob.glob(
+        os.path.join('', 'plug_mate_app/dash_apps/finished_apps/user1_alldevices(TEMPLATE).csv'))))
+    """ DONE SQL CODE """
 
-    user1 = pd.DataFrame(results, columns=['date','time','unix_time','meter_id','user_id',
-                                           'energy','power','device_state','type'])
-
+    # """ INSERT SQL CODE """
     # user1 = pd.read_csv(os.path.join(
     #     '', 'plug_mate_app/dash_apps/finished_apps/generator_6m.csv'))
-    """ DONE SQL CODE """
+    # """ DONE SQL CODE """
 
     # user1
     #           date     time   unix_time  power              id      type
@@ -99,22 +89,27 @@ def initialise_variables():
 # A2. FILTERING FUNCTIONS BELOW
 
 
+@profile
 def generate_month(unix_time):
     return dt.datetime.utcfromtimestamp(unix_time).strftime('%b')
 
 
+@profile
 def generate_year(unix_time):
     return dt.datetime.utcfromtimestamp(unix_time).strftime('%Y')
 
 
+@profile
 def generate_dateAMPM(unix_time):
     return dt.datetime.utcfromtimestamp(unix_time).strftime('%I:%M%p')
 
 
+@profile
 def generate_hour(unix_time):
     return dt.datetime.utcfromtimestamp(unix_time).strftime('%H')
 
 
+@profile
 def monthFunction():
     global df_month, df_month_pie, w
 
@@ -217,6 +212,7 @@ def monthFunction():
     return df_month, df_month_pie
 
 
+@profile
 def dayFunction():
     global df_day, df_day_pie, x
     if x == 0:
@@ -300,6 +296,7 @@ def dayFunction():
     return df_day, df_day_pie
 
 
+@profile
 def hourFunction():
     global df_hour_pie, df_hour, y
     if y == 0:
@@ -382,10 +379,12 @@ def hourFunction():
     return df_hour, df_hour_pie
 
 
+@profile
 def weekFunction():
     global df_week_pie, df_week_line, df_week, start, end, z
 
     if z == 0:
+        z += 1
         # Start of week function
 
         # 1. Filter past 4 weeks using timedelta 28 days
@@ -483,6 +482,7 @@ def weekFunction():
     return df_week, df_week_pie, df_week_line, start, end
 
 
+@profile
 def hourClickDataPiechart():
     # Aggregate df_hour_bytype separating type of device
     df_hour_bytype = user1
@@ -518,6 +518,7 @@ def hourClickDataPiechart():
     return df_hour_bytype
 
 
+@profile
 def weekClickDataPiechart():
     global df_week
     df_week_bytype = df_week
@@ -533,6 +534,7 @@ def weekClickDataPiechart():
     return df_week_bytype
 
 
+@profile
 def monthClickDataPiechart():
     # Aggregate df_month_bytype separating type of device
     """ INSERT SQL CODE """
@@ -567,6 +569,7 @@ def monthClickDataPiechart():
     return df_month_bytype
 
 
+@profile
 def dayClickDataPiechart():
     # Aggregate df_day_bytype separating type of device
     """ INSERT SQL CODE """
@@ -590,6 +593,10 @@ def dayClickDataPiechart():
 
 
 initialise_variables()
+df_hour, df_hour_pie = hourFunction()
+df_week, df_week_pie, df_week_line, start, end = weekFunction()
+df_month, df_month_pie = monthFunction()
+df_day, df_day_pie = dayFunction()
 
 
 # B) Dash App initialisation
@@ -687,6 +694,7 @@ app.layout = \
      dd.State('week', 'n_clicks_timestamp'),
      dd.State('month', 'n_clicks_timestamp')])
 # E) Callback Function when Day Hour Month or Week clicked as well as individual points
+@profile
 def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, btnkwhdollars,
                               clickData, interval,
                               hoverData, btn1, btn2, btn3, btn4):
@@ -703,7 +711,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
 
     if 'hour' in changed_id:
-        df_hour, df_hour_pie = hourFunction()
 
         # Pie Chart values
         values_pie = df_hour_pie['power_kWh']
@@ -718,7 +725,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         hourActive = True
 
     elif 'day' in changed_id:
-        df_day, df_day_pie = dayFunction()
 
         # Pie Chart
         values_pie = df_day_pie['power_kWh']
@@ -733,11 +739,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         monthActive = False
         hourActive = False
     elif 'week' in changed_id:
-        if z == 0:
-            df_week, df_week_pie, df_week_line, start, end = weekFunction()
 
-        else:
-            pass
         df_to_sort = df_week_line
         df_to_sort['date'] = pd.to_datetime(df_to_sort.date)
         df_to_sort = df_to_sort.sort_values(by='date')
@@ -754,7 +756,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         hourActive = False
 
     elif 'month' in changed_id:
-        df_month, df_month_pie = monthFunction()
 
         values_pie = df_month_pie['power_kWh']
         pie_middletext = 'last 6 Months'
@@ -928,7 +929,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             pass
 
         else:
-            df_week, df_week_pie, df_week_line, start, end = weekFunction()
             df_to_sort = df_week_line
             df_to_sort['date'] = pd.to_datetime(df_to_sort.date)
             df_to_sort = df_to_sort.sort_values(by='date')
