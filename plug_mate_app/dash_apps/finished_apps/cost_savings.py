@@ -31,7 +31,7 @@ def cost_savings(file, frequency):
         cursor.execute("SELECT * FROM power_energy_consumption "
                        "WHERE user_id=%s AND "
                        "date >= date_trunc('month', now()) - interval '6 month' AND "
-                       "date < date_trunc('month', now())", [1])
+                       "date < date_trunc('month', now())", [1,])
         results = cursor.fetchall()
 
     df = pd.DataFrame(results, columns=['date','time','unix_time','meter_id','user_id',

@@ -53,11 +53,13 @@ class HelloApiView(APIView):
         return Response({'method': 'DELETE'})
 
 
-
 def plug_mate_app(requests):
-    with connection.cursor() as cursor:
-        cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s',[requests.user.id])
-        points = cursor.fetchone()[0]
+    if requests.user.id is None:
+        points = 0
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s', [requests.user.id])
+            points = cursor.fetchone()[0]
     context = {
         'points': points,
     }
