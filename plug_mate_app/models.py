@@ -79,14 +79,14 @@ class PointsWallet(models.Model):
         return self.points
 
 
-class RemoteControl(models.Model):
-    device_state = models.BinaryField()
-
-
-class ScheduleBasedControl(models.Model):
-    schedule_name = models.CharField(max_length=100)
-
-
-class PresenceBasedControl(models.Model):
-    device_state = models.BinaryField()
-    off_after = models.IntegerField()
+# class RemoteControl(models.Model):
+#     device_state = models.BinaryField()
+#
+#
+# class ScheduleBasedControl(models.Model):
+#     schedule_name = models.CharField(max_length=100)
+#
+#
+# class PresenceBasedControl(models.Model):
+#     device_state = models.BinaryField()
+#     off_after = models.IntegerField()

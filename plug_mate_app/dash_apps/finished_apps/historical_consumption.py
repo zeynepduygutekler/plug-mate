@@ -19,8 +19,6 @@ import os
 import numpy as np
 
 
-print('whats going on')
-
 pio.templates.default = "simple_white"
 
 # A) Function to create new essential columns
