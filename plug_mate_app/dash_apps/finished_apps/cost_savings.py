@@ -25,17 +25,18 @@ def currency_format(value):
 
 
 @lru_cache(maxsize=20)
-def cost_savings(file, frequency):
+def cost_savings():
     """Takes in the raw data file and converts it into the last 6 week/month worth of aggregated data"""
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM power_energy_consumption "
                        "WHERE user_id=%s AND "
                        "date >= date_trunc('month', now()) - interval '6 month' AND "
-                       "date < date_trunc('month', now())", [1,])
+                       "date < date_trunc('month', now())", [1, ])
         results = cursor.fetchall()
 
-    df = pd.DataFrame(results, columns=['date','time','unix_time','meter_id','user_id',
-                                        'energy','power','device_state','type'])
+    df = pd.DataFrame(results, columns=['date', 'time', 'unix_time', 'meter_id', 'user_id',
+                                        'energy', 'power', 'device_state', 'type'])
+
     df['date'] = pd.to_datetime(df['date'])
 
     ### SQL CODE can be inserted here and stored as df
@@ -50,7 +51,6 @@ def cost_savings(file, frequency):
     # 4 2020-01-01  00:04:20  1.577808e+09       250   0.04        1  desktop
 
     ### SQL CODE
-    # print(df.head())
 
     df = df.groupby(['date', 'type']).sum().reset_index()
     df = df.pivot(index='date', columns='type', values='power')
@@ -64,16 +64,16 @@ def cost_savings(file, frequency):
     df['total'] = df.sum(axis=1)
 
     # Aggregate data based on view & set index
-    df = df.groupby(pd.Grouper(freq=frequency)).sum()
-    if frequency == 'W-MON':
-        df['week'] = df.index
-        df['week'] = df['week'].dt.strftime('%-d %b')
-        df = df.set_index('week')
+    week_view = df.groupby(pd.Grouper(freq='W-MON')).sum()
+    month_view = df.groupby(pd.Grouper(freq='M')).sum()
 
-    else:
-        df['month'] = df.index
-        df['month'] = df['month'].dt.strftime('%b')
-        df = df.set_index('month')
+    week_view['week'] = week_view.index
+    week_view['week'] = week_view['week'].dt.strftime('%-d %b')
+    week_view = week_view.set_index('week')
+
+    month_view['month'] = month_view.index
+    month_view['month'] = month_view['month'].dt.strftime('%b')
+    month_view = month_view.set_index('month')
 
     # Truncate dataframe
     # OUTPUT
@@ -85,11 +85,12 @@ def cost_savings(file, frequency):
     # 6 Jul   1.200915  0.285653  0.723079  0.975235  0.391955  0.145605   3.722441
     # 13 Jul  0.575940  0.048664  0.252067  0.380363  0.211953  0.129673   1.598661
     # 20 Jul  0.376172  0.039548  0.301331  0.457742  0.091924  0.090983   1.357700
-
-    return df[-7:-1]
+    return (week_view[-7:-1], month_view[-7:-1])
 
 
 # external CSS stylesheets
+
+df_week, df_month = cost_savings()
 
 app = DjangoDash('cost_savings',
                  external_stylesheets=["https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"],
@@ -143,9 +144,7 @@ def update_bar_chart(n1, n2, int):
         view = changed_id.split('.')[0].capitalize()  # button's n_clicks acts as state toggle between week and month
 
     # Process dataframe
-    df = cost_savings('./plug_mate_app/dash_apps/finished_apps/generator_6m.csv',
-                      'W-MON') if view == 'Week' else cost_savings(
-        './plug_mate_app/dash_apps/finished_apps/generator_6m.csv', 'M')
+    df = df_week if view == 'Week' else df_month
     series = df['total']
     # Add the text that hovers over each bar for the normal graph
     hovertemplate = '<em>Week of %{x}</em><br>%{hovertext}' if view == 'Week' else '<em>Month of %{x}</em><br>%{hovertext}'
