@@ -1,10 +1,20 @@
 from rest_framework import serializers
-from .models import Users
+from .models import RemoteControl, ScheduleBasedControl, PresenceBasedControl
 
 
-class HelloSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=10)
-
+class RemoteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Users
-        fields = ('user_id', 'user_name', 'mac_address')
+        model = RemoteControl
+        fields = '__all__'
+
+
+class ScheduleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScheduleBasedControl
+        fields = '__all__'
+
+
+class PresenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PresenceBasedControl
+        fields = '__all__'

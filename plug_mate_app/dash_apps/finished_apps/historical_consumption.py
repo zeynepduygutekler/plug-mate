@@ -31,7 +31,7 @@ singapore_tariff_rate = 0.201
 # A1. IMPORTING DATA
 
 
-@profile
+# @profile
 def initialise_variables():
     global w, x, y, z
     w, x, y, z = (0, 0, 0, 0)
@@ -100,27 +100,27 @@ def initialise_variables():
 # A2. FILTERING FUNCTIONS BELOW
 
 
-@profile
+# @profile
 def generate_month(unix_time):
     return dt.datetime.utcfromtimestamp(unix_time).strftime('%b')
 
 
-@profile
+# @profile
 def generate_year(unix_time):
     return dt.datetime.utcfromtimestamp(unix_time).strftime('%Y')
 
 
-@profile
+# @profile
 def generate_dateAMPM(unix_time):
     return dt.datetime.utcfromtimestamp(unix_time).strftime('%I:%M%p')
 
 
-@profile
+# @profile
 def generate_hour(unix_time):
     return dt.datetime.utcfromtimestamp(unix_time).strftime('%H')
 
 
-@profile
+# @profile
 def monthFunction():
     global df_month, df_month_pie, w
 
@@ -223,7 +223,7 @@ def monthFunction():
     return df_month, df_month_pie
 
 
-@profile
+# @profile
 def dayFunction():
     global df_day, df_day_pie, x
     if x == 0:
@@ -307,7 +307,7 @@ def dayFunction():
     return df_day, df_day_pie
 
 
-@profile
+# @profile
 def hourFunction():
     global df_hour_pie, df_hour, y
     if y == 0:
@@ -390,7 +390,7 @@ def hourFunction():
     return df_hour, df_hour_pie
 
 
-@profile
+# @profile
 def weekFunction():
     global df_week_pie, df_week_line, df_week, start, end, z
 
@@ -493,7 +493,7 @@ def weekFunction():
     return df_week, df_week_pie, df_week_line, start, end
 
 
-@profile
+# @profile
 def hourClickDataPiechart():
     # Aggregate df_hour_bytype separating type of device
     df_hour_bytype = user1
@@ -529,7 +529,7 @@ def hourClickDataPiechart():
     return df_hour_bytype
 
 
-@profile
+# @profile
 def weekClickDataPiechart():
     global df_week
     df_week_bytype = df_week
@@ -545,7 +545,7 @@ def weekClickDataPiechart():
     return df_week_bytype
 
 
-@profile
+# @profile
 def monthClickDataPiechart():
     # Aggregate df_month_bytype separating type of device
     """ INSERT SQL CODE """
@@ -580,7 +580,7 @@ def monthClickDataPiechart():
     return df_month_bytype
 
 
-@profile
+# @profile
 def dayClickDataPiechart():
     # Aggregate df_day_bytype separating type of device
     """ INSERT SQL CODE """
@@ -705,7 +705,7 @@ app.layout = \
      dd.State('week', 'n_clicks_timestamp'),
      dd.State('month', 'n_clicks_timestamp')])
 # E) Callback Function when Day Hour Month or Week clicked as well as individual points
-@profile
+# @profile
 def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, btnkwhdollars,
                               clickData, interval,
                               hoverData, btn1, btn2, btn3, btn4):
