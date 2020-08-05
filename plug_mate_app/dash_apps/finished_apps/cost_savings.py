@@ -36,6 +36,7 @@ def cost_savings(file, frequency):
 
     df = pd.DataFrame(results, columns=['date','time','unix_time','meter_id','user_id',
                                         'energy','power','device_state','type'])
+    df['date'] = pd.to_datetime(df['date'])
 
     ### SQL CODE can be inserted here and stored as df
 
