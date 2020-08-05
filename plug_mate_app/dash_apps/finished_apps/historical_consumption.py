@@ -19,6 +19,7 @@ import dateutil.relativedelta
 import dash_daq as daq
 import gc
 gc.collect()
+import numpy as np
 
 pio.templates.default = "simple_white"
 
@@ -424,7 +425,7 @@ def weekFunction():
         # 2. Append new column called Week
 
         # Df_week for later
-        df_week['week'] = ''
+        df_week['week'] = np.nan
 
         # Initiate df for line
         df_week_line = df_week
