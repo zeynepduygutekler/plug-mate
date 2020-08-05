@@ -83,8 +83,7 @@ df_hour_bytype = pd.read_csv(os.path.join(
     '', 'plug_mate_app/dash_apps/finished_apps/df_hour_pie.csv'))  # df_hour_pie
 # Correct, change function sql
 df_day_bytype = dayClickDataPiechart()
-df_month_bytype = pd.read_csv(
-    'df_month_pie.csv')  # df_month_pie
+df_month_bytype = pd.read_csv(os.path.join('', 'plug_mate_app/dash_apps/finished_apps/df_month_pie.csv'))  # df_month_pie
 
 """ DONE SQL CODE """
 
