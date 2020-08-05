@@ -91,25 +91,25 @@ WSGI_APPLICATION = 'plug_mate.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'plug_mate',
-        'USER': 'lucasng',
-        'PASSWORD': 'password123',
-        'HOST': 'localhost',
-    }
-}
-
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'plug_mate_dev_db',
-#         'USER': 'raymondlow',
+#         'NAME': 'plug_mate',
+#         'USER': 'lucasng',
 #         'PASSWORD': 'password123',
 #         'HOST': 'localhost',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'plug_mate_dev_db',
+        'USER': 'raymondlow',
+        'PASSWORD': 'password123',
+        'HOST': 'localhost',
+    }
+}
 
 db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
