@@ -120,3 +120,38 @@ def user_login(request):
         #Nothing has been provided for username or password.
         return render(request, 'plug_mate_app/login.html', {})
 
+
+from .models import PresenceData, RemoteData, ScheduleData
+from .serializers import PresenceSerializer, RemoteSerializer, ScheduleSerializer
+from rest_framework import generics
+
+
+# Create your views here.
+class PresenceDataList(generics.ListCreateAPIView):
+    queryset = PresenceData.objects.all()
+    serializer_class = PresenceSerializer
+
+
+class PresenceDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = PresenceData.objects.all()
+    serializer_class = PresenceSerializer
+
+
+class RemoteDataList(generics.ListCreateAPIView):
+    queryset = RemoteData.objects.all()
+    serializer_class = RemoteSerializer
+
+
+class RemoteDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = RemoteData.objects.all()
+    serializer_class = RemoteSerializer
+
+
+class ScheduleDataList(generics.ListCreateAPIView):
+    queryset = ScheduleData.objects.all()
+    serializer_class = ScheduleSerializer
+
+
+class ScheduleDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ScheduleData.objects.all()
+    serializer_class = ScheduleSerializer

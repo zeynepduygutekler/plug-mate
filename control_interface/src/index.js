@@ -1,11 +1,8 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import RemoteToggleButton from './RemoteToggleButton';
 import RemoteBox from './RemoteBox';
 import './index.css'
-import PresenceBox from './PresenceBox';
-import PresenceDropdown from './PresenceDropdown';
-import PresenceIcon from './PresenceIcon';
 import Basic from "./Basic";
 import Basic0 from "./Basic0"
 import Basic1 from "./Basic1"
@@ -14,7 +11,6 @@ import Basic3 from "./Basic3"
 import Basic4 from "./Basic4"
 import Basic5 from "./Basic5"
 import "./styles.css"
-import './PresenceIcon.css'
 
 
 // Remote Control
@@ -729,513 +725,6 @@ sundaycalendar.onclick = function() {
   }
 }
 
-
-
-// Presence Based Control
-ReactDOM.render(
-  <React.StrictMode>
-    <>
-      <br/>
-      <div className="plugloadboxes" style={{margin:"auto", width:"80vw"}}>
-        <div id="DesktopBoxPresence" className="containerPresence">
-          <div className="iconPresence">
-            <PresenceIcon plugload="Desktop" />
-          </div>
-          <div style={{width:"200px", height:"10px", overflowY:"visible"}}>
-            <div style={{position:"relative", width:"200px", height:"1px", overflowY:"visible"}}>
-              <div className="dropdownPresence" id="Desktopdropdown">
-                <PresenceDropdown current="Desktop" />
-              </div>
-              <div id="DesktopPopupPresence" className="invisiblePresence">
-                <input type="text" style={{width:"35px", textAlign:"center", display:"inline-block"}} id="desktopTextOther" />
-                <p style={{fontSize:"14px", marginLeft:"10px", display:"inline-block", color:"black"}}> minutes </p>
-                <br/>
-                <button id="desktopCancelButton" onClick={desktopCancelButtonClicked}> Cancel </button>
-                <button style={{marginLeft: "5px", background: "#1cc88a"}}  id="desktopOkButton" onClick={desktopOKButtonClicked}> OK </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="MonitorBoxPresence" className="containerPresence">
-          <div className="iconPresence">
-            <PresenceIcon plugload="Monitor" />
-          </div>
-          <div style={{width:"200px", height:"10px", overflowY:"visible"}}>
-            <div style={{position:"relative", width:"200px", height:"1px", overflowY:"visible"}}>
-              <div className="dropdownPresence" id="Monitordropdown">
-                <PresenceDropdown current="Monitor" />
-              </div>
-              <div id="MonitorPopupPresence" className="invisiblePresence">
-                <input style={{width:"35px", textAlign:"center", display:"inline-block"}} type="text" id="monitorTextOther" />
-                <p style={{fontSize:"12px", marginLeft:"10px", display:"inline-block"}}> minutes </p>
-                <br/>
-                <button id="monitorCancelButton" onClick={monitorCancelButtonClicked}> Cancel </button>
-                <button style={{marginLeft: "5px", background: "#1cc88a"}}  id="monitorOkButton" onClick={monitorOKButtonClicked}> OK </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="LaptopBoxPresence" className="containerPresence">
-          <div className="iconPresence">
-            <PresenceIcon plugload="Laptop" />
-          </div>
-          <div style={{width:"200px", height:"10px", overflowY:"visible"}}>
-            <div style={{position:"relative", width:"200px", height:"10px", overflowY:"visible"}}>
-              <div className="dropdownPresence" id="Laptopdropdown">
-                <PresenceDropdown current="Laptop" />
-              </div>
-              <div id="LaptopPopupPresence" className="invisiblePresence">
-                <input style={{width:"35px", textAlign:"center", display:"inline-block"}} type="text" id="laptopTextOther" />
-                <p style={{fontSize:"12px", marginLeft:"10px", display:"inline-block"}}> minutes </p>
-                <br/>
-                <button id="laptopCancelButton" onClick={laptopCancelButtonClicked}> Cancel </button>
-                <button style={{marginLeft: "5px", background: "#1cc88a"}}  id="laptopOkButton" onClick={laptopOKButtonClicked}> OK </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="TasklampBoxPresence" className="containerPresence">
-          <div className="iconPresence">
-            <PresenceIcon plugload="TaskLamp" />
-          </div>
-          <div style={{width:"200px", height:"10px", overflowY:"visible"}}>
-            <div style={{position:"relative", width:"200px", height:"10px", overflowY:"visible"}}>
-              <div className="dropdownPresence" id="TaskLampdropdown">
-                <PresenceDropdown current="TaskLamp" />
-              </div>
-              <div id="TaskLampPopupPresence" className="invisiblePresence">
-                <input style={{width:"35px", textAlign:"center", display:"inline-block"}} type="text" id="tasklampTextOther" />
-                <p style={{fontSize:"12px", marginLeft:"10px", display:"inline-block"}}> minutes </p>
-                <br/>
-                <button id="tasklampCancelButton" onClick={tasklampCancelButtonClicked}> Cancel </button>
-                <button style={{marginLeft: "5px", background: "#1cc88a"}}  id="tasklampOkButton" onClick={tasklampOKButtonClicked}> OK </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="FanBoxPresence" className="containerPresence">
-          <div className="iconPresence">
-            <PresenceIcon plugload="Fan" />
-          </div>
-          <div style={{width:"200px", height:"10px", overflowY:"visible"}}>
-            <div style={{position:"relative", width:"200px", height:"10px", overflowY:"visible"}}>
-              <div className="dropdownPresence" id="Fandropdown">
-                <PresenceDropdown current="Fan" />
-              </div>
-              <div id="FanPopupPresence" className="invisiblePresence">
-                <input style={{width:"35px", textAlign:"center", display:"inline-block"}} type="text" id="fanTextOther" />
-                <p style={{fontSize:"12px", marginLeft:"10px", display:"inline-block"}}> minutes </p>
-                <br/>
-                <button id="fanCancelButton" onClick={fanCancelButtonClicked}> Cancel </button>
-                <button style={{marginLeft: "5px", background: "#1cc88a"}} id="fanOkButton" onClick={fanOKButtonClicked}> OK </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </>
-  </React.StrictMode>,
-  document.getElementById('presence-based-control')
-);
-
-// DESKTOP POPUP
-var onchangeDesktop = document.getElementById("Desktopdropdown").childNodes[1]
-var desktop_popup = document.getElementById("DesktopPopupPresence")
-var desktoppresence = document.getElementById("Desktop");
-var desktop_presence_plugload_icon = document.getElementById("DesktopBoxPresence").childNodes[0].childNodes[0].childNodes[0].childNodes[0]
-onchangeDesktop.onchange = function() {
-  // If "Other" is chosen for Desktop, show popup
-  if (onchangeDesktop.value === "other") {
-    desktoppresence.className = "greenPresence";
-    desktop_presence_plugload_icon.src = "/static/Images/Desktop ON.png";
-    desktop_popup.classList.remove("invisiblePresence");
-    desktop_popup.classList.add("visiblePresence");
-    var element = document.getElementById("informationBoxPresence");
-    if (element !== null) {
-      ReactDOM.unmountComponentAtNode(document.getElementById('infoBoxPresence'));
-    }
-  } else {
-    desktop_popup.classList.remove("visiblePresence");
-    desktop_popup.classList.add("invisiblePresence");
-    if (onchangeDesktop.value === "off") {
-      if (window.confirm("You are switching off presence-based control for Desktop.")) {
-        desktoppresence.className = "redPresence";
-        desktop_presence_plugload_icon.src = "/static/Images/Desktop OFF.png";
-      } else {
-        onchangeDesktop.value = "5 minutes";
-        desktoppresence.className = "greenPresence";
-        desktop_presence_plugload_icon.src = "/static/Images/Desktop ON.png";
-      }
-    } else {
-      desktoppresence.className = "greenPresence"
-      desktop_presence_plugload_icon.src = "/static/Images/Desktop ON.png"
-    }
-  }
-  // Remove the option for the value that user gives for "Other"
-  if (document.getElementById("Desktopselect").childNodes.length !== 2) {
-    document.getElementById("Desktopselect").removeChild(document.getElementById("desktopchosenother"));
-  }
-}
-
-// If cancel is clicked, close popup and set the timing back to 1 minute
-function desktopCancelButtonClicked() {
-  desktop_popup.classList.remove("visiblePresence");
-  desktop_popup.classList.add("invisiblePresence");
-  onchangeDesktop.value = "5 minutes"
-}
-
-// If ok is clicked, add that option into the dropdown so that it can be displayed
-// Hide the popup
-function desktopOKButtonClicked() {
-  var number_input = document.getElementById("desktopTextOther").value + " minutes";
-  desktop_popup.classList.remove("visiblePresence");
-  desktop_popup.classList.add("invisiblePresence");
-  var new_option = document.createElement("option");
-  new_option.text = number_input
-  new_option.id = "desktopchosenother"
-  document.getElementById("Desktopselect").add(new_option)
-  onchangeDesktop.value = number_input
-}
-
-// MONITOR POPUP
-var onchangeMonitor = document.getElementById("Monitordropdown").childNodes[1];
-var monitor_popup = document.getElementById("MonitorPopupPresence")
-var monitorpresence = document.getElementById("Monitor");
-var monitor_presence_plugload_icon = document.getElementById("MonitorBoxPresence").childNodes[0].childNodes[0].childNodes[0].childNodes[0]
-onchangeMonitor.onchange = function() {
-  // If "Other" is chosen for Desktop, show popup
-  if (onchangeMonitor.value === "other") {
-    monitorpresence.className = "greenPresence";
-    monitor_presence_plugload_icon.src = "/static/Images/Monitor ON.png";
-    monitor_popup.classList.remove("invisiblePresence");
-    monitor_popup.classList.add("visiblePresence");
-    var element = document.getElementById("informationBoxPresence");
-    if (element !== null) {
-      ReactDOM.unmountComponentAtNode(document.getElementById('infoBoxPresence'));
-    }
-  } else {
-    monitor_popup.classList.remove("visiblePresence");
-    monitor_popup.classList.add("invisiblePresence");
-    if (onchangeMonitor.value === "off") {
-      if (window.confirm("You are switching off presence-based control for Monitor.")) {
-        monitorpresence.className = "redPresence";
-        monitor_presence_plugload_icon.src = "/static/Images/Monitor OFF.png";
-      } else {
-        onchangeMonitor.value = "5 minutes";
-        monitorpresence.className = "greenPresence";
-        monitor_presence_plugload_icon.src = "/static/Images/Monitor ON.png";
-      }
-    } else {
-      monitorpresence.className = "greenPresence"
-      monitor_presence_plugload_icon.src = "/static/Images/Monitor ON.png"
-    }
-  }
-  // Remove the option for the value that user gives for "Other"
-  if (document.getElementById("Monitorselect").childNodes.length !== 2) {
-    document.getElementById("Monitorselect").removeChild(document.getElementById("monitorchosenother"));
-  }
-}
-
-// If cancel is clicked, close popup and set the timing back to 1 minute
-function monitorCancelButtonClicked() {
-  monitor_popup.classList.remove("visiblePresence");
-  monitor_popup.classList.add("invisiblePresence");
-  onchangeMonitor.value = "5 minutes"
-}
-
-// If ok is clicked, add that option into the dropdown so that it can be displayed
-// Hide the popup
-function monitorOKButtonClicked() {
-  var number_input = document.getElementById("monitorTextOther").value + " minutes";
-  monitor_popup.classList.remove("visiblePresence");
-  monitor_popup.classList.add("invisiblePresence");
-  var new_option = document.createElement("option");
-  new_option.text = number_input
-  new_option.id = "monitorchosenother"
-  document.getElementById("Monitorselect").add(new_option)
-  onchangeMonitor.value = number_input
-}
-
-
-// LAPTOP POPUP
-var onchangeLaptop = document.getElementById("Laptopdropdown").childNodes[1];
-var laptop_popup = document.getElementById("LaptopPopupPresence")
-var laptoppresence = document.getElementById("Laptop");
-var laptop_presence_plugload_icon = document.getElementById("LaptopBoxPresence").childNodes[0].childNodes[0].childNodes[0].childNodes[0]
-
-onchangeLaptop.onchange = function() {
-  // If "Other" is chosen for Laptop, show popup
-  if (onchangeLaptop.value === "other") {
-    laptoppresence.className = "greenPresence";
-    laptop_presence_plugload_icon.src = "/static/Images/Laptop ON.png";
-    laptop_popup.classList.remove("invisiblePresence");
-    laptop_popup.classList.add("visiblePresence");
-    var element = document.getElementById("informationBoxPresence");
-    if (element !== null) {
-      ReactDOM.unmountComponentAtNode(document.getElementById('infoBoxPresence'));
-    }
-  } else {
-    laptop_popup.classList.remove("visiblePresence");
-    laptop_popup.classList.add("invisiblePresence");
-    if (onchangeLaptop.value === "off") {
-      if (window.confirm("You are switching off presence-based control for Laptop.")) {
-        laptoppresence.className = "redPresence";
-        laptop_presence_plugload_icon.src = "/static/Images/Laptop OFF.png";
-      } else {
-        onchangeLaptop.value = "5 minutes";
-        laptoppresence.className = "greenPresence";
-        laptop_presence_plugload_icon.src = "/static/Images/Laptop ON.png";
-      }
-    } else {
-      laptoppresence.className = "greenPresence"
-      laptop_presence_plugload_icon.src = "/static/Images/Laptop ON.png"
-    }
-  }
-  // Remove the option for the value that user gives for "Other"
-  if (document.getElementById("Laptopselect").childNodes.length !== 2) {
-    document.getElementById("Laptopselect").removeChild(document.getElementById("laptopchosenother"));
-  }
-}
-
-// If cancel is clicked, close popup and set the timing back to 1 minute
-function laptopCancelButtonClicked() {
-  laptop_popup.classList.remove("visiblePresence");
-  laptop_popup.classList.add("invisiblePresence");
-  onchangeLaptop.value = "5 minutes"
-}
-
-// If ok is clicked, add that option into the dropdown so that it can be displayed
-// Hide the popup
-function laptopOKButtonClicked() {
-  var number_input = document.getElementById("laptopTextOther").value + " minutes";
-  laptop_popup.classList.remove("visiblePresence");
-  laptop_popup.classList.add("invisiblePresence");
-  var new_option = document.createElement("option");
-  new_option.text = number_input
-  new_option.id = "laptopchosenother"
-  document.getElementById("Laptopselect").add(new_option)
-  onchangeLaptop.value = number_input
-}
-
-// TASK LAMP POPUP
-
-var onchangeTasklamp = document.getElementById("TaskLampdropdown").childNodes[1];
-var tasklamp_popup = document.getElementById("TaskLampPopupPresence")
-var tasklamppresence = document.getElementById("TaskLamp");
-var tasklamp_presence_plugload_icon = document.getElementById("TasklampBoxPresence").childNodes[0].childNodes[0].childNodes[0].childNodes[0]
-
-onchangeTasklamp.onchange = function() {
-  // If "Other" is chosen for Task Lamp, show popup
-  if (onchangeTasklamp.value === "other") {
-    tasklamppresence.className = "greenPresence";
-    tasklamp_presence_plugload_icon.src = "/static/Images/Task Lamp ON.png";
-    tasklamp_popup.classList.remove("invisiblePresence");
-    tasklamp_popup.classList.add("visiblePresence");
-    var element = document.getElementById("informationBoxPresence");
-    if (element !== null) {
-      ReactDOM.unmountComponentAtNode(document.getElementById('infoBoxPresence'));
-    }
-  } else {
-    tasklamp_popup.classList.remove("visiblePresence");
-    tasklamp_popup.classList.add("invisiblePresence");
-    if (onchangeTasklamp.value === "off") {
-      if (window.confirm("You are switching off presence-based control for Task Lamp.")) {
-        tasklamppresence.className = "redPresence";
-        tasklamp_presence_plugload_icon.src = "/static/Images/Task Lamp OFF.png";
-      } else {
-        onchangeTasklamp.value = "5 minutes";
-        tasklamppresence.className = "greenPresence";
-        tasklamp_presence_plugload_icon.src = "/static/Images/Task Lamp ON.png";
-      }
-    } else {
-      tasklamppresence.className = "greenPresence"
-      tasklamp_presence_plugload_icon.src = "/static/Images/Task Lamp ON.png"
-    }
-  }
-  // Remove the option for the value that user gives for "Other"
-  if (document.getElementById("TaskLampselect").childNodes.length !== 2) {
-    document.getElementById("TaskLampselect").removeChild(document.getElementById("tasklampchosenother"));
-  }
-}
-
-// If cancel is clicked, close popup and set the timing back to 1 minute
-function tasklampCancelButtonClicked() {
-  tasklamp_popup.classList.remove("visiblePresence");
-  tasklamp_popup.classList.add("invisiblePresence");
-  onchangeTasklamp.value = "5 minutes"
-}
-
-// If ok is clicked, add that option into the dropdown so that it can be displayed
-// Hide the popup
-function tasklampOKButtonClicked() {
-  var number_input = document.getElementById("tasklampTextOther").value + " minutes";
-  tasklamp_popup.classList.remove("visiblePresence");
-  tasklamp_popup.classList.add("invisiblePresence");
-  var new_option = document.createElement("option");
-  new_option.text = number_input
-  new_option.id = "tasklampchosenother"
-  document.getElementById("TaskLampselect").add(new_option)
-  onchangeTasklamp.value = number_input
-}
-
-// FAN POPUP
-
-var onchangeFan = document.getElementById("Fandropdown").childNodes[1];
-var fan_popup = document.getElementById("FanPopupPresence")
-var fanpresence = document.getElementById("Fan");
-var fan_presence_plugload_icon = document.getElementById("FanBoxPresence").childNodes[0].childNodes[0].childNodes[0].childNodes[0]
-
-onchangeFan.onchange = function() {
-  // If "Other" is chosen for Fan, show popup
-  if (onchangeFan.value === "other") {
-    fanpresence.className = "greenPresence";
-    fan_presence_plugload_icon.src = "/static/Images/Fan ON.png";
-    fan_popup.classList.remove("invisiblePresence");
-    fan_popup.classList.add("visiblePresence");
-    var element = document.getElementById("informationBoxPresence");
-    if (element !== null) {
-      ReactDOM.unmountComponentAtNode(document.getElementById('infoBoxPresence'));
-    }
-  } else {
-    fan_popup.classList.remove("visiblePresence");
-    fan_popup.classList.add("invisiblePresence");
-    if (onchangeFan.value === "off") {
-      if (window.confirm("You are switching off presence-based control for Fan.")) {
-        fanpresence.className = "redPresence";
-        fan_presence_plugload_icon.src = "/static/Images/Fan OFF.png";
-      } else {
-        onchangeFan.value = "5 minutes";
-        fanpresence.className = "greenPresence";
-        fan_presence_plugload_icon.src = "/static/Images/Fan ON.png";
-      }
-    } else {
-      fanpresence.className = "greenPresence"
-      fan_presence_plugload_icon.src = "/static/Images/Fan ON.png"
-    }
-  }
-  // Remove the option for the value that user gives for "Other"
-  if (document.getElementById("Fanselect").childNodes.length !== 2) {
-    document.getElementById("Fanselect").removeChild(document.getElementById("fanchosenother"));
-  }
-}
-
-// If cancel is clicked, close popup and set the timing back to 1 minute
-function fanCancelButtonClicked() {
-  fan_popup.classList.remove("visiblePresence");
-  fan_popup.classList.add("invisiblePresence");
-  onchangeFan.value = "5 minutes"
-}
-
-// If ok is clicked, add that option into the dropdown so that it can be displayed
-// Hide the popup
-function fanOKButtonClicked() {
-  var number_input = document.getElementById("fanTextOther").value + " minutes";
-  fan_popup.classList.remove("visiblePresence");
-  fan_popup.classList.add("invisiblePresence");
-  var new_option = document.createElement("option");
-  new_option.text = number_input
-  new_option.id = "fanchosenother"
-  document.getElementById("Fanselect").add(new_option)
-  onchangeFan.value = number_input
-}
-
-// Turning presence control on for Desktop
-var desktopDropdown = document.getElementById("Desktopdropdown");
-desktoppresence.onclick = function() {
-  if (desktoppresence.className === "redPresence") {
-    desktoppresence.className = "greenPresence";
-    desktop_presence_plugload_icon.src = "/static/Images/Desktop ON.png"
-    desktopDropdown.childNodes[1].value = "5 minutes"
-  } else {
-    if (window.confirm("You are switching off presence-based control for Desktop.")) {
-        desktoppresence.className = "redPresence";
-        desktop_presence_plugload_icon.src = "/static/Images/Desktop OFF.png"
-        desktopDropdown.childNodes[1].value = "off"
-    } else {
-        desktoppresence.className = "greenPresence";
-        desktop_presence_plugload_icon.src = "/static/Images/Desktop ON.png";
-    }
-  }
-}
-
-// Turning presence control on for Monitor
-var monitorDropdown = document.getElementById("Monitordropdown");
-monitorpresence.onclick = function() {
-  if (monitorpresence.className === "redPresence") {
-    monitorpresence.className = "greenPresence";
-    monitorDropdown.childNodes[1].value = "5 minutes"
-    monitor_presence_plugload_icon.src = "/static/Images/Monitor ON.png"
-  } else {
-    if (window.confirm("You are switching off presence-based control for Monitor.")) {
-        monitorpresence.className = "redPresence";
-        monitor_presence_plugload_icon.src = "/static/Images/Monitor OFF.png"
-        monitorDropdown.childNodes[1].value = "off"
-    } else {
-        monitorpresence.className = "greenPresence";
-        monitor_presence_plugload_icon.src = "/static/Images/Monitor ON.png";
-    }
-  }
-}
-
-// Turning presence control on for Laptop
-var laptopDropdown = document.getElementById("Laptopdropdown");
-laptoppresence.onclick = function() {
-  if (laptoppresence.className === "redPresence") {
-    laptoppresence.className = "greenPresence";
-    laptopDropdown.childNodes[1].value = "5 minutes"
-    laptop_presence_plugload_icon.src = "/static/Images/Laptop ON.png"
-  } else {
-    if (window.confirm("You are switching off presence-based control for Laptop.")) {
-        laptoppresence.className = "redPresence";
-        laptop_presence_plugload_icon.src = "/static/Images/Laptop OFF.png"
-        laptopDropdown.childNodes[1].value = "off"
-    } else {
-        laptoppresence.className = "greenPresence";
-        laptop_presence_plugload_icon.src = "/static/Images/Laptop ON.png";
-    }
-  }
-}
-
-// Turning presence control on for Task Lamp
-var tasklampDropdown = document.getElementById("TaskLampdropdown");
-tasklamppresence.onclick = function() {
-  if (tasklamppresence.className === "redPresence") {
-    tasklamppresence.className = "greenPresence";
-    tasklamp_presence_plugload_icon.src = "/static/Images/Task Lamp ON.png"
-    tasklampDropdown.childNodes[1].value = "5 minutes"
-  } else {
-    if (window.confirm("You are switching off presence-based control for Task Lamp.")) {
-        tasklamppresence.className = "redPresence";
-        tasklamp_presence_plugload_icon.src = "/static/Images/Task Lamp OFF.png"
-        tasklampDropdown.childNodes[1].value = "off"
-    } else {
-        tasklamppresence.className = "greenPresence";
-        tasklamp_presence_plugload_icon.src = "/static/Images/Task Lamp ON.png";
-    }
-  }
-}
-
-// Turning presence control on or off for Fan
-var fanDropdown = document.getElementById("Fandropdown");
-fanpresence.onclick = function() {
-  if (fanpresence.className === "redPresence") {
-    fanpresence.className = "greenPresence";
-    fan_presence_plugload_icon.src = "/static/Images/Fan ON.png"
-    fanDropdown.childNodes[1].value = "5 minutes"
-  } else {
-    if (window.confirm("You are switching off presence-based control for Fan.")) {
-        fanpresence.className = "redPresence";
-        fan_presence_plugload_icon.src = "/static/Images/Fan OFF.png"
-        fanDropdown.childNodes[1].value = "off"
-    } else {
-        fanpresence.className = "greenPresence";
-        fan_presence_plugload_icon.src = "/static/Images/Fan ON.png";
-    }
-  }
-}
-
-
 var remotecontrolelement = document.getElementById("remotecontrolrect");
 var infoiconremote = document.getElementById("infoIconRemote");
 var scheduleelement = document.getElementById("schedulebasedrect");
@@ -1374,3 +863,249 @@ if (event.ctrlKey==true || (event.which == '61' || event.which == '107' || event
 } else {
    // not Google Chrome
 }
+
+
+// Presence Based Control
+
+class PresenceControlDashboard extends Component {
+    state = {
+        books: [],
+        current_user_id: 1
+    }
+
+    componentDidMount() {
+        // Fetch data from database
+        fetch('http://localhost:8000/control_interface/api/presence/')
+        .then(response => response.json())
+        .then(data => {
+            var datas = []
+            for (var input of data) {
+                if (input.user_id === this.state.current_user_id) {
+                    datas.push(input)
+                }
+            }
+            this.setState({books: datas})
+        })
+    }
+
+    updateBook = (newBook) => {
+        fetch('http://localhost:8000/control_interface/api/presence/' + newBook.id.toString() + '/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newBook)
+        }).then(response => response.json())
+        .then(newBook => {
+            const newBooks = this.state.books.map(book => {
+                if (book.id === newBook.id) {
+                    return Object.assign({}, newBook)
+                } else {
+                    return book;
+                }
+            });
+            this.setState({books: newBooks});
+        })
+    }
+
+    render() {
+        return (
+            <PresenceControlList
+                books={this.state.books}
+                onUpdateClick={this.updateBook}
+            />
+        )
+    }
+}
+
+class PresenceControlList extends Component {
+    render() {
+        const books = this.props.books.map(book => (
+            <PresenceControlEditableItem
+                key={book.id}
+                id={book.id}
+                user_id={book.user_id}
+                device_type={book.device_type}
+                presence_setting={book.presence_setting}
+                onUpdateClick={this.props.onUpdateClick}
+            />
+        ));
+        return (
+            <div class="plugloadboxes">
+                {books}
+            </div>
+        )
+    }
+}
+
+class PresenceControlEditableItem extends Component {
+    handleUpdate = (book) => {
+        book.id = this.props.id;
+        this.props.onUpdateClick(book);
+    }
+
+    render() {
+        const component = () => {
+            return (
+                <>
+                    <PresenceControlItem
+                        id={this.props.id}
+                        user_id={this.props.user_id}
+                        device_type={this.props.device_type}
+                        presence_setting={this.props.presence_setting}
+                        onFormSubmit={this.handleUpdate}
+                    />
+                </>
+            )
+        }
+        return (
+            component()
+        )
+    }
+}
+
+class PresenceControlItem extends Component {
+    state = {
+        user_id: this.props.user_id,
+        device_type: this.props.device_type,
+        presence_setting: this.props.presence_setting
+    }
+
+    handleFormSubmit = () => {
+        this.props.onFormSubmit({...this.state});
+    }
+
+    handleSettingUpdate = (evt) => {
+        if (evt.target.value !== "other" && evt.target.value !== "1000000") {
+            // Hide popup
+            document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresence").className = "invisiblePresence";
+            // Update database
+            this.setState({presence_setting: evt.target.value}, function() {this.handleFormSubmit()})
+        }
+        if (evt.target.value === "other") {
+            // Show popup
+            document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresence").className = "visiblePresence";
+        }
+        if (evt.target.value === "1000000") {
+            // Hide popup
+            document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresence").className = "invisiblePresence";
+            if (window.confirm(`You are switching off presence-based control for ${this.state.device_type}.`)) {
+                // Update database
+                this.setState({presence_setting: evt.target.value}, function() {this.handleFormSubmit()})
+            } else {
+                // Set value to 5 minutes
+                document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "5";
+                this.setState({presence_setting: "5"}, function() {this.handleFormSubmit()})
+            }
+        }
+    }
+
+    handleOtherUpdate = (evt) => {
+        this.setState({presence_setting: evt.target.value});
+    }
+
+    handlePresenceIconClick = () => {
+        if (document.getElementById(this.state.device_type.replace(/\s/g,'')).className === "greenPresence") {
+            if (window.confirm(`You are switching off presence-based control for ${this.state.device_type}.`)) {
+                // Change outer ring to red
+                document.getElementById(this.state.device_type.replace(/\s/g,'')).className = "redPresence"
+                // Change image to OFF
+                document.getElementById(this.state.device_type.replace(/\s/g,'')).childNodes[0].childNodes[0].src = "/static/Images/" + this.state.device_type.toString() + " OFF.png";
+                // Set value to OFF
+                document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "1000000";
+                // Update database
+                this.setState({presence_setting: "1000000"}, function() {this.handleFormSubmit()})
+            }
+        } else {
+            // Change outer ring to green
+            document.getElementById(this.state.device_type.replace(/\s/g,'')).className = "greenPresence"
+            // Change image to ON
+            document.getElementById(this.state.device_type.replace(/\s/g,'')).childNodes[0].childNodes[0].src = "/static/Images/" + this.state.device_type.toString() + " ON.png";
+            // Set value to 5 minutes
+            document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "5";
+            // Update database
+            this.setState({presence_setting: "5"}, function() {this.handleFormSubmit()})
+        }
+    }
+
+    cancelButtonClicked = () => {
+        // Hide popup
+        document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresence").className = "invisiblePresence";
+        // Set value to 5 minutes
+        document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "5";
+    }
+
+    okButtonClicked = (evt) => {
+        // Display value on dropdown
+        document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = document.getElementById(this.state.device_type.replace(/\s/g,'') + "TextOther").value;
+        // Clear text box on popup
+        document.getElementById(this.state.device_type.replace(/\s/g,'') + "TextOther").value = "";
+        // Hide popup
+        document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresence").className = "invisiblePresence";
+        // Update database
+        this.handleFormSubmit();
+    }
+
+    render() {
+        const possible_option = ["1000000", "5", "10", "20", "30", "60", "other"]
+        if (possible_option.includes(this.state.presence_setting.toString())) {
+            var disabled = true;
+            var display_value = "";
+            var display_text = "";
+        } else {
+            disabled = false;
+            display_value = this.state.presence_setting;
+            display_text = this.state.presence_setting + " minutes";
+        }
+
+        if (this.state.presence_setting.toString() === "1000000") {
+            var presence_control_outer_ring = "redPresence";
+            var presence_control_image = "/static/Images/" + this.state.device_type.toString() + " OFF.png";
+        } else {
+            presence_control_outer_ring = "greenPresence";
+            presence_control_image = "/static/Images/" + this.state.device_type.toString() + " ON.png";
+        }
+
+        return (
+            <div id={this.state.device_type.replace(/\s/g,'') + "BoxPresence"} className="containerPresence">
+                <div className="iconPresence">
+                    <div className={presence_control_outer_ring} id={this.state.device_type.replace(/\s/g,'')} onClick={this.handlePresenceIconClick}>
+                        <div className="whitePresence">
+                            <img class="PresencePlugLoadIcon" src={presence_control_image} alt="Icon" />
+                        </div>
+                    </div>
+                </div>
+                <div style={{width:"200px", height:"10px", overflowY:"visible"}}>
+                    <div style={{position:"relative", width:"200px", height:"1px", overflowY:"visible"}}>
+                        <div className="dropdownPresence" id={this.state.device_type.replace(/\s/g,'') + "Dropdown"}>
+                            <div class="wordPresence">
+                                <p> {this.state.device_type} </p>
+                            </div>
+                            <select defaultValue={this.state.presence_setting} onChange={this.handleSettingUpdate} id={this.state.device_type.replace(/\s/g,'') + "Select"}>
+                                <option value="1000000"> OFF </option>
+                                <optgroup label="Off after I leave for:">
+                                    <option value="5"> 5 minutes </option>
+                                    <option value="10"> 10 minutes </option>
+                                    <option value="20"> 20 minutes </option>
+                                    <option value="30"> 30 minutes </option>
+                                    <option value="60"> 1 hour </option>
+                                    <option value="other"> Other </option>
+                                </optgroup>
+                                <option value={display_value} disabled={disabled}> {display_text} </option>
+                            </select>
+                        </div>
+                        <div id={this.state.device_type.replace(/\s/g,'') + "PopupPresence"} className="invisiblePresence">
+                            <input type="text" id={this.state.device_type.replace(/\s/g,'') + "TextOther"} onChange={this.handleOtherUpdate} />
+                            <p class="minutes"> minutes </p>
+                            <br />
+                            <button id={this.state.device_type.replace(/\s/g,'') + "CancelButton"} onClick={this.cancelButtonClicked}> Cancel </button>
+                            <button id={this.state.device_type.replace(/\s/g,'') + "OkButton"} onClick={this.okButtonClicked}> OK </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<PresenceControlDashboard />, document.getElementById('presence-based-control'))

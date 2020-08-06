@@ -33,31 +33,113 @@
   z-index: 1000;
 }
 
+#DesktopBoxPresence, #MonitorBoxPresence, #LaptopBoxPresence, #TaskLampBoxPresence, #FanBoxPresence {
+  display:inline-block;
+}
 
+#DesktopOkButton, #MonitorOkButton, #LaptopOkButton, #TaskLampOkButton, #FanOkButton {
+    margin-left: 5px;
+    background: #1CC88A;
+}
 
-/** position the popups **/
 #DesktopPopupPresence, #MonitorPopupPresence, #LaptopPopupPresence, #TaskLampPopupPresence, #FanPopupPresence{
   position: absolute;
   top: 80px;
   left: 80px;
 }
 
-/** class for popup when hidden **/
+#DesktopSelect, #MonitorSelect, #LaptopSelect, #TaskLampSelect, #FanSelect {
+    margin-left: 20px;
+}
+
+#DesktopTextOther, #MonitorTextOther, #LaptopTextOther, #TaskLampTextOther, #FanTextOther {
+    width: 35px;
+    text-align: center;
+    display: inline-block;
+}
+
+.containerPresence {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    width: 280px;
+    margin-bottom: 100px
+}
+
+.dropdownPresence {
+  width: 220px;
+  height: 1px;
+  overflow-y: visible;
+}
+
+.greenPresence {
+  background: #47ff38;
+  border-radius: 50%;
+  width: 75px;
+  height: 75px;
+  border: 1px solid #707070;
+  display: inline-block;
+}
+
+.iconPresence {
+  float: left;
+}
+
 .invisiblePresence {
   display: none;
 }
 
-/** class for popup when shown **/
+.minutes {
+    font-size: 14px;
+    margin-left: 10px;
+    display: inline-block;
+    color: black;
+}
+
+.plugloadboxes {
+    margin: auto;
+    width: fit-content;
+}
+
+.PresencePlugLoadIcon {
+  height: 40px;
+  margin-left: 12.5px;
+  margin-top: 12.5px;
+}
+
+.redPresence {
+    background: red;
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    border: 1px solid #707070;
+    display: inline-block;
+}
+
 .visiblePresence {
   border: 1px solid #707070;
   box-shadow: 3px 3px 3px 3px #ccc;
   padding: 15px 5px;
   text-align: center;
   width: 125px;
-  height: 100px;
+  height: fit-content;
   margin-left: 10px;
 }
 
-#DesktopBoxPresence, #MonitorBoxPresence, #LaptopBoxPresence, #TasklampBoxPresence, #FanBoxPresence {
-  display:inline-block;
+.whitePresence {
+    background: white;
+    border-radius: 50%;
+    width: 65px;
+    height: 65px;
+    border: 1px solid #707070;
+    margin-left: 4px;
+    margin-top: 4px;
+    display: inline-block;
+}
+
+.wordPresence {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-left: 20px;
 }

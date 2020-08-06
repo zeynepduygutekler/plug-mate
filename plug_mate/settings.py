@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'inspectdb_refactor',
     'rest_framework',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -64,7 +65,10 @@ MIDDLEWARE = [
     'django_plotly_dash.middleware.BaseMiddleware',
     'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'plug_mate.urls'
 
@@ -110,6 +114,15 @@ DATABASES = {
         'HOST': 'localhost',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'plug_mate',
+#         'USER': 'Work',
+#         'HOST': 'localhost'
+#     }
+# }
 
 db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
