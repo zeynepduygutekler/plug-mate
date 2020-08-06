@@ -28,21 +28,29 @@ def currency_format(value):
 @lru_cache(maxsize=20)
 def cost_savings():
     """Takes in the raw data file and converts it into the last 6 week/month worth of aggregated data"""
-    # with connection.cursor() as cursor:
-    #     cursor.execute("SELECT * FROM power_energy_consumption "
-    #                    "WHERE user_id=%s AND "
-    #                    "date >= date_trunc('month', now()) - interval '6 month' AND "
-    #                    "date < date_trunc('month', now())", [1, ])
-    #     results = cursor.fetchall()
-    #
-    # df = pd.DataFrame(results, columns=['date', 'time', 'unix_time', 'meter_id', 'user_id',
-    #                                     'energy', 'power', 'device_state', 'type'])
-    #
-    ## TODO INSERT SQL CODE HERE
-    week_view = pd.read_csv(os.path.join('', 'plug_mate_app/dash_apps/finished_apps/cost_savings_week.csv'),
-                            index_col='week').iloc[:, :8]
-    month_view = pd.read_csv(os.path.join('', 'plug_mate_app/dash_apps/finished_apps/cost_savings_month.csv'),
-                             index_col='month').iloc[:, :8]
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM costsavings_weeks WHERE user_id=%s", [1])
+        results = cursor.fetchall()
+    week_view = pd.DataFrame(results, columns=['index', 'user_id', 'desktop', 'fan', 'laptop',
+                                               'monitor', 'others', 'tasklamp', 'total', 'week'])
+    week_view.drop(columns=['index', 'user_id'], inplace=True)
+    week_view = week_view.set_index('week')
+
+    # month_view
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM costsavings_months WHERE user_id=%s", [1])
+        results = cursor.fetchall()
+    month_view = pd.DataFrame(results, columns=['index', 'user_id', 'desktop', 'fan', 'laptop',
+                                                'monitor', 'others', 'tasklamp', 'total', 'month'])
+    month_view.drop(columns=['index', 'user_id'], inplace=True)
+    month_view = month_view.set_index('month')
+
+    # week_view = pd.read_csv(os.path.join('', 'plug_mate_app/dash_apps/finished_apps/cost_savings_week.csv'),
+    #                         index_col='week').iloc[:, :8]
+    # month_view = pd.read_csv(os.path.join('', 'plug_mate_app/dash_apps/finished_apps/cost_savings_month.csv'),
+    #                          index_col='month').iloc[:, :8]
+
     return week_view, month_view
 
     # df['date'] = pd.to_datetime(df['date'])

@@ -17,6 +17,7 @@ from memory_profiler import profile
 from glob import glob
 import os
 import numpy as np
+import copy
 
 
 pio.templates.default = "simple_white"
@@ -26,10 +27,8 @@ pio.templates.default = "simple_white"
 
 end_date = '24/7/2020'
 
-
 # @profile
 def initialise_variables():
-
     # Initialise some variables
     global start, end
     global singapore_tariff_rate
@@ -42,12 +41,12 @@ def initialise_variables():
 initialise_variables()
 
 
-def dayClickDataPiechart():
+def dayClickDataPiechart(df_day_bytype):
     # Aggregate df_day_bytype separating type of device
-    '''Insert SQL Code'''
-    df_day_bytype = pd.read_csv(os.path.join(
-        '', 'plug_mate_app/dash_apps/finished_apps/df_day_pie.csv'))  # df_day_pie
-    '''End of SQL Code'''
+    # '''Insert SQL Code'''
+    # df_day_bytype = pd.read_csv(os.path.join(
+    #     '', 'plug_mate_app/dash_apps/finished_apps/df_day_pie.csv'))  # df_day_pie
+    # '''End of SQL Code'''
 
     # Optional Convert to %d/%m/%Y
     df_day_bytype['date'] = pd.to_datetime(df_day_bytype['date'])
@@ -59,29 +58,110 @@ def dayClickDataPiechart():
 # Manipulate and Initialise variables for later
 
 """ INSERT SQL CODE """
-df_week_pie = pd.read_csv(os.path.join(
-    '', 'plug_mate_app/dash_apps/finished_apps/df_week_pie.csv'))  # df_week_pie
-df_week_bytype = pd.read_csv(os.path.join(
-    '', 'plug_mate_app/dash_apps/finished_apps/df_week_pie.csv'))  # df_week_pie
-df_week_line = pd.read_csv(os.path.join(
-    '', 'plug_mate_app/dash_apps/finished_apps/df_week_line.csv'))  # df_week
-df_month = pd.read_csv(os.path.join(
-    '', 'plug_mate_app/dash_apps/finished_apps/df_month_line.csv'))
-df_month_pie = pd.read_csv(os.path.join(
-    '', 'plug_mate_app/dash_apps/finished_apps/df_month_pie.csv'))
-df_day = pd.read_csv(os.path.join(
-    '', 'plug_mate_app/dash_apps/finished_apps/df_day_line.csv'))
-df_day_pie = pd.read_csv(os.path.join(
-    '', 'plug_mate_app/dash_apps/finished_apps/df_day_pie.csv'))
-df_hour = pd.read_csv(os.path.join(
-    '', 'plug_mate_app/dash_apps/finished_apps/df_hour_line.csv'))  # df_hour
-df_hour_pie = pd.read_csv(os.path.join(
-    '', 'plug_mate_app/dash_apps/finished_apps/df_hour_pie.csv'))  # df_hour_pie
-df_hour_bytype = pd.read_csv(os.path.join(
-    '', 'plug_mate_app/dash_apps/finished_apps/df_hour_pie.csv'))  # df_hour_pie
+# dy_week_pie
+with connection.cursor() as cursor:
+    cursor.execute("SELECT * FROM historical_weeks_pie WHERE user_id=%s", [1])
+    results = cursor.fetchall()
+print(results)
+df_week_pie = pd.DataFrame(results, columns=['index','user_id','device_type','power',
+                                             'month','time','year','power_kWh','cost'])
+print(df_week_pie.head())
+df_week_pie.drop(columns=['index','user_id'], inplace=True)
+
+# df_week_bytype
+df_week_bytype = copy.deepcopy(df_week_pie)
+
+# df_week_line
+with connection.cursor() as cursor:
+    cursor.execute("SELECT * FROM historical_weeks_line WHERE user_id=%s", [1])
+    results = cursor.fetchall()
+df_week_line = pd.DataFrame(results, columns=['index','user_id','week','power','month',
+                                              'time','year','power_kWh','cost','date'])
+df_week_line.drop(columns=['index','user_id'], inplace=True)
+
+# df_month
+with connection.cursor() as cursor:
+    cursor.execute("SELECT * FROM historical_months_line WHERE user_id=%s", [1])
+    results = cursor.fetchall()
+df_month = pd.DataFrame(results, columns=['index','user_id','month','year','power','time',
+                                          'power_kWh','unix_time','cost'])
+df_month.drop(columns=['index','user_id'], inplace=True)
+
+# df_month_pie
+with connection.cursor() as cursor:
+    cursor.execute("SELECT * FROM historical_months_pie WHERE user_id=%s", [1])
+    results = cursor.fetchall()
+df_month_pie = pd.DataFrame(results, columns=['index','user_id','device_type','power','time',
+                                              'month','year','power_kWh','cost'])
+df_month_pie.drop(columns=['index','user_id'], inplace=True)
+
+# df_day
+with connection.cursor() as cursor:
+    cursor.execute("SELECT * FROM historical_days_line WHERE user_id=%s", [1])
+    results = cursor.fetchall()
+df_day = pd.DataFrame(results, columns=['index','user_id','date','power','month','time',
+                                        'year','power_kWh','cost','date_withoutYear'])
+df_day.drop(columns=['index','user_id'], inplace=True)
+
+# df_day_pie
+with connection.cursor() as cursor:
+    cursor.execute("SELECT * FROM historical_days_pie WHERE user_id=%s", [1])
+    results = cursor.fetchall()
+df_day_pie = pd.DataFrame(results, columns=['index','user_id','device_type','date','power','month',
+                                            'time','year','power_kWh','cost'])
+df_day_pie.drop(columns=['index','user_id'], inplace=True)
+
+# df_hour
+with connection.cursor() as cursor:
+    cursor.execute("SELECT * FROM historical_today_line WHERE user_id=%s", [1])
+    results = cursor.fetchall()
+df_hour = pd.DataFrame(results, columns=['index','user_id','date','hours','power','month',
+                                         'time','year','power_kWh','cost','dates_AMPM'])
+df_hour.drop(columns=['index','user_id'], inplace=True)
+
+# df_hour_pie
+with connection.cursor() as cursor:
+    cursor.execute("SELECT * FROM historical_today_pie WHERE user_id=%s", [1])
+    results = cursor.fetchall()
+df_hour_pie = pd.DataFrame(results, columns=['index','user_id','date','hours','device_type',
+                                             'power','month','time','year','power_kWh','cost','date_AMPM'])
+df_hour_pie.drop(columns=['index','user_id'], inplace=True)
+
+# df_hour_bytype
+df_hour_bytype = copy.deepcopy(df_hour_pie)
+
+# df_day_bytype
+df_day_bytype  = copy.deepcopy(df_day_pie)
+df_day_bytype = dayClickDataPiechart(df_day_bytype)
+
+# df_month_bytype
+df_month_bytype = copy.deepcopy(df_month_pie)
+
+print('DATA LOADED')
+
+# df_week_pie = pd.read_csv(os.path.join(
+#     '', 'plug_mate_app/dash_apps/finished_apps/df_week_pie.csv'))  # df_week_pie
+# df_week_bytype = pd.read_csv(os.path.join(
+#     '', 'plug_mate_app/dash_apps/finished_apps/df_week_pie.csv'))  # df_week_pie
+# df_week_line = pd.read_csv(os.path.join(
+#     '', 'plug_mate_app/dash_apps/finished_apps/df_week_line.csv'))  # df_week
+# df_month = pd.read_csv(os.path.join(
+#     '', 'plug_mate_app/dash_apps/finished_apps/df_month_line.csv'))
+# df_month_pie = pd.read_csv(os.path.join(
+#     '', 'plug_mate_app/dash_apps/finished_apps/df_month_pie.csv'))
+# df_day = pd.read_csv(os.path.join(
+#     '', 'plug_mate_app/dash_apps/finished_apps/df_day_line.csv'))
+# df_day_pie = pd.read_csv(os.path.join(
+#     '', 'plug_mate_app/dash_apps/finished_apps/df_day_pie.csv'))
+# df_hour = pd.read_csv(os.path.join(
+#     '', 'plug_mate_app/dash_apps/finished_apps/df_hour_line.csv'))  # df_hour
+# df_hour_pie = pd.read_csv(os.path.join(
+#     '', 'plug_mate_app/dash_apps/finished_apps/df_hour_pie.csv'))  # df_hour_pie
+# df_hour_bytype = pd.read_csv(os.path.join(
+#     '', 'plug_mate_app/dash_apps/finished_apps/df_hour_pie.csv'))  # df_hour_pie
 # Correct, change function sql
-df_day_bytype = dayClickDataPiechart()
-df_month_bytype = pd.read_csv(os.path.join('', 'plug_mate_app/dash_apps/finished_apps/df_month_pie.csv'))  # df_month_pie
+# df_day_bytype = dayClickDataPiechart()
+# df_month_bytype = pd.read_csv(os.path.join('', 'plug_mate_app/dash_apps/finished_apps/df_month_pie.csv'))  # df_month_pie
 
 """ DONE SQL CODE """
 
@@ -415,10 +495,10 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     # 1. Generate Graphs
     piechart = px.pie(
         data_frame=df4,
-        names='type',
+        names='device_type',
         hole=.3,
         values=values_pie,
-        color=df4['type'],
+        color=df4['device_type'],
         color_discrete_map={
             'Desktop': 'primary',
             'Laptop': 'success',
@@ -532,7 +612,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
         piechart.update_traces(
             values=values_pie,
-            labels=df4['type'],
+            labels=df4['device_type'],
             textinfo='label+percent',
             hovertemplate="%{label}<br>%{percent}<br>%{value} kWh",
 
@@ -607,7 +687,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         fig2.update_yaxes(tickprefix='$ ')
         piechart.update_traces(
             values=values_pie,
-            labels=df4['type'],
+            labels=df4['device_type'],
             textinfo='label+percent',
             hovertemplate="%{label}<br>%{percent}<br>$ %{value}",
 
