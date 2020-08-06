@@ -5,9 +5,8 @@ import dash_html_components as html
 import dash_core_components as dcc
 import dash_bootstrap_components as dbc
 from django_plotly_dash import DjangoDash
-from functools import lru_cache
-import os
 from django.db import connection
+from time import time
 
 
 def calculate_cost(power):
@@ -25,8 +24,8 @@ def currency_format(value):
         return '-${:,.2f}'.format(abs(value))
 
 
-@lru_cache(maxsize=20)
 def cost_savings():
+    t0 = time()
     """Takes in the raw data file and converts it into the last 6 week/month worth of aggregated data"""
 
     with connection.cursor() as cursor:
@@ -46,67 +45,15 @@ def cost_savings():
     month_view.drop(columns=['index', 'user_id'], inplace=True)
     month_view = month_view.set_index('month')
 
-    # week_view = pd.read_csv(os.path.join('', 'plug_mate_app/dash_apps/finished_apps/cost_savings_week.csv'),
-    #                         index_col='week').iloc[:, :8]
-    # month_view = pd.read_csv(os.path.join('', 'plug_mate_app/dash_apps/finished_apps/cost_savings_month.csv'),
-    #                          index_col='month').iloc[:, :8]
+    print(f'time to load: {time()-t0}')
 
     return week_view, month_view
 
-    # df['date'] = pd.to_datetime(df['date'])
-    #
-    # ### SQL CODE can be inserted here and stored as df
-    #
-    # # df = pd.read_csv(file, parse_dates=['date'])
-    #
-    # #         date      time     unix_time  meter_id  power  user_id     type
-    # # 0 2020-01-01  00:00:20  1.577808e+09       250   0.10        1  desktop
-    # # 1 2020-01-01  00:01:20  1.577808e+09       250   0.56        1  desktop
-    # # 2 2020-01-01  00:02:20  1.577808e+09       250   0.07        1  desktop
-    # # 3 2020-01-01  00:03:20  1.577808e+09       250   0.45        1  desktop
-    # # 4 2020-01-01  00:04:20  1.577808e+09       250   0.04        1  desktop
-    #
-    # ### SQL CODE
-    #
-    # df = df.groupby(['date', 'type']).sum().reset_index()
-    # df = df.pivot(index='date', columns='type', values='power')
-    #
-    # # Converts watts to dollars and finds the difference between each cell and the average
-    # for col in list(df):
-    #     df[col] = df[col].apply(calculate_cost)
-    #     df[col] = df[col] - df[col].mean()
-    #
-    # # Calculate total
-    # df['total'] = df.sum(axis=1)
-    #
-    # # Aggregate data based on view & set index
-    # week_view = df.groupby(pd.Grouper(freq='W-MON')).sum()
-    # month_view = df.groupby(pd.Grouper(freq='M')).sum()
-    #
-    # week_view['week'] = week_view.index
-    # week_view['week'] = week_view['week'].dt.strftime('%-d %b')
-    # week_view = week_view.set_index('week')
-    #
-    # month_view['month'] = month_view.index
-    # month_view['month'] = month_view['month'].dt.strftime('%b')
-    # month_view = month_view.set_index('month')
-    #
-    # # Truncate dataframe
-    # # OUTPUT
-    # # type     desktop       fan    laptop   monitor    others  tasklamp      total
-    # # week
-    # # 15 Jun  3.865136  0.545218  2.187076  2.932213  0.954045  0.818557  11.302246
-    # # 22 Jun  3.960292  0.605160  2.273651  3.115004  1.019997  0.835306  11.809411
-    # # 29 Jun  3.714227  0.578795  2.220233  3.133484  1.063669  0.864483  11.574892
-    # # 6 Jul   1.200915  0.285653  0.723079  0.975235  0.391955  0.145605   3.722441
-    # # 13 Jul  0.575940  0.048664  0.252067  0.380363  0.211953  0.129673   1.598661
-    # # 20 Jul  0.376172  0.039548  0.301331  0.457742  0.091924  0.090983   1.357700
-    # return (week_view[-7:-1], month_view[-7:-1])
 
 
 # external CSS stylesheets
 
-df_week, df_month = cost_savings()
+# df_week, df_month = cost_savings()
 
 app = DjangoDash('cost_savings',
                  external_stylesheets=["https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"],
@@ -160,7 +107,7 @@ def update_bar_chart(n1, n2, int):
         view = changed_id.split('.')[0].capitalize()  # button's n_clicks acts as state toggle between week and month
 
     # Process dataframe
-    df = df_week if view == 'Week' else df_month
+    df = cost_savings()[0] if view == 'Week' else cost_savings()[1]
     series = df['total']
     # Add the text that hovers over each bar for the normal graph
     hovertemplate = '<em>Week of %{x}</em><br>%{hovertext}' if view == 'Week' else '<em>Month of %{x}</em><br>%{hovertext}'
