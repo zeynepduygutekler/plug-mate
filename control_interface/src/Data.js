@@ -30,7 +30,7 @@ var DemoData = {
         resourceId: 'r1',
         title: 'Default Schedule (09:00 AM - 05:00 PM)',
         showPopover: false,
-        bgColor: "#47ff38",
+        bgColor: "#06D6A0",
         rrule: ""
     }, {
         id: 2,
@@ -39,7 +39,7 @@ var DemoData = {
         resourceId: 'r2',
         title: 'Default Schedule (09:00 AM - 05:00 PM)',
         showPopover: false,
-        bgColor: "#47ff38",
+        bgColor: "#06D6A0",
         rrule: ""
     }, {
         id: 3,
@@ -48,7 +48,7 @@ var DemoData = {
         resourceId: 'r3',
         title: 'Default Schedule (09:00 AM - 05:00 PM)',
         showPopover: false,
-        bgColor: '#47FF38',
+        bgColor: '#06D6A0',
         rrule: ""
     }, {
         id: 4,
@@ -57,7 +57,7 @@ var DemoData = {
         resourceId: 'r4',
         title: 'Default Schedule (09:00 AM - 05:00 PM)',
         showPopover: false,
-        bgColor: '#47FF38',
+        bgColor: '#06D6A0',
         rrule: ""
     }, {
         id: 5,
@@ -66,7 +66,7 @@ var DemoData = {
         resourceId: 'r5',
         title: 'Default Schedule (09:00 AM - 05:00 PM)',
         showPopover: false,
-        bgColor: '#47FF38',
+        bgColor: '#06D6A0',
         rrule: ""
     },
     // Default data for Tuesday
@@ -77,7 +77,7 @@ var DemoData = {
       resourceId: 'r1',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47FF38',
+      bgColor: '#06D6A0',
       rrule: ""
     }, {
       id: 7,
@@ -86,7 +86,7 @@ var DemoData = {
       resourceId: 'r2',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47FF38',
+      bgColor: '#06D6A0',
       rrule: ""
     }, {
       id: 8,
@@ -95,7 +95,7 @@ var DemoData = {
       resourceId: 'r3',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47FF38',
+      bgColor: '#06D6A0',
       rrule: ""
     }, {
       id: 9,
@@ -104,7 +104,7 @@ var DemoData = {
       resourceId: 'r4',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47FF38',
+      bgColor: '#06D6A0',
       rrule: ""
     }, {
       id: 10,
@@ -113,7 +113,7 @@ var DemoData = {
       resourceId: 'r5',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47ff38',
+      bgColor: '#06D6A0',
       rrule: ""
     },
     // Default data for Wednesday
@@ -124,7 +124,7 @@ var DemoData = {
       resourceId: 'r1',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor:'#47ff38',
+      bgColor:'#06D6A0',
       rrule: ""
     }, {
       id: 12,
@@ -133,7 +133,7 @@ var DemoData = {
       resourceId: 'r2',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47FF38',
+      bgColor: '#06D6A0',
       rrule: ""
     }, {
       id: 13,
@@ -142,7 +142,7 @@ var DemoData = {
       resourceId: 'r3',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47ff38',
+      bgColor: '#06D6A0',
       rrule: ""
     }, {
       id: 14,
@@ -151,7 +151,7 @@ var DemoData = {
       resourceId: 'r4',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47ff38',
+      bgColor: '#06D6A0',
       rrule: ""
     }, {
       id: 15,
@@ -160,7 +160,7 @@ var DemoData = {
       resourceId: 'r5',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47FF38',
+      bgColor: '#06D6A0',
       rrule: ""
     },
     // Default data for Thursday
@@ -171,7 +171,7 @@ var DemoData = {
       resourceId: 'r1',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47ff38',
+      bgColor: '#06D6A0',
       rrule: ""
     }, {
       id: 17,
@@ -180,7 +180,7 @@ var DemoData = {
       resourceId: 'r2',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47ff38',
+      bgColor: '#06D6A0',
       rrule: ""
     }, {
       id: 18,
@@ -189,7 +189,7 @@ var DemoData = {
       resourceId: 'r3',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47ff38',
+      bgColor: '#06D6A0',
       rrule: ""
     }, {
       id: 19,
@@ -198,7 +198,7 @@ var DemoData = {
       resourceId: 'r4',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47ff38',
+      bgColor: '#06D6A0',
       rrule: ""
     }, {
       id: 20,
@@ -207,7 +207,7 @@ var DemoData = {
       resourceId: 'r5',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47ff38',
+      bgColor: '#06D6A0',
       rrule: ""
     },
     // Default data for Friday
@@ -218,7 +218,7 @@ var DemoData = {
       resourceId: 'r1',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47ff38',
+      bgColor: '#06D6A0',
       rrule: ""
     }, {
       id: 22,
@@ -227,7 +227,7 @@ var DemoData = {
       resourceId: 'r2',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47ff38',
+      bgColor: '#06D6A0',
       rrule: ""
     }, {
       id: 23,
@@ -236,7 +236,7 @@ var DemoData = {
       resourceId: 'r3',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47ff38',
+      bgColor: '#06D6A0',
       rrule: ""
     }, {
       id: 24,
@@ -245,7 +245,7 @@ var DemoData = {
       resourceId: 'r4',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47ff38',
+      bgColor: '#06D6A0',
       rrule: ""
     }, {
       id: 25,
@@ -254,7 +254,7 @@ var DemoData = {
       resourceId: 'r5',
       title: 'Default Schedule (09:00 AM - 05:00 PM)',
       showPopover: false,
-      bgColor: '#47ff38',
+      bgColor: '#06D6A0',
       rrule: ""
     }
   ]

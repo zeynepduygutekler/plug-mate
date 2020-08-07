@@ -65,7 +65,7 @@
 
         /* Change background color of day buttons on hover */
         .tab button:hover {
-            background-color: #47ff38;
+            background-color: #06D6A0;
         }
 
         /* Position where the popup should appear */
@@ -126,6 +126,21 @@
 
                     <div class="row">
                         <div class="col-xl-12">
+                            <div class="card shadow h-auto mb-4" id="presence_card">
+                                <div id="presencebasedrect" class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
+                                    <h6 class="m-0 font-weight-bold text-primary text-uppercase mb-1">Presence-based Control</h6>
+                                    <img style="margin-left:10px;height:15px;width:15px" src="/static/Images/Info.png" alt="icon" id="infoIconPresence">
+                                    <div id="infoBoxPresence" style="width:1px;height:1px;overflow-x:visible;overflow-y:visible;"></div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="col-md-12" id="presence-based-control"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-12">
                             <div class="card shadow h-auto mb-4" id="schedule_card">
                                 <div id="schedulebasedrect" class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
                                     <h6 class="m-0 font-weight-bold text-primary text-uppercase mb-1">Schedule-based Control</h6>
@@ -149,21 +164,6 @@
                                         <div id="root"> </div>
                                         <div id="popup-container-schedule"> </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xl-12">
-                            <div class="card shadow h-auto mb-4" id="presence_card">
-                                <div id="presencebasedrect" class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                                    <h6 class="m-0 font-weight-bold text-primary text-uppercase mb-1">Presence-based Control</h6>
-                                    <img style="margin-left:10px;height:15px;width:15px" src="/static/Images/Info.png" alt="icon" id="infoIconPresence">
-                                    <div id="infoBoxPresence" style="width:1px;height:1px;overflow-x:visible;overflow-y:visible;"></div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="col-md-12" id="presence-based-control"> </div>
                                 </div>
                             </div>
                         </div>

@@ -1099,6 +1099,7 @@ class PresenceControlItem extends Component {
             presence_control_image = "/static/Images/" + this.state.device_type.toString() + " ON.png";
         }
 
+        var label = "Off " + this.state.device_type + " after I leave for:"
         return (
             <div id={this.state.device_type.replace(/\s/g,'') + "BoxPresence"} className="containerPresence">
                 <div className="iconPresence">
@@ -1115,14 +1116,14 @@ class PresenceControlItem extends Component {
                                 <p> {this.state.device_type} </p>
                             </div>
                             <select defaultValue={this.state.presence_setting} onChange={this.handleSettingUpdate} id={this.state.device_type.replace(/\s/g,'') + "Select"}>
-                                <option value="1000000"> OFF </option>
-                                <optgroup label="Off after I leave for:">
+                                <option value="1000000"> Deactivate </option>
+                                <optgroup label={label}>
                                     <option value="5"> 5 minutes </option>
                                     <option value="10"> 10 minutes </option>
                                     <option value="20"> 20 minutes </option>
                                     <option value="30"> 30 minutes </option>
                                     <option value="60"> 1 hour </option>
-                                    <option value="other"> Other </option>
+                                    <option value="other"> Custom Time </option>
                                 </optgroup>
                                 <option value={display_value} disabled={disabled}> {display_text} </option>
                             </select>

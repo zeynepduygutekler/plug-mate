@@ -238,7 +238,7 @@ class Basic extends Component {
             start: new_start,
             end: new_end,
             resourceId: new_slot,
-            bgColor: "#47FF38",
+            bgColor: "#06D6A0",
             showPopover: false,
             rrule: ""
           };
@@ -260,7 +260,7 @@ class Basic extends Component {
             start: moment(start),
             end: moment(end),
             resourceId: plugload.value,
-            bgColor: "#47FF38",
+            bgColor: "#06D6A0",
             showPopover: false,
             rrule: rrule
           };
@@ -369,7 +369,7 @@ class Basic extends Component {
       start: start,
       end: end,
       resourceId: slotId,
-      bgColor: "#47FF38",
+      bgColor: "#06D6A0",
       showPopover: false,
       rrule: ""
     };
@@ -536,7 +536,7 @@ class Basic extends Component {
             start: new_start,
             end: new_end,
             resourceId: new_slot,
-            bgColor: "#47FF38",
+            bgColor: "#06D6A0",
             showPopover: false,
             rrule: ""
           };
@@ -558,7 +558,7 @@ class Basic extends Component {
             start: moment(start),
             end: moment(end),
             resourceId: plugload.value,
-            bgColor: "#47ff38",
+            bgColor: "#06D6A0",
             showPopover: false,
             rrule: rrule
           };
@@ -817,7 +817,7 @@ class Basic extends Component {
             start: new_start,
             end: new_end,
             resourceId: new_slot,
-            bgColor: "#47FF38",
+            bgColor: "#06D6A0",
             showPopover: false,
             rrule: ""
           };
@@ -839,7 +839,7 @@ class Basic extends Component {
             start: moment(start),
             end: moment(end),
             resourceId: plugload.value,
-            bgColor: "#47ff38",
+            bgColor: "#06D6A0",
             showPopover: false,
             rrule: rrule
           };
@@ -1095,7 +1095,7 @@ class Basic extends Component {
             start: new_start,
             end: new_end,
             resourceId: new_slot,
-            bgColor: "#47FF38",
+            bgColor: "#06D6A0",
             showPopover: false,
             rrule: ""
           };
@@ -1117,7 +1117,7 @@ class Basic extends Component {
             start: moment(start),
             end: moment(end),
             resourceId: plugload.value,
-            bgColor: "#47ff38",
+            bgColor: "#06D6A0",
             showPopover: false,
             rrule: rrule
           };
@@ -1380,7 +1380,7 @@ class Basic extends Component {
             start: new_start,
             end: new_end,
             resourceId: new_slot,
-            bgColor: "#47FF38",
+            bgColor: "#06D6A0",
             showPopover: false,
             rrule: ""
           };
@@ -1402,7 +1402,7 @@ class Basic extends Component {
             start: moment(start),
             end: moment(end),
             resourceId: plugload.value,
-            bgColor: "#47ff38",
+            bgColor: "#06D6A0",
             showPopover: false,
             rrule: rrule
           };
