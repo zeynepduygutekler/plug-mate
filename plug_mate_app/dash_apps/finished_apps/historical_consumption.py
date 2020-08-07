@@ -176,17 +176,17 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             cursor.execute(
                 "SELECT * FROM historical_today_line WHERE user_id=%s", [1])
             results = cursor.fetchall()
-        df_hour = pd.DataFrame(results, columns=['index', 'user_id', 'date', 'hours', 'power', 'month',
-                                                 'time', 'year', 'power_kWh', 'cost', 'dates_AMPM'])
-        df_hour.drop(columns=['index', 'user_id'], inplace=True)
+            colnames = [desc[0] for desc in cursor.description]
+        df_hour = pd.DataFrame(results, columns=colnames)
+        df_hour.drop(columns=['user_id'], inplace=True)
 
         # df_hour_pie
         with connection.cursor() as cursor:
             cursor.execute(
                 "SELECT * FROM historical_today_pie WHERE user_id=%s", [1])
             results = cursor.fetchall()
-        df_hour_pie = pd.DataFrame(results, columns=['index', 'user_id', 'date', 'hours', 'device_type',
-                                                     'power', 'month', 'time', 'year', 'power_kWh', 'cost', 'date_AMPM'])
+            colnames = [desc[0] for desc in cursor.description]
+        df_hour_pie = pd.DataFrame(results, columns=colnames)
         df_hour_pie.drop(columns=['index', 'user_id'], inplace=True)
 
         # Pie Chart values
@@ -209,18 +209,18 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             cursor.execute(
                 "SELECT * FROM historical_days_line WHERE user_id=%s", [1])
             results = cursor.fetchall()
-        df_day = pd.DataFrame(results, columns=['index', 'user_id', 'date', 'power', 'month', 'time',
-                                                'year', 'power_kWh', 'cost', 'date_withoutYear'])
-        df_day.drop(columns=['index', 'user_id'], inplace=True)
+            colnames = [desc[0] for desc in cursor.description]
+        df_day = pd.DataFrame(results, columns=colnames)
+        df_day.drop(columns=['user_id'], inplace=True)
 
         # df_day_pie
         with connection.cursor() as cursor:
             cursor.execute(
                 "SELECT * FROM historical_days_pie WHERE user_id=%s", [1])
             results = cursor.fetchall()
-        df_day_pie = pd.DataFrame(results, columns=['index', 'user_id', 'device_type', 'date', 'power', 'month',
-                                                    'time', 'year', 'power_kWh', 'cost'])
-        df_day_pie.drop(columns=['index', 'user_id'], inplace=True)
+            colnames = [desc[0] for desc in cursor.description]
+        df_day_pie = pd.DataFrame(results, columns=colnames)
+        df_day_pie.drop(columns=['user_id'], inplace=True)
 
         # Pie Chart
         values_pie = df_day_pie['power_kWh']
@@ -241,9 +241,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             cursor.execute(
                 "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [1])
             results = cursor.fetchall()
-        df_week_pie = pd.DataFrame(results, columns=['index', 'user_id', 'device_type', 'week', 'power',
-                                                     'month', 'time', 'year', 'power_kWh', 'cost'])
-        df_week_pie.drop(columns=['index', 'user_id'], inplace=True)
+            colnames = [desc[0] for desc in cursor.description]
+        df_week_pie = pd.DataFrame(results, columns=colnames)
+        df_week_pie.drop(columns=['user_id'], inplace=True)
 
         # df_week_bytype
         df_week_bytype = copy.deepcopy(df_week_pie)
@@ -253,9 +253,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             cursor.execute(
                 "SELECT * FROM historical_weeks_line WHERE user_id=%s", [1])
             results = cursor.fetchall()
-        df_week_line = pd.DataFrame(results, columns=['index', 'user_id', 'week', 'power', 'month',
-                                                      'time', 'year', 'power_kWh', 'cost', 'date'])
-        df_week_line.drop(columns=['index', 'user_id'], inplace=True)
+            colnames = [desc[0] for desc in cursor.description]
+        df_week_line = pd.DataFrame(results, columns=colnames)
+        df_week_line.drop(columns=['user_id'], inplace=True)
 
         df_to_sort = df_week_line
         df_to_sort['date'] = pd.to_datetime(df_to_sort.date)
@@ -279,18 +279,18 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             cursor.execute(
                 "SELECT * FROM historical_months_line WHERE user_id=%s", [1])
             results = cursor.fetchall()
-        df_month = pd.DataFrame(results, columns=['index', 'user_id', 'month', 'year', 'power', 'time',
-                                                  'power_kWh', 'unix_time', 'cost'])
-        df_month.drop(columns=['index', 'user_id'], inplace=True)
+            colnames = [desc[0] for desc in cursor.description]
+        df_month = pd.DataFrame(results, columns=colnames)
+        df_month.drop(columns=['user_id'], inplace=True)
 
         # df_month_pie
         with connection.cursor() as cursor:
             cursor.execute(
                 "SELECT * FROM historical_months_pie WHERE user_id=%s", [1])
             results = cursor.fetchall()
-        df_month_pie = pd.DataFrame(results, columns=['index', 'user_id', 'device_type', 'power', 'time',
-                                                      'month', 'year', 'power_kWh', 'cost'])
-        df_month_pie.drop(columns=['index', 'user_id'], inplace=True)
+            colnames = [desc[0] for desc in cursor.description]
+        df_month_pie = pd.DataFrame(results, columns=colnames)
+        df_month_pie.drop(columns=['user_id'], inplace=True)
 
         values_pie = df_month_pie['power_kWh']
         pie_middletext = 'last 6 Months'
@@ -312,9 +312,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                 cursor.execute(
                     "SELECT * FROM historical_today_pie WHERE user_id=%s", [1])
                 results = cursor.fetchall()
-            df_hour_pie = pd.DataFrame(results, columns=['index', 'user_id', 'date', 'hours', 'device_type',
-                                                         'power', 'month', 'time', 'year', 'power_kWh', 'cost', 'date_AMPM'])
-            df_hour_pie.drop(columns=['index', 'user_id'], inplace=True)
+                colnames = [desc[0] for desc in cursor.description]
+            df_hour_pie = pd.DataFrame(results, columns=colnames)
+            df_hour_pie.drop(columns=['user_id'], inplace=True)
 
             # df_hour_bytype
             df_hour_bytype = copy.deepcopy(df_hour_pie)
@@ -346,9 +346,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                 cursor.execute(
                     "SELECT * FROM historical_months_pie WHERE user_id=%s", [1])
                 results = cursor.fetchall()
-            df_month_pie = pd.DataFrame(results, columns=['index', 'user_id', 'device_type', 'month', 'time', 'power',
-                                                          'year', 'power_kWh', 'cost'])
-            df_month_pie.drop(columns=['index', 'user_id'], inplace=True)
+                colnames = [desc[0] for desc in cursor.description]
+            df_month_pie = pd.DataFrame(results, columns=colnames)
+            df_month_pie.drop(columns=['user_id'], inplace=True)
 
             # df_month_bytype
             df_month_bytype = copy.deepcopy(df_month_pie)
@@ -380,9 +380,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                 cursor.execute(
                     "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [1])
                 results = cursor.fetchall()
-            df_week_pie = pd.DataFrame(results, columns=['index', 'user_id', 'device_type', 'week', 'power',
-                                                         'month', 'time', 'year', 'power_kWh', 'cost'])
-            df_week_pie.drop(columns=['index', 'user_id'], inplace=True)
+                colnames = [desc[0] for desc in cursor.description]
+            df_week_pie = pd.DataFrame(results, columns=colnames)
+            df_week_pie.drop(columns=['user_id'], inplace=True)
 
             # df_week_bytype
             df_week_bytype = copy.deepcopy(df_week_pie)
@@ -445,9 +445,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                 cursor.execute(
                     "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [1])
                 results = cursor.fetchall()
-            df_week_pie = pd.DataFrame(results, columns=['index', 'user_id', 'device_type', 'week', 'power',
-                                                         'month', 'time', 'year', 'power_kWh', 'cost'])
-            df_week_pie.drop(columns=['index', 'user_id'], inplace=True)
+                colnames = [desc[0] for desc in cursor.description]
+            df_week_pie = pd.DataFrame(results, columns=colnames)
+            df_week_pie.drop(columns=['user_id'], inplace=True)
 
             # df_week_bytype
             df_week_bytype = copy.deepcopy(df_week_pie)
@@ -481,9 +481,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                 cursor.execute(
                     "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [1])
                 results = cursor.fetchall()
-            df_week_pie = pd.DataFrame(results, columns=['index', 'user_id', 'device_type', 'week', 'power',
-                                                         'month', 'time', 'year', 'power_kWh', 'cost'])
-            df_week_pie.drop(columns=['index', 'user_id'], inplace=True)
+                colnames = [desc[0] for desc in cursor.description]
+            df_week_pie = pd.DataFrame(results, columns=colnames)
+            df_week_pie.drop(columns=['user_id'], inplace=True)
 
             # df_week_bytype
             df_week_bytype = copy.deepcopy(df_week_pie)
@@ -493,9 +493,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                 cursor.execute(
                     "SELECT * FROM historical_weeks_line WHERE user_id=%s", [1])
                 results = cursor.fetchall()
-            df_week_line = pd.DataFrame(results, columns=['index', 'user_id', 'week', 'power', 'month',
-                                                          'time', 'year', 'power_kWh', 'cost', 'date'])
-            df_week_line.drop(columns=['index', 'user_id'], inplace=True)
+                colnames = [desc[0] for desc in cursor.description]
+            df_week_line = pd.DataFrame(results, columns=colnames)
+            df_week_line.drop(columns=['user_id'], inplace=True)
 
             df_to_sort = df_week_line
             df_to_sort['date'] = pd.to_datetime(df_to_sort.date)
