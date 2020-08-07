@@ -10,70 +10,24 @@
 
     <!-- Real-Time Power Consumption -->
     <div class="row">
-        <div class="col-xl-3 col-md-6 col-sm-12 mb-4" id="realtime_card">
+        <div class="col-xl-3 col-md-6 col-sm-12 mb-4" id="energyconsumption_card">
             <div class="card border-left-primary shadow py-2 h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-lg font-weight-bold text-primary text-uppercase mb-1"
-                                 style="font-size: medium" >Real-Time Power Consumption</div>
+                                 style="font-size: large" >Real-Time Power Consumption</div>
                         </div>
-                        {#                        <div class="col-auto">#}
-                        {#                            <i class="fas fa-charging-station fa-2x text-gray-300"></i>#}
-                        {#                        </div>#}
                     </div>
                     <div class="row h-100" style="padding-bottom: 15%">
                         <div class="col-4 my-auto justify-content-center text-center">
                             <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" width="80" height="70">
                         </div>
                         <div class="col-8 text-center my-auto">
-                            <div class="h1 mb-0 mr-3 font-weight-bold text-gray-800">25 W</div>
-                        </div>
-                    </div>
-
-                    {#                    <div class="row no-gutters justify-content-center text-center">#}
-                    {#                        <div class="h3 mb-0 mr-3 font-weight-bold text-gray-800">25 W</div>#}
-                    {#                        <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" width="80" height="70">#}
-                    {#                    </div>#}
-                </div>
-            </div>
-        </div>
-
-        <!-- Incentive Awarded -->
-        <div class="col-xl-3 col-md-6 col-sm-12 mb-4" id="reward_card">
-            <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-lg font-weight-bold text-info text-uppercase mb-1" style="font-size: medium">
-                                Energy Points Wallet
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row h-100" style="padding-bottom: 5%">
-                        <div class="col-4 my-auto justify-content-center text-center">
-                            {#                            <img src="https://image.flaticon.com/icons/svg/639/639365.svg" width="80" height="70">#}
-                            <img src="https://i.ibb.co/WKVMGf0/wallet.png" width="80" height="70">
-                        </div>
-                        <div class="col-8 text-center my-auto">
-                            <div class="h3 mb-0 mr-3 font-weight-bold text-gray-800">
-                                {% if user.is_authenticated %}
-                                    {{ points }} Points
-                                {% else %}
-                                    0 Points
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="col-12 font-weight-bold text-center">
-                            <a href="{% url 'plug_mate_app:rewards' %}">Click here to redeem your points!</a>
+                            <div class="h2 mb-0 mr-3 font-weight-bold text-gray-800">25 W</div>
                         </div>
                     </div>
                 </div>
-
-                {#                    <div class="row no-gutters justify-content-center text-center">#}
-                {#                        <div class="h3 mb-0 mr-3 font-weight-bold text-gray-800">$3.80</div>#}
-                {#                        <img src="https://image.flaticon.com/icons/svg/639/639365.svg" width="80" height="70">#}
-                {#                    </div>#}
             </div>
         </div>
 
@@ -84,11 +38,8 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1"
-                                 style="font-size: medium">Cumulative Savings</div>
+                                 style="font-size: large">Cumulative Savings</div>
                         </div>
-                        {#                        <div class="col-auto">#}
-                        {#                            <i class="fas fa-seedling fa-2x text-gray-300"></i>#}
-                        {#                        </div>#}
                     </div>
 
                     <div class="row h-100" style="padding-bottom: 5%">
@@ -111,17 +62,43 @@
                             <div class="h3 mb-0 mr-3 font-weight-bold text-gray-800">14 Trees</div>
                         </div>
                     </div>
-                    {#                    <div class="h3 mb-0 font-weight-bold text-gray-800"> 2.6 Tree(s)#}
-                    {#                        <img src="https://image.flaticon.com/icons/svg/740/740935.svg" width="70" height="60">#}
-                    {#                    </div>#}
-                    {#                </div>#}
-                    {#                <div class="col-auto">#}
-                    {#                    <i class="fas fa-trees fa-2x text-gray-300"></i>#}
-                    {#                </div>#}
                 </div>
             </div>
         </div>
 
+
+        <!-- Incentive Awarded -->
+        <div class="col-xl-3 col-md-6 col-sm-12 mb-4" id="reward_card">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-lg font-weight-bold text-info text-uppercase mb-1" style="font-size: large">
+                                Energy Points Wallet
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row h-100" style="padding-bottom: 5%">
+                        <div class="col-4 my-auto justify-content-center text-center">
+                            {#                            <img src="https://image.flaticon.com/icons/svg/639/639365.svg" width="80" height="70">#}
+                            <img src="https://i.ibb.co/WKVMGf0/wallet.png" width="80" height="70">
+                        </div>
+                        <div class="col-8 text-center my-auto">
+                            <div class="h3 mb-0 mr-3 font-weight-bold text-gray-800">
+                                {% if user.is_authenticated %}
+                                    {{ points }} Energy Points
+                                {% else %}
+                                    0 Energy Points
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-12 font-weight-bold text-center my-auto my-auto" style="padding-bottom: 5%">
+                            <a href="{% url 'plug_mate_app:rewards' %}">Click here to redeem your points!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Energy Tips  -->
         <div class="col-xl-3 col-md-6 col-sm-12 mb-4">
@@ -130,30 +107,25 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1"
-                                 style="font-size: medium">Energy Tips</div>
+                                 style="font-size: large">Energy Tips</div>
                             <div class="h2 mb-0 font-weight-bold text-gray-800">
                                 <div class="{% plotly_class name='tips' %}" >
-                                    {% plotly_app name='tips' ratio=0.7 %}
+                                    {% plotly_app name='tips' ratio=0.9 %}
                                 </div>
                             </div>
                         </div>
-                        {#                        <div class="col-auto">#}
-                        {#                            <i class="fas fa-comments fa-2x text-gray-300"></i>#}
-                        {#                        </div>#}
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-
 
     <!-- Content Row -->
     <div class="row">
         <div class="col-12" id="historical_card">
-            <div class="card shadow mb-4">
+            <div class="card shadow mb-4 anchor">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                    <h6 class="m-0 font-weight-bold text-primary text-uppercase mb-1">Historical Energy Consumption and Cost</h6>
+                    <h6 class="m-0 font-weight-bold text-primary text-uppercase mb-1" style="font-size: large">Historical Energy Consumption and Cost</h6>
                 </div>
                 <div class="card-body">
                     <div class="{% plotly_class name='historical_consumption' %}">
@@ -169,13 +141,7 @@
         <div class="col-xl-7 col-lg-12" id="cost_card">
             <div class="card shadow">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                    <h6 class="m-0 font-weight-bold text-success text-uppercase mb-1">Cost Savings of Plug Loads</h6>
-{#                    <img style="margin-left:10px;height:15px;width:15px;margin-left:10px;" src="/static/Images/Info.png" alt="icon" id="infoIconCostSavings">#}
-{#                    <div id="infoBoxCostSavings" style="width:1px;height:1px;overflow-x:visible;overflow-y:visible;">#}
-{#                        <div id="informationBoxCostSavings" style="display:none;border: 1px solid black; width: 10vw;padding: 0px 10px; background-color: white; font-size: 10.5px; z-index: 1000;">#}
-{#                            <p style="color:black"> Your cost savings is the difference between the cost for the week / month and your average cost. </p>#}
-{#                        </div>#}
-{#                    </div>#}
+                    <h6 class="m-0 font-weight-bold text-success text-uppercase mb-1" style="font-size: large">Cost Savings of Plug Loads</h6>
                 </div>
                 <div class="card-body">
                     <div class="{% plotly_class name='cost_savings' %}">
@@ -188,7 +154,7 @@
         <div class="col-xl-5 col-lg-12" id="goal_card">
             <div class="card shadow">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                    <h6 class="m-0 font-weight-bold text-info text-uppercase mb-1">Achievements</h6>
+                    <h6 class="m-0 font-weight-bold text-info text-uppercase mb-1" style="font-size: large">Achievements</h6>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -204,13 +170,6 @@
                         <div class="col-4 text-left my-auto">
                             <img src="https://image.flaticon.com/icons/svg/860/860511.svg" style="height: 6rem">
                         </div>
-
-
-                        {#             dbc.Col(html.Img(src="https://image.flaticon.com/icons/svg/860/860511.svg", style={'height': '6rem'}),#}
-                        {#                     style={'margin': 'auto'}, width=4)],#}
-                        {#            style={'height': '50%', 'align-items': 'baseline', 'margin': 'auto'}#}
-                        {#            ),#}
-
                     </div>
 
                     <div class="{% plotly_class name='progress' %}">
