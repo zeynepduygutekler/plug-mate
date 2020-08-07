@@ -17,7 +17,7 @@
 
 /** class to change color for selected day tab **/
 .selected {
-  background-color: #47FF38;
+  background-color: #06D6A0;
 }
 
 /** style the information icon **/
@@ -26,6 +26,7 @@
   height: 15px;
   display: inline-block;
   margin-left: 10px;
+  margin-bottom: 6px;
 }
 
 /** style the information box popup **/

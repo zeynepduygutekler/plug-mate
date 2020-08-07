@@ -4,6 +4,7 @@
   height: 15px;
   display: inline-block;
   margin-left: 10px;
+  margin-bottom: 6px;
 }
 
 /** style the information box popup **/
@@ -21,6 +22,7 @@
   height: 15px;
   display: inline-block;
   margin-left: 10px;
+  margin-bottom: 6px;
 }
 
 /** style the information box popup **/
@@ -89,12 +91,16 @@
 }
 
 .greenRing {
-    background: #47ff38;
+    background: #06D6A0;
     border-radius: 50%;
     width: 75px;
     height: 75px;
     border: 1px solid #707070;
     display: inline-block;
+}
+
+.greenRing:hover {
+    cursor: pointer;
 }
 
 .greyRing {
@@ -139,6 +145,10 @@
     height: 75px;
     border: 1px solid #707070;
     display: inline-block;
+}
+
+.redRing:hover {
+    cursor: pointer;
 }
 
 .toggle-switch {
@@ -188,7 +198,7 @@
 .toggle-switch-inner:before {
     content: "ON";
     padding-left: 10px;
-    background-color: #47FF38;
+    background-color: #06D6A0;
     color: black;
 }
 
