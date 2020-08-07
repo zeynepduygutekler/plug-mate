@@ -31,24 +31,21 @@ def cost_savings():
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM costsavings_weeks WHERE user_id=%s", [1])
         results = cursor.fetchall()
-    week_view = pd.DataFrame(results, columns=['index', 'user_id', 'desktop', 'fan', 'laptop',
-                                               'monitor', 'others', 'tasklamp', 'total', 'week'])
-    week_view.drop(columns=['index', 'user_id'], inplace=True)
+        colnames = [desc[0] for desc in cursor.description]
+    week_view = pd.DataFrame(results, columns=colnames)
+    week_view.drop(columns=['user_id'], inplace=True)
     week_view = week_view.set_index('week')
 
     # month_view
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM costsavings_months WHERE user_id=%s", [1])
         results = cursor.fetchall()
-    month_view = pd.DataFrame(results, columns=['index', 'user_id', 'desktop', 'fan', 'laptop',
-                                                'monitor', 'others', 'tasklamp', 'total', 'month'])
-    month_view.drop(columns=['index', 'user_id'], inplace=True)
+        colnames = [desc[0] for desc in cursor.description]
+    month_view = pd.DataFrame(results, columns=colnames)
+    month_view.drop(columns=['user_id'], inplace=True)
     month_view = month_view.set_index('month')
 
-    print(f'time to load: {time()-t0}')
-
     return week_view, month_view
-
 
 
 # external CSS stylesheets
