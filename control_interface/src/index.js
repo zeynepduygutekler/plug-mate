@@ -10,6 +10,15 @@ import Basic4 from "./Basic4"
 import Basic5 from "./Basic5"
 import "./styles.css"
 
+function compare(a,b) {
+    let comparison = 0;
+    if (a.device_type > b.device_type) {
+        comparison = 1;
+    } else if (a.device_type < b.device_type) {
+        comparison = -1
+    }
+    return comparison
+}
 
 // Remote Control
 class RemoteControlDashboard extends Component {
@@ -23,6 +32,7 @@ class RemoteControlDashboard extends Component {
         fetch('http://127.0.0.1:8000/control_interface/api/remote/')
         .then(response => response.json())
         .then(data => {
+            data.sort(compare);
             var datas = []
             for (var input of data) {
                 if (input.user_id === this.state.current_user_id) {
@@ -897,6 +907,7 @@ class PresenceControlDashboard extends Component {
         fetch('http://127.0.0.1:8000/control_interface/api/presence/')
         .then(response => response.json())
         .then(data => {
+            data.sort(compare);
             var datas = []
             for (var input of data) {
                 if (input.user_id === this.state.current_user_id) {
