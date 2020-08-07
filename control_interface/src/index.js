@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import RemoteToggleButton from './RemoteToggleButton';
-import RemoteBox from './RemoteBox';
 import './index.css'
 import Basic from "./Basic";
 import Basic0 from "./Basic0"
@@ -14,308 +12,330 @@ import "./styles.css"
 
 
 // Remote Control
-ReactDOM.render(
-  <React.StrictMode>
-    <>
-      <div style={{float:"right"}}>
-        <p style={{marginLeft: "50px", marginBottom:"5px"}}> Master </p>
-        <RemoteToggleButton id="master" defaultChecked="true" />
-      </div>
-      <br />
-      <br />
-
-      <div className={'col-xlg-6'}>
-        <div style={{margin:"auto", width:"900px"}}>
-          <RemoteBox id="Desktop" />
-          <RemoteBox id="Monitor"/>
-          <RemoteBox id="Laptop" />
-          <RemoteBox id="TaskLamp"/>
-          <RemoteBox id="Fan" />
-        </div>
-      </div>
-    </>
-  </React.StrictMode>,
-  document.getElementById('remote-control')
-);
-
-// Define necessary variables
-var master = document.getElementById("master"); // Master toggle button
-var desktop = document.getElementById("DesktopBoxRemote"); // Final component for desktop
-var desktopImage = document.getElementById("DesktopIconRemote").childNodes[0].childNodes[0].childNodes[0]; // Icon image for desktop (to be changed between green and grey)
-var desktopRing = document.getElementById("DesktopIconRemote").childNodes[0]; // Outer ring for desktop (to be changed between green and grey)
-var monitor = document.getElementById("MonitorBoxRemote"); // Final component for monitor
-var monitorImage = document.getElementById("MonitorIconRemote").childNodes[0].childNodes[0].childNodes[0]; // Icon image for monitor (to be changed between green and grey)
-var monitorRing = document.getElementById("MonitorIconRemote").childNodes[0]; // Outer ring for monitor (to be changed between green and grey)
-var laptop = document.getElementById("LaptopBoxRemote"); // Final component for laptop
-var laptopImage = document.getElementById("LaptopIconRemote").childNodes[0].childNodes[0].childNodes[0]; // Icon image for laptop (to be changed between green and grey)
-var laptopRing = document.getElementById("LaptopIconRemote").childNodes[0]; // Outer ring for laptop (to be changed between green and grey)
-var tasklamp = document.getElementById("TaskLampBoxRemote"); // Final component for task lamp
-var tasklampImage = document.getElementById("TaskLampIconRemote").childNodes[0].childNodes[0].childNodes[0]; // Icon image for task lamp (to be changed between green and grey)
-var tasklampRing = document.getElementById("TaskLampIconRemote").childNodes[0]; // Outer ring for task lamp (to be changed between green and grey)
-var fan = document.getElementById("FanBoxRemote"); // Final component for fan
-var fanImage = document.getElementById("FanIconRemote").childNodes[0].childNodes[0].childNodes[0]; // Icon image for fan (to be changed between green and grey)
-var fanRing = document.getElementById("FanIconRemote").childNodes[0]; // Outer ring for fan (to be changed between green and grey)
-
-// Define function for when master button is clicked
-master.onclick = function() {
-  if (document.getElementById("master").checked === true) {
-    // Switch ON all plug loads if master button is confirmed to be turned ON
-    if (window.confirm("You are switching on all your plug loads.")) {
-      // Switch desktop toggle button to ON
-      document.getElementById("DesktopToggleRemote").checked = true;
-      // Green image should be shown
-      desktopImage.src = "/static/Images/Desktop ON.png";
-      // Outer circle should be green
-      desktopRing.classList.remove("greyRemote");
-      desktopRing.classList.add("greenRemote");
-
-      // Switch monitor toggle button to ON
-      document.getElementById("MonitorToggleRemote").checked = true;
-      // Green image should be shown
-      monitorImage.src = "/static/Images/Monitor ON.png";
-      // Outer circle should be green
-      monitorRing.classList.remove("greyRemote");
-      monitorRing.classList.add("greenRemote");
-
-      // Switch laptop toggle button to ON
-      document.getElementById("LaptopToggleRemote").checked = true;
-      // Green image should be shown
-      laptopImage.src = "/static/Images/Laptop ON.png";
-      // Outer circle should be green
-      laptopRing.classList.remove("greyRemote");
-      laptopRing.classList.add("greenRemote");
-
-      // Switch task lamp toggle button to ON
-      document.getElementById("TaskLampToggleRemote").checked = true;
-      // Green image should be shown
-      tasklampImage.src = "/static/Images/Task Lamp ON.png";
-      // Outer circle should be green
-      tasklampRing.classList.remove("greyRemote");
-      tasklampRing.classList.add("greenRemote");
-
-      // Switch fan toggle button to ON
-      document.getElementById("FanToggleRemote").checked = true;
-      // Green image should be shown
-      fanImage.src = "/static/Images/Fan ON.png";
-      // Outer circle should be green
-      fanRing.classList.remove("greyRemote");
-      fanRing.classList.add("greenRemote");
-    } else {
-      // Nothing happens if user does not confirm to switch ON all plug loads
-      // Master button remains OFF
-      document.getElementById("master").checked = false;
+class RemoteControlDashboard extends Component {
+    state = {
+        books: [],
+        current_user_id: 1
     }
-  } else {
-    // Switch OFF all plug loads if master button is confirmed to be turned OFF
-    if (window.confirm("You are switching off all your plug loads.")) {
-      // Switch desktop toggle button to OFF
-      document.getElementById("DesktopToggleRemote").checked = false;
-      // Grey image should be shown
-      desktopImage.src = "/static/Images/Desktop OFF.png";
-      // Outer circle should be grey
-      desktopRing.classList.remove("greenRemote");
-      desktopRing.classList.add("greyRemote");
 
-      // Switch monitor toggle button to OFF
-      document.getElementById("MonitorToggleRemote").checked = false;
-      // Grey image should be shown
-      monitorImage.src = "/static/Images/Monitor OFF.png";
-      // Outer ring should be grey
-      monitorRing.classList.remove("greenRemote");
-      monitorRing.classList.add("greyRemote");
-
-      // Switch laptop toggle button to OFF
-      document.getElementById("LaptopToggleRemote").checked = false;
-      // Grey image should be shown
-      laptopImage.src = "/static/Images/Laptop OFF.png";
-      // Outer ring should be grey
-      laptopRing.classList.remove("greenRemote");
-      laptopRing.classList.add("greyRemote");
-
-      // Switch task lamp toggle button to OFF
-      document.getElementById("TaskLampToggleRemote").checked = false;
-      // Grey image should be shown
-      tasklampImage.src = "/static/Images/Task Lamp OFF.png";
-      // Outer ring should be grey
-      tasklampRing.classList.remove("greenRemote");
-      tasklampRing.classList.add("greyRemote");
-
-      // Switch fan toggle button to OFF
-      document.getElementById("FanToggleRemote").checked = false;
-      // Grey image should be shown
-      fanImage.src = "/static/Images/Fan OFF.png";
-      // Outer ring should be grey
-      fanRing.classList.remove("greenRemote");
-      fanRing.classList.add("greyRemote");
-    } else {
-      // Nothing happens if user does not confirm to switch OFF all plug loads
-      // Master button remains ON
-      document.getElementById("master").checked = true;
+    componentDidMount() {
+        // Fetch data from database
+        fetch('http://127.0.0.1:8000/control_interface/api/remote/')
+        .then(response => response.json())
+        .then(data => {
+            var datas = []
+            for (var input of data) {
+                if (input.user_id === this.state.current_user_id) {
+                    datas.push(input)
+                }
+            }
+            this.setState({books: datas})
+        })
     }
-  }
+
+    updateBook = (newBook) => {
+        fetch('http://127.0.0.1:8000/control_interface/api/remote/' + newBook.id.toString() + '/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newBook)
+        }).then(response => response.json())
+        .then(newBook => {
+            const newBooks = this.state.books.map(book => {
+                if (book.id === newBook.id) {
+                    return Object.assign({}, newBook)
+                } else {
+                    return book;
+                }
+            });
+            this.setState({books: newBooks});
+        })
+    }
+
+    render() {
+        return (
+            <RemoteControlList
+                books={this.state.books}
+                onUpdateClick={this.updateBook}
+            />
+        )
+    }
 }
 
-
-// Define function for when desktop component is clicked
-desktop.onclick = function() {
-  // Toggle the switch
-  document.getElementById("DesktopToggleRemote").checked = !document.getElementById("DesktopToggleRemote").checked
-
-  // Get the current state (ON/OFF) of the plug load
-  var current_state = document.getElementById("DesktopToggleRemote").checked
-
-  if (current_state === true) {
-    // If ON, image and outer ring should be green
-    desktopImage.src = "/static/Images/Desktop ON.png";
-    desktopRing.classList.remove("greyRemote");
-    desktopRing.classList.add("greenRemote");
-
-    // If at least one plug load is ON, master button is automatically toggled to ON.
-    // If all plug loads are OFF, master button is automatically toggled to OFF.
-    Main()
-  } else {
-    // If OFF, image and outer ring should be grey
-    desktopImage.src = "/static/Images/Desktop OFF.png";
-    desktopRing.classList.remove("greenRemote");
-    desktopRing.classList.add("greyRemote");
-
-    // If at least one plug load is ON, master button is automatically toggled to ON.
-    // If all plug loads are OFF, master button is automatically toggled to OFF.
-    Main()
-  }
+class RemoteControlList extends Component {
+    render() {
+        const books = this.props.books.map(book => (
+            <RemoteControlEditableItem
+                key={book.id}
+                id={book.id}
+                user_id={book.user_id}
+                device_type={book.device_type}
+                device_state={book.device_state}
+                onUpdateClick={this.props.onUpdateClick}
+            />
+        ));
+        return (
+            <>
+                <div style={{float:"right"}}>
+                    <p style={{marginLeft:"50px", marginBottom:"5px"}}> Master </p>
+                    <RemoteToggleButton id="master" defaultChecked={true} books={this.props.books} />
+                </div>
+                <br/>
+                <br/>
+                <div style={{margin:"auto", width:"fit-content"}}>
+                    {books}
+                </div>
+            </>
+        )
+    }
 }
 
-// Define function for when monitor component is clicked
-monitor.onclick = function() {
-  // Toggle the switch
-  document.getElementById("MonitorToggleRemote").checked = !document.getElementById("MonitorToggleRemote").checked
+class RemoteControlEditableItem extends Component {
+    handleUpdate = (book) => {
+        book.id = this.props.id;
+        this.props.onUpdateClick(book);
+    }
 
-  // Get the current state (ON/OFF) of the plug load
-  var current_state = document.getElementById("MonitorToggleRemote").checked
-
-  if (current_state === true) {
-    // If ON, image and outer ring should be green
-    monitorImage.src = "/static/Images/Monitor ON.png";
-    monitorRing.classList.remove("greyRemote");
-    monitorRing.classList.add("greenRemote");
-
-    // If at least one plug load is ON, master button is automatically toggled to ON.
-    // If all plug loads are OFF, master button is automatically toggled to OFF.
-    Main()
-  } else {
-    // If OFF, image and outer ring should be grey
-    monitorImage.src = "/static/Images/Monitor OFF.png";
-    monitorRing.classList.remove("greenRemote");
-    monitorRing.classList.add("greyRemote");
-
-    // If at least one plug load is ON, master button is automatically toggled to ON.
-    // If all plug loads are OFF, master button is automatically toggled to OFF.
-    Main()
-  }
+    render() {
+        const component = () => {
+            return (
+                <>
+                    <RemoteControlItem
+                        id={this.props.id}
+                        user_id={this.props.user_id}
+                        device_type={this.props.device_type}
+                        device_state={this.props.device_state}
+                        onFormSubmit={this.handleUpdate}
+                    />
+                </>
+            )
+        }
+        return (
+            component()
+        )
+    }
 }
 
-// Define function for when laptop component is clicked
-laptop.onclick = function() {
-  // Toggle the switch
-  document.getElementById("LaptopToggleRemote").checked = !document.getElementById("LaptopToggleRemote").checked
+class RemoteControlItem extends Component {
+    state = {
+        user_id: this.props.user_id,
+        device_type: this.props.device_type,
+        device_state: this.props.device_state
+    }
 
-  // Get the current state (ON/OFF) of the plug load
-  var current_state = document.getElementById("LaptopToggleRemote").checked
 
-  if (current_state === true) {
-    // If ON, image and outer ring should be green
-    laptopImage.src = "/static/Images/Laptop ON.png";
-    laptopRing.classList.remove("greyRemote");
-    laptopRing.classList.add("greenRemote");
+    handleFormSubmit = () => {
+        this.props.onFormSubmit({...this.state});
+    }
 
-    // If at least one plug load is ON, master button is automatically toggled to ON.
-    // If all plug loads are OFF, master button is automatically toggled to OFF.
-    Main()
-  } else {
-    // If OFF, image and outer ring should be grey
-    laptopImage.src = "/static/Images/Laptop OFF.png";
-    laptopRing.classList.remove("greenRemote");
-    laptopRing.classList.add("greyRemote");
+    onChange = (e) => {
+        // Update database
+        this.setState ({device_state: e.target.checked}, function() {this.handleFormSubmit()})
+    }
 
-    // If at least one plug load is ON, master button is automatically toggled to ON.
-    // If all plug loads are OFF, master button is automatically toggled to OFF.
-    Main()
-  }
+    handleRemoteBoxClick = (e) => {
+        e.preventDefault();
+        if (this.state.device_state === true) {
+            // Change icon to OFF
+            document.getElementById(this.state.device_type.replace(/\s/g,'') + "IconRemote").childNodes[0].className = "greyRing";
+
+            // Toggle the switch to OFF
+            document.getElementById(this.state.device_type.replace(/\s/g, '') + "ToggleRemote").checked = false;
+
+            // Update database
+            this.setState({device_state: false}, function() {
+                this.handleFormSubmit();
+                Main();
+            })
+        } else {
+            // Change icon to ON
+            document.getElementById(this.state.device_type.replace(/\s/g,'') + "IconRemote").childNodes[0].className = "greenRing";
+
+            // Toggle the switch to ON
+            document.getElementById(this.state.device_type.replace(/\s/g, '') + "ToggleRemote").checked = true;
+
+            // Update database
+            this.setState({device_state: true}, function() {
+                this.handleFormSubmit();
+                Main();
+            })
+        }
+    }
+
+    render() {
+
+        if (this.state.device_state === false) {
+            var remote_control_outer_ring = "greyRing";
+            var remote_control_image = "/static/Images/" + this.state.device_type.toString() + " OFF.png";
+        } else {
+            remote_control_outer_ring = "greenRing";
+            remote_control_image = "/static/Images/" + this.state.device_type.toString() + " ON.png";
+        }
+
+        return (
+            <div id={this.state.device_type.replace(/\s/g,'') + "BoxRemote"} className="containerRemote" onClick={this.handleRemoteBoxClick}>
+                <p style={{textAlign:"center", fontWeight:"bold", color:"black"}}> {this.state.device_type} </p>
+                <div id={this.state.device_type.replace(/\s/g,'') + "IconRemote"}>
+                    <div class={remote_control_outer_ring}>
+                        <div class="whiteRing">
+                            <img class="PlugLoadIcon" src={remote_control_image} alt="Icon" />
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div className="toggle-switch">
+                    <input
+                        type="checkbox"
+                        className="toggle-switch-checkbox"
+                        id={this.state.device_type.replace(/\s/g,'') + "ToggleRemote"}
+                        checked={this.state.device_state}
+                        defaultChecked={this.state.device_state}
+                        onChange={this.onChange}
+                    />
+                    <label className="toggle-switch-label" htmlFor={this.state.device_type.replace(/\s/g,'') + "ToggleRemote"}>
+                        <span className="toggle-switch-inner" data-yes="ON" data-no="OFF" />
+                        <span className="toggle-switch-switch" />
+                    </label>
+                </div>
+            </div>
+        );
+    }
 }
 
-// Define function for when task lamp component is clicked
-tasklamp.onclick = function() {
-  // Toggle the switch
-  document.getElementById("TaskLampToggleRemote").checked = !document.getElementById("TaskLampToggleRemote").checked
+class RemoteToggleButton extends Component {
+    state = {
+        checked: this.props.defaultChecked
+    };
 
-  // Get the current state (ON/OFF) of the plug load
-  var current_state = document.getElementById("TaskLampToggleRemote").checked
+    constructor(props) {
+        super(props);
+        window.master = this;
+    }
 
-  if (current_state === true) {
-    // If ON, image and outer ring should be green
-    tasklampImage.src = "/static/Images/Task Lamp ON.png";
-    tasklampRing.classList.remove("greyRemote");
-    tasklampRing.classList.add("greenRemote");
+    onChange = (e) => {
+        if (this.state.checked === true) {
+            if (window.confirm('You are switching off all your devices.')) {
+                // Switch OFF all plug loads
+                if (document.getElementById("DesktopToggleRemote") !== null) {
+                    if (document.getElementById("DesktopToggleRemote").checked === true) {
+                        document.getElementById("DesktopToggleRemote").click();
+                    }
+                }
+                if (document.getElementById("MonitorToggleRemote") !== null) {
+                    if (document.getElementById("MonitorToggleRemote").checked === true) {
+                        document.getElementById("MonitorToggleRemote").click();
+                    }
+                }
+                if (document.getElementById("LaptopToggleRemote") !== null) {
+                    if (document.getElementById("LaptopToggleRemote").checked === true) {
+                        document.getElementById("LaptopToggleRemote").click();
+                    }
+                }
+                if (document.getElementById("TaskLampToggleRemote") !== null) {
+                    if (document.getElementById("TaskLampToggleRemote").checked === true) {
+                        document.getElementById("TaskLampToggleRemote").click();
+                    }
+                }
+                if (document.getElementById("FanToggleRemote") !== null) {
+                    if (document.getElementById("FanToggleRemote").checked === true) {
+                        document.getElementById("FanToggleRemote").click();
+                    }
+                }
+                this.setState({checked: false})
+            } else {
+                this.setState({checked: true})
+            }
+        } else {
+            if (window.confirm('You are switching on all your devices.')) {
+                // Switch ON all plug loads
+                if (document.getElementById("DesktopToggleRemote") !== null) {
+                    if (document.getElementById("DesktopToggleRemote").checked === false) {
+                        document.getElementById("DesktopToggleRemote").click();
+                    }
+                }
+                if (document.getElementById("MonitorToggleRemote") !== null) {
+                    if (document.getElementById("MonitorToggleRemote").checked === false) {
+                        document.getElementById("MonitorToggleRemote").click();
+                    }
+                }
+                if (document.getElementById("LaptopToggleRemote") !== null) {
+                    if (document.getElementById("LaptopToggleRemote").checked === false) {
+                        document.getElementById("LaptopToggleRemote").click();
+                    }
+                }
+                if (document.getElementById("TaskLampToggleRemote") !== null) {
+                    if (document.getElementById("TaskLampToggleRemote").checked === false) {
+                        document.getElementById("TaskLampToggleRemote").click();
+                    }
+                }
+                if (document.getElementById("FanToggleRemote") !== null) {
+                    if (document.getElementById("FanToggleRemote").checked === false) {
+                        document.getElementById("FanToggleRemote").click();
+                    }
+                }
+                this.setState({checked: true})
+            } else {
+                this.setState({checked: false})
+            }
+        }
+    }
 
-    // If at least one plug load is ON, master button is automatically toggled to ON.
-    // If all plug loads are OFF, master button is automatically toggled to OFF.
-    Main()
-  } else {
-    // If OFF, image and outer ring should be grey
-    tasklampImage.src = "/static/Images/Task Lamp OFF.png";
-    tasklampRing.classList.remove("greenRemote");
-    tasklampRing.classList.add("greyRemote");
-
-    // If at least one plug load is ON, master button is automatically toggled to ON.
-    // If all plug loads are OFF, master button is automatically toggled to OFF.
-    Main()
-  }
+    render() {
+        var defaultChecked = false
+        for (var book of this.props.books) {
+            if (book.device_state === true) {
+                defaultChecked = true
+            }
+        }
+        return (
+            <div className={"toggle-switch" + (this.props.Small ? " small-switch" : "")}>
+                <input
+                    type="checkbox"
+                    name={this.props.Name}
+                    className="toggle-switch-checkbox"
+                    id={this.props.id}
+                    checked={this.checked}
+                    defaultChecked={defaultChecked}
+                    onClick={this.onChange}
+                    disabled={this.props.disabled}
+                />
+                {this.props.id ? (
+                    <label className="toggle-switch-label" htmlFor={this.props.id}>
+                        <span
+                            className={this.props.disabled ? "toggle-switch-inner toggle-switch-disabled" : "toggle-switch-inner"}
+                            data-yes="ON"
+                            data-no="OFF"
+                        />
+                        <span
+                            className={this.props.disabled ? "toggle-switch-switch toggle-switch-disabled": "toggle-switch-switch"}
+                        />
+                    </label>
+                ) : null}
+          </div>
+        )
+    }
 }
 
-// Define the function for when fan component is clicked
-fan.onclick = function() {
-  // Toggle the switch
-  document.getElementById("FanToggleRemote").checked = !document.getElementById("FanToggleRemote").checked
-
-  // Get the current state (ON/OFF) of the plug load
-  var current_state = document.getElementById("FanToggleRemote").checked
-
-  if (current_state === true) {
-    // If ON, image and outer ring should be green
-    fanImage.src = "/static/Images/Fan ON.png";
-    fanRing.classList.remove("greyRemote");
-    fanRing.classList.add("greenRemote");
-
-    // If at least one plug load is ON, master button is automatically toggled to ON.
-    // If all plug loads are OFF, master button is automatically toggled to OFF.
-    Main()
-  } else {
-    // If OFF, image and outer ring should be grey
-    fanImage.src = "/static/Images/Fan OFF.png";
-    fanRing.classList.remove("greenRemote");
-    fanRing.classList.add("greyRemote");
-
-    // If at least one plug load is ON, master button is automatically toggled to ON.
-    // If all plug loads are OFF, master button is automatically toggled to OFF.
-    Main()
-  }
-}
-
+ReactDOM.render(<RemoteControlDashboard />, document.getElementById('remote-control'))
 
 function Main() {
-  // If at least one plug load is ON, master button is automatically toggled to ON.
-  if (document.getElementById("DesktopToggleRemote").checked || document.getElementById("MonitorToggleRemote").checked || document.getElementById("LaptopToggleRemote").checked || document.getElementById("TaskLampToggleRemote").checked || document.getElementById("FanToggleRemote").checked) {
-    document.getElementById("master").checked = true;
-  } else {
-    // If all plug loads are OFF, master button is automatically toggled to OFF.
-    if (!document.getElementById("DesktopToggleRemote").checked && !document.getElementById("MonitorToggleRemote").checked && !document.getElementById("LaptopToggleRemote").checked && !document.getElementById("TaskLampToggleRemote").checked && !document.getElementById("FanToggleRemote").checked) {
-      document.getElementById("master").checked = false;
+    // If at least one plug load is ON, master button is automatically toggled to ON.
+    if (document.getElementById("DesktopToggleRemote").checked || document.getElementById("MonitorToggleRemote").checked ||
+        document.getElementById("LaptopToggleRemote").checked || document.getElementById("TaskLampToggleRemote").checked ||
+        document.getElementById("FanToggleRemote").checked) {
+        window.master.setState({checked: true});
+        document.getElementById("master").checked = true;
+    } else {
+        // If all plug loads are OFF, master button is automatically toggled to OFF.
+        if (!document.getElementById("DesktopToggleRemote").checked && !document.getElementById("MonitorToggleRemote").checked &&
+            !document.getElementById("LaptopToggleRemote").checked && !document.getElementById("TaskLampToggleRemote").checked &&
+            !document.getElementById("FanToggleRemote").checked) {
+            window.master.setState({checked: false});
+            document.getElementById("master").checked = false;
+        }
     }
-  }
 }
-
-
-
 
 // Schedule Based control
 
@@ -866,7 +886,6 @@ if (event.ctrlKey==true || (event.which == '61' || event.which == '107' || event
 
 
 // Presence Based Control
-
 class PresenceControlDashboard extends Component {
     state = {
         books: [],
@@ -875,7 +894,7 @@ class PresenceControlDashboard extends Component {
 
     componentDidMount() {
         // Fetch data from database
-        fetch('http://localhost:8000/control_interface/api/presence/')
+        fetch('http://127.0.0.1:8000/control_interface/api/presence/')
         .then(response => response.json())
         .then(data => {
             var datas = []
@@ -889,7 +908,7 @@ class PresenceControlDashboard extends Component {
     }
 
     updateBook = (newBook) => {
-        fetch('http://localhost:8000/control_interface/api/presence/' + newBook.id.toString() + '/', {
+        fetch('http://127.0.0.1:8000/control_interface/api/presence/' + newBook.id.toString() + '/', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -910,10 +929,13 @@ class PresenceControlDashboard extends Component {
 
     render() {
         return (
-            <PresenceControlList
-                books={this.state.books}
-                onUpdateClick={this.updateBook}
-            />
+            <>
+              <br/>
+              <PresenceControlList
+                  books={this.state.books}
+                  onUpdateClick={this.updateBook}
+              />
+            </>
         )
     }
 }
@@ -1005,10 +1027,10 @@ class PresenceControlItem extends Component {
     }
 
     handlePresenceIconClick = () => {
-        if (document.getElementById(this.state.device_type.replace(/\s/g,'')).className === "greenPresence") {
+        if (document.getElementById(this.state.device_type.replace(/\s/g,'')).className === "greenRing") {
             if (window.confirm(`You are switching off presence-based control for ${this.state.device_type}.`)) {
                 // Change outer ring to red
-                document.getElementById(this.state.device_type.replace(/\s/g,'')).className = "redPresence"
+                document.getElementById(this.state.device_type.replace(/\s/g,'')).className = "redRing"
                 // Change image to OFF
                 document.getElementById(this.state.device_type.replace(/\s/g,'')).childNodes[0].childNodes[0].src = "/static/Images/" + this.state.device_type.toString() + " OFF.png";
                 // Set value to OFF
@@ -1018,7 +1040,7 @@ class PresenceControlItem extends Component {
             }
         } else {
             // Change outer ring to green
-            document.getElementById(this.state.device_type.replace(/\s/g,'')).className = "greenPresence"
+            document.getElementById(this.state.device_type.replace(/\s/g,'')).className = "greenRing"
             // Change image to ON
             document.getElementById(this.state.device_type.replace(/\s/g,'')).childNodes[0].childNodes[0].src = "/static/Images/" + this.state.device_type.toString() + " ON.png";
             // Set value to 5 minutes
@@ -1059,10 +1081,10 @@ class PresenceControlItem extends Component {
         }
 
         if (this.state.presence_setting.toString() === "1000000") {
-            var presence_control_outer_ring = "redPresence";
+            var presence_control_outer_ring = "redRing";
             var presence_control_image = "/static/Images/" + this.state.device_type.toString() + " OFF.png";
         } else {
-            presence_control_outer_ring = "greenPresence";
+            presence_control_outer_ring = "greenRing";
             presence_control_image = "/static/Images/" + this.state.device_type.toString() + " ON.png";
         }
 
@@ -1070,8 +1092,8 @@ class PresenceControlItem extends Component {
             <div id={this.state.device_type.replace(/\s/g,'') + "BoxPresence"} className="containerPresence">
                 <div className="iconPresence">
                     <div className={presence_control_outer_ring} id={this.state.device_type.replace(/\s/g,'')} onClick={this.handlePresenceIconClick}>
-                        <div className="whitePresence">
-                            <img class="PresencePlugLoadIcon" src={presence_control_image} alt="Icon" />
+                        <div className="whiteRing">
+                            <img class="PlugLoadIcon" src={presence_control_image} alt="Icon" />
                         </div>
                     </div>
                 </div>

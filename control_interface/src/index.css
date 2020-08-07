@@ -34,7 +34,13 @@
 }
 
 #DesktopBoxPresence, #MonitorBoxPresence, #LaptopBoxPresence, #TaskLampBoxPresence, #FanBoxPresence {
-  display:inline-block;
+  display: inline-block;
+}
+
+
+
+#DesktopIconRemote, #MonitorIconRemote, #LaptopIconRemote, #TaskLampIconRemote, #FanIconRemote {
+    padding-left: 36.5px;
 }
 
 #DesktopOkButton, #MonitorOkButton, #LaptopOkButton, #TaskLampOkButton, #FanOkButton {
@@ -66,19 +72,38 @@
     margin-bottom: 100px
 }
 
+.containerRemote {
+    border: 1px solid black;
+    height: 200px;
+    width: 150px;
+    border-radius: 5%;
+    display: inline-block;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
 .dropdownPresence {
   width: 220px;
   height: 1px;
   overflow-y: visible;
 }
 
-.greenPresence {
-  background: #47ff38;
-  border-radius: 50%;
-  width: 75px;
-  height: 75px;
-  border: 1px solid #707070;
-  display: inline-block;
+.greenRing {
+    background: #47ff38;
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    border: 1px solid #707070;
+    display: inline-block;
+}
+
+.greyRing {
+    background: #BFBFBF;
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    border: 1px solid #707070;
+    display: inline-block;
 }
 
 .iconPresence {
@@ -101,13 +126,13 @@
     width: fit-content;
 }
 
-.PresencePlugLoadIcon {
+.PlugLoadIcon {
   height: 40px;
   margin-left: 12.5px;
   margin-top: 12.5px;
 }
 
-.redPresence {
+.redRing {
     background: red;
     border-radius: 50%;
     width: 75px;
@@ -116,17 +141,105 @@
     display: inline-block;
 }
 
+.toggle-switch {
+    position: relative;
+    width: 75px;
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    text-align: left;
+    margin-left: 38.5px;
+}
+
+.toggle-switch-checkbox {
+    display: none;
+}
+
+.toggle-switch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: 0 solid #ccc;
+    border-radius: 20px;
+    margin: 0;
+}
+
+.toggle-switch-inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+}
+
+.toggle-switch-inner::before, .toggle-switch-inner::after {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 34px;
+    padding: 0;
+    line-height: 34px;
+    font-size: 14px;
+    color: white;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.toggle-switch-inner:before {
+    content: "ON";
+    padding-left: 10px;
+    background-color: #47FF38;
+    color: black;
+}
+
+.toggle-switch-inner:after {
+    content: "OFF";
+    padding-right: 10px;
+    background-color: #ccc;
+    color: black;
+    text-align: right;
+}
+
+.toggle-switch-switch {
+    display: block;
+    width: 24px;
+    margin: 5px;
+    background: white;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 40px;
+    border: 0 solid #ccc;
+    border-radius: 20px;
+}
+
+.toggle-switch-checkbox:checked + .toggle-switch-label .toggle-switch-inner {
+    margin-left: 0;
+}
+
+.toggle-switch-checkbox:checked + .toggle-switch-label .toggle-switch-switch {
+    right: 0px;
+}
+
+.toggle-switch-inner::before {
+    content: attr(data-yes);
+}
+
+.toggle-switch-inner::after {
+    content: attr(data-no);
+}
+
 .visiblePresence {
   border: 1px solid #707070;
   box-shadow: 3px 3px 3px 3px #ccc;
   padding: 15px 5px;
   text-align: center;
   width: 125px;
-  height: fit-content;
+  height: 100px;
   margin-left: 10px;
 }
 
-.whitePresence {
+.whiteRing {
     background: white;
     border-radius: 50%;
     width: 65px;
@@ -142,4 +255,5 @@
     font-weight: bold;
     font-size: 1rem;
     margin-left: 20px;
+    color: black;
 }
