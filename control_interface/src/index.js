@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import './index.css'
+import './index.css';
+import ConfirmAlert from './ConfirmAlert';
 import Basic from "./Basic";
 import Basic0 from "./Basic0"
 import Basic1 from "./Basic1"
@@ -139,37 +140,66 @@ class RemoteControlItem extends Component {
         this.props.onFormSubmit({...this.state});
     }
 
-    onChange = (e) => {
-        // Update database
-        this.setState ({device_state: e.target.checked}, function() {this.handleFormSubmit()})
+    onConfirm1 = () => {
+        var to_be_confirmed = this.state.device_type + "ToggleRemote";
+        document.getElementById(to_be_confirmed).checked = false;
+        this.setState({device_state: false}, function() {this.handleFormSubmit()});
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+        Main();
     }
 
-    handleRemoteBoxClick = (e) => {
+    onConfirm2 = () => {
+        var to_be_confirmed = this.state.device_type + "ToggleRemote";
+        document.getElementById(to_be_confirmed).checked = true;
+        this.setState({device_state: true}, function() {this.handleFormSubmit()});
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+        Main();
+    }
+
+    onCancel1 = () => {
+        var to_be_cancelled = this.state.device_type + "ToggleRemote";
+        document.getElementById(to_be_cancelled).checked = true;
+        this.setState({device_state: true}, function() {this.handleFormSubmit()});
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+    }
+
+    onCancel2 = () => {
+        var to_be_cancelled = this.state.device_type + "ToggleRemote";
+        document.getElementById(to_be_cancelled).checked = false;
+        this.setState({device_state: false}, function() {this.handleFormSubmit()});
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+    }
+
+    onChange = (e) => {
         e.preventDefault();
-        if (this.state.device_state === true) {
-            // Change icon to OFF
-            document.getElementById(this.state.device_type.replace(/\s/g,'') + "IconRemote").childNodes[0].className = "greyRing";
-
-            // Toggle the switch to OFF
-            document.getElementById(this.state.device_type.replace(/\s/g, '') + "ToggleRemote").checked = false;
-
-            // Update database
-            this.setState({device_state: false}, function() {
-                this.handleFormSubmit();
-                Main();
-            })
+        if (this.state.device_type === "Desktop" || this.state.device_type === "Laptop") {
+            if (this.state.device_state === true) {
+                if (document.getElementById("confirm-alert").childNodes.length > 0) {
+                    // Switch OFF
+                    this.setState({device_state: false}, function() {this.handleFormSubmit()})
+                } else {
+                    ReactDOM.render(<ConfirmAlert
+                                        message={"You are switching off your " + this.state.device_type + "."}
+                                        onConfirm = {this.onConfirm1}
+                                        onCancel = {this.onCancel1}
+                                    />, document.getElementById("confirm-alert"))
+                }
+            } else {
+                if (document.getElementById("confirm-alert").childNodes.length > 0) {
+                    // Switch ON
+                    this.setState({device_state: true}, function() {this.handleFormSubmit()})
+                } else {
+                    ReactDOM.render(<ConfirmAlert
+                                        message={"You are switching on your " + this.state.device_type + "."}
+                                        onConfirm = {this.onConfirm2}
+                                        onCancel = {this.onCancel2}
+                                    />, document.getElementById("confirm-alert"))
+                }
+            }
         } else {
-            // Change icon to ON
-            document.getElementById(this.state.device_type.replace(/\s/g,'') + "IconRemote").childNodes[0].className = "greenRing";
-
-            // Toggle the switch to ON
-            document.getElementById(this.state.device_type.replace(/\s/g, '') + "ToggleRemote").checked = true;
-
             // Update database
-            this.setState({device_state: true}, function() {
-                this.handleFormSubmit();
-                Main();
-            })
+            this.setState({device_state: e.target.checked}, function() {this.handleFormSubmit()})
+            Main();
         }
     }
 
@@ -223,71 +253,96 @@ class RemoteToggleButton extends Component {
         window.master = this;
     }
 
+    onConfirm1 = () => {
+        // Switch OFF all plug loads
+        if (document.getElementById("DesktopToggleRemote") !== null) {
+            if (document.getElementById("DesktopToggleRemote").checked === true) {
+                document.getElementById("DesktopToggleRemote").click();
+            }
+        }
+        if (document.getElementById("MonitorToggleRemote") !== null) {
+            if (document.getElementById("MonitorToggleRemote").checked === true) {
+                document.getElementById("MonitorToggleRemote").click();
+            }
+        }
+        if (document.getElementById("LaptopToggleRemote") !== null) {
+            if (document.getElementById("LaptopToggleRemote").checked === true) {
+                document.getElementById("LaptopToggleRemote").click();
+            }
+        }
+        if (document.getElementById("TaskLampToggleRemote") !== null) {
+            if (document.getElementById("TaskLampToggleRemote").checked === true) {
+                document.getElementById("TaskLampToggleRemote").click();
+            }
+        }
+        if (document.getElementById("FanToggleRemote") !== null) {
+            if (document.getElementById("FanToggleRemote").checked === true) {
+                document.getElementById("FanToggleRemote").click();
+            }
+        }
+        document.getElementById("master").checked = false;
+        this.setState({checked: false})
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+    }
+
+    onConfirm2 = () => {
+        // Switch ON all plug loads
+        if (document.getElementById("DesktopToggleRemote") !== null) {
+            if (document.getElementById("DesktopToggleRemote").checked === false) {
+                document.getElementById("DesktopToggleRemote").click();
+            }
+        }
+        if (document.getElementById("MonitorToggleRemote") !== null) {
+            if (document.getElementById("MonitorToggleRemote").checked === false) {
+                document.getElementById("MonitorToggleRemote").click();
+            }
+        }
+        if (document.getElementById("LaptopToggleRemote") !== null) {
+            if (document.getElementById("LaptopToggleRemote").checked === false) {
+                document.getElementById("LaptopToggleRemote").click();
+            }
+        }
+        if (document.getElementById("TaskLampToggleRemote") !== null) {
+            if (document.getElementById("TaskLampToggleRemote").checked === false) {
+                document.getElementById("TaskLampToggleRemote").click();
+            }
+        }
+        if (document.getElementById("FanToggleRemote") !== null) {
+            if (document.getElementById("FanToggleRemote").checked === false) {
+                document.getElementById("FanToggleRemote").click();
+            }
+        }
+        document.getElementById("master").checked = true;
+        this.setState({checked: true});
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+    }
+
+    onCancel1 = () => {
+        document.getElementById("master").checked = true;
+        this.setState({checked: true});
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+    }
+
+    onCancel2 = () => {
+        document.getElementById("master").checked = false;
+        this.setState({checked: false});
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+    }
+
     onChange = (e) => {
+        e.preventDefault();
         if (this.state.checked === true) {
-            if (window.confirm('You are switching off all your devices.')) {
-                // Switch OFF all plug loads
-                if (document.getElementById("DesktopToggleRemote") !== null) {
-                    if (document.getElementById("DesktopToggleRemote").checked === true) {
-                        document.getElementById("DesktopToggleRemote").click();
-                    }
-                }
-                if (document.getElementById("MonitorToggleRemote") !== null) {
-                    if (document.getElementById("MonitorToggleRemote").checked === true) {
-                        document.getElementById("MonitorToggleRemote").click();
-                    }
-                }
-                if (document.getElementById("LaptopToggleRemote") !== null) {
-                    if (document.getElementById("LaptopToggleRemote").checked === true) {
-                        document.getElementById("LaptopToggleRemote").click();
-                    }
-                }
-                if (document.getElementById("TaskLampToggleRemote") !== null) {
-                    if (document.getElementById("TaskLampToggleRemote").checked === true) {
-                        document.getElementById("TaskLampToggleRemote").click();
-                    }
-                }
-                if (document.getElementById("FanToggleRemote") !== null) {
-                    if (document.getElementById("FanToggleRemote").checked === true) {
-                        document.getElementById("FanToggleRemote").click();
-                    }
-                }
-                this.setState({checked: false})
-            } else {
-                this.setState({checked: true})
-            }
+            ReactDOM.render(<ConfirmAlert
+                                message="You are switching off all your devices."
+                                onConfirm = {this.onConfirm1}
+                                onCancel = {this.onCancel1}
+                             />, document.getElementById("confirm-alert"))
         } else {
-            if (window.confirm('You are switching on all your devices.')) {
-                // Switch ON all plug loads
-                if (document.getElementById("DesktopToggleRemote") !== null) {
-                    if (document.getElementById("DesktopToggleRemote").checked === false) {
-                        document.getElementById("DesktopToggleRemote").click();
-                    }
-                }
-                if (document.getElementById("MonitorToggleRemote") !== null) {
-                    if (document.getElementById("MonitorToggleRemote").checked === false) {
-                        document.getElementById("MonitorToggleRemote").click();
-                    }
-                }
-                if (document.getElementById("LaptopToggleRemote") !== null) {
-                    if (document.getElementById("LaptopToggleRemote").checked === false) {
-                        document.getElementById("LaptopToggleRemote").click();
-                    }
-                }
-                if (document.getElementById("TaskLampToggleRemote") !== null) {
-                    if (document.getElementById("TaskLampToggleRemote").checked === false) {
-                        document.getElementById("TaskLampToggleRemote").click();
-                    }
-                }
-                if (document.getElementById("FanToggleRemote") !== null) {
-                    if (document.getElementById("FanToggleRemote").checked === false) {
-                        document.getElementById("FanToggleRemote").click();
-                    }
-                }
-                this.setState({checked: true})
-            } else {
-                this.setState({checked: false})
-            }
+            ReactDOM.render(<ConfirmAlert
+                                message="You are switching on all your devices."
+                                onConfirm = {this.onConfirm2}
+                                onCancel = {this.onCancel2}
+                            />, document.getElementById("confirm-alert"))
         }
     }
 
