@@ -15,6 +15,7 @@ class ConfirmAlert extends Component {
                 <div class="confirm_alert_popup">
                     <div class="confirm_alert_content">
                         <FontAwesomeIcon icon={faExclamationTriangle} class="confirm_alert_icon"/>
+                        <br/>
                         <p> {this.state.message} </p>
                         <br/>
                         <div class="confirm_alert_buttons">
@@ -28,4 +29,4 @@ class ConfirmAlert extends Component {
     }
 }
 
-export default ConfirmAlert
+export default ConfirmAlert;

@@ -58,11 +58,11 @@
   position: absolute;
   top: 80px;
   left: 80px;
+  z-index: 100;
 }
 
 #DesktopSelect, #MonitorSelect, #LaptopSelect, #TaskLampSelect, #FanSelect {
     margin-left: 20px;
-    width: 120px;
 }
 
 #DesktopTextOther, #MonitorTextOther, #LaptopTextOther, #TaskLampTextOther, #FanTextOther {
@@ -98,7 +98,7 @@
 
 .confirm_alert_popup {
     margin: 20% auto;
-    padding: 35px 5px;
+    padding: 35px 10px;
     background: white;
     border-radius: 5px;
     width: 30%;
@@ -172,6 +172,14 @@
   height: 40px;
   margin-left: 12.5px;
   margin-top: 12.5px;
+}
+
+.popup_presence_overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .redRing {

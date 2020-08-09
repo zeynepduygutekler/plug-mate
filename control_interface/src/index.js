@@ -1001,6 +1001,7 @@ class PresenceControlDashboard extends Component {
                   books={this.state.books}
                   onUpdateClick={this.updateBook}
               />
+              <div id="PopupPresenceOverlay"> </div>
             </>
         )
     }
@@ -1059,6 +1060,17 @@ class PresenceControlItem extends Component {
         presence_setting: this.props.presence_setting
     }
 
+    onConfirm1 = () => {
+        // Update database
+        this.setState({presence_setting: "1000000"}, function() {this.handleFormSubmit()});
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+    }
+
+    onCancel1 = () => {
+        document.getElementById(this.state.device_type.replace(/\s/g, '') + "Select").value = this.state.presence_setting;
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+    }
+
     handleFormSubmit = () => {
         this.props.onFormSubmit({...this.state});
     }
@@ -1066,25 +1078,33 @@ class PresenceControlItem extends Component {
     handleSettingUpdate = (evt) => {
         if (evt.target.value !== "other" && evt.target.value !== "1000000") {
             // Hide popup
-            document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresence").className = "invisiblePresence";
+            ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
+            document.getElementById("PopupPresenceOverlay").className = "";
             // Update database
             this.setState({presence_setting: evt.target.value}, function() {this.handleFormSubmit()})
         }
         if (evt.target.value === "other") {
             // Show popup
-            document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresence").className = "visiblePresence";
+            ReactDOM.render(
+                <PresenceControlPopup
+                    device_type={this.state.device_type}
+                    handleOtherUpdate={this.handleOtherUpdate}
+                    handleEnterClick={this.handleEnterClick}
+                    cancelButtonClicked={this.cancelButtonClicked}
+                    okButtonClicked={this.okButtonClicked}
+                />, document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox")
+            )
+            document.getElementById("PopupPresenceOverlay").className = "popup_presence_overlay";
         }
         if (evt.target.value === "1000000") {
             // Hide popup
-            document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresence").className = "invisiblePresence";
-            if (window.confirm(`You are switching off presence-based control for ${this.state.device_type}.`)) {
-                // Update database
-                this.setState({presence_setting: evt.target.value}, function() {this.handleFormSubmit()})
-            } else {
-                // Set value to 5 minutes
-                document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "5";
-                this.setState({presence_setting: "5"}, function() {this.handleFormSubmit()})
-            }
+            ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
+            document.getElementById("PopupPresenceOverlay").className = "";
+            ReactDOM.render(<ConfirmAlert
+                                message={"You are deactivating presence-based control for " + this.state.device_type + "."}
+                                onConfirm = {this.onConfirm1}
+                                onCancel = {this.onCancel1}
+                            />, document.getElementById("confirm-alert"))
         }
     }
 
@@ -1092,18 +1112,35 @@ class PresenceControlItem extends Component {
         this.setState({presence_setting: evt.target.value});
     }
 
+    handleEnterClick = (evt) => {
+        if (evt.key === "Enter" || evt.keyCode === 13) {
+            this.okButtonClicked();
+        }
+    }
+
+    onConfirm2 = () => {
+        // Change outer ring to red
+        document.getElementById(this.state.device_type.replace(/\s/g,'')).className = "redRing";
+        // Change image to OFF
+        document.getElementById(this.state.device_type.replace(/\s/g,'')).childNodes[0].childNodes[0].src = "/static/Images/" + this.state.device_type.toString() + " OFF.png";
+        // Set value to OFF
+        document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "1000000";
+        // Update database
+        this.setState({presence_setting: "1000000"}, function() {this.handleFormSubmit()})
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+    }
+
+    onCancel2 = () => {
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+    }
+
     handlePresenceIconClick = () => {
         if (document.getElementById(this.state.device_type.replace(/\s/g,'')).className === "greenRing") {
-            if (window.confirm(`You are switching off presence-based control for ${this.state.device_type}.`)) {
-                // Change outer ring to red
-                document.getElementById(this.state.device_type.replace(/\s/g,'')).className = "redRing"
-                // Change image to OFF
-                document.getElementById(this.state.device_type.replace(/\s/g,'')).childNodes[0].childNodes[0].src = "/static/Images/" + this.state.device_type.toString() + " OFF.png";
-                // Set value to OFF
-                document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "1000000";
-                // Update database
-                this.setState({presence_setting: "1000000"}, function() {this.handleFormSubmit()})
-            }
+            ReactDOM.render(<ConfirmAlert
+                                message={"You are deactivating presence-based control for " + this.state.device_type + "."}
+                                onConfirm = {this.onConfirm2}
+                                onCancel = {this.onCancel2}
+                            />, document.getElementById("confirm-alert"))
         } else {
             // Change outer ring to green
             document.getElementById(this.state.device_type.replace(/\s/g,'')).className = "greenRing"
@@ -1118,18 +1155,20 @@ class PresenceControlItem extends Component {
 
     cancelButtonClicked = () => {
         // Hide popup
-        document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresence").className = "invisiblePresence";
+        ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
+        document.getElementById("PopupPresenceOverlay").className = "";
         // Set value to 5 minutes
         document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "5";
     }
 
-    okButtonClicked = (evt) => {
+    okButtonClicked = () => {
         // Display value on dropdown
         document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = document.getElementById(this.state.device_type.replace(/\s/g,'') + "TextOther").value;
         // Clear text box on popup
         document.getElementById(this.state.device_type.replace(/\s/g,'') + "TextOther").value = "";
         // Hide popup
-        document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresence").className = "invisiblePresence";
+        ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
+        document.getElementById("PopupPresenceOverlay").className = "";
         // Update database
         this.handleFormSubmit();
     }
@@ -1154,7 +1193,6 @@ class PresenceControlItem extends Component {
             presence_control_image = "/static/Images/" + this.state.device_type.toString() + " ON.png";
         }
 
-        var label = "Off " + this.state.device_type + " after I leave for:"
         return (
             <div id={this.state.device_type.replace(/\s/g,'') + "BoxPresence"} className="containerPresence">
                 <div className="iconPresence">
@@ -1172,28 +1210,36 @@ class PresenceControlItem extends Component {
                             </div>
                             <select defaultValue={this.state.presence_setting} onChange={this.handleSettingUpdate} id={this.state.device_type.replace(/\s/g,'') + "Select"}>
                                 <option value="1000000"> Deactivate </option>
-                                <optgroup label={label}>
+                                <optgroup label="Off after I leave for:">
                                     <option value="5"> 5 minutes </option>
                                     <option value="10"> 10 minutes </option>
                                     <option value="20"> 20 minutes </option>
                                     <option value="30"> 30 minutes </option>
                                     <option value="60"> 1 hour </option>
-                                    <option value="other"> Custom Time </option>
+                                    <option value="other"> Other </option>
                                 </optgroup>
                                 <option value={display_value} disabled={disabled}> {display_text} </option>
                             </select>
                         </div>
-                        <div id={this.state.device_type.replace(/\s/g,'') + "PopupPresence"} className="invisiblePresence">
-                            <input type="text" id={this.state.device_type.replace(/\s/g,'') + "TextOther"} onChange={this.handleOtherUpdate} />
-                            <p class="minutes"> minutes </p>
-                            <br />
-                            <button id={this.state.device_type.replace(/\s/g,'') + "CancelButton"} onClick={this.cancelButtonClicked}> Cancel </button>
-                            <button id={this.state.device_type.replace(/\s/g,'') + "OkButton"} onClick={this.okButtonClicked}> OK </button>
-                        </div>
+                        <div id={this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"}> </div>
                     </div>
                 </div>
             </div>
         );
+    }
+}
+
+class PresenceControlPopup extends Component {
+    render() {
+        return (
+            <div id={this.props.device_type.replace(/\s/g,'') + "PopupPresence"} className="visiblePresence">
+                <input type="text" id={this.props.device_type.replace(/\s/g,'') + "TextOther"} onChange={this.props.handleOtherUpdate} onKeyUp={this.props.handleEnterClick} />
+                <p class="minutes"> minutes </p>
+                <br />
+                <button id={this.props.device_type.replace(/\s/g,'') + "CancelButton"} onClick={this.props.cancelButtonClicked}> Cancel </button>
+                <button id={this.props.device_type.replace(/\s/g,'') + "OkButton"} onClick={this.props.okButtonClicked}> OK </button>
+            </div>
+        )
     }
 }
 
