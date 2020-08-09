@@ -100,3 +100,17 @@ class PresenceData(models.Model):
     user_id = models.IntegerField()
     device_type = models.CharField(max_length=100)
     presence_setting = models.IntegerField()
+
+
+class AchievementsBonus(models.Model):
+    user_id = models.IntegerField()
+    tree_first = models.BooleanField()
+    tree_fifth = models.BooleanField()
+    tree_tenth = models.BooleanField()
+    redeem_reward = models.BooleanField()
+    first_remote = models.BooleanField()
+    first_schedule = models.BooleanField()
+    first_presence = models.BooleanField()
+
+    class Meta:
+        db_table = 'achievements_bonus'

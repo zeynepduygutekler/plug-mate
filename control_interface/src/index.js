@@ -132,9 +132,51 @@ class RemoteControlItem extends Component {
     state = {
         user_id: this.props.user_id,
         device_type: this.props.device_type,
-        device_state: this.props.device_state
+        device_state: this.props.device_state,
+        achievements_books: []
     }
 
+    componentDidMount() {
+        // Fetch data for achievements
+        fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/')
+        .then(response => response.json())
+        .then(data => {
+            for (var input of data) {
+                if (input.user_id === this.state.user_id) {
+                    this.setState({achievements_books: [input]})
+                }
+            }
+        })
+    }
+
+    updateAchievementsBooks = (newBook) => {
+        fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/' + newBook.id.toString() + '/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newBook)
+        }).then(response => response.json())
+        .then(newBook => {
+            const newBooks = this.state.achievements_books.map(book => {
+                if (book.id === newBook.id) {
+                    return Object.assign({}, newBook);
+                } else {
+                    return book;
+                }
+            });
+            this.setState({achievements_books: newBooks})
+        })
+    }
+
+    handleAchievementsUpdate = (book) => {
+        book.id = this.props.user_id;
+        this.updateAchievementsBooks(book);
+    }
+
+    handleAchievementsFormSubmit = () => {
+        this.handleAchievementsUpdate(this.state.achievements_books[0])
+    }
 
     handleFormSubmit = () => {
         this.props.onFormSubmit({...this.state});
@@ -146,6 +188,18 @@ class RemoteControlItem extends Component {
         this.setState({device_state: false}, function() {this.handleFormSubmit()});
         ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
         Main();
+
+        // If first time clicking, update achievement
+        if (this.state.achievements_books[0].first_remote === false) {
+            this.setState({
+                achievements_books: [
+                    {
+                        ...this.state.achievements_books[0],
+                        first_remote: true
+                    }
+                ]
+            }, function() {this.handleAchievementsFormSubmit()})
+        }
     }
 
     onConfirm2 = () => {
@@ -154,6 +208,18 @@ class RemoteControlItem extends Component {
         this.setState({device_state: true}, function() {this.handleFormSubmit()});
         ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
         Main();
+
+        // If first time clicking, update achievement
+        if (this.state.achievements_books[0].first_remote === false) {
+            this.setState({
+                achievements_books: [
+                    {
+                        ...this.state.achievements_books[0],
+                        first_remote: true
+                    }
+                ]
+            }, function() {this.handleAchievementsFormSubmit()})
+        }
     }
 
     onCancel1 = () => {
@@ -200,6 +266,18 @@ class RemoteControlItem extends Component {
             // Update database
             this.setState({device_state: e.target.checked}, function() {this.handleFormSubmit()})
             Main();
+
+            // If first time clicking, update achievement
+            if (this.state.achievements_books[0].first_remote === false) {
+                this.setState({
+                    achievements_books: [
+                        {
+                            ...this.state.achievements_books[0],
+                            first_remote: true
+                        }
+                    ]
+                }, function() {this.handleAchievementsFormSubmit()})
+            }
         }
     }
 
@@ -217,9 +295,9 @@ class RemoteControlItem extends Component {
             <div id={this.state.device_type.replace(/\s/g,'') + "BoxRemote"} className="containerRemote" onClick={this.handleRemoteBoxClick}>
                 <p style={{textAlign:"center", fontWeight:"bold", color:"black"}}> {this.state.device_type} </p>
                 <div id={this.state.device_type.replace(/\s/g,'') + "IconRemote"}>
-                    <div class={remote_control_outer_ring}>
-                        <div class="whiteRing">
-                            <img class="PlugLoadIcon" src={remote_control_image} alt="Icon" />
+                    <div className={remote_control_outer_ring}>
+                        <div className="whiteRing">
+                            <img className="PlugLoadIcon" src={remote_control_image} alt="Icon" />
                         </div>
                     </div>
                 </div>
@@ -245,12 +323,56 @@ class RemoteControlItem extends Component {
 
 class RemoteToggleButton extends Component {
     state = {
-        checked: this.props.defaultChecked
+        checked: this.props.defaultChecked,
+        achievements_books: [],
+        user_id: 1
     };
 
     constructor(props) {
         super(props);
         window.master = this;
+    }
+
+    componentDidMount() {
+        // Fetch data for achievements
+        fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/')
+        .then(response => response.json())
+        .then(data => {
+            for (var input of data) {
+                if (input.user_id === this.state.user_id) {
+                    this.setState({achievements_books: [input]})
+                }
+            }
+        })
+    }
+
+    updateAchievementsBooks = (newBook) => {
+        fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/' + newBook.id.toString() + '/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newBook)
+        }).then(response => response.json())
+        .then(newBook => {
+            const newBooks = this.state.achievements_books.map(book => {
+                if (book.id === newBook.id) {
+                    return Object.assign({}, newBook);
+                } else {
+                    return book;
+                }
+            });
+            this.setState({achievements_books: newBooks})
+        })
+    }
+
+    handleAchievementsUpdate = (book) => {
+        book.id = this.props.user_id;
+        this.updateAchievementsBooks(book);
+    }
+
+    handleAchievementsFormSubmit = () => {
+        this.handleAchievementsUpdate(this.state.achievements_books[0])
     }
 
     onConfirm1 = () => {
@@ -283,6 +405,18 @@ class RemoteToggleButton extends Component {
         document.getElementById("master").checked = false;
         this.setState({checked: false})
         ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+
+        // If first time clicking, update achievement
+        if (this.state.achievements_books[0].first_remote === false) {
+            this.setState({
+                achievements_books: [
+                    {
+                        ...this.state.achievements_books[0],
+                        first_remote: true
+                    }
+                ]
+            }, function() {this.handleAchievementsFormSubmit()})
+        }
     }
 
     onConfirm2 = () => {
@@ -315,6 +449,18 @@ class RemoteToggleButton extends Component {
         document.getElementById("master").checked = true;
         this.setState({checked: true});
         ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+
+        // If first time clicking, update achievement
+        if (this.state.achievements_books[0].first_remote === false) {
+            this.setState({
+                achievements_books: [
+                    {
+                        ...this.state.achievements_books[0],
+                        first_remote: true
+                    }
+                ]
+            }, function() {this.handleAchievementsFormSubmit()})
+        }
     }
 
     onCancel1 = () => {
@@ -909,7 +1055,6 @@ window.onresize = function() {
 }
 
 
-// Added this 3 Aug
 var isChromium = window.chrome;
 var winNav = window.navigator;
 var vendorName = winNav.vendor;
@@ -920,7 +1065,7 @@ var isIOSChrome = winNav.userAgent.match("CriOS");
 if (isIOSChrome) {
    // is Google Chrome on IOS
    document.onkeydown = function(event) {
-if (event.ctrlKey==true || (event.which == '61' || event.which == '107' || event.which == '173' || event.which == '109'  || event.which == '187'  || event.which == '189'  ) ) {
+if (event.ctrlKey===true || (event.which === '61' || event.which === '107' || event.which === '173' || event.which === '109'  || event.which === '187'  || event.which === '189'  ) ) {
         event.preventDefault();
      }
     // 107 Num Key  +
@@ -937,7 +1082,7 @@ if (event.ctrlKey==true || (event.which == '61' || event.which == '107' || event
 ) {
    // is Google Chrome
    document.onkeydown = function(event) {
-if (event.ctrlKey==true || (event.which == '61' || event.which == '107' || event.which == '173' || event.which == '109'  || event.which == '187'  || event.which == '189'  ) ) {
+if (event.ctrlKey === true || (event.which === '61' || event.which === '107' || event.which === '173' || event.which === '109'  || event.which === '187'  || event.which === '189'  ) ) {
         event.preventDefault();
      }
     // 107 Num Key  +
@@ -1020,7 +1165,7 @@ class PresenceControlList extends Component {
             />
         ));
         return (
-            <div class="plugloadboxes">
+            <div className="plugloadboxes">
                 {books}
             </div>
         )
@@ -1057,13 +1202,68 @@ class PresenceControlItem extends Component {
     state = {
         user_id: this.props.user_id,
         device_type: this.props.device_type,
-        presence_setting: this.props.presence_setting
+        presence_setting: this.props.presence_setting,
+        achievements_books: []
+    }
+
+    componentDidMount() {
+        // Fetch data for achievements
+        fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/')
+        .then(response => response.json())
+        .then(data => {
+            for (var input of data) {
+                if (input.user_id === this.state.user_id) {
+                    this.setState({achievements_books: [input]})
+                }
+            }
+        })
+    }
+
+    updateAchievementsBooks = (newBook) => {
+        fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/' + newBook.id.toString() + '/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newBook)
+        }).then(response => response.json())
+        .then(newBook => {
+            const newBooks = this.state.achievements_books.map(book => {
+                if (book.id === newBook.id) {
+                    return Object.assign({}, newBook);
+                } else {
+                    return book;
+                }
+            });
+            this.setState({achievements_books: newBooks})
+        })
+    }
+
+    handleAchievementsUpdate = (book) => {
+        book.id = this.props.user_id;
+        this.updateAchievementsBooks(book);
+    }
+
+    handleAchievementsFormSubmit = () => {
+        this.handleAchievementsUpdate(this.state.achievements_books[0])
     }
 
     onConfirm1 = () => {
         // Update database
         this.setState({presence_setting: "1000000"}, function() {this.handleFormSubmit()});
         ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+
+        // If first time clicking, update achievement
+        if (this.state.achievements_books[0].first_presence === false) {
+            this.setState({
+                achievements_books: [
+                    {
+                        ...this.state.achievements_books[0],
+                        first_presence: true
+                    }
+                ]
+            }, function() {this.handleAchievementsFormSubmit()})
+        }
     }
 
     onCancel1 = () => {
@@ -1082,6 +1282,18 @@ class PresenceControlItem extends Component {
             document.getElementById("PopupPresenceOverlay").className = "";
             // Update database
             this.setState({presence_setting: evt.target.value}, function() {this.handleFormSubmit()})
+
+            // If first time clicking, update achievement
+            if (this.state.achievements_books[0].first_presence === false) {
+                this.setState({
+                    achievements_books: [
+                        {
+                            ...this.state.achievements_books[0],
+                            first_presence: true
+                        }
+                    ]
+                }, function() {this.handleAchievementsFormSubmit()})
+            }
         }
         if (evt.target.value === "other") {
             // Show popup
@@ -1128,6 +1340,18 @@ class PresenceControlItem extends Component {
         // Update database
         this.setState({presence_setting: "1000000"}, function() {this.handleFormSubmit()})
         ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+
+        // If first time clicking, update achievement
+        if (this.state.achievements_books[0].first_presence === false) {
+            this.setState({
+                achievements_books: [
+                    {
+                        ...this.state.achievements_books[0],
+                        first_presence: true
+                    }
+                ]
+            }, function() {this.handleAchievementsFormSubmit()})
+        }
     }
 
     onCancel2 = () => {
@@ -1150,6 +1374,18 @@ class PresenceControlItem extends Component {
             document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "5";
             // Update database
             this.setState({presence_setting: "5"}, function() {this.handleFormSubmit()})
+
+            // If first time clicking, update achievement
+            if (this.state.achievements_books[0].first_presence === false) {
+                this.setState({
+                    achievements_books: [
+                        {
+                            ...this.state.achievements_books[0],
+                            first_presence: true
+                        }
+                    ]
+                }, function() {this.handleAchievementsFormSubmit()})
+            }
         }
     }
 
@@ -1171,6 +1407,18 @@ class PresenceControlItem extends Component {
         document.getElementById("PopupPresenceOverlay").className = "";
         // Update database
         this.handleFormSubmit();
+
+        // If first time clicking, update achievement
+        if (this.state.achievements_books[0].first_presence === false) {
+            this.setState({
+                achievements_books: [
+                    {
+                        ...this.state.achievements_books[0],
+                        first_presence: true
+                    }
+                ]
+            }, function() {this.handleAchievementsFormSubmit()})
+        }
     }
 
     render() {
@@ -1195,20 +1443,20 @@ class PresenceControlItem extends Component {
 
         return (
             <div id={this.state.device_type.replace(/\s/g,'') + "BoxPresence"} className="containerPresence">
-                <div className="iconPresence">
+                <div className="iconPresence clickable">
                     <div className={presence_control_outer_ring} id={this.state.device_type.replace(/\s/g,'')} onClick={this.handlePresenceIconClick}>
                         <div className="whiteRing">
-                            <img class="PlugLoadIcon" src={presence_control_image} alt="Icon" />
+                            <img className="PlugLoadIcon" src={presence_control_image} alt="Icon" />
                         </div>
                     </div>
                 </div>
                 <div style={{width:"200px", height:"10px", overflowY:"visible"}}>
                     <div style={{position:"relative", width:"200px", height:"1px", overflowY:"visible"}}>
                         <div className="dropdownPresence" id={this.state.device_type.replace(/\s/g,'') + "Dropdown"}>
-                            <div class="wordPresence">
+                            <div className="wordPresence">
                                 <p> {this.state.device_type} </p>
                             </div>
-                            <select defaultValue={this.state.presence_setting} onChange={this.handleSettingUpdate} id={this.state.device_type.replace(/\s/g,'') + "Select"}>
+                            <select className="clickable" defaultValue={this.state.presence_setting} onChange={this.handleSettingUpdate} id={this.state.device_type.replace(/\s/g,'') + "Select"}>
                                 <option value="1000000"> Deactivate </option>
                                 <optgroup label="Off after I leave for:">
                                     <option value="5"> 5 minutes </option>
@@ -1234,7 +1482,7 @@ class PresenceControlPopup extends Component {
         return (
             <div id={this.props.device_type.replace(/\s/g,'') + "PopupPresence"} className="visiblePresence">
                 <input type="text" id={this.props.device_type.replace(/\s/g,'') + "TextOther"} onChange={this.props.handleOtherUpdate} onKeyUp={this.props.handleEnterClick} />
-                <p class="minutes"> minutes </p>
+                <p className="minutes"> minutes </p>
                 <br />
                 <button id={this.props.device_type.replace(/\s/g,'') + "CancelButton"} onClick={this.props.cancelButtonClicked}> Cancel </button>
                 <button id={this.props.device_type.replace(/\s/g,'') + "OkButton"} onClick={this.props.okButtonClicked}> OK </button>

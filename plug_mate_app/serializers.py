@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import RemoteData, ScheduleData, PresenceData
+from .models import RemoteData, ScheduleData, PresenceData, AchievementsBonus
 
 class RemoteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,5 +15,10 @@ class PresenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = PresenceData
         fields = ('id', 'user_id', 'device_type', 'presence_setting')
+
+class AchievementsBonusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AchievementsBonus
+        fields = ('id', 'user_id', 'tree_first', 'tree_fifth', 'tree_tenth', 'redeem_reward', 'first_remote', 'first_schedule', 'first_presence')
 
 

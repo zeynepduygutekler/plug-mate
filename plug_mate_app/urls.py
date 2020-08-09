@@ -27,6 +27,8 @@ urlpatterns = [
     path('control_interface/api/remote/<int:pk>/', views.RemoteDataDetail.as_view()),
     path('control_interface/api/schedule/', views.ScheduleDataList.as_view()),
     path('control_interface/api/schedule/<int:pk>/', views.ScheduleDataDetail.as_view()),
+    path('control_interface/api/achievements_bonus/', views.AchievementsBonusDataList.as_view()),
+    path('control_interface/api/achievements_bonus/<int:pk>/', views.AchievementsBonusDataDetail.as_view()),
     path('', views.plug_mate_app, name='index'),
     path('user_login/', views.user_login, name='user_login'),
     path('control_interface/', views.control_interface, name='control_interface'),
