@@ -22,6 +22,18 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
 
+    <style>
+        @media (min-width: 768px) {
+            #content {
+                margin-left: 14rem;
+            }
+        }
+        @media (max-width: 768px) {
+            #content {
+                margin-left: 6.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
 <div id="page-top">
@@ -353,6 +365,31 @@
 
 <!-- Custom scripts for all pages-->
 <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+<script>
+    document.getElementById("sidebarToggle").onclick = function() {
+        if (document.getElementsByClassName("sidebar")[0].classList.contains("toggled")) {
+            document.getElementById("content").style.marginLeft = "6.5rem";
+        } else {
+            document.getElementById("content").style.marginLeft = "14rem";
+        }
+    }
+
+    document.getElementById("sidebarToggleTop").onclick = function() {
+        if (document.getElementsByClassName("sidebar")[0].classList.contains("toggled")) {
+            document.getElementById("content").style.marginLeft = "0";
+        } else {
+            document.getElementById("content").style.marginLeft = "6.5rem";
+        }
+    }
+
+    window.onresize = function() {
+        if (window.innerWidth < 768) {
+            document.getElementById("content").style.marginLeft = "6.5rem";
+        } else {
+            document.getElementById("content").style.marginLeft = "14rem";
+        }
+    }
+</script>
 </body>
 
 </html>

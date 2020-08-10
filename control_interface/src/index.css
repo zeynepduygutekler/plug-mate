@@ -136,7 +136,7 @@
 }
 
 .greenRing {
-    background: #47ff38;
+    background: #06D6A0;
     border-radius: 50%;
     width: 75px;
     height: 75px;
@@ -243,7 +243,7 @@
 .toggle-switch-inner:before {
     content: "ON";
     padding-left: 10px;
-    background-color: #47FF38;
+    background-color: #06D6A0;
     color: black;
 }
 
