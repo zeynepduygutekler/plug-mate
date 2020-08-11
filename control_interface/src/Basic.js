@@ -11,6 +11,7 @@ import Timepicker from './Timepicker';
 import Radio from './Radio';
 import Checkbox from './Checkbox';
 import './styles.css';
+import OnlyAlert from './OnlyAlert';
 
 class Basic extends Component {
   constructor(props) {
@@ -194,7 +195,12 @@ class Basic extends Component {
           var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
           message += `\n- ${events.title} for ${current_plugload_conflicted} on ${day}`
         }
-        alert(message)
+        ReactDOM.render(<OnlyAlert
+                                message={message}
+                                onOK={function() {
+                                    ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                                }}
+                            />, document.getElementById("confirm-alert"));
       } else {
         event.title = schedule + " (" + formattedstart + " - " + formattedend + ")";
         schedulerData.updateEventStart(event, start);
@@ -254,7 +260,12 @@ class Basic extends Component {
         }
 
         if (start >= end || end <= start) {
-          alert("Check your timings! Start time should be before end time.")
+            ReactDOM.render(<OnlyAlert
+                                message="Check your timings! Start time should be before end time."
+                                onOK={function() {
+                                    ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                                }}
+                            />, document.getElementById("confirm-alert"));
         } else {
           // Update displayed calendar
           DemoData.events = schedulerData.events;
@@ -488,7 +499,12 @@ class Basic extends Component {
           var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
           message += `\n- ${events.title} for ${current_plugload_conflicted} on ${day}`
         }
-        alert(message)
+        ReactDOM.render(<OnlyAlert
+                                message={message}
+                                onOK={function() {
+                                    ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                                }}
+                            />, document.getElementById("confirm-alert"));
       } else {
         newEvent.title = schedule + " (" + formattedstart + " - " + formattedend + ")";
 
@@ -549,7 +565,12 @@ class Basic extends Component {
         }
 
         if (start >= end || end <= start) {
-          alert("Check your timings! Start time should be before end time.")
+          ReactDOM.render(<OnlyAlert
+                                message="Check your timings! Start time should be before end time."
+                                onOK={function() {
+                                    ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                                }}
+                            />, document.getElementById("confirm-alert"));
         } else {
           // Update displayed calendar
             DemoData.events = schedulerData.events;
@@ -765,7 +786,12 @@ class Basic extends Component {
           var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
           message += `\n- ${events.title} for ${current_plugload_conflicted} on ${day}`
         }
-        alert(message)
+        ReactDOM.render(<OnlyAlert
+                                message={message}
+                                onOK={function() {
+                                    ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                                }}
+                            />, document.getElementById("confirm-alert"));
       } else {
         event.title = schedule + " (" + formattedstart + " - " +formattedend + ")";
 
@@ -826,7 +852,12 @@ class Basic extends Component {
         }
 
         if (start >= end || end <= start) {
-          alert("Check your timings! Start time should be before end time.")
+          ReactDOM.render(<OnlyAlert
+                                message="Check your timings! Start time should be before end time."
+                                onOK={function() {
+                                    ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                                }}
+                            />, document.getElementById("confirm-alert"));
         } else {
           // Update displayed calendar
           DemoData.events = schedulerData.events;
@@ -1039,7 +1070,12 @@ class Basic extends Component {
           var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
           message += `\n- ${events.title} for ${current_plugload_conflicted} on ${day}`
         }
-        alert(message)
+        ReactDOM.render(<OnlyAlert
+                                message={message}
+                                onOK={function() {
+                                    ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                                }}
+                            />, document.getElementById("confirm-alert"));
       } else {
         event.title = schedule + " (" + formattedstart + " - " +formattedend + ")";
 
@@ -1100,7 +1136,12 @@ class Basic extends Component {
         }
 
         if (start >= end || end <= start) {
-          alert("Check your timings! Start time should be before end time.")
+          ReactDOM.render(<OnlyAlert
+                                message="Check your timings! Start time should be before end time."
+                                onOK={function() {
+                                    ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                                }}
+                            />, document.getElementById("confirm-alert"));
         } else {
           // Update displayed calendar
           DemoData.events = schedulerData.events;
@@ -1319,7 +1360,12 @@ class Basic extends Component {
           var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
           message += `\n- ${events.title} for ${current_plugload_conflicted} on ${day}`
         }
-        alert(message)
+        ReactDOM.render(<OnlyAlert
+                                message={message}
+                                onOK={function() {
+                                    ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                                }}
+                            />, document.getElementById("confirm-alert"));
       } else {
         event.title = schedule + " (" + formattedstart + " - " +formattedend + ")";
 
@@ -1380,7 +1426,12 @@ class Basic extends Component {
         }
 
         if (start >= end || end <= start) {
-          alert("Check your timings! Start time should be before end time.")
+          ReactDOM.render(<OnlyAlert
+                                message="Check your timings! Start time should be before end time."
+                                onOK={function() {
+                                    ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                                }}
+                            />, document.getElementById("confirm-alert"));
         } else {
           // Update displayed calendar
           DemoData.events = schedulerData.events;
@@ -1466,7 +1517,12 @@ class Basic extends Component {
   // When a conflict occurs, give alert.
   conflictOccurred = (schedulerData, action, event, type, slotId, slotName, start, end) => {
     var message = `This is conflicting with a schedule set for ${slotName}.`
-    alert(message)
+    ReactDOM.render(<OnlyAlert
+                                message={message}
+                                onOK={function() {
+                                    ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                                }}
+                            />, document.getElementById("confirm-alert"));
   }
 }
 

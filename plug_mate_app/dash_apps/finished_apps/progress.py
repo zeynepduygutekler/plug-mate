@@ -45,7 +45,7 @@ app.layout = html.Div([
         html.Table(className='table',
                    children=
                    [
-                       html.Tr([html.Th('Daily Achievements'), html.Th("Points")],
+                       html.Tr([html.Th('Daily Achievements'), html.Th("Energy Points")],
                                style={'background-color': '#1cc88a', 'color': 'white'})
                    ] + [
                        html.Tr([html.Td('Clock a higher cost savings than yesterday'), html.Td('20 points')]),

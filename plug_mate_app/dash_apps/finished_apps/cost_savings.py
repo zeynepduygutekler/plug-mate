@@ -63,9 +63,9 @@ app.layout = html.Div([
         href='/static/assets/custom_style.css'
     ),
     dbc.Row([
-        dbc.Button('Week', id='week', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'}, color="primary",
+        dbc.Button('Week', id='week', n_clicks=0, n_clicks_timestamp=0, color="primary",
                    className="mr-1", active=True),
-        dbc.Button('Month', id='month', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
+        dbc.Button('Month', id='month', n_clicks=0, n_clicks_timestamp=0,
                    color="primary", className="mr-1")
     ], style={'margin': 'auto', 'justify-content': 'center'}),
 
@@ -118,14 +118,19 @@ def update_bar_chart(n1, n2, int):
         hovertext1 = []
         hovertext2 = []
         for date in dff.index:
+            # hovertext
+            sorted_list = [x for _,x in sorted(zip(dff.loc[date].tolist(),list(dff)))]
+            sorted_list.remove('total')
             string = ''
-            for plug_load in list(dff):
+            for plug_load in sorted_list:
                 # e.g. <b>Desktop</b>: $3.24<br>
                 string = string + '<b>' + plug_load.capitalize() + '</b>' + ': ' + currency_format(
                     dff[plug_load][date]) + '<br>'
-            energy_points_earned = round(dff['total'][date]) if dff['total'][date] > 0 else round(
-                dff['total'][date] * 0.5)
-            string += f'<b>Energy points earned</b>: {energy_points_earned} points'
+            string = string + '<b>' + 'Total' + '</b>' + ': ' + currency_format(
+                    dff['total'][date]) + '<br>'
+            energy_points_earned = round(dff['total'][date]*10) if dff['total'][date] > 0 else round(
+                dff['total'][date] * 0.5*10)
+            string += f'<span style="color:blue"><b>Energy points earned</b>: {energy_points_earned} points</span>'
             if energy_points_earned > 0:
                 hovertext1.append(string)
             else:
@@ -172,14 +177,16 @@ def update_bar_chart(n1, n2, int):
                             yaxis=dict(range=[min(series) - 3, max(series) * 1.4]),
                             annotations=[
                                 go.layout.Annotation(
-                                    text='<b>Try me</b>',
-                                    align='left',
+                                    text='<b>Cost savings strategies: </b>',
+                                    align='right',
                                     showarrow=False,
                                     xref='paper',
                                     yref='paper',
                                     font=dict(size=13),
-                                    x=0.7,
-                                    y=1.2,
+                                    x=0.14,
+                                    y=1.08,
+                                    # bordercolor='black',
+                                    # borderwidth=1
                                 )
                             ]
                         ),
@@ -192,7 +199,7 @@ def update_bar_chart(n1, n2, int):
                             font=dict(
                                 size=12,
                                 color="black"),
-                            buttons=[dict(label="Current cost savings",
+                            buttons=[dict(label="None",
                                           method="animate",
                                           args=[frame0]),
                                      dict(label="Turn off your plug loads during lunch",
