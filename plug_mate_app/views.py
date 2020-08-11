@@ -15,43 +15,6 @@ from django.db import connection
 from time import localtime, strftime
 import os
 
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset = Users.objects.all().order_by('user_id')
-#     serializer_class = UserSerializer
-
-
-# class HelloApiView(APIView):
-#     serializer_class = serializers.HelloSerializer
-#
-#     def get(self, request, format=None):
-#         an_apiview = [
-#             'uses HTTP methods as function (get, post, patch, put, delete)',
-#             'is similar to traditional django view',
-#             'gives you most control over app logic',
-#             'is mapped manually to urls',
-#         ]
-#
-#         return Response({'message': 'Hello!', 'an_apiview': an_apiview})
-#
-#     def post(self, request):
-#         serializer = self.serializer_class(data=request.data)
-#         if serializer.is_valid():
-#             name = serializer.validated_data.get('name')
-#             message = f'Hello {name}'
-#             return Response({'message': message})
-#         else:
-#             return Response(serializer.errors,
-#                             status=status.HTTP_400_BAD_REQUEST)
-#
-#     def put(self, request, pk=None):
-#         return Response({'method': 'PUT'})
-#
-#     def patch(self, request, pk=None):
-#         return Response({'method': 'PATCH'})
-#
-#     def delete(self, request, pk=None):
-#         return Response({'method': 'DELETE'})
-
 
 def plug_mate_app(request):
     if request.user.is_authenticated:
@@ -83,7 +46,19 @@ def control_interface(request):
 
 
 def rewards(request):
-    return render(request, 'plug_mate_app/rewards.html')
+    with connection.cursor() as cursor:
+        # Query for user's energy points from the database
+        cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s', [request.user.id])
+        points = cursor.fetchone()[0]
+
+    context = {
+        'points': points,
+    }
+    return render(request, 'plug_mate_app/rewards.html', context)
+
+
+def user_profile(request):
+    return render(request, 'plug_mate_app/user_profile.html')
 
 
 @login_required
