@@ -10,7 +10,7 @@
 
     <!-- Real-Time Power Consumption -->
     <div class="row">
-        <div class="col-xl-3 col-md-6 col-sm-12 mb-4" id="energyconsumption_card">
+        <div class="col-xl-3 col-md-6 col-sm-12 mb-4" id="overview_card">
             <div class="card border-left-primary shadow py-2 h-100">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
@@ -24,7 +24,16 @@
                             <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" width="80" height="70">
                         </div>
                         <div class="col-8 text-center my-auto">
-                            <div class="h2 mb-0 mr-3 font-weight-bold text-gray-800">25 W</div>
+                            <div class="h2 mb-0 mr-3 font-weight-bold text-gray-800">
+                                {% if user.is_authenticated %}
+                                    {{ realtime_consumption }} W
+                                {% else %}
+                                    0 W
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-12 font-weight-bold text-right my-auto my-auto" style="padding-bottom: 5%">
+                            <div class="text-s mb-0 mr-3 font-weight-bold text-gray-500">Last Updated: {{ current_time }}</div>
                         </div>
                     </div>
                 </div>

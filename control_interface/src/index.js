@@ -65,6 +65,7 @@ class RemoteControlDashboard extends Component {
     }
 
     render() {
+
         return (
             <RemoteControlList
                 books={this.state.books}
@@ -147,6 +148,8 @@ class RemoteControlItem extends Component {
                 }
             }
         })
+
+        Main();
     }
 
     updateAchievementsBooks = (newBook) => {

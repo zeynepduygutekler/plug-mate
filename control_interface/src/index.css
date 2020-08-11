@@ -81,7 +81,7 @@
 }
 
 .confirm_alert_content {
-    max-height: 30%;
+    height: fit-content;
     overflow: auto;
     text-align: center;
 }
@@ -99,14 +99,15 @@
     right: 0;
     background: rgba(0, 0, 0, 0.7);
     transition: opacity 500ms;
+    z-index: 100;
 }
 
 .confirm_alert_popup {
-    margin: 20% auto;
+    margin: 13% auto;
     padding: 35px 10px;
     background: white;
     border-radius: 5px;
-    width: 30%;
+    width: 40%;
     position: relative;
     transition: all 5s ease-in-out;
 }

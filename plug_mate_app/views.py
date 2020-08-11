@@ -1,5 +1,4 @@
 from django.shortcuts import render
-# from .forms import UserForm, UserProfileInfoForm
 from plotly.offline import plot
 import plotly.graph_objects as go
 from django.contrib.auth import authenticate, login, logout
@@ -11,67 +10,55 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from . import serializers
-# from .serializers import UserSerializer
 from .models import Users, PowerEnergyConsumption, PointsWallet, Meters
 from django.db import connection
-
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset = Users.objects.all().order_by('user_id')
-#     serializer_class = UserSerializer
+from time import localtime, strftime
+import os
 
 
-# class HelloApiView(APIView):
-#     serializer_class = serializers.HelloSerializer
-#
-#     def get(self, request, format=None):
-#         an_apiview = [
-#             'uses HTTP methods as function (get, post, patch, put, delete)',
-#             'is similar to traditional django view',
-#             'gives you most control over app logic',
-#             'is mapped manually to urls',
-#         ]
-#
-#         return Response({'message': 'Hello!', 'an_apiview': an_apiview})
-#
-#     def post(self, request):
-#         serializer = self.serializer_class(data=request.data)
-#         if serializer.is_valid():
-#             name = serializer.validated_data.get('name')
-#             message = f'Hello {name}'
-#             return Response({'message': message})
-#         else:
-#             return Response(serializer.errors,
-#                             status=status.HTTP_400_BAD_REQUEST)
-#
-#     def put(self, request, pk=None):
-#         return Response({'method': 'PUT'})
-#
-#     def patch(self, request, pk=None):
-#         return Response({'method': 'PATCH'})
-#
-#     def delete(self, request, pk=None):
-#         return Response({'method': 'DELETE'})
-
-
-def plug_mate_app(requests):
-    if requests.user.id is None:
-        points = 0
-    else:
+def plug_mate_app(request):
+    if request.user.is_authenticated:
         with connection.cursor() as cursor:
-            cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s', [requests.user.id])
+            # Query for user's energy points from the database
+            cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s', [request.user.id])
             points = cursor.fetchone()[0]
+
+            # Query for user's real-time consumption on dashboard
+            # cursor.execute("SELECT ROUND(SUM(power)::numeric, 1) FROM power_energy_consumption WHERE date >= now() - interval '1 minute' AND date < now() AND user_id=%s", [request.user.id])
+            cursor.execute("SELECT ROUND(SUM(power)::numeric, 1) FROM power_energy_consumption WHERE date = '2020-08-04' AND time >= '13:58:00' AND time < '13:59:00' AND user_id=%s", [request.user.id])
+            realtime_consumption = cursor.fetchone()[0]
+
+        os.environ['TZ'] = 'Asia/Singapore'
+
+        context = {
+            'points': points,
+            'realtime_consumption': realtime_consumption,
+            'current_time': strftime('%H:%M:%S', localtime())
+        }
+
+        return render(request, 'plug_mate_app/index.html', context)
+    else:
+        return render(request, 'plug_mate_app/login.html', {})
+
+
+def control_interface(request):
+    return render(request, 'index.html')
+
+
+def rewards(request):
+    with connection.cursor() as cursor:
+        # Query for user's energy points from the database
+        cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s', [request.user.id])
+        points = cursor.fetchone()[0]
+
     context = {
         'points': points,
     }
-    return render(requests, 'plug_mate_app/index.html', context)
+    return render(request, 'plug_mate_app/rewards.html', context)
 
 
-def control_interface(requests):
-    return render(requests, 'index.html')
-
-
-def rewards(requests):
-    return render(requests, 'plug_mate_app/rewards.html')
+def user_profile(request):
+    return render(request, 'plug_mate_app/user_profile.html')
 
 
 @login_required
