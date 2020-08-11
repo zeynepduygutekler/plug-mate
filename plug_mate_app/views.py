@@ -28,12 +28,26 @@ def plug_mate_app(request):
             cursor.execute("SELECT ROUND(SUM(power)::numeric, 1) FROM power_energy_consumption WHERE date = '2020-08-04' AND time >= '13:58:00' AND time < '13:59:00' AND user_id=%s", [request.user.id])
             realtime_consumption = cursor.fetchone()[0]
 
+            # Query for user's cumulative savings from the database
+            cursor.execute("SELECT cum_savings FROM achievements_bonus WHERE user_id=%s", [request.user.id])
+            cumulative_savings = cursor.fetchone()[0]
+
+            # Query for user's remaining points to be claimed for the week
+            cursor.execute("SELECT SUM(lower_energy_con + turn_off_leave + turn_off_end + complete_all_daily) FROM achievements_daily WHERE user_id=%s", [request.user.id])
+            daily_achievements = cursor.fetchone()[0]
+            cursor.execute("SELECT SUM(cost_saving + schedule_based + complete_daily + complete_weekly) FROM achievements_weekly WHERE user_id=%s", [request.user.id])
+            weekly_achievements = cursor.fetchone()[0]
+
+        max_weekly_points = 400
+        remaining_points = max_weekly_points - daily_achievements - weekly_achievements
         os.environ['TZ'] = 'Asia/Singapore'
 
         context = {
             'points': points,
             'realtime_consumption': realtime_consumption,
-            'current_time': strftime('%H:%M:%S', localtime())
+            'current_time': strftime('%H:%M:%S', localtime()),
+            'cumulative_savings': cumulative_savings,
+            'remaining_points': remaining_points,
         }
 
         return render(request, 'plug_mate_app/index.html', context)
