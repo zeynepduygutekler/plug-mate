@@ -53,25 +53,38 @@ from django.db import connection
 #         return Response({'method': 'DELETE'})
 
 
-def plug_mate_app(requests):
-    if requests.user.id is None:
-        points = 0
-    else:
+def plug_mate_app(request):
+    if request.user.is_authenticated:
         with connection.cursor() as cursor:
-            cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s', [requests.user.id])
+            cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s', [request.user.id])
             points = cursor.fetchone()[0]
-    context = {
-        'points': points,
-    }
-    return render(requests, 'plug_mate_app/index.html', context)
+
+        context = {
+            'points': points,
+        }
+
+        return render(request, 'plug_mate_app/index.html', context)
+    else:
+        return render(request, 'plug_mate_app/login.html', {})
+
+    # if requests.user.id is None:
+    #     points = 0
+    # else:
+    #     with connection.cursor() as cursor:
+    #         cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s', [requests.user.id])
+    #         points = cursor.fetchone()[0]
+    # context = {
+    #     'points': points,
+    # }
+    # return render(requests, 'plug_mate_app/index.html', context)
 
 
-def control_interface(requests):
-    return render(requests, 'index.html')
+def control_interface(request):
+    return render(request, 'index.html')
 
 
-def rewards(requests):
-    return render(requests, 'plug_mate_app/rewards.html')
+def rewards(request):
+    return render(request, 'plug_mate_app/rewards.html')
 
 
 @login_required
