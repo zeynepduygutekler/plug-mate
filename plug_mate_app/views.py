@@ -1,5 +1,4 @@
 from django.shortcuts import render
-# from .forms import UserForm, UserProfileInfoForm
 from plotly.offline import plot
 import plotly.graph_objects as go
 from django.contrib.auth import authenticate, login, logout
@@ -11,9 +10,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from . import serializers
-# from .serializers import UserSerializer
 from .models import Users, PowerEnergyConsumption, PointsWallet, Meters
 from django.db import connection
+from time import localtime, strftime
+import os
 
 # class UserViewSet(viewsets.ModelViewSet):
 #     queryset = Users.objects.all().order_by('user_id')
@@ -56,27 +56,26 @@ from django.db import connection
 def plug_mate_app(request):
     if request.user.is_authenticated:
         with connection.cursor() as cursor:
+            # Query for user's energy points from the database
             cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s', [request.user.id])
             points = cursor.fetchone()[0]
 
+            # Query for user's real-time consumption on dashboard
+            # cursor.execute("SELECT ROUND(SUM(power)::numeric, 1) FROM power_energy_consumption WHERE date >= now() - interval '1 minute' AND date < now() AND user_id=%s", [request.user.id])
+            cursor.execute("SELECT ROUND(SUM(power)::numeric, 1) FROM power_energy_consumption WHERE date = '2020-08-04' AND time >= '13:58:00' AND time < '13:59:00' AND user_id=%s", [request.user.id])
+            realtime_consumption = cursor.fetchone()[0]
+
+        os.environ['TZ'] = 'Asia/Singapore'
+
         context = {
             'points': points,
+            'realtime_consumption': realtime_consumption,
+            'current_time': strftime('%H:%M:%S', localtime())
         }
 
         return render(request, 'plug_mate_app/index.html', context)
     else:
         return render(request, 'plug_mate_app/login.html', {})
-
-    # if requests.user.id is None:
-    #     points = 0
-    # else:
-    #     with connection.cursor() as cursor:
-    #         cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s', [requests.user.id])
-    #         points = cursor.fetchone()[0]
-    # context = {
-    #     'points': points,
-    # }
-    # return render(requests, 'plug_mate_app/index.html', context)
 
 
 def control_interface(request):
