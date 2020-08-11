@@ -63,9 +63,9 @@ app.layout = html.Div([
         href='/static/assets/custom_style.css'
     ),
     dbc.Row([
-        dbc.Button('Week', id='week', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'}, color="primary",
+        dbc.Button('Week', id='week', n_clicks=0, n_clicks_timestamp=0, color="primary",
                    className="mr-1", active=True),
-        dbc.Button('Month', id='month', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
+        dbc.Button('Month', id='month', n_clicks=0, n_clicks_timestamp=0,
                    color="primary", className="mr-1")
     ], style={'margin': 'auto', 'justify-content': 'center'}),
 
