@@ -186,7 +186,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-8 text-center my-auto">
-                        <div class="h4 mb-0 mr-3 font-weight-bold text-gray-800">3 daily and 3 weekly achievements left
+                        <div class="h4 mb-0 mr-3 font-weight-bold text-gray-800">{{ remaining_points }} points left
                             to claim. Keep going!</div>
                         <br>
 
@@ -206,6 +206,7 @@
                     {#            ),#}
 
                 </div>
+                <br>
 
                 <div class="{% plotly_class name='progress' %}">
                     {% plotly_app name='progress' ratio=0.85 %}
