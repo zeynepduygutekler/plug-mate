@@ -11,6 +11,19 @@ app = DjangoDash('tips',
 
 app.layout = html.Div([
     dcc.Interval(id='interval', interval=8000),
+    html.Div([
+        dbc.Row([
+            html.Button(id='previous-tip',
+                        children=[html.Img(src='https://image.flaticon.com/icons/svg/566/566011.svg',
+                                           style={'width': '20%', 'height': 'auto'})],
+                        style={'border': 'none', 'background-color': 'transparent', 'outline': 'none',}),
+            html.Button(id='next-tip',
+                        children=[html.Img(src='https://image.flaticon.com/icons/svg/566/566012.svg',
+                                           style={'width': '20%', 'height': 'auto'})],
+                        style={'border': 'none', 'background-color': 'transparent', 'outline': 'none', })
+        ], style={'flex-wrap': 'nowrap', 'height': '3rem'}),
+
+    ], style={'text-align': 'right'}),
     html.Div([html.P(id='carousel',
                      style={
                          'font-weight': '500',
@@ -27,24 +40,23 @@ app.layout = html.Div([
                          'font-family': 'Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoj;'
                      }
                      )]),
-    html.Div([
-        html.Button(id='next-tip',
-                    children=[html.Img(src='https://image.flaticon.com/icons/svg/545/545682.svg',
-                                       style={'width': '50%', 'height': '50%'})],
-                    style={'border': 'none', 'background-color': 'transparent', 'outline': 'none',
-                           'text-align': 'right'})
-    ], style={'text-align': 'right'})
+
 ])
-
-
+num = 0
 @app.callback(
     [dash.dependencies.Output('carousel', 'children'),
      dash.dependencies.Output('anchor', 'children'),
      dash.dependencies.Output('anchor', 'href')],
     [dash.dependencies.Input('interval', 'n_intervals'),
-     dash.dependencies.Input('next-tip','n_clicks')]
+     dash.dependencies.Input('next-tip','n_clicks'),
+     dash.dependencies.Input('previous-tip','n_clicks')]
 )
-def update_carousel(n,children):
+def update_carousel(a,b,c):
+    global num
+    try:
+        changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    except:
+        return "Remember to switch off your plug loads when you are leaving for long meetings", '',''
     tips = {
         "Remember to switch off your plug loads when you are leaving for long meetings": '',
         'Remember to switch off your plug loads when you are leaving at the end of the day': '',
@@ -57,7 +69,13 @@ def update_carousel(n,children):
         'For every dollar of cost you\'ve saved, you earn 10 energy points': '',
         'You can earn energy points even quicker just by accomplishing tasks': '#',
     }
-    display_tip = choice(list(tips))
+    if changed_id == "previous-tip":
+        display_tip = list(tips)[num]
+        num = num - 1 if num > 0 else len(tips) - 1
+    else:
+        display_tip = list(tips)[num]
+        num = num + 1 if num + 1 < len(tips) else 0
+
     href = tips[display_tip]
     anchor_children = 'Check out this feature here!' if href else ''
     return display_tip, anchor_children, href
