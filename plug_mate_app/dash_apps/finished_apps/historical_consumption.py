@@ -124,7 +124,7 @@ app.layout = \
             interval=0,  # in milliseconds
             max_intervals=1
         )
-    ], style={'height': '340px'})
+    ], style={'height': '320px'})
 
 # D) This callback activates upon HOUR DAY WEEK MONTH click
 
