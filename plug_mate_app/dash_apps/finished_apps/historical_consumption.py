@@ -73,28 +73,33 @@ app.layout = \
             href='/static/assets/custom_style.css'
         ),
         html.Div([
-            dbc.Row([dbc.Col([
-                dbc.Col([
+            dbc.Row([
 
-                    html.Div([
 
-                        daq.BooleanSwitch(id='btntoggle_units', on=False, color='#e6e6e6')],
+                    dbc.Row([
 
-                        style={'width': 'fit-content'}
-                    ),
-                    dbc.Button('Today', id='hour', n_clicks=0, n_clicks_timestamp=0, style={
-                        'width': '100px'}, color="primary", className="mr-1"),
-                    dbc.Button('Days', id='day', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
-                               color="primary",
-                               className="mr-1"),
-                    dbc.Button('Weeks', id='week', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
-                               color="primary", className="mr-1", active=True),
-                    dbc.Button('Months', id='month', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
-                               color="primary", className="mr-1")], style={'text-align': 'right',
-                                                                           'margin': 'auto'}, width=12),
 
-            ], style={'margin': 'auto'}, width=2),
-                dbc.Col([
+                        dbc.Button('Today', id='hour', n_clicks=0,
+                                   n_clicks_timestamp=0, color="primary", className="mr-1"),
+                        dbc.Button('Days', id='day', n_clicks=0, n_clicks_timestamp=0,
+                                   color="primary",
+                                   className="mr-1"),
+                        dbc.Button('Weeks', id='week', n_clicks=0, n_clicks_timestamp=0,
+                                   color="primary", className="mr-1", active=True),
+                        dbc.Button('Months', id='month', n_clicks=0, n_clicks_timestamp=0,
+                                   color="primary", className="mr-1"),
+
+                        html.Div([
+
+                            daq.BooleanSwitch(id='btntoggle_units', on=False, color='#e6e6e6')],
+
+                            style={'width': 'fit-content'}
+                        ),
+
+
+                    ]),
+
+
                     dbc.Row([
                         dbc.Col([
                             html.H5("Aggregated Energy", id='lineTitle',
@@ -104,7 +109,7 @@ app.layout = \
                                                      dcc.Graph(id='line-chart', config={'displayModeBar': False}, clear_on_unhover=True)],
                                                  spinner_style={"width": "3rem", "height": "3rem"}))
 
-                        ], style={'text-align': 'center'}, width=6),
+                        ], style={'text-align': 'center'}, width=7),
                         dbc.Col([
                             html.H5("Energy Breakdown Today", id='pieTitle'),
                             html.Div(
@@ -113,10 +118,9 @@ app.layout = \
                                                 dcc.Graph(id='pie-chart-2', config={'displayModeBar': False})],
                                             spinner_style={"width": "3rem", "height": "3rem"})),
 
-                        ], width=6, style={'text-align': 'center'}),
-                    ], style={'justify-content': 'center', 'padding-top': '1%', 'margin': 'auto', 'margin-left': '0px'}),
-                ], width=10),
-            ]),
+                        ], width=5, style={'text-align': 'center'}),
+                    ], style={'justify-content': 'left', 'padding-top': '1%',  'margin-left': '0px'}),
+                    ], style={'justify-content': 'center'}),
 
         ], style={'width': '97%'}),
         dcc.Interval(
@@ -535,7 +539,11 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         height=180,
         width=240,
         legend=dict(
-
+            orientation="h",
+            yanchor="top",
+            xanchor="center",
+            x=0.5,
+            y=-0.1,
             font=dict(
                 family='"Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans -serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
                 size=11,
@@ -716,6 +724,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         # annotations=[dict(text=pie_middletext, x=0.5, y=0.5,
         #                   font_size=20, showarrow=False)]
         height=200,
+        width=200,
 
     )
     piechart.update_traces(
@@ -728,8 +737,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     fig2.update_layout(
         spikedistance=1000,
         hoverdistance=100,
-        margin=dict(l=0, r=0, t=45, b=0, pad=0),
-        height=240,
+        margin=dict(l=0, r=0, t=0, b=0, pad=0),
+        height=200,
+        width=350,
 
     )
     # 4. Return all graphs
