@@ -22,6 +22,7 @@ function compare(a,b) {
 }
 
 // Remote Control
+
 class RemoteControlDashboard extends Component {
     state = {
         books: [],
@@ -65,12 +66,14 @@ class RemoteControlDashboard extends Component {
     }
 
     render() {
-
         return (
-            <RemoteControlList
-                books={this.state.books}
-                onUpdateClick={this.updateBook}
-            />
+            <>
+                <RemoteControlList
+                    books={this.state.books}
+                    onUpdateClick={this.updateBook}
+                />
+                <p style={{float:"right"}}> Note: It may take some time for the remote control to work. </p>
+            </>
         )
     }
 }
@@ -193,12 +196,12 @@ class RemoteControlItem extends Component {
         Main();
 
         // If first time clicking, update achievement
-        if (this.state.achievements_books[0].first_remote === false) {
+        if (this.state.achievements_books[0].first_remote === 0) {
             this.setState({
                 achievements_books: [
                     {
                         ...this.state.achievements_books[0],
-                        first_remote: true
+                        first_remote: 60
                     }
                 ]
             }, function() {this.handleAchievementsFormSubmit()})
@@ -213,12 +216,12 @@ class RemoteControlItem extends Component {
         Main();
 
         // If first time clicking, update achievement
-        if (this.state.achievements_books[0].first_remote === false) {
+        if (this.state.achievements_books[0].first_remote === 0) {
             this.setState({
                 achievements_books: [
                     {
                         ...this.state.achievements_books[0],
-                        first_remote: true
+                        first_remote: 60
                     }
                 ]
             }, function() {this.handleAchievementsFormSubmit()})
@@ -271,12 +274,12 @@ class RemoteControlItem extends Component {
             Main();
 
             // If first time clicking, update achievement
-            if (this.state.achievements_books[0].first_remote === false) {
+            if (this.state.achievements_books[0].first_remote === 0) {
                 this.setState({
                     achievements_books: [
                         {
                             ...this.state.achievements_books[0],
-                            first_remote: true
+                            first_remote: 60
                         }
                     ]
                 }, function() {this.handleAchievementsFormSubmit()})
@@ -295,12 +298,12 @@ class RemoteControlItem extends Component {
         }
 
         return (
-            <div id={this.state.device_type.replace(/\s/g,'') + "BoxRemote"} className="containerRemote" onClick={this.handleRemoteBoxClick}>
+            <div id={this.state.device_type.replace(/\s/g,'') + "BoxRemote"} className="containerRemote">
                 <p style={{textAlign:"center", fontWeight:"bold", color:"black"}}> {this.state.device_type} </p>
                 <div id={this.state.device_type.replace(/\s/g,'') + "IconRemote"}>
-                    <div className={remote_control_outer_ring}>
-                        <div className="whiteRing">
-                            <img className="PlugLoadIcon" src={remote_control_image} alt="Icon" />
+                    <div class={remote_control_outer_ring}>
+                        <div class="whiteRing">
+                            <img class="PlugLoadIcon" src={remote_control_image} alt="Icon" />
                         </div>
                     </div>
                 </div>
@@ -326,56 +329,12 @@ class RemoteControlItem extends Component {
 
 class RemoteToggleButton extends Component {
     state = {
-        checked: this.props.defaultChecked,
-        achievements_books: [],
-        user_id: 1
+        checked: this.props.defaultChecked
     };
 
     constructor(props) {
         super(props);
         window.master = this;
-    }
-
-    componentDidMount() {
-        // Fetch data for achievements
-        fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/')
-        .then(response => response.json())
-        .then(data => {
-            for (var input of data) {
-                if (input.user_id === this.state.user_id) {
-                    this.setState({achievements_books: [input]})
-                }
-            }
-        })
-    }
-
-    updateAchievementsBooks = (newBook) => {
-        fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/' + newBook.id.toString() + '/', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newBook)
-        }).then(response => response.json())
-        .then(newBook => {
-            const newBooks = this.state.achievements_books.map(book => {
-                if (book.id === newBook.id) {
-                    return Object.assign({}, newBook);
-                } else {
-                    return book;
-                }
-            });
-            this.setState({achievements_books: newBooks})
-        })
-    }
-
-    handleAchievementsUpdate = (book) => {
-        book.id = this.props.user_id;
-        this.updateAchievementsBooks(book);
-    }
-
-    handleAchievementsFormSubmit = () => {
-        this.handleAchievementsUpdate(this.state.achievements_books[0])
     }
 
     onConfirm1 = () => {
@@ -408,18 +367,6 @@ class RemoteToggleButton extends Component {
         document.getElementById("master").checked = false;
         this.setState({checked: false})
         ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
-
-        // If first time clicking, update achievement
-        if (this.state.achievements_books[0].first_remote === false) {
-            this.setState({
-                achievements_books: [
-                    {
-                        ...this.state.achievements_books[0],
-                        first_remote: true
-                    }
-                ]
-            }, function() {this.handleAchievementsFormSubmit()})
-        }
     }
 
     onConfirm2 = () => {
@@ -452,18 +399,6 @@ class RemoteToggleButton extends Component {
         document.getElementById("master").checked = true;
         this.setState({checked: true});
         ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
-
-        // If first time clicking, update achievement
-        if (this.state.achievements_books[0].first_remote === false) {
-            this.setState({
-                achievements_books: [
-                    {
-                        ...this.state.achievements_books[0],
-                        first_remote: true
-                    }
-                ]
-            }, function() {this.handleAchievementsFormSubmit()})
-        }
     }
 
     onCancel1 = () => {
@@ -550,6 +485,7 @@ function Main() {
         }
     }
 }
+
 
 // Schedule Based control
 
@@ -1099,6 +1035,7 @@ if (event.ctrlKey === true || (event.which === '61' || event.which === '107' || 
 
 
 // Presence Based Control
+
 class PresenceControlDashboard extends Component {
     state = {
         books: [],
@@ -1145,11 +1082,12 @@ class PresenceControlDashboard extends Component {
         return (
             <>
               <br/>
-              <PresenceControlList
-                  books={this.state.books}
-                  onUpdateClick={this.updateBook}
-              />
-              <div id="PopupPresenceOverlay"> </div>
+
+                  <PresenceControlList
+                      books={this.state.books}
+                      onUpdateClick={this.updateBook}
+                  />
+
             </>
         )
     }
@@ -1168,7 +1106,7 @@ class PresenceControlList extends Component {
             />
         ));
         return (
-            <div className="plugloadboxes">
+            <div class="plugloadboxes">
                 {books}
             </div>
         )
@@ -1282,7 +1220,6 @@ class PresenceControlItem extends Component {
         if (evt.target.value !== "other" && evt.target.value !== "1000000") {
             // Hide popup
             ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
-            document.getElementById("PopupPresenceOverlay").className = "";
             // Update database
             this.setState({presence_setting: evt.target.value}, function() {this.handleFormSubmit()})
 
@@ -1309,12 +1246,10 @@ class PresenceControlItem extends Component {
                     okButtonClicked={this.okButtonClicked}
                 />, document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox")
             )
-            document.getElementById("PopupPresenceOverlay").className = "popup_presence_overlay";
         }
         if (evt.target.value === "1000000") {
             // Hide popup
             ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
-            document.getElementById("PopupPresenceOverlay").className = "";
             ReactDOM.render(<ConfirmAlert
                                 message={"You are deactivating presence-based control for " + this.state.device_type + "."}
                                 onConfirm = {this.onConfirm1}
@@ -1395,9 +1330,10 @@ class PresenceControlItem extends Component {
     cancelButtonClicked = () => {
         // Hide popup
         ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
-        document.getElementById("PopupPresenceOverlay").className = "";
         // Set value to 5 minutes
         document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "5";
+        this.setState({presence_setting: 5}, function() {this.handleFormSubmit()})
+
     }
 
     okButtonClicked = () => {
@@ -1407,7 +1343,6 @@ class PresenceControlItem extends Component {
         document.getElementById(this.state.device_type.replace(/\s/g,'') + "TextOther").value = "";
         // Hide popup
         ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
-        document.getElementById("PopupPresenceOverlay").className = "";
         // Update database
         this.handleFormSubmit();
 
@@ -1445,21 +1380,21 @@ class PresenceControlItem extends Component {
         }
 
         return (
-            <div id={this.state.device_type.replace(/\s/g,'') + "BoxPresence"} className="containerPresence">
-                <div className="iconPresence clickable">
+            <div id={this.state.device_type.replace(/\s/g,'') + "BoxPresence"} className="containerPresence" onClick={this.exitClick}>
+                <div className="iconPresence">
                     <div className={presence_control_outer_ring} id={this.state.device_type.replace(/\s/g,'')} onClick={this.handlePresenceIconClick}>
                         <div className="whiteRing">
-                            <img className="PlugLoadIcon" src={presence_control_image} alt="Icon" />
+                            <img class="PlugLoadIcon" src={presence_control_image} alt="Icon" />
                         </div>
                     </div>
                 </div>
                 <div style={{width:"200px", height:"10px", overflowY:"visible"}}>
                     <div style={{position:"relative", width:"200px", height:"1px", overflowY:"visible"}}>
                         <div className="dropdownPresence" id={this.state.device_type.replace(/\s/g,'') + "Dropdown"}>
-                            <div className="wordPresence">
+                            <div class="wordPresence">
                                 <p> {this.state.device_type} </p>
                             </div>
-                            <select className="clickable" defaultValue={this.state.presence_setting} onChange={this.handleSettingUpdate} id={this.state.device_type.replace(/\s/g,'') + "Select"}>
+                            <select defaultValue={this.state.presence_setting} onChange={this.handleSettingUpdate} id={this.state.device_type.replace(/\s/g,'') + "Select"}>
                                 <option value="1000000"> Deactivate </option>
                                 <optgroup label="Off after I leave for:">
                                     <option value="5"> 5 minutes </option>
@@ -1467,12 +1402,14 @@ class PresenceControlItem extends Component {
                                     <option value="20"> 20 minutes </option>
                                     <option value="30"> 30 minutes </option>
                                     <option value="60"> 1 hour </option>
-                                    <option value="other"> Other </option>
+                                    <option value="other"> Custom Time </option>
                                 </optgroup>
                                 <option value={display_value} disabled={disabled}> {display_text} </option>
                             </select>
                         </div>
+
                         <div id={this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"}> </div>
+
                     </div>
                 </div>
             </div>
@@ -1481,15 +1418,21 @@ class PresenceControlItem extends Component {
 }
 
 class PresenceControlPopup extends Component {
+    exitClick = () => {
+        this.props.cancelButtonClicked();
+    }
     render() {
         return (
+        <>
+            <div id="PopupPresenceOverlay" className="popup_presence_overlay" onClick={this.exitClick}></div>
             <div id={this.props.device_type.replace(/\s/g,'') + "PopupPresence"} className="visiblePresence">
                 <input type="text" id={this.props.device_type.replace(/\s/g,'') + "TextOther"} onChange={this.props.handleOtherUpdate} onKeyUp={this.props.handleEnterClick} />
-                <p className="minutes"> minutes </p>
+                <p class="minutes"> minutes </p>
                 <br />
                 <button id={this.props.device_type.replace(/\s/g,'') + "CancelButton"} onClick={this.props.cancelButtonClicked}> Cancel </button>
                 <button id={this.props.device_type.replace(/\s/g,'') + "OkButton"} onClick={this.props.okButtonClicked}> OK </button>
             </div>
+        </>
         )
     }
 }
