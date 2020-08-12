@@ -90,14 +90,14 @@ body {
 }
 
 .imatVS::before {
-  content: "kWh";
+  content: "$";
   position: absolute;
   margin-left: 12%;
   margin-right: 20%;
 }
 
 .cmSQpo::after {
-  content: "$";
+  content: "kWh";
   margin-left: auto;
   color: black;
   margin-right: 23%;
