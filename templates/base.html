@@ -23,12 +23,12 @@
 
     <style>
         @media (min-width: 768px) {
-            #content {
+            #content, #footer {
                 margin-left: 14rem;
             }
         }
         @media (max-width: 768px) {
-            #content {
+            #content, #footer {
                 margin-left: 6.5rem;
             }
         }
@@ -125,25 +125,59 @@
     document.getElementById("sidebarToggle").onclick = function() {
         if (document.getElementsByClassName("sidebar")[0].classList.contains("toggled")) {
             document.getElementById("content").style.marginLeft = "6.5rem";
+            document.getElementById("footer").style.marginLeft = "6.5rem";
+            document.getElementById("plug_mate_logo").style.width = "";
+            document.getElementById("plug_mate_logo").src = "";
+            document.getElementById("plug_mate_logo").style.height = "40px";
+            document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
         } else {
             document.getElementById("content").style.marginLeft = "14rem";
+            document.getElementById("footer").style.marginLeft = "14rem";
+            document.getElementById("plug_mate_logo").style.height = "";
+            document.getElementById("plug_mate_logo").src = "";
+            document.getElementById("plug_mate_logo").style.width = "100%";
+            document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
         }
     }
 
     document.getElementById("sidebarToggleTop").onclick = function() {
         if (document.getElementsByClassName("sidebar")[0].classList.contains("toggled")) {
             document.getElementById("content").style.marginLeft = "0";
+            document.getElementById("footer").style.marginLeft = "0";
         } else {
             document.getElementById("content").style.marginLeft = "6.5rem";
+            document.getElementById("footer").style.marginLeft = "6.5rem";
+            document.getElementById("plug_mate_logo").style.width = "";
+            document.getElementById("plug_mate_logo").src = "";
+            document.getElementById("plug_mate_logo").style.height = "40px";
+            document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
         }
     }
 
     window.onresize = function() {
         if (window.innerWidth < 768) {
             document.getElementById("content").style.marginLeft = "6.5rem";
+            document.getElementById("footer").style.marginLeft = "6.5rem";
+            document.getElementById("plug_mate_logo").style.width = "";
+            document.getElementById("plug_mate_logo").src = "";
+            document.getElementById("plug_mate_logo").style.height = "40px";
+            document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
         } else {
             document.getElementById("content").style.marginLeft = "14rem";
+            document.getElementById("footer").style.marginLeft = "14rem";
+            document.getElementById("plug_mate_logo").style.height = "";
+            document.getElementById("plug_mate_logo").src = "";
+            document.getElementById("plug_mate_logo").style.width = "100%";
+            document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
         }
+    }
+
+    if (window.innerWidth < 768) {
+        document.getElementById("plug_mate_logo").style.height = "40px";
+        document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+    } else {
+        document.getElementById("plug_mate_logo").style.width = "100%";
+        document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
     }
 </script>
 

@@ -14,6 +14,7 @@ from .models import Users, PowerEnergyConsumption, PointsWallet, Meters
 from django.db import connection
 from time import localtime, strftime
 import os
+import pandas as pd
 
 
 def plug_mate_app(request):
@@ -30,7 +31,9 @@ def plug_mate_app(request):
 
             # Query for user's cumulative savings from the database
             cursor.execute("SELECT cum_savings FROM achievements_bonus WHERE user_id=%s", [request.user.id])
-            cumulative_savings = cursor.fetchone()[0]
+            cumulative_savings_kwh = cursor.fetchone()[0]
+            cumulative_savings_dollars = '{:,.2f}'.format(cumulative_savings_kwh * 0.201)
+            cumulative_savings_trees = round(cumulative_savings_kwh * 0.201 * 0.5)
 
             # Query for user's remaining points to be claimed for the week
             cursor.execute("SELECT SUM(lower_energy_con + turn_off_leave + turn_off_end + complete_all_daily) FROM achievements_daily WHERE user_id=%s", [request.user.id])
@@ -38,7 +41,9 @@ def plug_mate_app(request):
             cursor.execute("SELECT SUM(cost_saving + schedule_based + complete_daily + complete_weekly) FROM achievements_weekly WHERE user_id=%s", [request.user.id])
             weekly_achievements = cursor.fetchone()[0]
 
-        max_weekly_points = 400
+        BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        points_table = pd.read_csv(os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_points.csv'))
+        max_weekly_points = sum(points_table[points_table['type'] == 'daily']['points']) * 5 + sum(points_table[points_table['type'] == 'weekly']['points'])
         remaining_points = max_weekly_points - daily_achievements - weekly_achievements
         os.environ['TZ'] = 'Asia/Singapore'
 
@@ -46,7 +51,9 @@ def plug_mate_app(request):
             'points': points,
             'realtime_consumption': realtime_consumption,
             'current_time': strftime('%H:%M:%S', localtime()),
-            'cumulative_savings': cumulative_savings,
+            'cumulative_savings_kwh': cumulative_savings_kwh,
+            'cumulative_savings_dollars': cumulative_savings_dollars,
+            'cumulative_savings_trees': cumulative_savings_trees,
             'remaining_points': remaining_points,
         }
 

@@ -27,11 +27,10 @@ pio.templates.default = "simple_white"
 
 end_date = '24/7/2020'
 
-# @profile
-
 # Manipulate and Initialise variables for later
 
 
+# @profile
 def initialise_variables():
     # Initialise some variables
     global start, end
@@ -42,6 +41,7 @@ def initialise_variables():
     start = end - dt.timedelta(7)
 
 
+# @profile
 def dayClickDataPiechart(df_day_bytype):
     # Aggregate df_day_bytype separating type of device
     # '''Insert SQL Code'''
@@ -73,61 +73,58 @@ app.layout = \
             href='/static/assets/custom_style.css'
         ),
         html.Div([
-            # html.Link(
-            #     rel='stylesheet',
-            #     href='/static/assets/custom_style.css'
-            # ),
-
-            dbc.Row([html.H5("View By:", id='lineTitle')],
-                    style={'justify-content': 'center', 'margin': 'auto'}),
-
             dbc.Row([dbc.Col([
-                dbc.Button('Today', id='hour', n_clicks=0, n_clicks_timestamp=0, style={
-                    'width': '100px'}, color="primary", className="mr-1"),
-                dbc.Button('Days', id='day', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
-                           color="primary",
-                           className="mr-1"),
-                dbc.Button('Weeks', id='week', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
-                           color="primary", className="mr-1", active=True),
-                dbc.Button('Months', id='month', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
-                           color="primary", className="mr-1")], style={'text-align': 'right',
-                                                                       'margin': 'auto'}, width=7),
                 dbc.Col([
-                    html.Div([daq.BooleanSwitch(id='btntoggle_units', on=False, color='#e6e6e6')],
-                             style={'width': 'fit-content'})], style={'padding-left': '3%', 'text-align': 'left'},
-                        width=5)], style={'margin': 'auto'}),
 
-            dbc.Row([
-                    dbc.Col([html.H5("Aggregated Energy", id='lineTitle', style={'margin-left': '5%'})],
-                            style={'text-align': 'center'}, width=6),
-                    dbc.Col([
-                        html.H5("Energy Breakdown Today",
-                                id='pieTitle')
-                    ], width=3, style={'text-align': 'center'}),
+                    html.Div([
+
+                        daq.BooleanSwitch(id='btntoggle_units', on=False, color='#e6e6e6')],
+
+                        style={'width': 'fit-content'}
+                    ),
+                    dbc.Button('Today', id='hour', n_clicks=0, n_clicks_timestamp=0, style={
+                        'width': '100px'}, color="primary", className="mr-1"),
+                    dbc.Button('Days', id='day', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
+                               color="primary",
+                               className="mr-1"),
+                    dbc.Button('Weeks', id='week', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
+                               color="primary", className="mr-1", active=True),
+                    dbc.Button('Months', id='month', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
+                               color="primary", className="mr-1")], style={'text-align': 'right',
+                                                                           'margin': 'auto'}, width=12),
+
+            ], style={'margin': 'auto'}, width=2),
+                dbc.Col([
+                    dbc.Row([
+                        dbc.Col([
+                            html.H5("Aggregated Energy", id='lineTitle',
+                                    style={'margin-left': '5%'}),
+                            html.Div(dbc.Spinner(color="primary", id="loadingLine",
+                                                 children=[
+                                                     dcc.Graph(id='line-chart', config={'displayModeBar': False}, clear_on_unhover=True)],
+                                                 spinner_style={"width": "3rem", "height": "3rem"}))
+
+                        ], style={'text-align': 'center'}, width=6),
+                        dbc.Col([
+                            html.H5("Energy Breakdown Today", id='pieTitle'),
+                            html.Div(
+                                dbc.Spinner(color="primary", id="loadingPie",
+                                            children=[
+                                                dcc.Graph(id='pie-chart-2', config={'displayModeBar': False})],
+                                            spinner_style={"width": "3rem", "height": "3rem"})),
+
+                        ], width=6, style={'text-align': 'center'}),
                     ], style={'justify-content': 'center', 'padding-top': '1%', 'margin': 'auto', 'margin-left': '0px'}),
-            dbc.Row([
-                    dbc.Col([
-                        html.Div(dbc.Spinner(color="primary", id="loadingLine",
-                                             children=[
-                                                 dcc.Graph(id='line-chart', config={'displayModeBar': False}, clear_on_unhover=True)],
-                                             spinner_style={"width": "3rem", "height": "3rem"}))
-                    ], width=6),
+                ], width=10),
+            ]),
 
-                    dbc.Col([
-                        html.Div(
-                            dbc.Spinner(color="primary", id="loadingPie",
-                                        children=[
-                                            dcc.Graph(id='pie-chart-2', config={'displayModeBar': False})],
-                                        spinner_style={"width": "3rem", "height": "3rem"}))
-                    ], width=3, style={'margin-top': '1%'}),
-                    ], style={'justify-content': 'center', 'margin': 'auto', 'margin-left': '0px', 'padding-top': '0px'})
-        ]),
+        ], style={'width': '97%'}),
         dcc.Interval(
             id='interval-component',
             interval=0,  # in milliseconds
             max_intervals=1
         )
-    ])
+    ], style={'height': '320px'})
 
 # D) This callback activates upon HOUR DAY WEEK MONTH click
 
@@ -176,8 +173,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             cursor.execute(
                 "SELECT * FROM historical_today_line WHERE user_id=%s", [1])
             results = cursor.fetchall()
-            colnames = [desc[0] for desc in cursor.description]
-        df_hour = pd.DataFrame(results, columns=colnames)
+        df_hour = pd.DataFrame(results, columns=['user_id', 'date', 'hours', 'power', 'month',
+                                                 'time', 'year', 'power_kWh', 'cost', 'dates_AMPM'])
         df_hour.drop(columns=['user_id'], inplace=True)
 
         # df_hour_pie
@@ -185,8 +182,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             cursor.execute(
                 "SELECT * FROM historical_today_pie WHERE user_id=%s", [1])
             results = cursor.fetchall()
-            colnames = [desc[0] for desc in cursor.description]
-        df_hour_pie = pd.DataFrame(results, columns=colnames)
+        df_hour_pie = pd.DataFrame(results, columns=['user_id', 'date', 'hours', 'device_type',
+                                                     'power', 'month', 'time', 'year', 'power_kWh', 'cost', 'date_AMPM'])
         df_hour_pie.drop(columns=['user_id'], inplace=True)
 
         # Pie Chart values
@@ -209,8 +206,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             cursor.execute(
                 "SELECT * FROM historical_days_line WHERE user_id=%s", [1])
             results = cursor.fetchall()
-            colnames = [desc[0] for desc in cursor.description]
-        df_day = pd.DataFrame(results, columns=colnames)
+        df_day = pd.DataFrame(results, columns=['user_id', 'date', 'power', 'month', 'time',
+                                                'year', 'power_kWh', 'cost', 'date_withoutYear'])
         df_day.drop(columns=['user_id'], inplace=True)
 
         # df_day_pie
@@ -218,8 +215,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             cursor.execute(
                 "SELECT * FROM historical_days_pie WHERE user_id=%s", [1])
             results = cursor.fetchall()
-            colnames = [desc[0] for desc in cursor.description]
-        df_day_pie = pd.DataFrame(results, columns=colnames)
+        df_day_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'date', 'power', 'month',
+                                                    'time', 'year', 'power_kWh', 'cost'])
         df_day_pie.drop(columns=['user_id'], inplace=True)
 
         # Pie Chart
@@ -241,8 +238,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             cursor.execute(
                 "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [1])
             results = cursor.fetchall()
-            colnames = [desc[0] for desc in cursor.description]
-        df_week_pie = pd.DataFrame(results, columns=colnames)
+        df_week_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'week', 'power',
+                                                     'month', 'time', 'year', 'power_kWh', 'cost'])
         df_week_pie.drop(columns=['user_id'], inplace=True)
 
         # df_week_bytype
@@ -253,8 +250,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             cursor.execute(
                 "SELECT * FROM historical_weeks_line WHERE user_id=%s", [1])
             results = cursor.fetchall()
-            colnames = [desc[0] for desc in cursor.description]
-        df_week_line = pd.DataFrame(results, columns=colnames)
+        df_week_line = pd.DataFrame(results, columns=['user_id', 'week', 'power', 'month',
+                                                      'time', 'year', 'power_kWh', 'cost', 'date'])
         df_week_line.drop(columns=['user_id'], inplace=True)
 
         df_to_sort = df_week_line
@@ -279,8 +276,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             cursor.execute(
                 "SELECT * FROM historical_months_line WHERE user_id=%s", [1])
             results = cursor.fetchall()
-            colnames = [desc[0] for desc in cursor.description]
-        df_month = pd.DataFrame(results, columns=colnames)
+        df_month = pd.DataFrame(results, columns=['user_id', 'month', 'year', 'power', 'time',
+                                                  'power_kWh', 'unix_time', 'cost'])
         df_month.drop(columns=['user_id'], inplace=True)
 
         # df_month_pie
@@ -288,8 +285,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             cursor.execute(
                 "SELECT * FROM historical_months_pie WHERE user_id=%s", [1])
             results = cursor.fetchall()
-            colnames = [desc[0] for desc in cursor.description]
-        df_month_pie = pd.DataFrame(results, columns=colnames)
+        df_month_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'power', 'time',
+                                                      'month', 'year', 'power_kWh', 'cost'])
         df_month_pie.drop(columns=['user_id'], inplace=True)
 
         values_pie = df_month_pie['power_kWh']
@@ -312,14 +309,13 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                 cursor.execute(
                     "SELECT * FROM historical_today_pie WHERE user_id=%s", [1])
                 results = cursor.fetchall()
-                colnames = [desc[0] for desc in cursor.description]
-            df_hour_pie = pd.DataFrame(results, columns=colnames)
+            df_hour_pie = pd.DataFrame(results, columns=['user_id', 'date', 'hours', 'device_type',
+                                                         'power', 'month', 'time', 'year', 'power_kWh', 'cost', 'date_AMPM'])
             df_hour_pie.drop(columns=['user_id'], inplace=True)
 
             # df_hour_bytype
             df_hour_bytype = copy.deepcopy(df_hour_pie)
-
-            x_value = hoverData['points'][0]['x']
+            x_value = clickData['points'][0]['x']
             xvalue_tohours = dt.datetime.strptime(
                 x_value, '%I:%M%p').strftime('%H')
 
@@ -334,10 +330,10 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             pie_middletext = x_value
 
             if btnkwhdollars == False:
-                values_pie = df4['power_kWh']
+                values_pie = df4['cost']
 
             else:
-                values_pie = df4['cost']
+                values_pie = df4['power_kWh']
 
         elif monthbtn > weekbtn and monthbtn > daybtn and monthbtn > hourbtn:
 
@@ -346,14 +342,14 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                 cursor.execute(
                     "SELECT * FROM historical_months_pie WHERE user_id=%s", [1])
                 results = cursor.fetchall()
-                colnames = [desc[0] for desc in cursor.description]
-            df_month_pie = pd.DataFrame(results, columns=colnames)
+            df_month_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'month', 'time', 'power',
+                                                          'year', 'power_kWh', 'cost'])
             df_month_pie.drop(columns=['user_id'], inplace=True)
 
             # df_month_bytype
             df_month_bytype = copy.deepcopy(df_month_pie)
 
-            x_value = hoverData['points'][0]['x']
+            x_value = clickData['points'][0]['x']
 
             # Get last 24 hours only
             df_to_process = df_month_bytype
@@ -368,10 +364,10 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             pie_middletext = x_value
 
             if btnkwhdollars == False:
-                values_pie = df4['power_kWh']
+                values_pie = df4['cost']
 
             else:
-                values_pie = df4['cost']
+                values_pie = df4['power_kWh']
 
         elif weekbtn > monthbtn and weekbtn > daybtn and weekbtn > hourbtn:
 
@@ -380,14 +376,14 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                 cursor.execute(
                     "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [1])
                 results = cursor.fetchall()
-                colnames = [desc[0] for desc in cursor.description]
-            df_week_pie = pd.DataFrame(results, columns=colnames)
+            df_week_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'week', 'power',
+                                                         'month', 'time', 'year', 'power_kWh', 'cost'])
             df_week_pie.drop(columns=['user_id'], inplace=True)
 
             # df_week_bytype
             df_week_bytype = copy.deepcopy(df_week_pie)
 
-            x_value = hoverData['points'][0]['x']
+            x_value = clickData['points'][0]['x']
             # Get last 24 hours only
             df_to_process = df_week_bytype
             mask = (df_to_process['week'] == x_value)
@@ -399,10 +395,10 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             pie_middletext = "Week of {}".format(x_value)
 
             if btnkwhdollars == False:
-                values_pie = df4['power_kWh']
+                values_pie = df4['cost']
 
             else:
-                values_pie = df4['cost']
+                values_pie = df4['power_kWh']
 
         elif daybtn > monthbtn and daybtn > weekbtn and daybtn > hourbtn:
 
@@ -411,15 +407,15 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                 cursor.execute(
                     "SELECT * FROM historical_days_pie WHERE user_id=%s", [1])
                 results = cursor.fetchall()
-                colnames = [desc[0] for desc in cursor.description]
-            df_day_pie = pd.DataFrame(results, columns=colnames)
+            df_day_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'date', 'power', 'month',
+                                                        'time', 'year', 'power_kWh', 'cost'])
             df_day_pie.drop(columns=['user_id'], inplace=True)
 
             # df_day_bytype
             df_day_bytype = copy.deepcopy(df_day_pie)
             df_day_bytype = dayClickDataPiechart(df_day_bytype)
 
-            x_value = hoverData['points'][0]['x']
+            x_value = clickData['points'][0]['x']
             # Get last 24 hours only
             # x_value_withoutzero = dt.datetime.strptime(
             #     x_value, '%d/%m').strftime('%d/%#m')  # - doesnt work for windows.
@@ -433,10 +429,10 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             pie_middletext = x_value
 
             if btnkwhdollars == False:
-                values_pie = df4['power_kWh']
+                values_pie = df4['cost']
 
             else:
-                values_pie = df4['cost']
+                values_pie = df4['power_kWh']
 
         else:
 
@@ -445,14 +441,14 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                 cursor.execute(
                     "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [1])
                 results = cursor.fetchall()
-                colnames = [desc[0] for desc in cursor.description]
-            df_week_pie = pd.DataFrame(results, columns=colnames)
+            df_week_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'week', 'power',
+                                                         'month', 'time', 'year', 'power_kWh', 'cost'])
             df_week_pie.drop(columns=['user_id'], inplace=True)
 
             # df_week_bytype
             df_week_bytype = copy.deepcopy(df_week_pie)
 
-            x_value = hoverData['points'][0]['x']
+            x_value = clickData['points'][0]['x']
             # Get last 24 hours only
 
             mask = (df_week_bytype['week'] == x_value)
@@ -464,10 +460,10 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             pie_middletext = "Week of {}".format(x_value)
 
             if btnkwhdollars == False:
-                values_pie = df4['power_kWh']
+                values_pie = df4['cost']
 
             else:
-                values_pie = df4['cost']
+                values_pie = df4['power_kWh']
     # G) This ELSE will run on First Load of Page
 
     else:
@@ -481,8 +477,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                 cursor.execute(
                     "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [1])
                 results = cursor.fetchall()
-                colnames = [desc[0] for desc in cursor.description]
-            df_week_pie = pd.DataFrame(results, columns=colnames)
+            df_week_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'week', 'power',
+                                                         'month', 'time', 'year', 'power_kWh', 'cost'])
             df_week_pie.drop(columns=['user_id'], inplace=True)
 
             # df_week_bytype
@@ -493,8 +489,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                 cursor.execute(
                     "SELECT * FROM historical_weeks_line WHERE user_id=%s", [1])
                 results = cursor.fetchall()
-                colnames = [desc[0] for desc in cursor.description]
-            df_week_line = pd.DataFrame(results, columns=colnames)
+            df_week_line = pd.DataFrame(results, columns=['user_id', 'week', 'power', 'month',
+                                                          'time', 'year', 'power_kWh', 'cost', 'date'])
             df_week_line.drop(columns=['user_id'], inplace=True)
 
             df_to_sort = df_week_line
@@ -523,12 +519,12 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         values=values_pie,
         color=df4['device_type'],
         color_discrete_map={
-            'Desktop': 'primary',
-            'Laptop': 'success',
-            'Monitor': 'danger',
-            'Fan': 'warning',
-            'Tasklamp': 'info',
-            'Others': '#6610f2'
+            'Desktop': '#4e73df',
+            'Laptop': '#007bff',
+            'Monitor': '#e74a3b',
+            'Fan': '#1cc88a',
+            'Tasklamp': '#17a2b8',
+            'Others': '#f6c23e'
         }
     )
 
@@ -538,6 +534,16 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         uniformtext_mode='hide',
         height=180,
         width=240,
+        legend=dict(
+
+            font=dict(
+                family='"Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans -serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+                size=11,
+                color="black"
+            ),
+
+        )
+
     )
     piechart.update_traces(textposition='inside')
 
@@ -546,8 +552,58 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     # 2. Toggle False = kWh, True = $
 
     if btnkwhdollars == False:
-        units = 'Energy'
+        units = 'Cost'
+        fig2 = go.Figure()
 
+        if monthbtn > weekbtn and monthbtn > daybtn and monthbtn > hourbtn:
+            x = df3['month']
+            y = df3['cost']
+            values_pie = df4['cost']
+
+        elif weekbtn > monthbtn and weekbtn > daybtn and weekbtn > hourbtn:
+            x = df3['week']
+            y = df3['cost']
+            values_pie = df4['cost']
+
+        elif daybtn > monthbtn and daybtn > weekbtn and daybtn > hourbtn:
+            x = df3['date_withoutYear']
+            y = df3['cost']
+            values_pie = df4['cost']
+
+        elif hourbtn > monthbtn and hourbtn > weekbtn and hourbtn > daybtn:
+            print(df3)
+            x = df3['dates_AMPM']
+            y = df3['cost']
+            print(df4)
+            values_pie = df4['cost']
+            fig2.update_xaxes(
+                ticktext=["12AM", "", "", "3AM", "", "", "6AM", "", "", "9AM",
+                          "", "", "12PM", "", "", "3PM", "", "", "6PM", "", "", "9PM", "", ""],
+                tickvals=["12:00AM", "01:00AM", "02:00AM", "03:00AM", "04:00AM", "05:00AM",
+                          "06:00AM", "07:00AM", "08:00AM", "09:00AM", "10:00AM", "11:00AM", "12:00PM",
+                          "01:00PM", "02:00PM", "03:00PM", "04:00PM", "05:00PM", "06:00PM", "07:00PM", "08:00PM", "09:00PM",
+                          "10:00PM", "11:00PM"],
+            )
+        else:
+            x = df3['week']
+            y = df3['cost']
+            values_pie = df4['cost']
+
+        # Change to $ for pie and line graph
+
+        fig2.update_yaxes(tickprefix='$ ')
+        print(values_pie)
+        piechart.update_traces(
+            values=values_pie,
+            labels=df4['device_type'],
+            textinfo='label+percent',
+            hovertemplate="%{label}<br>%{percent}<br>$ %{value}",
+
+        )
+
+        # End of $
+    else:
+        units = 'Energy'
         fig2 = go.Figure()
 
         if monthbtn > weekbtn and monthbtn > daybtn and monthbtn > hourbtn:
@@ -566,7 +622,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             values_pie = df4['power_kWh']
 
         elif hourbtn > monthbtn and hourbtn > weekbtn and hourbtn > daybtn:
-            x = df3['dates_AMPM']
+            x = df3['dates_AMPM']  # Actually HOURS_AMPM
             y = df3['power_kWh']
             values_pie = df4['power_kWh']
             fig2.update_xaxes(
@@ -594,108 +650,65 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             hovertemplate="%{label}<br>%{percent}<br>%{value} kWh",
 
         )
-    else:
-
-        units = 'Cost'
-        fig2 = go.Figure()
-
-        if monthbtn > weekbtn and monthbtn > daybtn and monthbtn > hourbtn:
-            x = df3['month']
-            y = df3['cost']
-            values_pie = df4['cost']
-
-        elif weekbtn > monthbtn and weekbtn > daybtn and weekbtn > hourbtn:
-            x = df3['week']
-            y = df3['cost']
-            values_pie = df4['cost']
-
-        elif daybtn > monthbtn and daybtn > weekbtn and daybtn > hourbtn:
-            x = df3['date_withoutYear']
-            y = df3['cost']
-            values_pie = df4['cost']
-
-        elif hourbtn > monthbtn and hourbtn > weekbtn and hourbtn > daybtn:
-            x = df3['dates_AMPM']
-            y = df3['cost']
-            values_pie = df4['cost']
-            fig2.update_xaxes(
-                ticktext=["12AM", "", "", "3AM", "", "", "6AM", "", "", "9AM",
-                          "", "", "12PM", "", "", "3PM", "", "", "6PM", "", "", "9PM", "", ""],
-                tickvals=["12:00AM", "01:00AM", "02:00AM", "03:00AM", "04:00AM", "05:00AM",
-                          "06:00AM", "07:00AM", "08:00AM", "09:00AM", "10:00AM", "11:00AM", "12:00PM",
-                          "01:00PM", "02:00PM", "03:00PM", "04:00PM", "05:00PM", "06:00PM", "07:00PM", "08:00PM", "09:00PM",
-                          "10:00PM", "11:00PM"],
-            )
-        else:
-            x = df3['week']
-            y = df3['cost']
-            values_pie = df4['cost']
-
-        # Change to $ for pie and line graph
-
-        fig2.update_yaxes(tickprefix='$ ')
-        piechart.update_traces(
-            values=values_pie,
-            labels=df4['device_type'],
-            textinfo='label+percent',
-            hovertemplate="%{label}<br>%{percent}<br>$ %{value}",
-
-        )
-
-        # End of $
 
     # 3. Final Layout Changes
-    fig2 = fig2.add_trace(go.Scattergl(x=x, y=y,
-                                       hovertemplate='',
-                                       line=dict(
-                                           color='royalblue',
-                                           width=4),
-                                       selected=dict(
-                                           marker=dict(size=30)
-                                       ),
-                                       )
+    hovertemplate = (
+        '<b>Total: </b>%{y}<extra></extra>'+'<br><br><b>%{text}</b>')
+
+    # For the Line
+    fig2 = fig2.add_trace(go.Scatter(x=x, y=y,
+                                     hovertemplate='',
+                                     line=dict(
+                                         color='royalblue',
+                                         width=4),
+                                     selected=dict(
+                                         marker=dict(size=30)
+                                     ),
+                                     )
                           )
 
-    fig2 = fig2.add_trace(go.Scattergl(
+    # For Orange Markers
+    fig2.add_trace(go.Scatter(
         mode='markers',
         x=x,
         y=y,
-        hovertemplate='',
+
+        hovertemplate=hovertemplate,
+        text=['Click to see the <br>plug load breakdown!'.format(
+            i + 1) for i in range(24)],
+
         marker=dict(
-            size=12,
+            size=14,
+
+            # For black circle around markers
             line=dict(
-                # color='LightSkyBlue',
                 width=2
             ),
         ),
         showlegend=False,
     ))
 
+    # For Hover Box and Remove Legends
     fig2.update_layout(
         xaxis_title="",
         yaxis_title="",
         yaxis=dict(showgrid=True, zeroline=False),
         hoverlabel=dict(bgcolor="white"),
         showlegend=False,
-        legend=dict(
-            x=0,
-            y=1,
-            traceorder="normal",
-            font=dict(
-                family="sans-serif",
-                size=12,
-                color="black"
-            ),
-            bgcolor="LightSteelBlue",
-            bordercolor="Black",
-            borderwidth=2
+
+        font=dict(
+            family='"Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans -serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+            size=12,
+            color="black"
+
         ),
+
 
     )
 
     piechart.update_layout(
 
-        showlegend=False,
+        showlegend=True,
         hoverlabel=dict(
             bgcolor="white",
         ),
@@ -709,20 +722,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         sort=False,
     )
 
-    hovertemplate = (
-        '<b>Total: </b>%{y}<extra></extra>'+'<br><br><b>%{text}</b>')
-
-    fig2.add_trace(
-        go.Scatter(
-            x=x,
-            y=y,
-            hovertemplate=hovertemplate,
-            text=['Click to see the <br>plug load breakdown!'.format(
-                i + 1) for i in range(24)],
-            # fill='tozeroy',
-            # mode='lines',
-            # line=dict(width=0),
-        ))
     fig2.update_xaxes(showspikes=True, spikecolor="black",
                       spikesnap="hovered data", tickangle=0,
                       spikethickness=2,)
@@ -734,6 +733,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
     )
     # 4. Return all graphs
-    # print("DONE SHOWING GRAPHS <======", str(dt.datetime.now()))
+    print("DONE SHOWING GRAPHS <======", str(dt.datetime.now()))
 
     return fig2, piechart, ("Aggregated {}".format(units), html.Br(), "{}".format(pie_middletext)), ("{} Breakdown".format(units), html.Br(), "{}".format(pie_middletext)), dayActive, weekActive,    monthActive,   hourActive
