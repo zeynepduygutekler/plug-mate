@@ -15,12 +15,15 @@ app.layout = html.Div([
         dbc.Row([
             html.Button(id='previous-tip',
                         children=[html.Img(src='https://image.flaticon.com/icons/svg/566/566011.svg',
-                                           style={'width': '20%', 'height': 'auto'})],
-                        style={'border': 'none', 'background-color': 'transparent', 'outline': 'none',}),
+                                           style={'width': '40%', 'height': 'auto'})],
+                        style={'border': 'none', 'background-color': 'transparent', 'outline': 'none','opacity':'0.4',
+                               'text-align':'left', 'padding-left':'20px'}),
+            html.Div(className='col-6'),
             html.Button(id='next-tip',
                         children=[html.Img(src='https://image.flaticon.com/icons/svg/566/566012.svg',
-                                           style={'width': '20%', 'height': 'auto'})],
-                        style={'border': 'none', 'background-color': 'transparent', 'outline': 'none', })
+                                           style={'width': '40%', 'height': 'auto'})],
+                        style={'border': 'none', 'background-color': 'transparent', 'outline': 'none', 'opacity':'0.4',
+                               'text-align':'right', 'padding-right':'20px'})
         ], style={'flex-wrap': 'nowrap', 'height': '3rem'}),
 
     ], style={'text-align': 'right'}),
