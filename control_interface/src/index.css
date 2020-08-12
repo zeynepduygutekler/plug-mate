@@ -39,12 +39,6 @@
   display: inline-block;
 }
 
-
-
-#DesktopBoxPresence, #MonitorBoxPresence, #LaptopBoxPresence, #TaskLampBoxPresence, #FanBoxPresence {
-  display: inline-block;
-}
-
 #DesktopIconRemote, #MonitorIconRemote, #LaptopIconRemote, #TaskLampIconRemote, #FanIconRemote {
     padding-left: 36.5px;
 }
@@ -63,7 +57,6 @@
 
 #DesktopSelect, #MonitorSelect, #LaptopSelect, #TaskLampSelect, #FanSelect {
     margin-left: 20px;
-    width: 120px;
 }
 
 #DesktopTextOther, #MonitorTextOther, #LaptopTextOther, #TaskLampTextOther, #FanTextOther {
@@ -72,16 +65,12 @@
     display: inline-block;
 }
 
-.clickable {
-    cursor: pointer;
-}
-
 .confirm_alert_confirm {
     margin-left: 20px;
 }
 
 .confirm_alert_content {
-    height: fit-content;
+    max-height: 30%;
     overflow: auto;
     text-align: center;
 }
@@ -197,6 +186,33 @@
     display: inline-block;
 }
 
+.selected {
+    background: #06D6A0;
+}
+
+.tab {
+    overflow: hidden;
+    margin-bottom: -20px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: -1;
+}
+
+.tab button {
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.tab button:hover {
+    background: rgba(6, 214, 160, 0.5)
+}
+
 .toggle-switch {
     position: relative;
     width: 75px;
@@ -294,6 +310,106 @@
   height: 100px;
   margin-left: 10px;
 }
+
+.whiteRing {
+    background: white;
+    border-radius: 50%;
+    width: 65px;
+    height: 65px;
+    border: 1px solid #707070;
+    margin-left: 4px;
+    margin-top: 4px;
+    display: inline-block;
+}
+
+.wordPresence {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-left: 20px;
+    color: black;
+}
+
+
+/** Schedule-Based **/
+#schedule_popup_overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0,0.5);
+    z-index: 100;
+}
+
+#schedule_popup {
+    width: 50vw;
+    height: 80vh;
+    border: 1px solid black;
+    margin: 10vh auto;
+    background: white;
+    padding: 2% 5%;
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+
+#schedule_device_type {
+    text-align: center;
+    margin: 0;
+    margin-bottom: 4%;
+    font-weight: bold;
+    display: inline-block
+}
+
+#schedule_name_input {
+    border: none;
+    border-bottom: solid 3px #4E73DF;
+    width: 85%;
+}
+
+#schedule_name_input:focus {
+    outline: none;
+}
+
+#schedule_popup_close {
+    float:right;
+    cursor: pointer;
+}
+
+#schedule_time_input {
+    margin-top: 4%;
+}
+
+#StartTime, #EndTime {
+    display: inline-block;
+}
+
+#StartHour, #EndHour {
+    width: 40px;
+    text-align: center;
+    margin: 10px;
+}
+
+#schedule_popup_delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#schedule_popup_cancel {
+    float: right;
+    cursor: pointer;
+    width: 80px;
+}
+
+#schedule_popup_ok {
+    float: right;
+    cursor: pointer;
+    width: 80px;
+    margin-left: 10px;
+}
+
+
 
 .whiteRing {
     background: white;

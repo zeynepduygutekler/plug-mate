@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import RemoteData, ScheduleData, PresenceData, AchievementsBonus
+from .models import RemoteData, ScheduleData, PresenceData, AchievementsBonus, AchievementsWeekly
 
 class RemoteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,4 +21,7 @@ class AchievementsBonusSerializer(serializers.ModelSerializer):
         model = AchievementsBonus
         fields = ('id', 'user_id', 'tree_first', 'tree_fifth', 'tree_tenth', 'redeem_reward', 'first_remote', 'first_schedule', 'first_presence')
 
-
+class AchievementsWeeklySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AchievementsWeekly
+        fields = ('id', 'user_id', 'cost_saving', 'schedule_based', 'complete_daily', 'complete_weekly')
