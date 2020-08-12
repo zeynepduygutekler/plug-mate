@@ -61,8 +61,6 @@ def get_achievements():
 
 
 
-
-
 app = DjangoDash('progress',
                  external_stylesheets=["https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"],
                  serve_locally=True, add_bootstrap_links=True)
@@ -87,7 +85,7 @@ app.layout = html.Div([
                                   color='warning',
                                   animated=True), width=10),
              dbc.Col(
-                 html.P('140/1500', style={'font-weight': 'bold', 'marginLeft': 0, 'text-align': 'left', 'padding': 0,
+                 html.P(id='text',children='140/1500', style={'font-weight': 'bold', 'marginLeft': 0, 'text-align': 'left', 'padding': 0,
                                            'line-height': '40px',
                                            'height': '40px'}), width=2, style={'padding': 0})
              ], style={'margin': 'auto'}),
@@ -118,17 +116,14 @@ app.layout = html.Div([
 def update_achievements_table(n):
     daily, weekly, bonus, reference = get_achievements()
     today = datetime.today().strftime('%a')
-    print(weekly)
     table = []
-    # print(daily)
 
     def create_table_row(achievement, points):
         if points > 0:
-            # TODO fix bug here
             return html.Tr([
                 html.Td(reference.loc[achievement]['description'], style={'opacity': 0.3}),
                 html.Td(html.Img(src='https://i.ibb.co/qJqjkk8/trophy.png',
-                                 style={'height': '6%'}))]),
+                                 style={'height': '6%'}))])
         else:
             return html.Tr([html.Td(reference.loc[achievement]['description']),
                      html.Td(f'{reference.loc[achievement]["points"]} points')])
@@ -140,17 +135,47 @@ def update_achievements_table(n):
     bonus_header = [html.Tr([html.Th('Bonus Achievements'), html.Th("Points")],
                             style={'background-color': '#6f42c1', 'color': 'white'})]
     table += daily_header
-    for achmt,pts in daily.loc[today].to_dict().items():
+
+    def sort_dict(dictionary):
+        return {k: v for k, v in sorted(dictionary.items(), key=lambda item: item[1])}.items()
+    for achmt,pts in sort_dict(daily.loc[today].to_dict()):
         table += [create_table_row(achmt,pts)]
     table += weekly_header
-    for achmt, pts in weekly.iloc[0].to_dict().items():
-        # print(achmt, pts)
+    for achmt, pts in sort_dict(weekly.iloc[0].to_dict()):
         table += [create_table_row(achmt, pts)]
     table += bonus_header
-    for achmt, pts in bonus.iloc[0].to_dict().items():
+    for achmt, pts in sort_dict(bonus.iloc[0].to_dict()):
         # print(achmt, pts)
         table += [create_table_row(achmt, pts)]
 
-    # print(table)
     return table, ''
+
+
+@app.callback(
+    [dash.dependencies.Output('progress-bar', 'children'),
+     dash.dependencies.Output('progress-bar', 'value'),
+     dash.dependencies.Output('progress-bar', 'max'),
+     dash.dependencies.Output('text', 'children')],
+    [dash.dependencies.Input('interval', 'n_intervals')]
+)
+def update_progress_bar(n):
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT SUM(lower_energy_con + turn_off_leave + turn_off_end + complete_all_daily) FROM achievements_daily WHERE user_id=%s",
+            [1])
+        daily_achievements = cursor.fetchone()[0]
+        cursor.execute(
+            "SELECT SUM(cost_saving + schedule_based + complete_daily + complete_weekly) FROM achievements_weekly WHERE user_id=%s",
+            [1])
+        weekly_achievements = cursor.fetchone()[0]
+
+    max_weekly_points = 400
+    points = daily_achievements + weekly_achievements
+    # remaining_points = max_weekly_points - points
+    percentage = round((points / max_weekly_points)*100)
+
+    if percentage < 5:
+        return '',points,max_weekly_points, f'{points}/{max_weekly_points}'
+    return percentage, points, max_weekly_points, f'{points}/{max_weekly_points}'
+
 
