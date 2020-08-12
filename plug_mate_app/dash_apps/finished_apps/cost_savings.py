@@ -24,12 +24,12 @@ def currency_format(value):
         return '-${:,.2f}'.format(abs(value))
 
 
-def cost_savings():
+def cost_savings(user_id):
     t0 = time()
     """Takes in the raw data file and converts it into the last 6 week/month worth of aggregated data"""
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM costsavings_weeks WHERE user_id=%s", [1])
+        cursor.execute("SELECT * FROM costsavings_weeks WHERE user_id=%s", [user_id])
         results = cursor.fetchall()
         colnames = [desc[0] for desc in cursor.description]
     week_view = pd.DataFrame(results, columns=colnames)
@@ -38,7 +38,7 @@ def cost_savings():
 
     # month_view
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM costsavings_months WHERE user_id=%s", [1])
+        cursor.execute("SELECT * FROM costsavings_months WHERE user_id=%s", [user_id])
         results = cursor.fetchall()
         colnames = [desc[0] for desc in cursor.description]
     month_view = pd.DataFrame(results, columns=colnames)
@@ -52,7 +52,7 @@ def cost_savings():
 
 # df_week, df_month = cost_savings()
 
-app = DjangoDash('cost_savings',
+app = DjangoDash(name='cost_savings',
                  external_stylesheets=["https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"],
                  add_bootstrap_links=True)
 
@@ -62,6 +62,7 @@ app.layout = html.Div([
         rel='stylesheet',
         href='/static/assets/custom_style.css'
     ),
+
     dbc.Row([
         dbc.Button('Week', id='week', n_clicks=0, n_clicks_timestamp=0, color="primary",
                    className="mr-1", active=True),
@@ -78,7 +79,7 @@ app.layout = html.Div([
 ], style={'vertical-align': 'middle'})
 
 
-@app.callback(
+@app.expanded_callback(
     [dash.dependencies.Output('cost-savings', 'figure'),  # update graph
      dash.dependencies.Output('placeholder', 'children'),
      dash.dependencies.Output('week', 'active'),
@@ -87,7 +88,7 @@ app.layout = html.Div([
      dash.dependencies.Input('month', 'n_clicks'),
      dash.dependencies.Input('interval-trigger', 'n_intervals')]
 )
-def update_bar_chart(n1, n2, int):
+def update_bar_chart(n1, n2, int, **kwargs):
     """This function checks whether user is looking for month/week view, and whether user requires simulation feature
    and outputs a bar graph of the cost savings.
    Variables:
@@ -95,6 +96,9 @@ def update_bar_chart(n1, n2, int):
    df - dataframe with columns of plug loads and values of cost savings
    fig - main graph object
    sim - list of values corresponding to simulation inputs"""
+
+    # Get user id
+    user_id = kwargs['user'].id
 
     # Checking buttons for view (week or month), store in var view
     if n1 == n2 == 0:  # default
@@ -104,7 +108,7 @@ def update_bar_chart(n1, n2, int):
         view = changed_id.split('.')[0].capitalize()  # button's n_clicks acts as state toggle between week and month
 
     # Process dataframe
-    df = cost_savings()[0] if view == 'Week' else cost_savings()[1]
+    df = cost_savings(user_id)[0] if view == 'Week' else cost_savings(user_id)[1]
     series = df['total']
     # Add the text that hovers over each bar for the normal graph
     hovertemplate = '<em>Week of %{x}</em><br>%{hovertext}' if view == 'Week' else '<em>Month of %{x}</em><br>%{hovertext}'

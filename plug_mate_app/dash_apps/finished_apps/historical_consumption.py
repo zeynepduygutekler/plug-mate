@@ -134,7 +134,7 @@ app.layout = \
 # D) This callback activates upon HOUR DAY WEEK MONTH click
 
 
-@ app.callback(
+@ app.expanded_callback(
     [dd.Output('line-chart', 'figure'),
      dd.Output('pie-chart-2', 'figure'),
      dd.Output('lineTitle', 'children'),
@@ -159,7 +159,7 @@ app.layout = \
 # @profile
 def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, btnkwhdollars,
                               clickData, interval,
-                              hoverData, hourbtn, daybtn, weekbtn, monthbtn):
+                              hoverData, hourbtn, daybtn, weekbtn, monthbtn, **kwargs):
     global df_hour, df_hour_pie, df_week_line, df_week_pie, start, end, end_date
     global df3, df4, piechart
     global fig2
@@ -172,11 +172,14 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     # checks the list of id that recently triggered a callback in dash.callback_context.triggered list
     changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
 
+    # Get user id
+    user_id = kwargs['user'].id
+
     if 'hour' in changed_id:
         # df_hour
         with connection.cursor() as cursor:
             cursor.execute(
-                "SELECT * FROM historical_today_line WHERE user_id=%s", [1])
+                "SELECT * FROM historical_today_line WHERE user_id=%s", [user_id])
             results = cursor.fetchall()
         df_hour = pd.DataFrame(results, columns=['user_id', 'date', 'hours', 'power', 'month',
                                                  'time', 'year', 'power_kWh', 'cost', 'dates_AMPM'])
@@ -185,7 +188,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         # df_hour_pie
         with connection.cursor() as cursor:
             cursor.execute(
-                "SELECT * FROM historical_today_pie WHERE user_id=%s", [1])
+                "SELECT * FROM historical_today_pie WHERE user_id=%s", [user_id])
             results = cursor.fetchall()
         df_hour_pie = pd.DataFrame(results, columns=['user_id', 'date', 'hours', 'device_type',
                                                      'power', 'month', 'time', 'year', 'power_kWh', 'cost', 'date_AMPM'])
@@ -209,7 +212,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         # df_day
         with connection.cursor() as cursor:
             cursor.execute(
-                "SELECT * FROM historical_days_line WHERE user_id=%s", [1])
+                "SELECT * FROM historical_days_line WHERE user_id=%s", [user_id])
             results = cursor.fetchall()
         df_day = pd.DataFrame(results, columns=['user_id', 'date', 'power', 'month', 'time',
                                                 'year', 'power_kWh', 'cost', 'date_withoutYear'])
@@ -218,7 +221,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         # df_day_pie
         with connection.cursor() as cursor:
             cursor.execute(
-                "SELECT * FROM historical_days_pie WHERE user_id=%s", [1])
+                "SELECT * FROM historical_days_pie WHERE user_id=%s", [user_id])
             results = cursor.fetchall()
         df_day_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'date', 'power', 'month',
                                                     'time', 'year', 'power_kWh', 'cost'])
@@ -241,7 +244,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         # df_week_pie
         with connection.cursor() as cursor:
             cursor.execute(
-                "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [1])
+                "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [user_id])
             results = cursor.fetchall()
         df_week_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'week', 'power',
                                                      'month', 'time', 'year', 'power_kWh', 'cost'])
@@ -253,7 +256,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         # df_week_line
         with connection.cursor() as cursor:
             cursor.execute(
-                "SELECT * FROM historical_weeks_line WHERE user_id=%s", [1])
+                "SELECT * FROM historical_weeks_line WHERE user_id=%s", [user_id])
             results = cursor.fetchall()
         df_week_line = pd.DataFrame(results, columns=['user_id', 'week', 'power', 'month',
                                                       'time', 'year', 'power_kWh', 'cost', 'date'])
@@ -279,7 +282,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         # df_month
         with connection.cursor() as cursor:
             cursor.execute(
-                "SELECT * FROM historical_months_line WHERE user_id=%s", [1])
+                "SELECT * FROM historical_months_line WHERE user_id=%s", [user_id])
             results = cursor.fetchall()
         df_month = pd.DataFrame(results, columns=['user_id', 'month', 'year', 'power', 'time',
                                                   'power_kWh', 'unix_time', 'cost'])
@@ -288,7 +291,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         # df_month_pie
         with connection.cursor() as cursor:
             cursor.execute(
-                "SELECT * FROM historical_months_pie WHERE user_id=%s", [1])
+                "SELECT * FROM historical_months_pie WHERE user_id=%s", [user_id])
             results = cursor.fetchall()
         df_month_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'power', 'time',
                                                       'month', 'year', 'power_kWh', 'cost'])
@@ -312,7 +315,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             # df_hour_pie
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT * FROM historical_today_pie WHERE user_id=%s", [1])
+                    "SELECT * FROM historical_today_pie WHERE user_id=%s", [user_id])
                 results = cursor.fetchall()
             df_hour_pie = pd.DataFrame(results, columns=['user_id', 'date', 'hours', 'device_type',
                                                          'power', 'month', 'time', 'year', 'power_kWh', 'cost', 'date_AMPM'])
@@ -345,7 +348,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             # df_month_pie
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT * FROM historical_months_pie WHERE user_id=%s", [1])
+                    "SELECT * FROM historical_months_pie WHERE user_id=%s", [user_id])
                 results = cursor.fetchall()
             df_month_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'month', 'time', 'power',
                                                           'year', 'power_kWh', 'cost'])
@@ -379,7 +382,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             # df_week_pie
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [1])
+                    "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [user_id])
                 results = cursor.fetchall()
             df_week_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'week', 'power',
                                                          'month', 'time', 'year', 'power_kWh', 'cost'])
@@ -410,7 +413,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             # df_day_pie
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT * FROM historical_days_pie WHERE user_id=%s", [1])
+                    "SELECT * FROM historical_days_pie WHERE user_id=%s", [user_id])
                 results = cursor.fetchall()
             df_day_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'date', 'power', 'month',
                                                         'time', 'year', 'power_kWh', 'cost'])
@@ -444,7 +447,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             # df_week_pie
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [1])
+                    "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [user_id])
                 results = cursor.fetchall()
             df_week_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'week', 'power',
                                                          'month', 'time', 'year', 'power_kWh', 'cost'])
@@ -480,7 +483,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             # df_week_pie
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [1])
+                    "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [user_id])
                 results = cursor.fetchall()
             df_week_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'week', 'power',
                                                          'month', 'time', 'year', 'power_kWh', 'cost'])
@@ -492,7 +495,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             # df_week_line
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "SELECT * FROM historical_weeks_line WHERE user_id=%s", [1])
+                    "SELECT * FROM historical_weeks_line WHERE user_id=%s", [user_id])
                 results = cursor.fetchall()
             df_week_line = pd.DataFrame(results, columns=['user_id', 'week', 'power', 'month',
                                                           'time', 'year', 'power_kWh', 'cost', 'date'])
