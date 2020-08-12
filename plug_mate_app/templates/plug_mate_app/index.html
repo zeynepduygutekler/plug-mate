@@ -129,65 +129,91 @@
         </div>
     </div>
 
-    <!-- Content Row -->
-    <div class="row">
-        <div class="col-12" id="historical_card">
-            <div class="card shadow mb-4 anchor">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                    <h6 class="m-0 font-weight-bold text-primary text-uppercase mb-1" style="font-size: large">Historical Energy Consumption and Cost</h6>
-                </div>
-                <div class="card-body">
-                    <div class="{% plotly_class name='historical_consumption' %}">
-                        {% plotly_app name='historical_consumption' ratio=0.35 %}
+<!-- Content Row -->
+<div class="row">
+    <div class="col-7">
+        <div class="row">
+            <div class="col-xl-12 col-lg-6" id="historical_card">
+                <div class="card shadow mb-4" style="height: 400px;">
+                    <div class=" card-header py-3 d-flex flex-row align-items-center justify-content-center">
+                        <h6 class="m-0 font-weight-bold text-primary text-uppercase mb-1">Historical Energy Consumption
+                            and Cost
+                        </h6>
                     </div>
+                    <div class="card-body">
+                        <div class="{% plotly_class name='historical_consumption' %}" style="height:360px!important;">
+                            {% plotly_app name='historical_consumption' ratio=0.45 %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-6" id="cost_card">
+                <div class="card shadow">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
+                        <h6 class="m-0 font-weight-bold text-success text-uppercase mb-1">Cost Savings of Plug Loads
+                        </h6>
+                        {#                    <img style="margin-left:10px;height:15px;width:15px;margin-left:10px;" src="/static/Images/Info.png" alt="icon" id="infoIconCostSavings">#}
+                        {#                    <div id="infoBoxCostSavings" style="width:1px;height:1px;overflow-x:visible;overflow-y:visible;">#}
+                        {#                        <div id="informationBoxCostSavings" style="display:none;border: 1px solid black; width: 10vw;padding: 0px 10px; background-color: white; font-size: 10.5px; z-index: 1000;">#}
+                        {#                            <p style="color:black"> Your cost savings is the difference between the cost for the week / month and your average cost. </p>#}
+                        {#                        </div>#}
+                        {#                    </div>#}
+                    </div>
+                    <div class="card-body">
+                        <div class="{% plotly_class name='cost_savings' %}">
+                            {% plotly_app name='cost_savings' ratio=0.79 %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="col-5" id="goal_card">
+        <div class="card shadow">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
+                <h6 class="m-0 font-weight-bold text-info text-uppercase mb-1">Achievements</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8 text-center my-auto">
+                        <div class="h4 mb-0 mr-3 font-weight-bold text-gray-800">3 daily and 3 weekly achievements left
+                            to claim. Keep going!</div>
+                        <br>
+
+                        <div class="col-md-12 font-weight-bold text-center">
+                            <a href="#reward_card">Check your wallet</a>
+                        </div>
+                    </div>
+
+                    <div class="col-4 text-left my-auto">
+                        <img src="https://image.flaticon.com/icons/svg/860/860511.svg" style="height: 6rem">
+                    </div>
+
+
+                    {#             dbc.Col(html.Img(src="https://image.flaticon.com/icons/svg/860/860511.svg", style={'height': '6rem'}),#}
+                    {#                     style={'margin': 'auto'}, width=4)],#}
+                    {#            style={'height': '50%', 'align-items': 'baseline', 'margin': 'auto'}#}
+                    {#            ),#}
+
+                </div>
+
+                <div class="{% plotly_class name='progress' %}">
+                    {% plotly_app name='progress' ratio=0.85 %}
                 </div>
             </div>
         </div>
     </div>
-
-
-    <div class="row">
-        <div class="col-xl-7 col-lg-12" id="cost_card">
-            <div class="card shadow">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                    <h6 class="m-0 font-weight-bold text-success text-uppercase mb-1" style="font-size: large">Cost Savings of Plug Loads</h6>
-                </div>
-                <div class="card-body">
-                    <div class="{% plotly_class name='cost_savings' %}">
-                        {% plotly_app name='cost_savings' ratio=0.79 %}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-xl-5 col-lg-12" id="goal_card">
-            <div class="card shadow">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                    <h6 class="m-0 font-weight-bold text-info text-uppercase mb-1" style="font-size: large">Achievements</h6>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-8 text-center my-auto">
-                            <div class="h4 mb-0 mr-3 font-weight-bold text-gray-800">{{ remaining_points }} points left to claim this week. Keep going!</div>
-                            <br>
-
-                            <div class="col-md-12 font-weight-bold text-center">
-                                <a href="#reward_card">Check your wallet</a>
-                            </div>
-                        </div>
-
-                        <div class="col-4 text-left my-auto">
-                            <img src="https://image.flaticon.com/icons/svg/860/860511.svg" style="height: 6rem">
-                        </div>
-                    </div>
-
-                    <div class="{% plotly_class name='progress' %}">
-                        {% plotly_app name='progress' ratio=0.85 %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
 
     <script>
         var infoiconcostsavings = document.getElementById("infoIconCostSavings");
