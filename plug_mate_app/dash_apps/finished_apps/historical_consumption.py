@@ -73,61 +73,58 @@ app.layout = \
             href='/static/assets/custom_style.css'
         ),
         html.Div([
-            # html.Link(
-            #     rel='stylesheet',
-            #     href='/static/assets/custom_style.css'
-            # ),
-
-            dbc.Row([html.H5("View By:", id='lineTitle')],
-                    style={'justify-content': 'center', 'margin': 'auto'}),
-
             dbc.Row([dbc.Col([
-                dbc.Button('Today', id='hour', n_clicks=0, n_clicks_timestamp=0, style={
-                    'width': '100px'}, color="primary", className="mr-1"),
-                dbc.Button('Days', id='day', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
-                           color="primary",
-                           className="mr-1"),
-                dbc.Button('Weeks', id='week', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
-                           color="primary", className="mr-1", active=True),
-                dbc.Button('Months', id='month', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
-                           color="primary", className="mr-1")], style={'text-align': 'right',
-                                                                       'margin': 'auto'}, width=7),
                 dbc.Col([
-                    html.Div([daq.BooleanSwitch(id='btntoggle_units', on=False, color='#e6e6e6')],
-                             style={'width': 'fit-content'})], style={'padding-left': '3%', 'text-align': 'left'},
-                        width=5)], style={'margin': 'auto'}),
 
-            dbc.Row([
-                    dbc.Col([html.H5("Aggregated Energy", id='lineTitle', style={'margin-left': '5%'})],
-                            style={'text-align': 'center'}, width=6),
-                    dbc.Col([
-                        html.H5("Energy Breakdown Today",
-                                id='pieTitle')
-                    ], width=3, style={'text-align': 'center'}),
+                    html.Div([
+
+                        daq.BooleanSwitch(id='btntoggle_units', on=False, color='#e6e6e6')],
+
+                        style={'width': 'fit-content'}
+                    ),
+                    dbc.Button('Today', id='hour', n_clicks=0, n_clicks_timestamp=0, style={
+                        'width': '100px'}, color="primary", className="mr-1"),
+                    dbc.Button('Days', id='day', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
+                               color="primary",
+                               className="mr-1"),
+                    dbc.Button('Weeks', id='week', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
+                               color="primary", className="mr-1", active=True),
+                    dbc.Button('Months', id='month', n_clicks=0, n_clicks_timestamp=0, style={'width': '100px'},
+                               color="primary", className="mr-1")], style={'text-align': 'right',
+                                                                           'margin': 'auto'}, width=12),
+
+            ], style={'margin': 'auto'}, width=2),
+                dbc.Col([
+                    dbc.Row([
+                        dbc.Col([
+                            html.H5("Aggregated Energy", id='lineTitle',
+                                    style={'margin-left': '5%'}),
+                            html.Div(dbc.Spinner(color="primary", id="loadingLine",
+                                                 children=[
+                                                     dcc.Graph(id='line-chart', config={'displayModeBar': False}, clear_on_unhover=True)],
+                                                 spinner_style={"width": "3rem", "height": "3rem"}))
+
+                        ], style={'text-align': 'center'}, width=6),
+                        dbc.Col([
+                            html.H5("Energy Breakdown Today", id='pieTitle'),
+                            html.Div(
+                                dbc.Spinner(color="primary", id="loadingPie",
+                                            children=[
+                                                dcc.Graph(id='pie-chart-2', config={'displayModeBar': False})],
+                                            spinner_style={"width": "3rem", "height": "3rem"})),
+
+                        ], width=6, style={'text-align': 'center'}),
                     ], style={'justify-content': 'center', 'padding-top': '1%', 'margin': 'auto', 'margin-left': '0px'}),
-            dbc.Row([
-                    dbc.Col([
-                        html.Div(dbc.Spinner(color="primary", id="loadingLine",
-                                             children=[
-                                                 dcc.Graph(id='line-chart', config={'displayModeBar': False}, clear_on_unhover=True)],
-                                             spinner_style={"width": "3rem", "height": "3rem"}))
-                    ], width=6),
+                ], width=10),
+            ]),
 
-                    dbc.Col([
-                        html.Div(
-                            dbc.Spinner(color="primary", id="loadingPie",
-                                        children=[
-                                            dcc.Graph(id='pie-chart-2', config={'displayModeBar': False})],
-                                        spinner_style={"width": "3rem", "height": "3rem"}))
-                    ], width=3, style={'margin-top': '1%'}),
-                    ], style={'justify-content': 'center', 'margin': 'auto', 'margin-left': '0px', 'padding-top': '0px'})
-        ]),
+        ], style={'width': '97%'}),
         dcc.Interval(
             id='interval-component',
             interval=0,  # in milliseconds
             max_intervals=1
         )
-    ])
+    ], style={'height': '340px'})
 
 # D) This callback activates upon HOUR DAY WEEK MONTH click
 
