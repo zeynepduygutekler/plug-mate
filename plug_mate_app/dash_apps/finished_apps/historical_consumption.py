@@ -111,7 +111,8 @@ app.layout = \
 
                         ], style={'text-align': 'center'}, width=7),
                         dbc.Col([
-                            html.H5("Energy Breakdown Today", id='pieTitle'),
+                            html.H5("Energy Breakdown Today", id='pieTitle', style={
+                                    'color': '#5a5c69!important'}),
                             html.Div(
                                 dbc.Spinner(color="primary", id="loadingPie",
                                             children=[
