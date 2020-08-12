@@ -30,7 +30,9 @@ def plug_mate_app(request):
 
             # Query for user's cumulative savings from the database
             cursor.execute("SELECT cum_savings FROM achievements_bonus WHERE user_id=%s", [request.user.id])
-            cumulative_savings = cursor.fetchone()[0]
+            cumulative_savings_kwh = cursor.fetchone()[0]
+            cumulative_savings_dollars = '{:,.2f}'.format(cumulative_savings_kwh * 0.201)
+            cumulative_savings_trees = round(cumulative_savings_kwh * 0.201 * 0.5)
 
             # Query for user's remaining points to be claimed for the week
             cursor.execute("SELECT SUM(lower_energy_con + turn_off_leave + turn_off_end + complete_all_daily) FROM achievements_daily WHERE user_id=%s", [request.user.id])
@@ -46,7 +48,9 @@ def plug_mate_app(request):
             'points': points,
             'realtime_consumption': realtime_consumption,
             'current_time': strftime('%H:%M:%S', localtime()),
-            'cumulative_savings': cumulative_savings,
+            'cumulative_savings_kwh': cumulative_savings_kwh,
+            'cumulative_savings_dollars': cumulative_savings_dollars,
+            'cumulative_savings_trees': cumulative_savings_trees,
             'remaining_points': remaining_points,
         }
 
