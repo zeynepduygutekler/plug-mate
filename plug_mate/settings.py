@@ -15,7 +15,8 @@ import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEMPLATE_DIR = [os.path.join(BASE_DIR, 'control_interface/build'), os.path.join(BASE_DIR, 'templates')]
+TEMPLATE_DIR = [os.path.join(
+    BASE_DIR, 'control_interface/build'), os.path.join(BASE_DIR, 'templates')]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -108,9 +109,9 @@ WSGI_APPLICATION = 'plug_mate.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'plug_mate_dev_db',
-        'USER': 'raymondlow',
-        'PASSWORD': 'password123',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': '123456',
         'HOST': 'localhost',
     }
 }
@@ -157,8 +158,8 @@ ASGI_APPLICATION = 'plug_mate.routing.application'
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG':{
-            'hosts': [('127.0.0.1', 5432),],
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 5432), ],
         }
     }
 }
@@ -182,10 +183,10 @@ PLOTLY_COMPONENTS = [
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-STATICFILES_LOCATION='static'
+STATICFILES_LOCATION = 'static'
 STATIC_URL = '/static/'
-STATIC_ROOT=os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS=[
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'control_interface/build/'),
     os.path.join(BASE_DIR, 'control_interface/build/static/'),
     os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/'),
