@@ -11,52 +11,39 @@ from django.db import connection
 from django_plotly_dash import DjangoDash
 from datetime import datetime
 
+
 # image_directory = os.getcwd() + '/trees'
 # static_image_route = '/static/'
 # img_style = {'height': '50%', 'width': '50%'}
 
 def get_achievements():
     """Reads achievement dataframes from database"""
-    #
-    # with connection.cursor() as cursor:
-    #     cursor.execute("SELECT * FROM achievements_daily WHERE user_id=%s", [1])
-    #     results = cursor.fetchall()
-    #     colnames = [desc[0] for desc in cursor.description]
-    # daily = pd.DataFrame(results, columns=colnames)
-    # daily.drop(columns=['user_id'], inplace=True)
-    # daily = daily.set_index('week_day')
-    #
-    # with connection.cursor() as cursor:
-    #     cursor.execute("SELECT * FROM achievements_weekly WHERE user_id=%s", [1])
-    #     results = cursor.fetchall()
-    #     colnames = [desc[0] for desc in cursor.description]
-    # weekly = pd.DataFrame(results, columns=colnames)
-    # weekly.drop(columns=['user_id'], inplace=True)
-    #
-    # with connection.cursor() as cursor:
-    #     cursor.execute("SELECT * FROM achievements_bonus WHERE user_id=%s", [1])
-    #     results = cursor.fetchall()
-    #     colnames = [desc[0] for desc in cursor.description]
-    # bonus = pd.DataFrame(results, columns=colnames)
-    # bonus.drop(columns=['user_id', 'id'], inplace=True)
-    #
-    # with connection.cursor() as cursor:
-    #     cursor.execute("SELECT * FROM achievements_points")
-    #     results = cursor.fetchall()
-    #     colnames = [desc[0] for desc in cursor.description]
-    # reference = pd.DataFrame(results, columns=colnames)
-    # reference = reference.set_index('achievement')
-    daily = pd.read_csv('plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_daily.csv')
-    daily.drop(columns=['user_id'], inplace=True)
-    daily = daily.set_index('week_day')
-    weekly = pd.read_csv('plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_weekly.csv')
-    weekly.drop(columns=['user_id'], inplace=True)
-    bonus = pd.read_csv('plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_bonus.csv')
-    bonus.drop(columns=['user_id', 'id', 'cum_savings'], inplace=True)
     reference = pd.read_csv('plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_points.csv')
     reference = reference.set_index('achievement')
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM achievements_daily WHERE user_id=%s", [1])
+        results = cursor.fetchall()
+        colnames = [desc[0] for desc in cursor.description]
+    daily = pd.DataFrame(results, columns=colnames)
+    daily.drop(columns=['user_id', 'id'], inplace=True)
+    daily = daily.set_index('week_day')
+    # #
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM achievements_weekly WHERE user_id=%s", [1])
+        results = cursor.fetchall()
+        colnames = [desc[0] for desc in cursor.description]
+    weekly = pd.DataFrame(results, columns=colnames)
+    weekly.drop(columns=['user_id', 'id'], inplace=True)
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM achievements_bonus WHERE user_id=%s", [1])
+        results = cursor.fetchall()
+        colnames = [desc[0] for desc in cursor.description]
+    bonus = pd.DataFrame(results, columns=colnames)
+    bonus.drop(columns=['user_id', 'id', 'cum_savings'], inplace=True)
 
     return daily, weekly, bonus, reference
+
 
 app = DjangoDash('progress',
                  external_stylesheets=["https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"],
@@ -82,9 +69,10 @@ app.layout = html.Div([
                                   color='warning',
                                   animated=True), width=10),
              dbc.Col(
-                 html.P(id='text',children='140/1500', style={'font-weight': 'bold', 'marginLeft': 0, 'text-align': 'left', 'padding': 0,
-                                           'line-height': '40px',
-                                           'height': '40px'}), width=2, style={'padding': 0})
+                 html.P(id='text', children='140/1500',
+                        style={'font-weight': 'bold', 'marginLeft': 0, 'text-align': 'left', 'padding': 0,
+                               'line-height': '40px',
+                               'height': '40px'}), width=2, style={'padding': 0})
              ], style={'margin': 'auto'}),
     #
     # html.Div(id='HELLO', children=
@@ -97,7 +85,7 @@ app.layout = html.Div([
 
     html.Div([
         dcc.Interval(id='interval', interval=800000, n_intervals=0, max_intervals=1),
-        html.Table(id='achievements',className='table',
+        html.Table(id='achievements', className='table',
 
                    )
     ], style={"maxHeight": "19rem", "overflow": "scroll"})
@@ -107,7 +95,7 @@ app.layout = html.Div([
 
 @app.callback(
     [dash.dependencies.Output('achievements', 'children'),
-     dash.dependencies.Output('placeholder','children')],
+     dash.dependencies.Output('placeholder', 'children')],
     [dash.dependencies.Input('interval', 'n_intervals')]
 )
 def update_achievements_table(n):
@@ -123,7 +111,7 @@ def update_achievements_table(n):
                                  style={'height': '6%'}))])
         else:
             return html.Tr([html.Td(reference.loc[achievement]['description']),
-                     html.Td(f'{reference.loc[achievement]["points"]} points')])
+                            html.Td(f'{reference.loc[achievement]["points"]} points')])
 
     daily_header = [html.Tr([html.Th('Daily Achievements'), html.Th("Energy Points")],
                             style={'background-color': '#1cc88a', 'color': 'white'})]
@@ -135,8 +123,9 @@ def update_achievements_table(n):
 
     def sort_dict(dictionary):
         return {k: v for k, v in sorted(dictionary.items(), key=lambda item: item[1])}.items()
-    for achmt,pts in sort_dict(daily.loc[today].to_dict()):
-        table += [create_table_row(achmt,pts)]
+
+    for achmt, pts in sort_dict(daily.loc[today].to_dict()):
+        table += [create_table_row(achmt, pts)]
     table += weekly_header
     for achmt, pts in sort_dict(weekly.iloc[0].to_dict()):
         table += [create_table_row(achmt, pts)]
@@ -169,10 +158,8 @@ def update_progress_bar(n):
     max_weekly_points = 400
     points = daily_achievements + weekly_achievements
     # remaining_points = max_weekly_points - points
-    percentage = round((points / max_weekly_points)*100)
+    percentage = round((points / max_weekly_points) * 100)
 
     if percentage < 5:
-        return '',points,max_weekly_points, f'{points}/{max_weekly_points}'
+        return '', points, max_weekly_points, f'{points}/{max_weekly_points}'
     return percentage, points, max_weekly_points, f'{points}/{max_weekly_points}'
-
-
