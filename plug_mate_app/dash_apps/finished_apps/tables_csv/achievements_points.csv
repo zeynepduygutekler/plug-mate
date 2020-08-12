@@ -1,0 +1,16 @@
+type,achievement,points,description
+daily,lower_energy_con,15,Clock a lower energy consumption than yesterday
+daily,turn_off_leave,10,Turn off your plug loads when you leave your desk for a long period of time during the day
+daily,turn_off_end,10,Turn off your plug loads during at the end of the day
+daily,complete_all_daily,20,Complete all daily achievements
+weekly,cost_saving,25,Clock a higher cost savings than last week
+weekly,schedule_based,20,Set next week's schedule-based controls
+weekly,complete_daily,30,Complete all daily achievements for 4 days of the week
+weekly,complete_weekly,50,Complete all weekly achievements
+bonus,tree_first,100,Save your first tree
+bonus,tree_fifth,100,Save your fifth tree
+bonus,tree_tenth,200,Save your tenth tree
+bonus,redeem_reward,10,Redeem your first reward from your rewards page
+bonus,first_remote,60,Try out our remote control feature for the first time
+bonus,first_schedule,70,Set your first schedule-based setting
+bonus,first_presence,70,Set your first presence-based setting

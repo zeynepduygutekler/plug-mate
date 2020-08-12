@@ -17,44 +17,44 @@ from datetime import datetime
 
 def get_achievements():
     """Reads achievement dataframes from database"""
-    #
-    # with connection.cursor() as cursor:
-    #     cursor.execute("SELECT * FROM achievements_daily WHERE user_id=%s", [1])
-    #     results = cursor.fetchall()
-    #     colnames = [desc[0] for desc in cursor.description]
-    # daily = pd.DataFrame(results, columns=colnames)
-    # daily.drop(columns=['user_id'], inplace=True)
-    # daily = daily.set_index('week_day')
-    #
-    # with connection.cursor() as cursor:
-    #     cursor.execute("SELECT * FROM achievements_weekly WHERE user_id=%s", [1])
-    #     results = cursor.fetchall()
-    #     colnames = [desc[0] for desc in cursor.description]
-    # weekly = pd.DataFrame(results, columns=colnames)
-    # weekly.drop(columns=['user_id'], inplace=True)
-    #
-    # with connection.cursor() as cursor:
-    #     cursor.execute("SELECT * FROM achievements_bonus WHERE user_id=%s", [1])
-    #     results = cursor.fetchall()
-    #     colnames = [desc[0] for desc in cursor.description]
-    # bonus = pd.DataFrame(results, columns=colnames)
-    # bonus.drop(columns=['user_id', 'id'], inplace=True)
-    #
-    # with connection.cursor() as cursor:
-    #     cursor.execute("SELECT * FROM achievements_points")
-    #     results = cursor.fetchall()
-    #     colnames = [desc[0] for desc in cursor.description]
-    # reference = pd.DataFrame(results, columns=colnames)
-    # reference = reference.set_index('achievement')
-    daily = pd.read_csv('plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_daily.csv')
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM achievements_daily WHERE user_id=%s", [1])
+        results = cursor.fetchall()
+        colnames = [desc[0] for desc in cursor.description]
+    daily = pd.DataFrame(results, columns=colnames)
     daily.drop(columns=['user_id'], inplace=True)
     daily = daily.set_index('week_day')
-    weekly = pd.read_csv('plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_weekly.csv')
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM achievements_weekly WHERE user_id=%s", [1])
+        results = cursor.fetchall()
+        colnames = [desc[0] for desc in cursor.description]
+    weekly = pd.DataFrame(results, columns=colnames)
     weekly.drop(columns=['user_id'], inplace=True)
-    bonus = pd.read_csv('plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_bonus.csv')
-    bonus.drop(columns=['user_id', 'id', 'cum_savings'], inplace=True)
-    reference = pd.read_csv('plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_points.csv')
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM achievements_bonus WHERE user_id=%s", [1])
+        results = cursor.fetchall()
+        colnames = [desc[0] for desc in cursor.description]
+    bonus = pd.DataFrame(results, columns=colnames)
+    bonus.drop(columns=['user_id', 'id'], inplace=True)
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM achievements_points")
+        results = cursor.fetchall()
+        colnames = [desc[0] for desc in cursor.description]
+    reference = pd.DataFrame(results, columns=colnames)
     reference = reference.set_index('achievement')
+    # daily = pd.read_csv('plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_daily.csv')
+    # daily.drop(columns=['user_id'], inplace=True)
+    # daily = daily.set_index('week_day')
+    # weekly = pd.read_csv('plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_weekly.csv')
+    # weekly.drop(columns=['user_id'], inplace=True)
+    # bonus = pd.read_csv('plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_bonus.csv')
+    # bonus.drop(columns=['user_id', 'id', 'cum_savings'], inplace=True)
+    # reference = pd.read_csv('plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_points.csv')
+    # reference = reference.set_index('achievement')
 
     return daily, weekly, bonus, reference
 
