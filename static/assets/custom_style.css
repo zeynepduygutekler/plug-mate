@@ -16,8 +16,8 @@ body {
 
 .igrnnx {
   display: block;
-  width: 40px !important;
-  height: 40px !important;
+  width: 50.5px !important;
+  height: 50.5px !important;
   transform: translateX(0px);
   background: rgb(0, 123, 255) !important;
   border-radius: 50%;
@@ -31,13 +31,18 @@ body {
   border-image: initial;
 }
 
+.igrnnx::before {
+  content: "kWh";
+  color: white;
+}
 
 /* This is for button when True */
 .dlqMgb {
   display: block;
-  width: 40px !important;
-  height: 40px !important;
-  transform: translateX(35px) !important;
+  width: 50.5px !important;
+  width: 50.5px !important;
+  height: 50.5px !important;
+  transform: translateX(50.5px) !important;
   background: rgb(0, 123, 255) !important;
   border-radius: 50%;
   padding: 0px;
@@ -49,13 +54,16 @@ body {
   border-color: rgb(211, 211, 211);
   border-image: initial;
 }
-
+.dlqMgb::before {
+  content: "$";
+  color: white;
+}
 
 .cmSQpo {
   align-items: center;
   height: auto;
   display: flex;
-  width: 80px !important;
+  width: 105px !important;
   cursor: pointer;
   margin-left: 2.25px;
   margin-right: 2.25px;
@@ -71,7 +79,7 @@ body {
   align-items: center;
   height: auto;
   display: flex;
-  width: 80px !important;
+  width: 105px !important;
   cursor: pointer;
   margin-left: 2.25px;
   margin-right: 2.25px;
@@ -84,22 +92,15 @@ body {
 .imatVS::before {
   content: "$";
   position: absolute;
-  margin-left: 20%;
-  margin-right: 18%;
-}
-.igrnnx::before {
-  content: "$";
-  color: white;
-}
-.dlqMgb::before {
-  content: "kWh";
-  color: white;
+  margin-left: 12%;
+  margin-right: 20%;
 }
 
 .cmSQpo::after {
   content: "kWh";
   margin-left: auto;
-  margin-right: 4%;
+  color: black;
+  margin-right: 23%;
 }
 
 
@@ -116,8 +117,7 @@ body {
   background-color: #007bff;
     border-color: #007bff;
     border: #007bff;
-    height:40px;
-    width:80px;
+    height:50px;
 
 }
 
@@ -147,4 +147,10 @@ body {
   color: white;
   background-color: #0060c7;
   border-color: #007bff;
+}
+
+.django-plotly-dash .django-plotly-dash-iframe .django-plotly-dash-app-historical_consumption{
+
+
+
 }

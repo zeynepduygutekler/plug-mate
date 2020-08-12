@@ -57,6 +57,7 @@
 
 #DesktopSelect, #MonitorSelect, #LaptopSelect, #TaskLampSelect, #FanSelect {
     margin-left: 20px;
+    width: 120px;
 }
 
 #DesktopTextOther, #MonitorTextOther, #LaptopTextOther, #TaskLampTextOther, #FanTextOther {

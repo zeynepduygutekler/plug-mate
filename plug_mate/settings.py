@@ -199,9 +199,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'control_interface/build/'),
     os.path.join(BASE_DIR, 'control_interface/build/static/'),
-    os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/'),
-    os.path.join(BASE_DIR, 'plug_mate_app/static/'),
-    os.path.join(BASE_DIR, '/static/'),
+    # os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/'),
+    # os.path.join(BASE_DIR, 'plug_mate_app/static/'),
+    # os.path.join(BASE_DIR, '/static/'),
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
