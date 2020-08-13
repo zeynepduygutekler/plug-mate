@@ -714,7 +714,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     )
 
     piechart.update_layout(
-        margin=dict(l=0, r=0, t=0, b=0, pad=0),
+        margin=dict(l=0, r=0, t=0, b=5, pad=0),
         uniformtext_minsize=12,
         uniformtext_mode='hide',
         showlegend=True,
@@ -731,7 +731,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             yanchor="top",
             xanchor="center",
             x=0.5,
-            y=-0.3,
+            y=-0.1,
             font=dict(
                 family='"Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans -serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
                 size=11,
