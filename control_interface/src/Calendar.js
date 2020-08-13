@@ -210,15 +210,21 @@ class Calendar extends Component {
         fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/')
         .then(response => response.json())
         .then(data => {
-            this.setState({achievements_books: [data]})
+            this.setState({achievements_books: data})
         })
 
         // Fetch data for weekly achievements
+        this.refetchWeeklyAchievementsData();
+    }
+
+    refetchWeeklyAchievementsData = () => {
         fetch('http://127.0.0.1:8000/control_interface/api/achievements_weekly/')
         .then(response => response.json())
         .then(data => {
-            this.setState({weekly_achievements_books: [data]})
+            this.setState({weekly_achievements_books: data})
         })
+
+        setTimeout(this.refetchWeeklyAchievementsData, 5000)
     }
 
     updateAchievementsBooks = (newBook) => {
@@ -625,6 +631,7 @@ class Calendar extends Component {
                             }
                         ]
                     })
+                    window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
                 // Update weekly achievement
@@ -1009,6 +1016,7 @@ class Calendar extends Component {
                             }
                         ]
                     })
+                    window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
                 // Update weekly achievement
@@ -1386,6 +1394,7 @@ class Calendar extends Component {
                             }
                         ]
                     })
+                    window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
                 // Update weekly achievement
@@ -1762,6 +1771,7 @@ class Calendar extends Component {
                             }
                         ]
                     })
+                    window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
                 // Update weekly achievement
@@ -2142,6 +2152,7 @@ class Calendar extends Component {
                             }
                         ]
                     })
+                    window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
                 // Update weekly achievement
