@@ -187,10 +187,8 @@ def update_bar_chart(n1, n2, int, **kwargs):
                                     xref='paper',
                                     yref='paper',
                                     font=dict(size=13),
-                                    x=0.14,
-                                    y=1.08,
-                                    # bordercolor='black',
-                                    # borderwidth=1
+                                    x=1,
+                                    y=1.2,
                                 )
                             ]
                         ),
@@ -245,7 +243,7 @@ def update_bar_chart(n1, n2, int, **kwargs):
             x=0.99,
             borderwidth=0
         ),
-        margin=dict(t=20)
+        margin=dict(t=75)
     )
     fig.update_yaxes(tickprefix="$")
 
