@@ -235,6 +235,7 @@ def update_bar_chart(n1, n2, int, **kwargs):
             size=12,
             color="black"
         ),
+        height=400,
         legend=dict(
             orientation='h',
             yanchor="top",
@@ -243,7 +244,7 @@ def update_bar_chart(n1, n2, int, **kwargs):
             x=0.99,
             borderwidth=0
         ),
-        margin=dict(t=75)
+        margin=dict(t=75,b=0)
     )
     fig.update_yaxes(tickprefix="$")
 
