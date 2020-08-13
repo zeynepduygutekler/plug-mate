@@ -2,14 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import ConfirmAlert from './ConfirmAlert';
-import Basic from "./Basic";
-import Basic0 from "./Basic0"
-import Basic1 from "./Basic1"
-import Basic2 from "./Basic2"
-import Basic3 from "./Basic3"
-import Basic4 from "./Basic4"
-import Basic5 from "./Basic5"
-import "./styles.css"
+import Calendar from './Calendar';
 
 function compare(a,b) {
     let comparison = 0;
@@ -23,10 +16,18 @@ function compare(a,b) {
 
 // Remote Control
 
+function fetchData() {
+    ReactDOM.unmountComponentAtNode(document.getElementById("remote-control"))
+    ReactDOM.render(<RemoteControlDashboard />, document.getElementById("remote-control"))
+    setTimeout(fetchData, 5000)
+    console.log("UPDATE")
+}
+
 class RemoteControlDashboard extends Component {
     state = {
         books: [],
-        current_user_id: 1
+        current_user_id: 1,
+        retrieving: false
     }
 
     componentDidMount() {
@@ -43,7 +44,32 @@ class RemoteControlDashboard extends Component {
             }
             this.setState({books: datas})
         })
+//        this.interval = setInterval(this.fetchData, 5000);
+//        this.fetchData();
     }
+
+//    fetchData = () => {
+//        if (this.state.retrieving) return;
+//        this.setState({retrieving:true});
+//        fetch('http://127.0.0.1:8000/control_interface/api/remote/')
+//        .then(response => response.json())
+//        .then(data => {
+//            data.sort(compare);
+//            var datas = []
+//            for (var input of data) {
+//                if (input.user_id === this.state.current_user_id) {
+//                    datas.push(input)
+//                }
+//            }
+//            this.setState({books: datas}, function() {console.log(this.state.books)})
+//            console.log("Update!")
+//        })
+//
+//        .finally(() => this.setState({retrieving:false}))
+//
+//        setTimeout(this.fetchData, 5000);
+//
+//    }
 
     updateBook = (newBook) => {
         fetch('http://127.0.0.1:8000/control_interface/api/remote/' + newBook.id.toString() + '/', {
@@ -66,13 +92,17 @@ class RemoteControlDashboard extends Component {
     }
 
     render() {
+        console.log("Render again")
+        console.log(this.state.books)
         return (
             <>
-                <RemoteControlList
-                    books={this.state.books}
-                    onUpdateClick={this.updateBook}
-                />
-                <p style={{float:"right"}}> Note: It may take some time for the remote control to work. </p>
+                <div id="remote_control_space">
+                    <RemoteControlList
+                        books={this.state.books}
+                        onUpdateClick={this.updateBook}
+                    />
+                </div>
+                <p style={{float:"right"}}> Note: It will take around 5 seconds for your devices to be switched ON/OFF. </p>
             </>
         )
     }
@@ -468,6 +498,8 @@ class RemoteToggleButton extends Component {
 
 ReactDOM.render(<RemoteControlDashboard />, document.getElementById('remote-control'))
 
+fetchData();
+
 function Main() {
     // If at least one plug load is ON, master button is automatically toggled to ON.
     if (document.getElementById("DesktopToggleRemote").checked || document.getElementById("MonitorToggleRemote").checked ||
@@ -489,550 +521,620 @@ function Main() {
 
 // Schedule Based control
 
-// Define some variables
-var mondaycalendar = document.getElementById("MondayCalendar");
-var tuesdaycalendar = document.getElementById("TuesdayCalendar");
-var wednesdaycalendar = document.getElementById("WednesdayCalendar");
-var thursdaycalendar = document.getElementById("ThursdayCalendar");
-var fridaycalendar = document.getElementById("FridayCalendar");
-var saturdaycalendar = document.getElementById("SaturdayCalendar");
-var sundaycalendar = document.getElementById("SundayCalendar");
-const root = document.getElementById("root");
-
-// Function for when "Monday" is clicked
-mondaycalendar.onclick = function() {
-  // Adjust the colours of the day buttons
-  if (!mondaycalendar.classList.contains("selected")) {
-    mondaycalendar.classList.add("selected")
-  }
-  if (tuesdaycalendar.classList.contains("selected")) {
-    tuesdaycalendar.classList.remove("selected")
-  }
-  if (wednesdaycalendar.classList.contains("selected")) {
-    wednesdaycalendar.classList.remove("selected")
-  }
-  if (thursdaycalendar.classList.contains("selected")) {
-    thursdaycalendar.classList.remove("selected")
-  }
-  if (fridaycalendar.classList.contains("selected")) {
-    fridaycalendar.classList.remove("selected")
-  }
-  if (saturdaycalendar.classList.contains("selected")) {
-    saturdaycalendar.classList.remove("selected")
-  }
-  if (sundaycalendar.classList.contains("selected")) {
-    sundaycalendar.classList.remove("selected")
-  }
-
-  // Remove previous calendar
-  ReactDOM.unmountComponentAtNode(root)
-
-  // Remove popup
-  ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"))
-
-  // Add the calendar for Monday
-  ReactDOM.render(
-    <React.StrictMode>
-      <Basic />
-    </React.StrictMode>,
-    root
-  );
-
-  // Remove unwanted calendar header
-  var header = document.getElementById("root").childNodes[0].childNodes[0].childNodes[0];
-  header.removeChild(header.childNodes[0]);
-
-  // Changing the borders
-  document.getElementsByClassName("scheduler-bg-table")[0].childNodes[0].childNodes[0].childNodes[23].style.borderRight = 0;
-
-  var i;
-  var j;
-  for (i=0; i<5; i++) {
-    for (j=3; j<93;j+=4) {
-      document.getElementsByClassName("scheduler-bg-table")[1].childNodes[0].childNodes[i].childNodes[j].style.borderRight = "1px solid #707070";
+function sort_events(a,b) {
+    let comparison = 0;
+    if (a.start > b.start) {
+        comparison = 1;
+    } else if (a.start < b.start) {
+        comparison = -1
     }
-  }
+    return comparison
 }
 
-// Function for when "Tuesday" is clicked
-tuesdaycalendar.onclick = function() {
-  // Adjust the colours of the day buttons
-  if (mondaycalendar.classList.contains("selected")) {
-    mondaycalendar.classList.remove("selected")
-  }
-  if (!tuesdaycalendar.classList.contains("selected")) {
-    tuesdaycalendar.classList.add("selected")
-  }
-  if (wednesdaycalendar.classList.contains("selected")) {
-    wednesdaycalendar.classList.remove("selected")
-  }
-  if (thursdaycalendar.classList.contains("selected")) {
-    thursdaycalendar.classList.remove("selected")
-  }
-  if (fridaycalendar.classList.contains("selected")) {
-    fridaycalendar.classList.remove("selected")
-  }
-  if (saturdaycalendar.classList.contains("selected")) {
-    saturdaycalendar.classList.remove("selected")
-  }
-  if (sundaycalendar.classList.contains("selected")) {
-    sundaycalendar.classList.remove("selected")
-  }
+function from24to12(hour) {
+    var new_hour = Number(hour.substring(0,2));
+    var am_or_pm = new_hour >= 12 ? "PM" : "AM";
+    new_hour = (new_hour % 12) || 12;
+    var finalTime = new_hour + ":" + hour.substring(3,5) + " " + am_or_pm;
 
-  // Remove previous calendar
-  ReactDOM.unmountComponentAtNode(root)
-
-  // Remove popup
-  ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"))
-
-  // Add the calendar for Tuesday
-  ReactDOM.render(
-    <React.StrictMode>
-      <Basic0 />
-    </React.StrictMode>,
-    root
-  );
-
-  // Remove unwanted calendar header
-  var header = document.getElementById("root").childNodes[0].childNodes[0].childNodes[0];
-  header.removeChild(header.childNodes[0]);
-
-  // Changing the borders
-  document.getElementsByClassName("scheduler-bg-table")[0].childNodes[0].childNodes[0].childNodes[23].style.borderRight = 0;
-
-  var i;
-  var j;
-  for (i=0; i<5; i++) {
-    for (j=3; j<93;j+=4) {
-      document.getElementsByClassName("scheduler-bg-table")[1].childNodes[0].childNodes[i].childNodes[j].style.borderRight = "1px solid #707070";
+    if (finalTime.length !== 8) {
+        finalTime = "0" + finalTime
     }
-  }
+    return (finalTime);
 }
 
-// Function for when "Wednesday" is clicked
-wednesdaycalendar.onclick = function() {
-  // Adjust the colours of the day buttons
-  if (mondaycalendar.classList.contains("selected")) {
-    mondaycalendar.classList.remove("selected")
-  }
-  if (tuesdaycalendar.classList.contains("selected")) {
-    tuesdaycalendar.classList.remove("selected")
-  }
-  if (!wednesdaycalendar.classList.contains("selected")) {
-    wednesdaycalendar.classList.add("selected")
-  }
-  if (thursdaycalendar.classList.contains("selected")) {
-    thursdaycalendar.classList.remove("selected")
-  }
-  if (fridaycalendar.classList.contains("selected")) {
-    fridaycalendar.classList.remove("selected")
-  }
-  if (saturdaycalendar.classList.contains("selected")) {
-    saturdaycalendar.classList.remove("selected")
-  }
-  if (sundaycalendar.classList.contains("selected")) {
-    sundaycalendar.classList.remove("selected")
-  }
+function getDates() {
+    var today = new Date();
+    var mondayDate = new Date();
+    var tuesdayDate = new Date();
+    var wednesdayDate = new Date();
+    var thursdayDate = new Date();
+    var fridayDate = new Date();
+    var saturdayDate = new Date();
+    var sundayDate = new Date();
 
-  // Remove previous calendar
-  ReactDOM.unmountComponentAtNode(root)
-
-  // Add the calendar for Wednesday
-  ReactDOM.render(
-    <React.StrictMode>
-      <Basic1 />
-    </React.StrictMode>,
-    root
-  );
-
-  // Remove unwanted calendar header
-  var header = document.getElementById("root").childNodes[0].childNodes[0].childNodes[0];
-  header.removeChild(header.childNodes[0]);
-
-  // Changing the borders
-  document.getElementsByClassName("scheduler-bg-table")[0].childNodes[0].childNodes[0].childNodes[23].style.borderRight = 0;
-
-  var i;
-  var j;
-  for (i=0; i<5; i++) {
-    for (j=3; j<93;j+=4) {
-      document.getElementsByClassName("scheduler-bg-table")[1].childNodes[0].childNodes[i].childNodes[j].style.borderRight = "1px solid #707070";
+    if (today.getDay() === 0) {
+        // Today is Sunday
+        mondayDate.setDate(today.getDate() - 6);
+        tuesdayDate.setDate(today.getDate() - 5);
+        wednesdayDate.setDate(today.getDate() - 4);
+        thursdayDate.setDate(today.getDate() - 3);
+        fridayDate.setDate(today.getDate() - 2);
+        saturdayDate.setDate(today.getDate() - 1);
+        sundayDate.setDate(today.getDate());
+    } else {
+        mondayDate.setDate(today.getDate() + (1 - today.getDay()));
+        tuesdayDate.setDate(today.getDate() + (2 - today.getDay()));
+        wednesdayDate.setDate(today.getDate() + (3 - today.getDay()));
+        thursdayDate.setDate(today.getDate() + (4 - today.getDay()));
+        fridayDate.setDate(today.getDate() + (5 - today.getDay()));
+        saturdayDate.setDate(today.getDate() + (6 - today.getDay()));
+        sundayDate.setDate(today.getDate() + (7 - today.getDay()));
     }
-  }
+
+    mondayDate = mondayDate.getFullYear() + "-" + ((mondayDate.getMonth() + 1).toString().length === 1 ? "0" + (mondayDate.getMonth() + 1).toString() : (mondayDate.getMonth() + 1)) + "-" + (mondayDate.getDate().toString().length === 1 ? "0" + mondayDate.getDate().toString() : mondayDate.getDate())
+    tuesdayDate = tuesdayDate.getFullYear() + "-" + ((tuesdayDate.getMonth() + 1).toString().length === 1 ? "0" + (tuesdayDate.getMonth() + 1).toString() : (tuesdayDate.getMonth() + 1)) + "-" + (tuesdayDate.getDate().toString().length === 1 ? "0" + tuesdayDate.getDate().toString() : tuesdayDate.getDate())
+    wednesdayDate = wednesdayDate.getFullYear() + "-" + ((wednesdayDate.getMonth() + 1).toString().length === 1 ? "0" + (wednesdayDate.getMonth() + 1).toString() : (wednesdayDate.getMonth() + 1)) + "-" + (wednesdayDate.getDate().toString().length === 1 ? "0" + wednesdayDate.getDate().toString() : wednesdayDate.getDate())
+    thursdayDate = thursdayDate.getFullYear() + "-" + ((thursdayDate.getMonth() + 1).toString().length === 1 ? "0" + (thursdayDate.getMonth() + 1).toString() : (thursdayDate.getMonth() + 1))  + "-" + (thursdayDate.getDate().toString().length === 1 ? "0" + thursdayDate.getDate().toString() : thursdayDate.getDate())
+    fridayDate = fridayDate.getFullYear() + "-" + ((fridayDate.getMonth() + 1).toString().length === 1 ? "0" + (fridayDate.getMonth() + 1).toString() : (fridayDate.getMonth() + 1)) + "-" + (fridayDate.getDate().toString().length === 1 ? "0" + fridayDate.getDate().toString() : fridayDate.getDate())
+    saturdayDate = saturdayDate.getFullYear() + "-" + ((saturdayDate.getMonth() + 1).toString().length === 1 ? "0" + (saturdayDate.getMonth() + 1).toString() : (saturdayDate.getMonth() + 1)) + "-" + (saturdayDate.getDate().toString().length === 1 ? "0" + saturdayDate.getDate().toString() : saturdayDate.getDate())
+    sundayDate = sundayDate.getFullYear() + "-" + ((sundayDate.getMonth() + 1).toString().length === 1 ? "0" + (sundayDate.getMonth() + 1).toString() : (sundayDate.getMonth() + 1)) + "-" + (sundayDate.getDate().toString().length === 1 ? "0" + sundayDate.getDate().toString() : sundayDate.getDate())
+
+    return([mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate])
 }
 
-// Function for when "Thursday" is clicked
-thursdaycalendar.onclick = function() {
-  // Adjust the colours of the day buttons
-  if (mondaycalendar.classList.contains("selected")) {
-    mondaycalendar.classList.remove("selected")
-  }
-  if (tuesdaycalendar.classList.contains("selected")) {
-    tuesdaycalendar.classList.remove("selected")
-  }
-  if (wednesdaycalendar.classList.contains("selected")) {
-    wednesdaycalendar.classList.remove("selected")
-  }
-  if (!thursdaycalendar.classList.contains("selected")) {
-    thursdaycalendar.classList.add("selected")
-  }
-  if (fridaycalendar.classList.contains("selected")) {
-    fridaycalendar.classList.remove("selected")
-  }
-  if (saturdaycalendar.classList.contains("selected")) {
-    saturdaycalendar.classList.remove("selected")
-  }
-  if (sundaycalendar.classList.contains("selected")) {
-    sundaycalendar.classList.remove("selected")
-  }
-
-  // Remove previous calendar
-  ReactDOM.unmountComponentAtNode(root)
-
-  // Remove popup
-  ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"))
-
-  // Add the calendar for Thursday
-  ReactDOM.render(
-    <React.StrictMode>
-      <Basic2 />
-    </React.StrictMode>,
-    root
-  );
-
-  // Remove unwanted calendar header
-  var header = document.getElementById("root").childNodes[0].childNodes[0].childNodes[0];
-  header.removeChild(header.childNodes[0]);
-
-  // Changing the borders
-  document.getElementsByClassName("scheduler-bg-table")[0].childNodes[0].childNodes[0].childNodes[23].style.borderRight = 0;
-
-  var i;
-  var j;
-  for (i=0; i<5; i++) {
-    for (j=3; j<93;j+=4) {
-      document.getElementsByClassName("scheduler-bg-table")[1].childNodes[0].childNodes[i].childNodes[j].style.borderRight = "1px solid #707070";
+class ScheduleControlDashboard extends Component {
+    state = {
+        events: [],
+        current_user_id: 1,
+        dates: [],
+        chosen_day: "",
+        books: [],
+        state: true,
+        database_count: 0
     }
-  }
-}
 
-// Close schedule popup when clicking elsewhere
-document.addEventListener('mouseup', function(e) {
-    var container = document.getElementById("schedule_popup");
-    var timepicker = document.getElementsByClassName("rc-time-picker-panel")
-    if (container !== null) {
-        if (!container.contains(e.target)) {
-            if (timepicker.length === 0) {
-                ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"))
+    componentDidMount() {
+        // Fetch data from database
+        fetch('http://127.0.0.1:8000/control_interface/api/schedule/')
+        .then(response => response.json())
+        .then(data => {
+            this.setState({books: data})
+            var events_datas = [];
+            for (var input of data) {
+                if (input.user_id === this.state.current_user_id) {
+
+                    var resourceId = input.device_type_id;
+                    var eventId = input.event_id;
+                    var event_start = input.event_start;
+                    var event_end = input.event_end;
+
+                    // Format the title to be shown for each event on the scheduler
+                    var finalStart = from24to12(event_start);
+                    var finalEnd = from24to12(event_end)
+                    var event_name = input.event_name + " (" + finalStart + " - " + finalEnd + ")"
+
+                    var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate] = getDates();
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
+                    event_start = mondayDate + " " + event_start;
+                    event_end = mondayDate + " " + event_end;
+                    if (input.event_rrule === "Daily") {
+                        event_rrule = "FREQ=DAILY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z";
+
+                    } else {
+                        if (input.event_rrule.includes("Monday")) {
+                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                                event_rrule = event_rrule + "MO";
+                            } else {
+                                event_rrule = event_rrule + ",MO";
+                            }
+                        }
+                        if (input.event_rrule.includes("Tuesday")) {
+                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                                event_rrule = event_rrule + "TU";
+                            } else {
+                                event_rrule = event_rrule + ",TU";
+                            }
+                        }
+                        if (input.event_rrule.includes("Wednesday")) {
+                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                                event_rrule = event_rrule + "WE";
+                            } else {
+                                event_rrule = event_rrule + ",WE";
+                            }
+                        }
+                        if (input.event_rrule.includes("Thursday")) {
+                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                                event_rrule = event_rrule + "TH";
+                            } else {
+                                event_rrule = event_rrule + ",TH";
+                            }
+                        }
+                        if (input.event_rrule.includes("Friday")) {
+                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                                event_rrule = event_rrule + "FR";
+                            } else {
+                                event_rrule = event_rrule + ",FR";
+                            }
+                        }
+                        if (input.event_rrule.includes("Saturday")) {
+                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                                event_rrule = event_rrule + "SA";
+                            } else {
+                                event_rrule = event_rrule + ",SA";
+                            }
+                        }
+                        if (input.event_rrule.includes("Sunday")) {
+                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                                event_rrule = event_rrule + "SU";
+                            } else {
+                                event_rrule = event_rrule + ",SU";
+                            }
+                        }
+                    }
+
+                    // Set the events for the scheduler
+                    events_datas.push({id: eventId, start: event_start, end: event_end, title: event_name, rrule: event_rrule, resourceId: resourceId, showPopover: false, bgColor: '#06D6A0', database_id: input.id})
+
+                    // Open the calendar for today
+                    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                    var today = new Date();
+                    var wanted_id = days[today.getDay()] + "Calendar";
+                    document.getElementById(wanted_id).className="selected";
+                    setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
+
+                    this.setState({database_count: this.state.database_count + 1})
+                }
+            }
+            events_datas.sort(sort_events)
+            this.setState({
+                events: events_datas,
+                dates: [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate]
+            })
+        })
+    }
+
+    refetchData = () => {
+        // Fetch data from database
+        fetch('http://127.0.0.1:8000/control_interface/api/schedule/')
+        .then(response => response.json())
+        .then(data => {
+            this.setState({books: data})
+            var events_datas = [];
+            for (var input of data) {
+                if (input.user_id === this.state.current_user_id) {
+
+                    var resourceId = input.device_type_id;
+                    var eventId = input.event_id;
+                    var event_start = input.event_start;
+                    var event_end = input.event_end;
+
+                    // Format the title to be shown for each event on the scheduler
+                    var finalStart = from24to12(event_start);
+                    var finalEnd = from24to12(event_end)
+                    var event_name = input.event_name + " (" + finalStart + " - " + finalEnd + ")"
+
+                    var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate] = getDates();
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
+                    event_start = mondayDate + " " + event_start;
+                    event_end = mondayDate + " " + event_end;
+                    if (input.event_rrule === "Daily") {
+                        event_rrule = "FREQ=DAILY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z";
+
+                    } else {
+                        if (input.event_rrule.includes("Monday")) {
+                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                                event_rrule = event_rrule + "MO";
+                            } else {
+                                event_rrule = event_rrule + ",MO";
+                            }
+                        }
+                        if (input.event_rrule.includes("Tuesday")) {
+                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                                event_rrule = event_rrule + "TU";
+                            } else {
+                                event_rrule = event_rrule + ",TU";
+                            }
+                        }
+                        if (input.event_rrule.includes("Wednesday")) {
+                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                                event_rrule = event_rrule + "WE";
+                            } else {
+                                event_rrule = event_rrule + ",WE";
+                            }
+                        }
+                        if (input.event_rrule.includes("Thursday")) {
+                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                                event_rrule = event_rrule + "TH";
+                            } else {
+                                event_rrule = event_rrule + ",TH";
+                            }
+                        }
+                        if (input.event_rrule.includes("Friday")) {
+                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                                event_rrule = event_rrule + "FR";
+                            } else {
+                                event_rrule = event_rrule + ",FR";
+                            }
+                        }
+                        if (input.event_rrule.includes("Saturday")) {
+                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                                event_rrule = event_rrule + "SA";
+                            } else {
+                                event_rrule = event_rrule + ",SA";
+                            }
+                        }
+                        if (input.event_rrule.includes("Sunday")) {
+                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                                event_rrule = event_rrule + "SU";
+                            } else {
+                                event_rrule = event_rrule + ",SU";
+                            }
+                        }
+                    }
+
+                    // Set the events for the scheduler
+                    events_datas.push({id: eventId, start: event_start, end: event_end, title: event_name, rrule: event_rrule, resourceId: resourceId, showPopover: false, bgColor: '#06D6A0', database_id: input.id})
+                }
+            }
+            events_datas.sort(sort_events)
+            this.setState({
+                events: events_datas,
+                dates: [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate],
+            })
+        })
+    }
+
+    createNewBook = (book) => {
+        fetch('http://127.0.0.1:8000/control_interface/api/schedule/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(book),
+        })
+        .then(response => response.json())
+        .then(book => {
+            this.setState({books: this.state.books.concat([book])});
+        })
+    }
+
+    updateBook = (newBook) => {
+        fetch('http://127.0.0.1:8000/control_interface/api/schedule/' + newBook.id.toString() + '/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newBook)
+        }).then(response => response.json())
+        .then(newBook => {
+            const newBooks = this.state.books.map(book => {
+                if (book.id === newBook.id) {
+                    return Object.assign({}, newBook)
+                } else {
+                    return book;
+                }
+            });
+
+            this.setState({books: newBooks});
+        })
+    }
+
+    deleteBook = (bookId) => {
+        fetch('http://127.0.0.1:8000/control_interface/api/schedule/' + bookId + '/', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(() => {
+            this.setState({books: this.state.books.filter(book => book.id !== bookId)})
+        })
+    }
+
+    removeCalendarHeader = () => {
+        document.getElementById("root").childNodes[0].childNodes[0].childNodes[0].removeChild(document.getElementById("root").childNodes[0].childNodes[0].childNodes[0].childNodes[0]);
+    }
+
+    addLines = () => {
+        document.getElementsByClassName("scheduler-bg-table")[0].childNodes[0].childNodes[0].childNodes[23].style.borderRight = 0;
+
+        var i;
+        var j;
+        for (i=0; i<5; i++) {
+            for (j=3; j<93; j+=4) {
+                document.getElementsByClassName("scheduler-bg-table")[1].childNodes[0].childNodes[i].childNodes[j].style.borderRight = "1px solid #707070";
             }
         }
     }
-});
 
+    chooseMonday = () => {
+        this.refetchData();
+        // Update chosen_day state
+        this.setState({chosen_day: "Monday"})
 
-// Function for when "Friday" is clicked
-fridaycalendar.onclick = function() {
-  // Adjust the colours of the day buttons
-  if (mondaycalendar.classList.contains("selected")) {
-    mondaycalendar.classList.remove("selected")
-  }
-  if (tuesdaycalendar.classList.contains("selected")) {
-    tuesdaycalendar.classList.remove("selected")
-  }
-  if (wednesdaycalendar.classList.contains("selected")) {
-    wednesdaycalendar.classList.remove("selected")
-  }
-  if (thursdaycalendar.classList.contains("selected")) {
-    thursdaycalendar.classList.remove("selected")
-  }
-  if (!fridaycalendar.classList.contains("selected")) {
-    fridaycalendar.classList.add("selected")
-  }
-  if (saturdaycalendar.classList.contains("selected")) {
-    saturdaycalendar.classList.remove("selected")
-  }
-  if (sundaycalendar.classList.contains("selected")) {
-    sundaycalendar.classList.remove("selected")
-  }
+        // Adjust colour of tabs
+        document.getElementById("MondayCalendar").className = "selected";
+        document.getElementById("TuesdayCalendar").className = "";
+        document.getElementById("WednesdayCalendar").className = "";
+        document.getElementById("ThursdayCalendar").className = "";
+        document.getElementById("FridayCalendar").className = "";
+        document.getElementById("SaturdayCalendar").className = "";
+        document.getElementById("SundayCalendar").className = "";
 
-  // Remove previous calendar
-  ReactDOM.unmountComponentAtNode(root)
-
-  // Remove popup
-  ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"))
-
-  // Add the calendar for Friday
-  ReactDOM.render(
-    <React.StrictMode>
-      <Basic3 />
-    </React.StrictMode>,
-    root
-  );
-
-  // Remove unwanted calendar header
-  var header = document.getElementById("root").childNodes[0].childNodes[0].childNodes[0];
-  header.removeChild(header.childNodes[0]);
-
-  // Changing the borders
-  document.getElementsByClassName("scheduler-bg-table")[0].childNodes[0].childNodes[0].childNodes[23].style.borderRight = 0;
-
-  var i;
-  var j;
-  for (i=0; i<5; i++) {
-    for (j=3; j<93;j+=4) {
-      document.getElementsByClassName("scheduler-bg-table")[1].childNodes[0].childNodes[i].childNodes[j].style.borderRight = "1px solid #707070";
+        // Adjust calendar shown
+        ReactDOM.unmountComponentAtNode(document.getElementById("root"));
+        ReactDOM.render(
+            <Calendar
+                refetchData={this.refetchData}
+                events={this.state.events}
+                date={this.state.dates[0]}
+                onDeleteClick={this.deleteBook}
+                onAddClick={this.createNewBook}
+                onUpdateClick={this.updateBook}
+                books={this.state.books}
+                mondayDate={this.state.dates[0]}
+                sundayDate={this.state.dates[6]}
+                day="Monday"
+            />, document.getElementById("root"));
+        this.removeCalendarHeader();
+        this.addLines();
     }
-  }
+
+    chooseTuesday = () => {
+        this.refetchData();
+        // Update chosen_day state
+        this.setState({chosen_day: "Tuesday"})
+
+        // Adjust colour of tabs
+        document.getElementById("MondayCalendar").className = "";
+        document.getElementById("TuesdayCalendar").className = "selected";
+        document.getElementById("WednesdayCalendar").className = "";
+        document.getElementById("ThursdayCalendar").className = "";
+        document.getElementById("FridayCalendar").className = "";
+        document.getElementById("SaturdayCalendar").className = "";
+        document.getElementById("SundayCalendar").className = "";
+
+        // Adjust calendar shown
+        ReactDOM.unmountComponentAtNode(document.getElementById("root"));
+        ReactDOM.render(
+            <Calendar
+                refetchData={this.refetchData}
+                events={this.state.events}
+                date={this.state.dates[1]}
+                onDeleteClick={this.deleteBook}
+                onAddClick={this.createNewBook}
+                onUpdateClick={this.updateBook}
+                books={this.state.books}
+                mondayDate={this.state.dates[0]}
+                sundayDate={this.state.dates[6]}
+                day="Tuesday"
+            />, document.getElementById("root"));
+        this.removeCalendarHeader();
+        this.addLines();
+    }
+
+    chooseWednesday = () => {
+        this.refetchData();
+        // Update chosen_day state
+        this.setState({chosen_day: "Wednesday"})
+
+        // Adjust colour of tabs
+        document.getElementById("MondayCalendar").className = "";
+        document.getElementById("TuesdayCalendar").className = "";
+        document.getElementById("WednesdayCalendar").className = "selected";
+        document.getElementById("ThursdayCalendar").className = "";
+        document.getElementById("FridayCalendar").className = "";
+        document.getElementById("SaturdayCalendar").className = "";
+        document.getElementById("SundayCalendar").className = "";
+
+        // Adjust calendar shown
+        ReactDOM.unmountComponentAtNode(document.getElementById("root"));
+        ReactDOM.render(
+            <Calendar
+                refetchData={this.refetchData}
+                events={this.state.events}
+                date={this.state.dates[2]}
+                onDeleteClick={this.deleteBook}
+                onAddClick={this.createNewBook}
+                onUpdateClick={this.updateBook}
+                books={this.state.books}
+                mondayDate={this.state.dates[0]}
+                sundayDate={this.state.dates[6]}
+                day="Wednesday"
+            />, document.getElementById("root"));
+        this.removeCalendarHeader();
+        this.addLines();
+    }
+
+    chooseThursday = () => {
+        this.refetchData();
+        // Update chosen_day state
+        this.setState({chosen_day: "Thursday"})
+
+        // Adjust colour of tabs
+        document.getElementById("MondayCalendar").className = "";
+        document.getElementById("TuesdayCalendar").className = "";
+        document.getElementById("WednesdayCalendar").className = "";
+        document.getElementById("ThursdayCalendar").className = "selected";
+        document.getElementById("FridayCalendar").className = "";
+        document.getElementById("SaturdayCalendar").className = "";
+        document.getElementById("SundayCalendar").className = "";
+
+        // Adjust calendar shown
+        ReactDOM.unmountComponentAtNode(document.getElementById("root"));
+        ReactDOM.render(
+            <Calendar
+                refetchData={this.refetchData}
+                events={this.state.events}
+                date={this.state.dates[3]}
+                onDeleteClick={this.deleteBook}
+                onAddClick={this.createNewBook}
+                onUpdateClick={this.updateBook}
+                books={this.state.books}
+                mondayDate={this.state.dates[0]}
+                sundayDate={this.state.dates[6]}
+                day="Thursday"
+            />, document.getElementById("root"));
+        this.removeCalendarHeader();
+        this.addLines();
+    }
+
+    chooseFriday = () => {
+        this.refetchData();
+        // Update chosen_day state
+        this.setState({chosen_day: "Friday"})
+
+        // Adjust colour of tabs
+        document.getElementById("MondayCalendar").className = "";
+        document.getElementById("TuesdayCalendar").className = "";
+        document.getElementById("WednesdayCalendar").className = "";
+        document.getElementById("ThursdayCalendar").className = "";
+        document.getElementById("FridayCalendar").className = "selected";
+        document.getElementById("SaturdayCalendar").className = "";
+        document.getElementById("SundayCalendar").className = "";
+
+        // Adjust calendar shown
+        ReactDOM.unmountComponentAtNode(document.getElementById("root"));
+        ReactDOM.render(
+            <Calendar
+                refetchData={this.refetchData}
+                events={this.state.events}
+                date={this.state.dates[4]}
+                onDeleteClick={this.deleteBook}
+                onAddClick={this.createNewBook}
+                onUpdateClick={this.updateBook}
+                books={this.state.books}
+                mondayDate={this.state.dates[0]}
+                sundayDate={this.state.dates[6]}
+                day="Friday"
+            />, document.getElementById("root"));
+        this.removeCalendarHeader();
+        this.addLines();
+    }
+
+    chooseSaturday = () => {
+        this.refetchData();
+        // Update chosen_day state
+        this.setState({chosen_day: "Saturday"})
+
+        // Adjust colour of tabs
+        document.getElementById("MondayCalendar").className = "";
+        document.getElementById("TuesdayCalendar").className = "";
+        document.getElementById("WednesdayCalendar").className = "";
+        document.getElementById("ThursdayCalendar").className = "";
+        document.getElementById("FridayCalendar").className = "";
+        document.getElementById("SaturdayCalendar").className = "selected";
+        document.getElementById("SundayCalendar").className = "";
+
+        // Adjust calendar shown
+        ReactDOM.unmountComponentAtNode(document.getElementById("root"));
+        ReactDOM.render(
+            <Calendar
+                refetchData={this.refetchData}
+                events={this.state.events}
+                date={this.state.dates[5]}
+                onDeleteClick={this.deleteBook}
+                onAddClick={this.createNewBook}
+                onUpdateClick={this.updateBook}
+                books={this.state.books}
+                mondayDate={this.state.dates[0]}
+                sundayDate={this.state.dates[6]}
+                day="Saturday"
+            />, document.getElementById("root"));
+        this.removeCalendarHeader();
+        this.addLines();
+    }
+
+    chooseSunday = () => {
+        this.refetchData();
+        // Update chosen_day state
+        this.setState({chosen_day: "Sunday"})
+
+        // Adjust colour of tabs
+        document.getElementById("MondayCalendar").className = "";
+        document.getElementById("TuesdayCalendar").className = "";
+        document.getElementById("WednesdayCalendar").className = "";
+        document.getElementById("ThursdayCalendar").className = "";
+        document.getElementById("FridayCalendar").className = "";
+        document.getElementById("SaturdayCalendar").className = "";
+        document.getElementById("SundayCalendar").className = "selected";
+
+        // Adjust calendar shown
+        ReactDOM.unmountComponentAtNode(document.getElementById("root"));
+        ReactDOM.render(
+            <Calendar
+                refetchData={this.refetchData}
+                events={this.state.events}
+                date={this.state.dates[6]}
+                onDeleteClick={this.deleteBook}
+                onAddClick={this.createNewBook}
+                onUpdateClick={this.updateBook}
+                books={this.state.books}
+                mondayDate={this.state.dates[0]}
+                sundayDate={this.state.dates[6]}
+                day="Sunday"
+            />, document.getElementById("root"));
+        this.removeCalendarHeader();
+        this.addLines();
+    }
+
+    render() {
+        return (
+            <>
+                <div className="tab">
+                    <button id="MondayCalendar" onClick={this.chooseMonday}> Monday </button>
+                    <button id="TuesdayCalendar" onClick={this.chooseTuesday}> Tuesday </button>
+                    <button id="WednesdayCalendar" onClick={this.chooseWednesday}> Wednesday </button>
+                    <button id="ThursdayCalendar" onClick={this.chooseThursday}> Thursday </button>
+                    <button id="FridayCalendar" onClick={this.chooseFriday}> Friday </button>
+                    <button id="SaturdayCalendar" onClick={this.chooseSaturday}> Saturday </button>
+                    <button id="SundayCalendar" onClick={this.chooseSunday}> Sunday </button>
+                </div>
+                <ScheduleControlItem
+                    refetchData={this.refetchData}
+                    events={this.state.events}
+                    dates={this.state.dates}
+                    onDeleteClick={this.deleteBook}
+                    onAddClick={this.createNewBook}
+                    onUpdateClick={this.updateBook}
+                    books={this.state.books}
+                    state={this.state.state}
+                    database_count={this.state.database_count}
+                />
+                <div id="popup-container-schedule"> </div>
+            </>
+        )
+    }
 }
 
-// Function for when "Saturday" is clicked
-saturdaycalendar.onclick = function() {
-  // Adjust the colours of the day buttons
-  if (mondaycalendar.classList.contains("selected")) {
-    mondaycalendar.classList.remove("selected")
-  }
-  if (tuesdaycalendar.classList.contains("selected")) {
-    tuesdaycalendar.classList.remove("selected")
-  }
-  if (wednesdaycalendar.classList.contains("selected")) {
-    wednesdaycalendar.classList.remove("selected")
-  }
-  if (thursdaycalendar.classList.contains("selected")) {
-    thursdaycalendar.classList.remove("selected")
-  }
-  if (fridaycalendar.classList.contains("selected")) {
-    fridaycalendar.classList.remove("selected")
-  }
-  if (!saturdaycalendar.classList.contains("selected")) {
-    saturdaycalendar.classList.add("selected")
-  }
-  if (sundaycalendar.classList.contains("selected")) {
-    sundaycalendar.classList.remove("selected")
-  }
-
-  // Remove previous calendar
-  ReactDOM.unmountComponentAtNode(root)
-
-  // Remove popup
-  ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"))
-
-  // Add the calendar for Saturday
-  ReactDOM.render(
-    <React.StrictMode>
-      <Basic4 />
-    </React.StrictMode>,
-    root
-  );
-
-  // Remove unwanted calendar header
-  var header = document.getElementById("root").childNodes[0].childNodes[0].childNodes[0];
-  header.removeChild(header.childNodes[0]);
-
-  // Changing the borders
-  document.getElementsByClassName("scheduler-bg-table")[0].childNodes[0].childNodes[0].childNodes[23].style.borderRight = 0;
-
-  var i;
-  var j;
-  for (i=0; i<5; i++) {
-    for (j=3; j<93;j+=4) {
-      document.getElementsByClassName("scheduler-bg-table")[1].childNodes[0].childNodes[i].childNodes[j].style.borderRight = "1px solid #707070";
+class ScheduleControlItem extends Component {
+    render() {
+        const days=["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        var today = new Date()
+        var today_date = today.getFullYear() + "-" + ((today.getMonth() + 1).toString().length === 1 ? "0" + (today.getMonth() + 1).toString() : (today.getMonth() + 1)) + "-" + (today.getDate().toString().length === 1 ? "0" + today.getDate().toString() : today.getDate())
+        return (
+            <div id="root">
+                <Calendar
+                    refetchData={this.props.refetchData}
+                    events={this.props.events}
+                    date={today_date}
+                    onDeleteClick={this.props.onDeleteClick}
+                    onAddClick={this.props.onAddClick}
+                    onUpdateClick={this.props.onUpdateClick}
+                    books={this.props.books}
+                    mondayDate={this.props.dates[0]}
+                    sundayDate={this.props.dates[6]}
+                    day={days[today.getDay()]}
+                    state={this.props.state}
+                    database_count={this.props.database_count}
+                />
+            </div>
+        )
     }
-  }
 }
 
-// Function for when "Sunday" is clicked
-sundaycalendar.onclick = function() {
-  // Adjust the colours of the day buttons
-  if (mondaycalendar.classList.contains("selected")) {
-    mondaycalendar.classList.remove("selected")
-  }
-  if (tuesdaycalendar.classList.contains("selected")) {
-    tuesdaycalendar.classList.remove("selected")
-  }
-  if (wednesdaycalendar.classList.contains("selected")) {
-    wednesdaycalendar.classList.remove("selected")
-  }
-  if (thursdaycalendar.classList.contains("selected")) {
-    thursdaycalendar.classList.remove("selected")
-  }
-  if (fridaycalendar.classList.contains("selected")) {
-    fridaycalendar.classList.remove("selected")
-  }
-  if (saturdaycalendar.classList.contains("selected")) {
-    saturdaycalendar.classList.remove("selected")
-  }
-  if (!sundaycalendar.classList.contains("selected")) {
-    sundaycalendar.classList.add("selected")
-  }
-
-  // Remove previous calendar
-  ReactDOM.unmountComponentAtNode(root)
-
-  // Remove popup
-  ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"))
-
-  // Add the calendar for Sunday
-  ReactDOM.render(
-    <React.StrictMode>
-      <Basic5 />
-    </React.StrictMode>,
-    root
-  );
-
-  // Remove unwanted calendar header
-  var header = document.getElementById("root").childNodes[0].childNodes[0].childNodes[0];
-  header.removeChild(header.childNodes[0]);
-
-  // Changing the borders
-  document.getElementsByClassName("scheduler-bg-table")[0].childNodes[0].childNodes[0].childNodes[23].style.borderRight = 0;
-
-  var i;
-  var j;
-  for (i=0; i<5; i++) {
-    for (j=3; j<93;j+=4) {
-      document.getElementsByClassName("scheduler-bg-table")[1].childNodes[0].childNodes[i].childNodes[j].style.borderRight = "1px solid #707070";
-    }
-  }
-}
-
-var remotecontrolelement = document.getElementById("remotecontrolrect");
-var infoiconremote = document.getElementById("infoIconRemote");
-var scheduleelement = document.getElementById("schedulebasedrect");
-var infoiconschedule = document.getElementById("infoIcon");
-var presenceelement = document.getElementById("presencebasedrect");
-var infoiconpresence = document.getElementById("infoIconPresence");
-
-window.onload = function() {
-
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  var today = new Date();
-  var day = days[today.getDay()];
-  var wanted_id = day + "Calendar";
-  document.getElementById(wanted_id).click();
-  let remotecontrolelemRect = remotecontrolelement.getBoundingClientRect();
-  let infoiconremoteRect = infoiconremote.getBoundingClientRect();
-  let offsetremote = remotecontrolelemRect.right - infoiconremoteRect.right - 10;
-  infoiconremote.onmouseover = function() {
-    ReactDOM.render(
-        <div id={"informationBoxRemote"}>
-          <p style={{color:"black"}}> This control feature allows you to manually switch your plug loads ON / OFF wirelessly without having to be physically present at your desk. </p>
-        </div>, document.getElementById("infoBoxRemote"));
-    document.getElementById("informationBoxRemote").style.width = offsetremote.toString() + "px";
-    }
-  infoiconremote.onmouseout = function() {
-    ReactDOM.unmountComponentAtNode(document.getElementById("infoBoxRemote"));
-  }
-  let scheduleelemRect = scheduleelement.getBoundingClientRect();
-  let infoiconscheduleRect = infoiconschedule.getBoundingClientRect();
-  let offsetschedule = scheduleelemRect.right - infoiconscheduleRect.right - 10;
-  infoiconschedule.onmouseover = function() {
-    ReactDOM.render(
-        <div id={"informationBox"}>
-          <p style={{color:"black"}}> This control feature helps you to automatically switch ON / OFF your plug loads based on a specific schedule that you have defined. </p>
-        </div>, document.getElementById("infoBox"));
-    document.getElementById("informationBox").style.width = offsetschedule.toString() + "px";
-    }
-  infoiconschedule.onmouseout = function() {
-    ReactDOM.unmountComponentAtNode(document.getElementById("infoBox"));
-  }
-  let presenceelemRect = presenceelement.getBoundingClientRect();
-  let infoiconpresenceRect = infoiconpresence.getBoundingClientRect();
-  let offsetpresence = presenceelemRect.right - infoiconpresenceRect.right - 10;
-  infoiconpresence.onmouseover = function() {
-    ReactDOM.render(
-        <div id={"informationBoxPresence"}>
-          <p style={{color:"black"}}> This control feature helps to automatically switch ON your devices when you arrive at your desk and switch them OFF after you have left your desk after some time. </p>
-        </div>, document.getElementById("infoBoxPresence"));
-    document.getElementById("informationBoxPresence").style.width = offsetpresence.toString() + "px";
-    }
-  infoiconpresence.onmouseout = function() {
-    ReactDOM.unmountComponentAtNode(document.getElementById("infoBoxPresence"));
-  }
-}
-
-window.onresize = function() {
-
-  let remotecontrolelemRect = remotecontrolelement.getBoundingClientRect();
-  let infoiconremoteRect = infoiconremote.getBoundingClientRect();
-  let offsetremote = remotecontrolelemRect.right - infoiconremoteRect.right - 10;
-  infoiconremote.onmouseover = function() {
-    ReactDOM.render(
-        <div id={"informationBoxRemote"}>
-          <p style={{color:"black"}}> This control feature allows you to manually switch your plug loads ON / OFF wirelessly without having to be physically present at your desk. </p>
-        </div>, document.getElementById("infoBoxRemote"));
-    document.getElementById("informationBoxRemote").style.width = offsetremote.toString() + "px";
-    }
-  infoiconremote.onmouseout = function() {
-    ReactDOM.unmountComponentAtNode(document.getElementById("infoBoxRemote"));
-  }
-  let scheduleelemRect = scheduleelement.getBoundingClientRect();
-  let infoiconscheduleRect = infoiconschedule.getBoundingClientRect();
-  let offsetschedule = scheduleelemRect.right - infoiconscheduleRect.right - 10;
-  infoiconschedule.onmouseover = function() {
-    ReactDOM.render(
-        <div id={"informationBox"}>
-          <p style={{color:"black"}}> This control feature helps you to automatically switch ON / OFF your plug loads based on a specific schedule that you have defined. </p>
-        </div>, document.getElementById("infoBox"));
-    document.getElementById("informationBox").style.width = offsetschedule.toString() + "px";
-    }
-  infoiconschedule.onmouseout = function() {
-    ReactDOM.unmountComponentAtNode(document.getElementById("infoBox"));
-  }
-  let presenceelemRect = presenceelement.getBoundingClientRect();
-  let infoiconpresenceRect = infoiconpresence.getBoundingClientRect();
-  let offsetpresence = presenceelemRect.right - infoiconpresenceRect.right - 10;
-  infoiconpresence.onmouseover = function() {
-    ReactDOM.render(
-        <div id={"informationBoxPresence"}>
-          <p style={{color:"black"}}> This control feature helps to automatically switch ON your devices when you arrive at your desk and switch them OFF after you have left your desk after some time. </p>
-        </div>, document.getElementById("infoBoxPresence"));
-    document.getElementById("informationBoxPresence").style.width = offsetpresence.toString() + "px";
-    }
-  infoiconpresence.onmouseout = function() {
-    ReactDOM.unmountComponentAtNode(document.getElementById("infoBoxPresence"));
-  }
-}
-
-
-var isChromium = window.chrome;
-var winNav = window.navigator;
-var vendorName = winNav.vendor;
-var isOpera = typeof window.opr !== "undefined";
-var isIEedge = winNav.userAgent.indexOf("Edge") > -1;
-var isIOSChrome = winNav.userAgent.match("CriOS");
-
-if (isIOSChrome) {
-   // is Google Chrome on IOS
-   document.onkeydown = function(event) {
-if (event.ctrlKey===true || (event.which === '61' || event.which === '107' || event.which === '173' || event.which === '109'  || event.which === '187'  || event.which === '189'  ) ) {
-        event.preventDefault();
-     }
-    // 107 Num Key  +
-    // 109 Num Key  -
-    // 173 Min Key  hyphen/underscore key
-    // 61 Plus key  +/= key
-};
-} else if(
-  isChromium !== null &&
-  typeof isChromium !== "undefined" &&
-  vendorName === "Google Inc." &&
-  isOpera === false &&
-  isIEedge === false
-) {
-   // is Google Chrome
-   document.onkeydown = function(event) {
-if (event.ctrlKey === true || (event.which === '61' || event.which === '107' || event.which === '173' || event.which === '109'  || event.which === '187'  || event.which === '189'  ) ) {
-        event.preventDefault();
-     }
-    // 107 Num Key  +
-    // 109 Num Key  -
-    // 173 Min Key  hyphen/underscore key
-    // 61 Plus key  +/= key
-};
-} else {
-   // not Google Chrome
-}
-
+ReactDOM.render(<ScheduleControlDashboard />, document.getElementById('schedule-based-control'))
 
 // Presence Based Control
 
@@ -1200,7 +1302,7 @@ class PresenceControlItem extends Component {
                 achievements_books: [
                     {
                         ...this.state.achievements_books[0],
-                        first_presence: true
+                        first_presence: 70
                     }
                 ]
             }, function() {this.handleAchievementsFormSubmit()})
@@ -1224,12 +1326,12 @@ class PresenceControlItem extends Component {
             this.setState({presence_setting: evt.target.value}, function() {this.handleFormSubmit()})
 
             // If first time clicking, update achievement
-            if (this.state.achievements_books[0].first_presence === false) {
+            if (this.state.achievements_books[0].first_presence === 0) {
                 this.setState({
                     achievements_books: [
                         {
                             ...this.state.achievements_books[0],
-                            first_presence: true
+                            first_presence: 70
                         }
                     ]
                 }, function() {this.handleAchievementsFormSubmit()})
@@ -1438,3 +1540,139 @@ class PresenceControlPopup extends Component {
 }
 
 ReactDOM.render(<PresenceControlDashboard />, document.getElementById('presence-based-control'))
+
+// Others
+
+// Information icons
+var remotecontrolelement = document.getElementById("remotecontrolrect");
+var infoiconremote = document.getElementById("infoIconRemote");
+var scheduleelement = document.getElementById("schedulebasedrect");
+var infoiconschedule = document.getElementById("infoIcon");
+var presenceelement = document.getElementById("presencebasedrect");
+var infoiconpresence = document.getElementById("infoIconPresence");
+
+window.onload = function() {
+  let remotecontrolelemRect = remotecontrolelement.getBoundingClientRect();
+  let infoiconremoteRect = infoiconremote.getBoundingClientRect();
+  let offsetremote = remotecontrolelemRect.right - infoiconremoteRect.right - 10;
+  infoiconremote.onmouseover = function() {
+    ReactDOM.render(
+        <div id={"informationBoxRemote"}>
+          <p style={{color:"black"}}> This control feature allows you to manually switch your plug loads ON / OFF wirelessly without having to be physically present at your desk. </p>
+        </div>, document.getElementById("infoBoxRemote"));
+    document.getElementById("informationBoxRemote").style.width = offsetremote.toString() + "px";
+    }
+  infoiconremote.onmouseout = function() {
+    ReactDOM.unmountComponentAtNode(document.getElementById("infoBoxRemote"));
+  }
+  let scheduleelemRect = scheduleelement.getBoundingClientRect();
+  let infoiconscheduleRect = infoiconschedule.getBoundingClientRect();
+  let offsetschedule = scheduleelemRect.right - infoiconscheduleRect.right - 10;
+  infoiconschedule.onmouseover = function() {
+    ReactDOM.render(
+        <div id={"informationBox"}>
+          <p style={{color:"black"}}> This control feature helps you to automatically switch ON / OFF your plug loads based on a specific schedule that you have defined. </p>
+        </div>, document.getElementById("infoBox"));
+    document.getElementById("informationBox").style.width = offsetschedule.toString() + "px";
+    }
+  infoiconschedule.onmouseout = function() {
+    ReactDOM.unmountComponentAtNode(document.getElementById("infoBox"));
+  }
+  let presenceelemRect = presenceelement.getBoundingClientRect();
+  let infoiconpresenceRect = infoiconpresence.getBoundingClientRect();
+  let offsetpresence = presenceelemRect.right - infoiconpresenceRect.right - 10;
+  infoiconpresence.onmouseover = function() {
+    ReactDOM.render(
+        <div id={"informationBoxPresence"}>
+          <p style={{color:"black"}}> This control feature helps to automatically switch ON your devices when you arrive at your desk and switch them OFF after you have left your desk after some time. </p>
+        </div>, document.getElementById("infoBoxPresence"));
+    document.getElementById("informationBoxPresence").style.width = offsetpresence.toString() + "px";
+    }
+  infoiconpresence.onmouseout = function() {
+    ReactDOM.unmountComponentAtNode(document.getElementById("infoBoxPresence"));
+  }
+}
+
+window.onresize = function() {
+
+  let remotecontrolelemRect = remotecontrolelement.getBoundingClientRect();
+  let infoiconremoteRect = infoiconremote.getBoundingClientRect();
+  let offsetremote = remotecontrolelemRect.right - infoiconremoteRect.right - 10;
+  infoiconremote.onmouseover = function() {
+    ReactDOM.render(
+        <div id={"informationBoxRemote"}>
+          <p style={{color:"black"}}> This control feature allows you to manually switch your plug loads ON / OFF wirelessly without having to be physically present at your desk. </p>
+        </div>, document.getElementById("infoBoxRemote"));
+    document.getElementById("informationBoxRemote").style.width = offsetremote.toString() + "px";
+    }
+  infoiconremote.onmouseout = function() {
+    ReactDOM.unmountComponentAtNode(document.getElementById("infoBoxRemote"));
+  }
+  let scheduleelemRect = scheduleelement.getBoundingClientRect();
+  let infoiconscheduleRect = infoiconschedule.getBoundingClientRect();
+  let offsetschedule = scheduleelemRect.right - infoiconscheduleRect.right - 10;
+  infoiconschedule.onmouseover = function() {
+    ReactDOM.render(
+        <div id={"informationBox"}>
+          <p style={{color:"black"}}> This control feature helps you to automatically switch ON / OFF your plug loads based on a specific schedule that you have defined. </p>
+        </div>, document.getElementById("infoBox"));
+    document.getElementById("informationBox").style.width = offsetschedule.toString() + "px";
+    }
+  infoiconschedule.onmouseout = function() {
+    ReactDOM.unmountComponentAtNode(document.getElementById("infoBox"));
+  }
+  let presenceelemRect = presenceelement.getBoundingClientRect();
+  let infoiconpresenceRect = infoiconpresence.getBoundingClientRect();
+  let offsetpresence = presenceelemRect.right - infoiconpresenceRect.right - 10;
+  infoiconpresence.onmouseover = function() {
+    ReactDOM.render(
+        <div id={"informationBoxPresence"}>
+          <p style={{color:"black"}}> This control feature helps to automatically switch ON your devices when you arrive at your desk and switch them OFF after you have left your desk after some time. </p>
+        </div>, document.getElementById("infoBoxPresence"));
+    document.getElementById("informationBoxPresence").style.width = offsetpresence.toString() + "px";
+    }
+  infoiconpresence.onmouseout = function() {
+    ReactDOM.unmountComponentAtNode(document.getElementById("infoBoxPresence"));
+  }
+}
+
+// Fix for Google Chrome
+var isChromium = window.chrome;
+var winNav = window.navigator;
+var vendorName = winNav.vendor;
+var isOpera = typeof window.opr !== "undefined";
+var isIEedge = winNav.userAgent.indexOf("Edge") > -1;
+var isIOSChrome = winNav.userAgent.match("CriOS");
+
+if (isIOSChrome) {
+   // is Google Chrome on IOS
+   document.onkeydown = function(event) {
+if (event.ctrlKey===true || (event.which === '61' || event.which === '107' || event.which === '173' || event.which === '109'  || event.which === '187'  || event.which === '189'  ) ) {
+        event.preventDefault();
+     }
+    // 107 Num Key  +
+    // 109 Num Key  -
+    // 173 Min Key  hyphen/underscore key
+    // 61 Plus key  +/= key
+};
+} else if(
+  isChromium !== null &&
+  typeof isChromium !== "undefined" &&
+  vendorName === "Google Inc." &&
+  isOpera === false &&
+  isIEedge === false
+) {
+   // is Google Chrome
+   document.onkeydown = function(event) {
+if (event.ctrlKey === true || (event.which === '61' || event.which === '107' || event.which === '173' || event.which === '109'  || event.which === '187'  || event.which === '189'  ) ) {
+        event.preventDefault();
+     }
+    // 107 Num Key  +
+    // 109 Num Key  -
+    // 173 Min Key  hyphen/underscore key
+    // 61 Plus key  +/= key
+};
+} else {
+   // not Google Chrome
+}
+

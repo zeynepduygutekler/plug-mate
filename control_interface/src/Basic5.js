@@ -1480,6 +1480,7 @@ class Basic extends Component {
   conflictOccurred = (schedulerData, action, event, type, slotId, slotName, start, end) => {
     var message = `This is conflicting with a schedule set for ${slotName}.`
     alert(message)
+
   }
 }
 

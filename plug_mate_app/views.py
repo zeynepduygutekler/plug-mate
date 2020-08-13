@@ -129,8 +129,8 @@ def user_login(request):
         return render(request, 'plug_mate_app/login.html', {})
 
 
-from .models import PresenceData, RemoteData, ScheduleData, AchievementsBonus
-from .serializers import PresenceSerializer, RemoteSerializer, ScheduleSerializer, AchievementsBonusSerializer
+from .models import PresenceData, RemoteData, ScheduleData, AchievementsBonus, AchievementsWeekly
+from .serializers import PresenceSerializer, RemoteSerializer, ScheduleSerializer, AchievementsBonusSerializer, AchievementsWeeklySerializer
 from rest_framework import generics
 
 
@@ -171,3 +171,11 @@ class AchievementsBonusDataList(generics.ListCreateAPIView):
 class AchievementsBonusDataDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = AchievementsBonus.objects.all()
     serializer_class = AchievementsBonusSerializer
+
+class AchievementsWeeklyDataList(generics.ListCreateAPIView):
+    queryset = AchievementsWeekly.objects.all()
+    serializer_class = AchievementsWeeklySerializer
+
+class AchievementsWeeklyDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = AchievementsWeekly.objects.all()
+    serializer_class = AchievementsWeeklySerializer

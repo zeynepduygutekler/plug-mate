@@ -104,13 +104,22 @@ class PresenceData(models.Model):
 
 class AchievementsBonus(models.Model):
     user_id = models.IntegerField()
-    tree_first = models.BooleanField()
-    tree_fifth = models.BooleanField()
-    tree_tenth = models.BooleanField()
-    redeem_reward = models.BooleanField()
-    first_remote = models.BooleanField()
-    first_schedule = models.BooleanField()
-    first_presence = models.BooleanField()
+    tree_first = models.IntegerField()
+    tree_fifth = models.IntegerField()
+    tree_tenth = models.IntegerField()
+    redeem_reward = models.IntegerField()
+    first_remote = models.IntegerField()
+    first_schedule = models.IntegerField()
+    first_presence = models.IntegerField()
 
     class Meta:
         db_table = 'achievements_bonus'
+
+class AchievementsWeekly(models.Model):
+    user_id = models.IntegerField()
+    cost_saving = models.IntegerField()
+    schedule_based = models.IntegerField()
+    complete_daily = models.IntegerField()
+    complete_weekly = models.IntegerField()
+    class Meta:
+        db_table = 'achievements_weekly'
