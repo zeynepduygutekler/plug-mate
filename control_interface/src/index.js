@@ -569,7 +569,8 @@ class ScheduleControlDashboard extends Component {
         events: [],
         dates: [],
         chosen_day: "",
-        books: []
+        books: [],
+        current_user_id: 1
     }
 
     componentDidMount() {
@@ -580,6 +581,7 @@ class ScheduleControlDashboard extends Component {
             this.setState({books: data})
             var events_datas = [];
             for (var input of data) {
+                this.setState({current_user_id: input.user_id})
                 var resourceId = input.device_type_id;
                 var eventId = input.event_id;
                 var event_start = input.event_start;
@@ -671,6 +673,7 @@ class ScheduleControlDashboard extends Component {
             this.setState({books: data})
             var events_datas = [];
             for (var input of data) {
+                this.setState({current_user_id: input.user_id})
                 var resourceId = input.device_type_id;
                 var eventId = input.event_id;
                 var event_start = input.event_start;
@@ -837,6 +840,7 @@ class ScheduleControlDashboard extends Component {
                 mondayDate={this.state.dates[0]}
                 sundayDate={this.state.dates[6]}
                 day="Monday"
+                current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
         this.removeCalendarHeader();
         this.addLines();
@@ -870,6 +874,7 @@ class ScheduleControlDashboard extends Component {
                 mondayDate={this.state.dates[0]}
                 sundayDate={this.state.dates[6]}
                 day="Tuesday"
+                current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
         this.removeCalendarHeader();
         this.addLines();
@@ -903,6 +908,7 @@ class ScheduleControlDashboard extends Component {
                 mondayDate={this.state.dates[0]}
                 sundayDate={this.state.dates[6]}
                 day="Wednesday"
+                current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
         this.removeCalendarHeader();
         this.addLines();
@@ -936,6 +942,7 @@ class ScheduleControlDashboard extends Component {
                 mondayDate={this.state.dates[0]}
                 sundayDate={this.state.dates[6]}
                 day="Thursday"
+                current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
         this.removeCalendarHeader();
         this.addLines();
@@ -969,6 +976,7 @@ class ScheduleControlDashboard extends Component {
                 mondayDate={this.state.dates[0]}
                 sundayDate={this.state.dates[6]}
                 day="Friday"
+                current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
         this.removeCalendarHeader();
         this.addLines();
@@ -1002,6 +1010,7 @@ class ScheduleControlDashboard extends Component {
                 mondayDate={this.state.dates[0]}
                 sundayDate={this.state.dates[6]}
                 day="Saturday"
+                current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
         this.removeCalendarHeader();
         this.addLines();
@@ -1035,6 +1044,7 @@ class ScheduleControlDashboard extends Component {
                 mondayDate={this.state.dates[0]}
                 sundayDate={this.state.dates[6]}
                 day="Sunday"
+                current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
         this.removeCalendarHeader();
         this.addLines();
@@ -1060,6 +1070,7 @@ class ScheduleControlDashboard extends Component {
                     onAddClick={this.createNewBook}
                     onUpdateClick={this.updateBook}
                     books={this.state.books}
+                    current_user_id={this.state.current_user_id}
                 />
                 <div id="popup-container-schedule"> </div>
             </>
@@ -1085,6 +1096,7 @@ class ScheduleControlItem extends Component {
                     mondayDate={this.props.dates[0]}
                     sundayDate={this.props.dates[6]}
                     day={days[today.getDay()]}
+                    current_user_id={this.props.current_user_id}
                 />
             </div>
         )
