@@ -35,6 +35,25 @@
   z-index: 1000;
 }
 
+/** style the information icon **/
+#infoIcon {
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  margin-left: 10px;
+  margin-bottom: 6px;
+}
+
+/** style the information box popup **/
+#informationBox {
+  border: 1px solid black;
+  padding: 0px 10px;
+  background-color: white;
+  font-size: 10.5px;
+  z-index: 1000;
+}
+
+
 #DesktopBoxPresence, #MonitorBoxPresence, #LaptopBoxPresence, #TaskLampBoxPresence, #FanBoxPresence {
   display: inline-block;
 }
@@ -345,13 +364,15 @@
 
 #schedule_popup {
     width: 50vw;
-    height: 80vh;
+    height: fit-content;
+    max-height: 80vh;
     border: 1px solid black;
     margin: 10vh auto;
     background: white;
     padding: 2% 5%;
     box-sizing: border-box;
-    overflow-y: scroll;
+    overflow-y: auto;
+    border-radius: 10px;
 }
 
 #schedule_device_type {
