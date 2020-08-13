@@ -609,7 +609,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             values=values_pie,
             labels=df4['device_type'],
             textinfo='label+percent',
-            hovertemplate="%{label}<br>%{percent}<br>$ %{value}",
+            hovertemplate='<b><span style="color: blue">%{label}</span></b><br>%{percent}<br>$ %{value}',
 
         )
 
@@ -659,7 +659,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             values=values_pie,
             labels=df4['device_type'],
             textinfo='label+percent',
-            hovertemplate="%{label}<br>%{percent}<br>%{value} kWh",
+            hovertemplate='<b><span style="color: blue">%{label}</span></b><br>%{percent}<br>%{value} kWh',
 
         )
 
@@ -686,7 +686,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         y=y,
 
         hovertemplate=hovertemplate,
-        text=['Click to see the <br>plug load breakdown!'.format(
+        text=['<span style="color:blue">Click to see the <br>plug load breakdown!</span>'.format(
             i + 1) for i in range(24)],
 
         marker=dict(
