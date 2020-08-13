@@ -73,7 +73,7 @@ app.layout = \
             href='/static/assets/custom_style.css'
         ),
         html.Div([
-            dbc.Row([
+            dbc.Col([
 
 
                     dbc.Row([
@@ -97,7 +97,7 @@ app.layout = \
                         ),
 
 
-                    ]),
+                    ], style={'justify-content': 'center'}),
 
 
                     dbc.Row([
@@ -106,22 +106,22 @@ app.layout = \
                                     style={'margin-left': '5%'}),
                             html.Div(dbc.Spinner(color="primary", id="loadingLine",
                                                  children=[
-                                                     dcc.Graph(id='line-chart', config={'displayModeBar': False}, clear_on_unhover=True)],
+                                                     dcc.Graph(id='line-chart', config={'displayModeBar': False}, clear_on_unhover=True, style={'width': '100vh', 'height': '67vh'})],
                                                  spinner_style={"width": "3rem", "height": "3rem"}))
 
-                        ], style={'text-align': 'center'}, width=7),
+                        ], style={'text-align': 'center', 'padding': '0'}, width=7),
                         dbc.Col([
                             html.H6("Energy Breakdown Today", id='pieTitle', style={
                                     'color': '#5a5c69!important'}),
                             html.Div(
                                 dbc.Spinner(color="primary", id="loadingPie",
                                             children=[
-                                                dcc.Graph(id='pie-chart-2', config={'displayModeBar': False}, style={'width': '100%', 'height': '100%'})],
+                                                dcc.Graph(id='pie-chart-2', config={'displayModeBar': False}, style={'width': '100%', 'height': '65vh'})],
                                             spinner_style={"width": "3rem", "height": "3rem"})),
 
                         ], width=5, style={'text-align': 'center'}),
                     ], style={'justify-content': 'left', 'padding-top': '1%',  'margin-left': '0px'}),
-                    ], style={'justify-content': 'center'}),
+                    ], style={'justify-content': 'center', 'padding': '0'}),
 
         ], style={'width': '97%'}),
         dcc.Interval(
@@ -540,8 +540,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         margin=dict(l=0, r=0, t=0, b=0, pad=0),
         uniformtext_minsize=12,
         uniformtext_mode='hide',
-        height=180,
-        width=240,
         legend=dict(
             orientation="h",
             yanchor="top",
@@ -553,8 +551,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                 size=11,
                 color="black"
             ),
-
-        )
+        ),
 
     )
     piechart.update_traces(textposition='inside')
@@ -727,8 +724,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         # Add annotations in the center of the donut pies.
         # annotations=[dict(text=pie_middletext, x=0.5, y=0.5,
         #                   font_size=20, showarrow=False)]
-        height=210,
-        width=200,
+        # height=210,
+        # width=200,
         legend=dict(
             orientation="h",
             yanchor="top",
@@ -755,8 +752,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         spikedistance=1000,
         hoverdistance=100,
         margin=dict(l=0, r=0, t=0, b=0, pad=0),
-        height=230,
-        width=350,
+        # height=230,
+        # width=350,
 
     )
     # 4. Return all graphs
