@@ -15,16 +15,16 @@ app.layout = html.Div([
         dbc.Row([
             html.Button(id='previous-tip',
                         children=[html.Img(src='https://image.flaticon.com/icons/svg/566/566011.svg',
-                                           style={'width': '40%', 'height': 'auto'})],
+                                           style={'width': '60%', 'height': 'auto'})],
                         style={'border': 'none', 'background-color': 'transparent', 'outline': 'none','opacity':'0.4',
                                'text-align':'left', 'padding-left':'20px'}),
             html.Div(className='col-6'),
             html.Button(id='next-tip',
                         children=[html.Img(src='https://image.flaticon.com/icons/svg/566/566012.svg',
-                                           style={'width': '40%', 'height': 'auto'})],
+                                           style={'width': '60%', 'height': 'auto'})],
                         style={'border': 'none', 'background-color': 'transparent', 'outline': 'none', 'opacity':'0.4',
                                'text-align':'right', 'padding-right':'20px'})
-        ], style={'flex-wrap': 'nowrap', 'height': '3rem'}),
+        ], style={'flex-wrap': 'nowrap', 'height': '3rem', 'margin':0}),
 
     ], style={'text-align': 'right'}),
     html.Div([html.P(id='carousel',
