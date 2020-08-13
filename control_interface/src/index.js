@@ -141,7 +141,7 @@ class RemoteControlItem extends Component {
         fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/')
         .then(response => response.json())
         .then(data => {
-            this.setState({achievements_books: [data]}, function() {console.log(this.state.achievements_books)})
+            this.setState({achievements_books: data})
         })
 
         Main();
@@ -163,7 +163,7 @@ class RemoteControlItem extends Component {
                     return book;
                 }
             });
-            this.setState({achievements_books: newBooks}, function() {console.log(this.state.achievements_books)})
+            this.setState({achievements_books: newBooks})
         })
     }
 
@@ -189,7 +189,6 @@ class RemoteControlItem extends Component {
 
         // If first time clicking, update achievement
         if (this.state.achievements_books[0].first_remote === 0) {
-            console.log("First remote")
             this.setState({
                 achievements_books: [
                     {
@@ -198,6 +197,13 @@ class RemoteControlItem extends Component {
                     }
                 ]
             }, function() {this.handleAchievementsFormSubmit()})
+            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
+             // Open the calendar for today
+             const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+             var today = new Date();
+             var wanted_id = days[today.getDay()] + "Calendar";
+             document.getElementById(wanted_id).className="selected";
+             setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
         }
     }
 
@@ -209,9 +215,7 @@ class RemoteControlItem extends Component {
         Main();
 
         // If first time clicking, update achievement
-        console.log(this.state.achievements_books[0].first_remote)
         if (this.state.achievements_books[0].first_remote === 0) {
-            console.log("First Remote")
             this.setState({
                 achievements_books: [
                     {
@@ -220,6 +224,13 @@ class RemoteControlItem extends Component {
                     }
                 ]
             }, function() {this.handleAchievementsFormSubmit()})
+            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
+            // Open the calendar for today
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var today = new Date();
+            var wanted_id = days[today.getDay()] + "Calendar";
+            document.getElementById(wanted_id).className="selected";
+            setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
         }
     }
 
@@ -268,10 +279,8 @@ class RemoteControlItem extends Component {
             this.setState({device_state: e.target.checked}, function() {this.handleFormSubmit()})
             Main();
 
-            console.log(this.state.achievements_books[0])
             // If first time clicking, update achievement
             if (this.state.achievements_books[0].first_remote === 0) {
-                console.log("First remote")
                 this.setState({
                     achievements_books: [
                         {
@@ -280,6 +289,13 @@ class RemoteControlItem extends Component {
                         }
                     ]
                 }, function() {this.handleAchievementsFormSubmit()})
+                window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
+                // Open the calendar for today
+                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                var today = new Date();
+                var wanted_id = days[today.getDay()] + "Calendar";
+                document.getElementById(wanted_id).className="selected";
+                setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
             }
         }
     }
@@ -1081,7 +1097,13 @@ ReactDOM.render(<ScheduleControlDashboard />, document.getElementById('schedule-
 
 class PresenceControlDashboard extends Component {
     state = {
-        books: []
+        books: [],
+        key: 1
+    }
+
+    constructor(props) {
+        super(props);
+        window.presencecontrol = this;
     }
 
     componentDidMount() {
@@ -1120,6 +1142,7 @@ class PresenceControlDashboard extends Component {
               <br/>
 
                   <PresenceControlList
+                      key={this.state.key}
                       books={this.state.books}
                       onUpdateClick={this.updateBook}
                   />
@@ -1188,7 +1211,7 @@ class PresenceControlItem extends Component {
         fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/')
         .then(response => response.json())
         .then(data => {
-            this.setState({achievements_books: [data]})
+            this.setState({achievements_books: data})
         })
     }
 
@@ -1236,6 +1259,12 @@ class PresenceControlItem extends Component {
                     }
                 ]
             }, function() {this.handleAchievementsFormSubmit()})
+            // Open the calendar for today
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var today = new Date();
+            var wanted_id = days[today.getDay()] + "Calendar";
+            document.getElementById(wanted_id).className="selected";
+            setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
         }
     }
 
@@ -1265,6 +1294,12 @@ class PresenceControlItem extends Component {
                         }
                     ]
                 }, function() {this.handleAchievementsFormSubmit()})
+                // Open the calendar for today
+                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                var today = new Date();
+                var wanted_id = days[today.getDay()] + "Calendar";
+                document.getElementById(wanted_id).className="selected";
+                setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
             }
         }
         if (evt.target.value === "other") {
@@ -1312,15 +1347,21 @@ class PresenceControlItem extends Component {
         ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
 
         // If first time clicking, update achievement
-        if (this.state.achievements_books[0].first_presence === false) {
+        if (this.state.achievements_books[0].first_presence === 0) {
             this.setState({
                 achievements_books: [
                     {
                         ...this.state.achievements_books[0],
-                        first_presence: true
+                        first_presence: 70
                     }
                 ]
             }, function() {this.handleAchievementsFormSubmit()})
+            // Open the calendar for today
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var today = new Date();
+            var wanted_id = days[today.getDay()] + "Calendar";
+            document.getElementById(wanted_id).className="selected";
+            setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
         }
     }
 
@@ -1355,6 +1396,12 @@ class PresenceControlItem extends Component {
                         }
                     ]
                 }, function() {this.handleAchievementsFormSubmit()})
+                // Open the calendar for today
+                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                var today = new Date();
+                var wanted_id = days[today.getDay()] + "Calendar";
+                document.getElementById(wanted_id).className="selected";
+                setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
             }
         }
     }
@@ -1388,6 +1435,12 @@ class PresenceControlItem extends Component {
                     }
                 ]
             }, function() {this.handleAchievementsFormSubmit()})
+            // Open the calendar for today
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var today = new Date();
+            var wanted_id = days[today.getDay()] + "Calendar";
+            document.getElementById(wanted_id).className="selected";
+            setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
         }
     }
 

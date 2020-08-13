@@ -210,15 +210,21 @@ class Calendar extends Component {
         fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/')
         .then(response => response.json())
         .then(data => {
-            this.setState({achievements_books: [data]})
+            this.setState({achievements_books: data})
         })
 
         // Fetch data for weekly achievements
+        this.refetchWeeklyAchievementsData();
+    }
+
+    refetchWeeklyAchievementsData = () => {
         fetch('http://127.0.0.1:8000/control_interface/api/achievements_weekly/')
         .then(response => response.json())
         .then(data => {
-            this.setState({weekly_achievements_books: [data]})
+            this.setState({weekly_achievements_books: data})
         })
+
+        setTimeout(this.refetchWeeklyAchievementsData, 5000)
     }
 
     updateAchievementsBooks = (newBook) => {
@@ -305,10 +311,6 @@ class Calendar extends Component {
             window.calendar.setState({
                 viewModel: schedulerData
             });
-            ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
-        }
-
-        function cancelButtonClicked() {
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
         }
 
@@ -629,6 +631,7 @@ class Calendar extends Component {
                             }
                         ]
                     })
+                    window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
                 // Update weekly achievement
@@ -653,7 +656,6 @@ class Calendar extends Component {
                 event_end={event.end}
                 event_name={event.title}
                 okButtonClicked={okButtonClicked}
-                cancelButtonClicked={cancelButtonClicked}
                 closeButtonClicked={closeButtonClicked}
                 deleteButtonClicked={deleteButtonClicked}
             />, document.getElementById("popup-container-schedule")
@@ -1014,6 +1016,7 @@ class Calendar extends Component {
                             }
                         ]
                     })
+                    window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
                 // Update weekly achievement
@@ -1030,13 +1033,6 @@ class Calendar extends Component {
             }
         }
 
-        function cancelButtonClicked() {
-            schedulerData.removeEvent(newEvent);
-            window.calendar.setState({
-                viewModel: schedulerData
-            })
-            ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
-        }
 
         ReactDOM.render(
             <ScheduleControlPopup
@@ -1046,7 +1042,6 @@ class Calendar extends Component {
                 event_end={newEvent.end}
                 event_name={newEvent.title}
                 okButtonClicked={okButtonClicked}
-                cancelButtonClicked={cancelButtonClicked}
                 closeButtonClicked={closeButtonClicked}
                 deleteButtonClicked={deleteButtonClicked}
             />, document.getElementById("popup-container-schedule")
@@ -1399,6 +1394,7 @@ class Calendar extends Component {
                             }
                         ]
                     })
+                    window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
                 // Update weekly achievement
@@ -1415,17 +1411,6 @@ class Calendar extends Component {
             }
         }
 
-        function cancelButtonClicked() {
-            // Cancel update start
-            schedulerData.updateEventStart(event, old_start);
-            event.title = event.title.substring(0, event.title.length - 20) + " (" + from24to12(moment(old_start).format('HH:mm')) + " - " + from24to12(moment(event.end).format('HH:mm')) + ")";
-            window.calendar.setState({
-                viewModel: schedulerData
-            })
-
-            ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
-        }
-
         var slotName = schedulerData.getSlotById(event.resourceId).name;
         ReactDOM.render(
             <ScheduleControlPopup
@@ -1435,7 +1420,6 @@ class Calendar extends Component {
                 event_end={event.end}
                 event_name={event.title}
                 okButtonClicked={okButtonClicked}
-                cancelButtonClicked={cancelButtonClicked}
                 closeButtonClicked={closeButtonClicked}
                 deleteButtonClicked={deleteButtonClicked}
             />, document.getElementById("popup-container-schedule")
@@ -1787,6 +1771,7 @@ class Calendar extends Component {
                             }
                         ]
                     })
+                    window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
                 // Update weekly achievement
@@ -1803,16 +1788,6 @@ class Calendar extends Component {
             }
         }
 
-        function cancelButtonClicked() {
-            ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
-
-            // Cancel update end
-            schedulerData.updateEventEnd(event, old_end);
-            event.title = event.title.substring(0, event.title.length - 20) + " (" + from24to12(moment(event.start).format('HH:mm')) + " - " + from24to12(moment(old_end).format('HH:mm')) + ")";
-            window.calendar.setState({
-                viewModel: schedulerData
-            })
-        }
 
         var slotName = schedulerData.getSlotById(event.resourceId).name;
         ReactDOM.render(
@@ -1823,7 +1798,6 @@ class Calendar extends Component {
                 event_end={newEnd}
                 event_name={event.title}
                 okButtonClicked={okButtonClicked}
-                cancelButtonClicked={cancelButtonClicked}
                 closeButtonClicked={closeButtonClicked}
                 deleteButtonClicked={deleteButtonClicked}
             />, document.getElementById("popup-container-schedule")
@@ -2178,6 +2152,7 @@ class Calendar extends Component {
                             }
                         ]
                     })
+                    window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
                 // Update weekly achievement
@@ -2194,17 +2169,6 @@ class Calendar extends Component {
             }
         }
 
-        function cancelButtonClicked() {
-            ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
-
-            // Cancel move event
-            schedulerData.updateEventStart(event, old_start);
-            schedulerData.updateEventEnd(event, old_end);
-            event.title = event.title.substring(0, event.title.length - 20) + " (" + from24to12(moment(old_start).format('HH:mm')) + " - " + from24to12(moment(old_end).format('HH:mm')) + ")";
-            window.calendar.setState({
-                viewModel: schedulerData
-            })
-        }
 
         ReactDOM.render(
             <ScheduleControlPopup
@@ -2214,7 +2178,6 @@ class Calendar extends Component {
                 event_end={end}
                 event_name={event.title}
                 okButtonClicked={okButtonClicked}
-                cancelButtonClicked={cancelButtonClicked}
                 closeButtonClicked={closeButtonClicked}
                 deleteButtonClicked={deleteButtonClicked}
             />, document.getElementById("popup-container-schedule")
