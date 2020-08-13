@@ -63,10 +63,16 @@ class ScheduleControlPopup extends Component {
         }
     }
 
+    exitPopup = (e) => {
+        if (e.target === document.getElementById("schedule_popup_overlay")) {
+            this.props.closeButtonClicked();
+        }
+    }
+
     render() {
         return (
             <>
-                <div id="schedule_popup_overlay" onClick={this.props.closeButtonClicked}>
+                <div id="schedule_popup_overlay" onClick={this.exitPopup}>
                     <div id="schedule_popup">
                         <p id="schedule_device_type"> {this.props.device_type} </p>
                         <button id="schedule_popup_close" onClick={this.props.closeButtonClicked}> &times; </button>
@@ -180,7 +186,7 @@ class ScheduleControlRepeat extends Component {
                         }
                     }}
                 />
-                <label htmlFor="ScheduleRepeatEveryDay"> Every Day </label>
+                <label htmlFor="ScheduleRepeatEveryDay" style={{marginLeft: "2px"}}> Every Day </label>
                 <br />
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -200,7 +206,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label> Monday </label>
+                    <label style={{marginLeft: "2px"}}> Monday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -220,7 +226,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label> Tuesday </label>
+                    <label style={{marginLeft: "2px"}}> Tuesday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -240,7 +246,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label> Wednesday </label>
+                    <label style={{marginLeft: "2px"}}> Wednesday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -260,7 +266,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label> Thursday </label>
+                    <label style={{marginLeft: "2px"}}> Thursday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -280,7 +286,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label> Friday </label>
+                    <label style={{marginLeft: "2px"}}> Friday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -300,7 +306,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label> Saturday </label>
+                    <label style={{marginLeft: "2px"}}> Saturday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -320,7 +326,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label> Sunday </label>
+                    <label style={{marginLeft: "2px"}}> Sunday </label>
                 </div>
             </>
         )
@@ -349,7 +355,7 @@ class ScheduleControlApplyItem extends Component {
                     name="ScheduleApplyOption"
                     id={"ScheduleApply" + this.props.device_type.replace(/\s/g,'')}
                 />
-                <label> {this.props.device_type} </label>
+                <label style={{marginLeft: "2px"}}> {this.props.device_type} </label>
             </div>
         )
     }
