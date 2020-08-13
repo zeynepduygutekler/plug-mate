@@ -731,7 +731,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             yanchor="top",
             xanchor="center",
             x=0.5,
-            y=-0.2,
+            y=-0.3,
             font=dict(
                 family='"Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans -serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
                 size=11,
