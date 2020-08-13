@@ -181,7 +181,7 @@ def update_bar_chart(n1, n2, int, **kwargs):
                             yaxis=dict(range=[min(series) - 3, max(series) * 1.4]),
                             annotations=[
                                 go.layout.Annotation(
-                                    text='<b>Cost savings strategies: </b>',
+                                    text='<b>Cost Savings Strategies</b>',
                                     align='right',
                                     showarrow=False,
                                     xref='paper',
