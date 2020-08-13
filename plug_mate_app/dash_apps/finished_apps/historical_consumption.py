@@ -102,7 +102,7 @@ app.layout = \
 
                     dbc.Row([
                         dbc.Col([
-                            html.H5("Aggregated Energy", id='lineTitle',
+                            html.H6("Aggregated Energy", id='lineTitle',
                                     style={'margin-left': '5%'}),
                             html.Div(dbc.Spinner(color="primary", id="loadingLine",
                                                  children=[
@@ -111,12 +111,12 @@ app.layout = \
 
                         ], style={'text-align': 'center'}, width=7),
                         dbc.Col([
-                            html.H5("Energy Breakdown Today", id='pieTitle', style={
+                            html.H6("Energy Breakdown Today", id='pieTitle', style={
                                     'color': '#5a5c69!important'}),
                             html.Div(
                                 dbc.Spinner(color="primary", id="loadingPie",
                                             children=[
-                                                dcc.Graph(id='pie-chart-2', config={'displayModeBar': False})],
+                                                dcc.Graph(id='pie-chart-2', config={'displayModeBar': False}, style={'width': '100%', 'height': '100%'})],
                                             spinner_style={"width": "3rem", "height": "3rem"})),
 
                         ], width=5, style={'text-align': 'center'}),
@@ -129,7 +129,7 @@ app.layout = \
             interval=0,  # in milliseconds
             max_intervals=1
         )
-    ], style={'height': '320px'})
+    ], style={'height': '100%'})
 
 # D) This callback activates upon HOUR DAY WEEK MONTH click
 
@@ -727,7 +727,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         # Add annotations in the center of the donut pies.
         # annotations=[dict(text=pie_middletext, x=0.5, y=0.5,
         #                   font_size=20, showarrow=False)]
-        height=200,
+        height=210,
         width=200,
 
     )
@@ -742,7 +742,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         spikedistance=1000,
         hoverdistance=100,
         margin=dict(l=0, r=0, t=0, b=0, pad=0),
-        height=200,
+        height=230,
         width=350,
 
     )

@@ -3,6 +3,8 @@
 {% block content %}
 {% load plotly_dash %}
 
+
+
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Energy Dashboard</h1>
     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
@@ -142,13 +144,13 @@
     <div class="col-xl-7">
 
         <div class="col-13" id="historical_card">
-            <div class="card shadow mb-4 anchor" style='height:420px;'>
+            <div class="card shadow mb-4 anchor">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
                     <h6 class="m-0 font-weight-bold text-primary text-uppercase mb-1" style="font-size: large">
                         Historical Energy Consumption and Cost</h6>
                 </div>
                 <div class="card-body">
-                    <div class="{% plotly_class name='historical_consumption' %}">
+                    <div class="{% plotly_class name='historical_consumption' %}" style="height:100%;">
                         {% plotly_app name='historical_consumption' ratio=0.55 %}
                     </div>
                 </div>
