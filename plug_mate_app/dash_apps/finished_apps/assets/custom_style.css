@@ -23,8 +23,8 @@ body {
 
 .igrnnx {
   display: block;
-  width: 40px !important;
-  height: 40px !important;
+  width: 30px!important;
+  height: 30px !important;
   transform: translateX(0px);
   background: rgb(0, 123, 255) !important;
   border-radius: 50%;

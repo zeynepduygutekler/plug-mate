@@ -729,6 +729,19 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         #                   font_size=20, showarrow=False)]
         height=210,
         width=200,
+        legend=dict(
+            orientation="h",
+            yanchor="top",
+            xanchor="center",
+            x=0.5,
+            y=-0.1,
+            font=dict(
+                family='"Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans -serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+                size=11,
+                color="black"
+            ),
+
+        )
 
     )
     piechart.update_traces(
