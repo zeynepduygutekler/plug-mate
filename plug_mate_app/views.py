@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from rest_framework import viewsets
+from rest_framework import viewsets, authentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -136,46 +136,79 @@ from rest_framework import generics
 
 # Create your views here.
 class PresenceDataList(generics.ListCreateAPIView):
-    queryset = PresenceData.objects.all()
+    authentication_classes = [authentication.SessionAuthentication]
     serializer_class = PresenceSerializer
 
+    def get_queryset(self):
+        """ This view should return a list of all the presence
+        settings for the current authenticated user."""
+        user = self.request.user.id
+        return PresenceData.objects.filter(user_id = user)
 
 class PresenceDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
     queryset = PresenceData.objects.all()
     serializer_class = PresenceSerializer
 
-
 class RemoteDataList(generics.ListCreateAPIView):
-    queryset = RemoteData.objects.all()
+    authentication_classes = [authentication.SessionAuthentication]
     serializer_class = RemoteSerializer
+
+    def get_queryset(self):
+        """ This view should return a list of all the remote
+        settings for the current authenticated user. """
+        user = self.request.user.id
+        return RemoteData.objects.filter(user_id = user)
 
 
 class RemoteDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
     queryset = RemoteData.objects.all()
     serializer_class = RemoteSerializer
 
 
 class ScheduleDataList(generics.ListCreateAPIView):
-    queryset = ScheduleData.objects.all()
+    authentication_classes = [authentication.SessionAuthentication]
     serializer_class = ScheduleSerializer
+
+    def get_queryset(self):
+        """ This view should return a list of all the schedule
+        settings for the current authenticated user. """
+        user = self.request.user.id
+        return ScheduleData.objects.filter(user_id = user)
 
 
 class ScheduleDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
     queryset = ScheduleData.objects.all()
     serializer_class = ScheduleSerializer
 
 class AchievementsBonusDataList(generics.ListCreateAPIView):
-    queryset = AchievementsBonus.objects.all()
+    authentication_classes = [authentication.SessionAuthentication]
     serializer_class = AchievementsBonusSerializer
 
+    def get_queryset(self):
+        """ This view should return a list of all the bonus
+        achievements for the current authenticated user."""
+        user = self.request.user.id
+        return AchievementsBonus.objects.filter(user_id = user)
+
 class AchievementsBonusDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
     queryset = AchievementsBonus.objects.all()
     serializer_class = AchievementsBonusSerializer
 
 class AchievementsWeeklyDataList(generics.ListCreateAPIView):
-    queryset = AchievementsWeekly.objects.all()
+    authentication_classes = [authentication.SessionAuthentication]
     serializer_class = AchievementsWeeklySerializer
 
+    def get_queryset(self):
+        """ This view should return a list of all the weekly
+        achievements for the current authenticated user. """
+        user = self.request.user.id
+        return AchievementsWeekly.objects.filter(user_id = user)
+
 class AchievementsWeeklyDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
     queryset = AchievementsWeekly.objects.all()
     serializer_class = AchievementsWeeklySerializer

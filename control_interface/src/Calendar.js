@@ -180,10 +180,8 @@ class Calendar extends Component {
         schedulerData.setEvents(this.props.events);
         this.state = {
             viewModel: schedulerData,
-            database_count: this.props.database_count,
             achievements_books: [],
-            weekly_achievements_books: [],
-            user_id: 1
+            weekly_achievements_books: []
         };
         window.calendar = this;
     }
@@ -212,22 +210,14 @@ class Calendar extends Component {
         fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/')
         .then(response => response.json())
         .then(data => {
-            for (var input of data) {
-                if (input.user_id === this.state.user_id) {
-                    this.setState({achievements_books: [input]})
-                }
-            }
+            this.setState({achievements_books: [data]})
         })
 
         // Fetch data for weekly achievements
         fetch('http://127.0.0.1:8000/control_interface/api/achievements_weekly/')
         .then(response => response.json())
         .then(data => {
-            for (var input of data) {
-                if (input.user_id === this.state.user_id) {
-                    this.setState({weekly_achievements_books: [input]})
-                }
-            }
+            this.setState({weekly_achievements_books: [data]})
         })
     }
 
@@ -424,7 +414,7 @@ class Calendar extends Component {
             })
 
             if (hasConflict) {
-                var message = "Conflict occured for the following events:"
+                var message = "Conflict occurred for the following events:"
                 var day = ""
                 for (var events of conflictedEvents) {
                     if (events.rrule.substring(60,event.rrule.length).includes("MO")) {
@@ -510,7 +500,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -523,8 +512,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyMonitor").checked) {
@@ -535,7 +523,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -548,8 +535,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyLaptop").checked) {
@@ -560,7 +546,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -573,8 +558,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyTaskLamp").checked) {
@@ -585,7 +569,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -598,8 +581,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyFan").checked) {
@@ -610,7 +592,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -623,8 +604,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
 
@@ -819,7 +799,7 @@ class Calendar extends Component {
             })
 
             if (hasConflict) {
-                var message = "Conflict occured for the following events:"
+                var message = "Conflict occurred for the following events:"
                 var day = ""
                 for (var events of conflictedEvents) {
                     if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
@@ -905,7 +885,6 @@ class Calendar extends Component {
                         }
                     })
                     let anotherNewEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: newEvent.title,
                         start: newEvent.start,
@@ -918,8 +897,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent));
                     schedulerData.addEvent(anotherNewEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyMonitor").checked) {
@@ -930,7 +908,6 @@ class Calendar extends Component {
                         }
                     })
                     let anotherNewEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: newEvent.title,
                         start: newEvent.start,
@@ -943,8 +920,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent));
                     schedulerData.addEvent(anotherNewEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyLaptop").checked) {
@@ -955,7 +931,6 @@ class Calendar extends Component {
                         }
                     })
                     let anotherNewEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: newEvent.title,
                         start: newEvent.start,
@@ -968,8 +943,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent));
                     schedulerData.addEvent(anotherNewEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyTaskLamp").checked) {
@@ -980,7 +954,6 @@ class Calendar extends Component {
                         }
                     })
                     let anotherNewEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: newEvent.title,
                         start: newEvent.start,
@@ -993,8 +966,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent));
                     schedulerData.addEvent(anotherNewEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyFan").checked) {
@@ -1005,7 +977,6 @@ class Calendar extends Component {
                         }
                     })
                     let anotherNewEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: newEvent.title,
                         start: newEvent.start,
@@ -1018,8 +989,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent));
                     schedulerData.addEvent(anotherNewEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
 
@@ -1300,7 +1270,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -1313,8 +1282,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyMonitor").checked) {
@@ -1325,7 +1293,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -1338,8 +1305,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyLaptop").checked) {
@@ -1350,7 +1316,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -1363,8 +1328,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyTaskLamp").checked) {
@@ -1375,7 +1339,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -1388,8 +1351,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyFan").checked) {
@@ -1400,7 +1362,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -1413,8 +1374,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
 
@@ -1698,7 +1658,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -1711,8 +1670,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyMonitor").checked) {
@@ -1723,7 +1681,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -1736,8 +1693,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyLaptop").checked) {
@@ -1748,7 +1704,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -1761,8 +1716,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyTaskLamp").checked) {
@@ -1773,7 +1727,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -1786,8 +1739,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyFan").checked) {
@@ -1798,7 +1750,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -1811,8 +1762,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
 
@@ -2099,7 +2049,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -2112,8 +2061,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyMonitor").checked) {
@@ -2124,7 +2072,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -2137,8 +2084,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyLaptop").checked) {
@@ -2149,7 +2095,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -2162,8 +2107,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyTaskLamp").checked) {
@@ -2174,7 +2118,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -2187,8 +2130,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
                 if (document.getElementById("ScheduleApplyFan").checked) {
@@ -2199,7 +2141,6 @@ class Calendar extends Component {
                         }
                     })
                     let newEvent = {
-                        database_id: window.calendar.state.database_count+1,
                         id: newFreshId,
                         title: event.title,
                         start: event.start,
@@ -2212,8 +2153,7 @@ class Calendar extends Component {
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
-                        viewModel: schedulerData,
-                        database_count: window.calendar.state.database_count + 1
+                        viewModel: schedulerData
                     })
                 }
 

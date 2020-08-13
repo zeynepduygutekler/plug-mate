@@ -17,17 +17,14 @@ function compare(a,b) {
 // Remote Control
 
 function fetchData() {
-    ReactDOM.unmountComponentAtNode(document.getElementById("remote-control"))
+    //ReactDOM.unmountComponentAtNode(document.getElementById("remote-control"))
     ReactDOM.render(<RemoteControlDashboard />, document.getElementById("remote-control"))
     setTimeout(fetchData, 5000)
-    console.log("UPDATE")
 }
 
 class RemoteControlDashboard extends Component {
     state = {
-        books: [],
-        current_user_id: 1,
-        retrieving: false
+        books: []
     }
 
     componentDidMount() {
@@ -36,40 +33,9 @@ class RemoteControlDashboard extends Component {
         .then(response => response.json())
         .then(data => {
             data.sort(compare);
-            var datas = []
-            for (var input of data) {
-                if (input.user_id === this.state.current_user_id) {
-                    datas.push(input)
-                }
-            }
-            this.setState({books: datas})
+            this.setState({books: data})
         })
-//        this.interval = setInterval(this.fetchData, 5000);
-//        this.fetchData();
     }
-
-//    fetchData = () => {
-//        if (this.state.retrieving) return;
-//        this.setState({retrieving:true});
-//        fetch('http://127.0.0.1:8000/control_interface/api/remote/')
-//        .then(response => response.json())
-//        .then(data => {
-//            data.sort(compare);
-//            var datas = []
-//            for (var input of data) {
-//                if (input.user_id === this.state.current_user_id) {
-//                    datas.push(input)
-//                }
-//            }
-//            this.setState({books: datas}, function() {console.log(this.state.books)})
-//            console.log("Update!")
-//        })
-//
-//        .finally(() => this.setState({retrieving:false}))
-//
-//        setTimeout(this.fetchData, 5000);
-//
-//    }
 
     updateBook = (newBook) => {
         fetch('http://127.0.0.1:8000/control_interface/api/remote/' + newBook.id.toString() + '/', {
@@ -92,8 +58,6 @@ class RemoteControlDashboard extends Component {
     }
 
     render() {
-        console.log("Render again")
-        console.log(this.state.books)
         return (
             <>
                 <div id="remote_control_space">
@@ -175,11 +139,7 @@ class RemoteControlItem extends Component {
         fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/')
         .then(response => response.json())
         .then(data => {
-            for (var input of data) {
-                if (input.user_id === this.state.user_id) {
-                    this.setState({achievements_books: [input]})
-                }
-            }
+            this.setState({achievements_books: [data]})
         })
 
         Main();
@@ -586,12 +546,9 @@ function getDates() {
 class ScheduleControlDashboard extends Component {
     state = {
         events: [],
-        current_user_id: 1,
         dates: [],
         chosen_day: "",
-        books: [],
-        state: true,
-        database_count: 0
+        books: []
     }
 
     componentDidMount() {
@@ -602,89 +559,79 @@ class ScheduleControlDashboard extends Component {
             this.setState({books: data})
             var events_datas = [];
             for (var input of data) {
-                if (input.user_id === this.state.current_user_id) {
+                var resourceId = input.device_type_id;
+                var eventId = input.event_id;
+                var event_start = input.event_start;
+                var event_end = input.event_end;
 
-                    var resourceId = input.device_type_id;
-                    var eventId = input.event_id;
-                    var event_start = input.event_start;
-                    var event_end = input.event_end;
+                // Format the title to be shown for each event on the scheduler
+                var finalStart = from24to12(event_start);
+                var finalEnd = from24to12(event_end)
+                var event_name = input.event_name + " (" + finalStart + " - " + finalEnd + ")"
 
-                    // Format the title to be shown for each event on the scheduler
-                    var finalStart = from24to12(event_start);
-                    var finalEnd = from24to12(event_end)
-                    var event_name = input.event_name + " (" + finalStart + " - " + finalEnd + ")"
-
-                    var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate] = getDates();
-                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
-                    event_start = mondayDate + " " + event_start;
-                    event_end = mondayDate + " " + event_end;
-                    if (input.event_rrule === "Daily") {
-                        event_rrule = "FREQ=DAILY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z";
-
-                    } else {
-                        if (input.event_rrule.includes("Monday")) {
+                var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate] = getDates();
+                var event_rrule = "FREQ=WEEKLY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
+                event_start = mondayDate + " " + event_start;
+                event_end = mondayDate + " " + event_end;
+                if (input.event_rrule.includes("Monday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "MO";
                             } else {
                                 event_rrule = event_rrule + ",MO";
                             }
                         }
-                        if (input.event_rrule.includes("Tuesday")) {
+                if (input.event_rrule.includes("Tuesday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "TU";
                             } else {
                                 event_rrule = event_rrule + ",TU";
                             }
                         }
-                        if (input.event_rrule.includes("Wednesday")) {
+                if (input.event_rrule.includes("Wednesday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "WE";
                             } else {
                                 event_rrule = event_rrule + ",WE";
                             }
                         }
-                        if (input.event_rrule.includes("Thursday")) {
+                if (input.event_rrule.includes("Thursday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "TH";
                             } else {
                                 event_rrule = event_rrule + ",TH";
                             }
                         }
-                        if (input.event_rrule.includes("Friday")) {
+                if (input.event_rrule.includes("Friday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "FR";
                             } else {
                                 event_rrule = event_rrule + ",FR";
                             }
                         }
-                        if (input.event_rrule.includes("Saturday")) {
+                if (input.event_rrule.includes("Saturday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "SA";
                             } else {
                                 event_rrule = event_rrule + ",SA";
                             }
                         }
-                        if (input.event_rrule.includes("Sunday")) {
+                if (input.event_rrule.includes("Sunday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "SU";
                             } else {
                                 event_rrule = event_rrule + ",SU";
                             }
                         }
-                    }
 
-                    // Set the events for the scheduler
-                    events_datas.push({id: eventId, start: event_start, end: event_end, title: event_name, rrule: event_rrule, resourceId: resourceId, showPopover: false, bgColor: '#06D6A0', database_id: input.id})
+                // Set the events for the scheduler
+                events_datas.push({id: eventId, start: event_start, end: event_end, title: event_name, rrule: event_rrule, resourceId: resourceId, showPopover: false, bgColor: '#06D6A0', database_id: input.id})
 
-                    // Open the calendar for today
-                    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                    var today = new Date();
-                    var wanted_id = days[today.getDay()] + "Calendar";
-                    document.getElementById(wanted_id).className="selected";
-                    setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
-
-                    this.setState({database_count: this.state.database_count + 1})
-                }
+                // Open the calendar for today
+                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                var today = new Date();
+                var wanted_id = days[today.getDay()] + "Calendar";
+                document.getElementById(wanted_id).className="selected";
+                setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
             }
             events_datas.sort(sort_events)
             this.setState({
@@ -692,6 +639,7 @@ class ScheduleControlDashboard extends Component {
                 dates: [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate]
             })
         })
+
     }
 
     refetchData = () => {
@@ -702,85 +650,77 @@ class ScheduleControlDashboard extends Component {
             this.setState({books: data})
             var events_datas = [];
             for (var input of data) {
-                if (input.user_id === this.state.current_user_id) {
+                var resourceId = input.device_type_id;
+                var eventId = input.event_id;
+                var event_start = input.event_start;
+                var event_end = input.event_end;
 
-                    var resourceId = input.device_type_id;
-                    var eventId = input.event_id;
-                    var event_start = input.event_start;
-                    var event_end = input.event_end;
+                // Format the title to be shown for each event on the scheduler
+                var finalStart = from24to12(event_start);
+                var finalEnd = from24to12(event_end)
+                var event_name = input.event_name + " (" + finalStart + " - " + finalEnd + ")"
 
-                    // Format the title to be shown for each event on the scheduler
-                    var finalStart = from24to12(event_start);
-                    var finalEnd = from24to12(event_end)
-                    var event_name = input.event_name + " (" + finalStart + " - " + finalEnd + ")"
-
-                    var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate] = getDates();
-                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
-                    event_start = mondayDate + " " + event_start;
-                    event_end = mondayDate + " " + event_end;
-                    if (input.event_rrule === "Daily") {
-                        event_rrule = "FREQ=DAILY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z";
-
-                    } else {
-                        if (input.event_rrule.includes("Monday")) {
+                var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate] = getDates();
+                var event_rrule = "FREQ=WEEKLY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
+                event_start = mondayDate + " " + event_start;
+                event_end = mondayDate + " " + event_end;
+                if (input.event_rrule.includes("Monday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "MO";
                             } else {
                                 event_rrule = event_rrule + ",MO";
                             }
                         }
-                        if (input.event_rrule.includes("Tuesday")) {
+                if (input.event_rrule.includes("Tuesday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "TU";
                             } else {
                                 event_rrule = event_rrule + ",TU";
                             }
                         }
-                        if (input.event_rrule.includes("Wednesday")) {
+                if (input.event_rrule.includes("Wednesday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "WE";
                             } else {
                                 event_rrule = event_rrule + ",WE";
                             }
                         }
-                        if (input.event_rrule.includes("Thursday")) {
+                if (input.event_rrule.includes("Thursday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "TH";
                             } else {
                                 event_rrule = event_rrule + ",TH";
                             }
                         }
-                        if (input.event_rrule.includes("Friday")) {
+                if (input.event_rrule.includes("Friday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "FR";
                             } else {
                                 event_rrule = event_rrule + ",FR";
                             }
                         }
-                        if (input.event_rrule.includes("Saturday")) {
+                if (input.event_rrule.includes("Saturday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "SA";
                             } else {
                                 event_rrule = event_rrule + ",SA";
                             }
                         }
-                        if (input.event_rrule.includes("Sunday")) {
+                if (input.event_rrule.includes("Sunday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "SU";
                             } else {
                                 event_rrule = event_rrule + ",SU";
                             }
                         }
-                    }
 
-                    // Set the events for the scheduler
-                    events_datas.push({id: eventId, start: event_start, end: event_end, title: event_name, rrule: event_rrule, resourceId: resourceId, showPopover: false, bgColor: '#06D6A0', database_id: input.id})
-                }
+                // Set the events for the scheduler
+                events_datas.push({id: eventId, start: event_start, end: event_end, title: event_name, rrule: event_rrule, resourceId: resourceId, showPopover: false, bgColor: '#06D6A0', database_id: input.id})
             }
             events_datas.sort(sort_events)
             this.setState({
                 events: events_datas,
-                dates: [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate],
+                dates: [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate]
             })
         })
     }
@@ -1099,8 +1039,6 @@ class ScheduleControlDashboard extends Component {
                     onAddClick={this.createNewBook}
                     onUpdateClick={this.updateBook}
                     books={this.state.books}
-                    state={this.state.state}
-                    database_count={this.state.database_count}
                 />
                 <div id="popup-container-schedule"> </div>
             </>
@@ -1126,8 +1064,6 @@ class ScheduleControlItem extends Component {
                     mondayDate={this.props.dates[0]}
                     sundayDate={this.props.dates[6]}
                     day={days[today.getDay()]}
-                    state={this.props.state}
-                    database_count={this.props.database_count}
                 />
             </div>
         )
@@ -1140,8 +1076,7 @@ ReactDOM.render(<ScheduleControlDashboard />, document.getElementById('schedule-
 
 class PresenceControlDashboard extends Component {
     state = {
-        books: [],
-        current_user_id: 1
+        books: []
     }
 
     componentDidMount() {
@@ -1150,13 +1085,7 @@ class PresenceControlDashboard extends Component {
         .then(response => response.json())
         .then(data => {
             data.sort(compare);
-            var datas = []
-            for (var input of data) {
-                if (input.user_id === this.state.current_user_id) {
-                    datas.push(input)
-                }
-            }
-            this.setState({books: datas})
+            this.setState({books: data})
         })
     }
 
@@ -1254,11 +1183,7 @@ class PresenceControlItem extends Component {
         fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/')
         .then(response => response.json())
         .then(data => {
-            for (var input of data) {
-                if (input.user_id === this.state.user_id) {
-                    this.setState({achievements_books: [input]})
-                }
-            }
+            this.setState({achievements_books: [data]})
         })
     }
 
@@ -1297,7 +1222,7 @@ class PresenceControlItem extends Component {
         ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
 
         // If first time clicking, update achievement
-        if (this.state.achievements_books[0].first_presence === false) {
+        if (this.state.achievements_books[0].first_presence === 0) {
             this.setState({
                 achievements_books: [
                     {
@@ -1416,12 +1341,12 @@ class PresenceControlItem extends Component {
             this.setState({presence_setting: "5"}, function() {this.handleFormSubmit()})
 
             // If first time clicking, update achievement
-            if (this.state.achievements_books[0].first_presence === false) {
+            if (this.state.achievements_books[0].first_presence === 0) {
                 this.setState({
                     achievements_books: [
                         {
                             ...this.state.achievements_books[0],
-                            first_presence: true
+                            first_presence: 70
                         }
                     ]
                 }, function() {this.handleAchievementsFormSubmit()})
@@ -1449,12 +1374,12 @@ class PresenceControlItem extends Component {
         this.handleFormSubmit();
 
         // If first time clicking, update achievement
-        if (this.state.achievements_books[0].first_presence === false) {
+        if (this.state.achievements_books[0].first_presence === 0) {
             this.setState({
                 achievements_books: [
                     {
                         ...this.state.achievements_books[0],
-                        first_presence: true
+                        first_presence: 70
                     }
                 ]
             }, function() {this.handleAchievementsFormSubmit()})
