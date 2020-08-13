@@ -413,15 +413,10 @@
 }
 
 #schedule_popup_delete {
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-#schedule_popup_cancel {
     float: right;
     cursor: pointer;
     width: 80px;
+    background: #E74A3B;
 }
 
 #schedule_popup_ok {
