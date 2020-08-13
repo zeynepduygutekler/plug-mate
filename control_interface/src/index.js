@@ -141,7 +141,7 @@ class RemoteControlItem extends Component {
         fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/')
         .then(response => response.json())
         .then(data => {
-            this.setState({achievements_books: [data]})
+            this.setState({achievements_books: [data]}, function() {console.log(this.state.achievements_books)})
         })
 
         Main();
@@ -163,7 +163,7 @@ class RemoteControlItem extends Component {
                     return book;
                 }
             });
-            this.setState({achievements_books: newBooks})
+            this.setState({achievements_books: newBooks}, function() {console.log(this.state.achievements_books)})
         })
     }
 
@@ -189,6 +189,7 @@ class RemoteControlItem extends Component {
 
         // If first time clicking, update achievement
         if (this.state.achievements_books[0].first_remote === 0) {
+            console.log("First remote")
             this.setState({
                 achievements_books: [
                     {
@@ -208,7 +209,9 @@ class RemoteControlItem extends Component {
         Main();
 
         // If first time clicking, update achievement
+        console.log(this.state.achievements_books[0].first_remote)
         if (this.state.achievements_books[0].first_remote === 0) {
+            console.log("First Remote")
             this.setState({
                 achievements_books: [
                     {
@@ -265,8 +268,10 @@ class RemoteControlItem extends Component {
             this.setState({device_state: e.target.checked}, function() {this.handleFormSubmit()})
             Main();
 
+            console.log(this.state.achievements_books[0])
             // If first time clicking, update achievement
             if (this.state.achievements_books[0].first_remote === 0) {
+                console.log("First remote")
                 this.setState({
                     achievements_books: [
                         {

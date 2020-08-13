@@ -1,0 +1,157 @@
+body {
+  margin: 0;
+  font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #858796;
+  text-align: left;
+  background-color: #fff;
+}
+
+.div {
+  height:100%;
+
+}
+
+/* This is for slider when FALSE */
+.js-plotly-plot .plotly .cursor-crosshair {
+  cursor: pointer!important;
+}
+
+
+
+.igrnnx {
+  display: block;
+  width: 30px!important;
+  height: 30px !important;
+  transform: translateX(0px);
+  background: rgb(0, 123, 255) !important;
+  border-radius: 50%;
+  padding: 0px;
+  margin: 0px;
+  transition: all 100ms ease-in-out 0s;
+  outline: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(211, 211, 211);
+  border-image: initial;
+}
+
+
+/* This is for button when True */
+.dlqMgb {
+  display: block;
+  width: 40px !important;
+  height: 40px !important;
+  transform: translateX(35px) !important;
+  background: rgb(0, 123, 255) !important;
+  border-radius: 50%;
+  padding: 0px;
+  margin: 0px;
+  transition: all 100ms ease-in-out 0s;
+  outline: none;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(211, 211, 211);
+  border-image: initial;
+}
+
+
+.cmSQpo {
+  align-items: center;
+  height: auto;
+  display: flex;
+  width: 80px !important;
+  cursor: pointer;
+  margin-left: 2.25px;
+  margin-right: 2.25px;
+  transition: all 0.1s ease-in 0s;
+  padding: 2.25px;
+  border-radius: 45px;
+  background: rgb(230, 230, 230);
+
+
+}
+
+.imatVS {
+  align-items: center;
+  height: auto;
+  display: flex;
+  width: 80px !important;
+  cursor: pointer;
+  margin-left: 2.25px;
+  margin-right: 2.25px;
+  transition: all 0.1s ease-in 0s;
+  padding: 2.25px;
+  border-radius: 45px;
+  background: rgb(230, 230, 230);
+}
+
+.imatVS::before {
+  content: "$";
+  position: absolute;
+  margin-left: 20%;
+  margin-right: 18%;
+}
+.igrnnx::before {
+  content: "$";
+  color: white;
+}
+.dlqMgb::before {
+  content: "kWh";
+  color: white;
+}
+
+.cmSQpo::after {
+  content: "kWh";
+  margin-left: auto;
+  margin-right: 4%;
+}
+
+
+
+.slicetext{
+  color: white!important;
+  font-weight: bold;
+  fill: white!important;
+
+}
+
+.btn-primary{
+  border: #007bff;
+  background-color: #007bff;
+    border-color: #007bff;
+    border: #007bff;
+    height:35px;
+    width:80px;
+
+}
+
+.btn-primary:hover{
+  background-color: blue;
+  color: white;
+  border: 1px solid #007bff;
+  border-color: #007bff;
+
+}
+
+/* .btn-primary:hover{
+  background-color: #e6e6e6;
+  color: black;
+  border: 1px solid #007bff;
+  border-color: #007bff;
+
+} */
+
+/* .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+  color: rgb(0, 0, 0);
+  background-color: #e6e6e6;
+  border-color: #007bff;
+} */
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+  color: white;
+  background-color: #0060c7;
+  border-color: #007bff;
+}
