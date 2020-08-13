@@ -136,6 +136,7 @@ from rest_framework import generics
 
 # Create your views here.
 class PresenceDataList(generics.ListCreateAPIView):
+    authentication_classes = [authentication.SessionAuthentication]
     serializer_class = PresenceSerializer
 
     def get_queryset(self):
@@ -145,10 +146,12 @@ class PresenceDataList(generics.ListCreateAPIView):
         return PresenceData.objects.filter(user_id = user)
 
 class PresenceDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
     queryset = PresenceData.objects.all()
     serializer_class = PresenceSerializer
 
 class RemoteDataList(generics.ListCreateAPIView):
+    authentication_classes = [authentication.SessionAuthentication]
     serializer_class = RemoteSerializer
 
     def get_queryset(self):
@@ -159,11 +162,13 @@ class RemoteDataList(generics.ListCreateAPIView):
 
 
 class RemoteDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
     queryset = RemoteData.objects.all()
     serializer_class = RemoteSerializer
 
 
 class ScheduleDataList(generics.ListCreateAPIView):
+    authentication_classes = [authentication.SessionAuthentication]
     serializer_class = ScheduleSerializer
 
     def get_queryset(self):
@@ -174,10 +179,12 @@ class ScheduleDataList(generics.ListCreateAPIView):
 
 
 class ScheduleDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
     queryset = ScheduleData.objects.all()
     serializer_class = ScheduleSerializer
 
 class AchievementsBonusDataList(generics.ListCreateAPIView):
+    authentication_classes = [authentication.SessionAuthentication]
     serializer_class = AchievementsBonusSerializer
 
     def get_queryset(self):
@@ -187,10 +194,12 @@ class AchievementsBonusDataList(generics.ListCreateAPIView):
         return AchievementsBonus.objects.filter(user_id = user)
 
 class AchievementsBonusDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
     queryset = AchievementsBonus.objects.all()
     serializer_class = AchievementsBonusSerializer
 
 class AchievementsWeeklyDataList(generics.ListCreateAPIView):
+    authentication_classes = [authentication.SessionAuthentication]
     serializer_class = AchievementsWeeklySerializer
 
     def get_queryset(self):
@@ -200,5 +209,6 @@ class AchievementsWeeklyDataList(generics.ListCreateAPIView):
         return AchievementsWeekly.objects.filter(user_id = user)
 
 class AchievementsWeeklyDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
     queryset = AchievementsWeekly.objects.all()
     serializer_class = AchievementsWeeklySerializer

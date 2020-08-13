@@ -625,6 +625,13 @@ class ScheduleControlDashboard extends Component {
 
                 // Set the events for the scheduler
                 events_datas.push({id: eventId, start: event_start, end: event_end, title: event_name, rrule: event_rrule, resourceId: resourceId, showPopover: false, bgColor: '#06D6A0', database_id: input.id})
+
+                // Open the calendar for today
+                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                var today = new Date();
+                var wanted_id = days[today.getDay()] + "Calendar";
+                document.getElementById(wanted_id).className="selected";
+                setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
             }
             events_datas.sort(sort_events)
             this.setState({
@@ -632,12 +639,7 @@ class ScheduleControlDashboard extends Component {
                 dates: [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate]
             })
         })
-        // Open the calendar for today
-        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        var today = new Date();
-        var wanted_id = days[today.getDay()] + "Calendar";
-        document.getElementById(wanted_id).className="selected";
-        setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
+
     }
 
     refetchData = () => {
