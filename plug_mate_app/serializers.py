@@ -19,7 +19,7 @@ class PresenceSerializer(serializers.ModelSerializer):
 class AchievementsBonusSerializer(serializers.ModelSerializer):
     class Meta:
         model = AchievementsBonus
-        fields = ('id', 'user_id', 'tree_first', 'tree_fifth', 'tree_tenth', 'redeem_reward', 'first_remote', 'first_schedule', 'first_presence')
+        fields = ('id', 'user_id', 'tree_first', 'tree_fifth', 'tree_tenth', 'redeem_reward', 'first_remote', 'first_schedule', 'first_presence', 'cum_savings')
 
 class AchievementsWeeklySerializer(serializers.ModelSerializer):
     class Meta:

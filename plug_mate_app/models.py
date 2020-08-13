@@ -111,6 +111,7 @@ class AchievementsBonus(models.Model):
     first_remote = models.IntegerField()
     first_schedule = models.IntegerField()
     first_presence = models.IntegerField()
+    cum_savings = models.IntegerField()
 
     class Meta:
         db_table = 'achievements_bonus'

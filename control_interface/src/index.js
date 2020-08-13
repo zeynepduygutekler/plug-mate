@@ -16,25 +16,26 @@ function compare(a,b) {
 
 // Remote Control
 
-function fetchData() {
-    //ReactDOM.unmountComponentAtNode(document.getElementById("remote-control"))
-    ReactDOM.render(<RemoteControlDashboard />, document.getElementById("remote-control"))
-    setTimeout(fetchData, 5000)
-}
-
 class RemoteControlDashboard extends Component {
     state = {
-        books: []
+        books: [],
+        key: 1
     }
 
     componentDidMount() {
+        this.fetchData();
+    }
+
+    fetchData = () => {
         // Fetch data from database
         fetch('http://127.0.0.1:8000/control_interface/api/remote/')
         .then(response => response.json())
         .then(data => {
             data.sort(compare);
-            this.setState({books: data})
+            this.setState({books: data, key: this.state.key+1})
         })
+
+        setTimeout(this.fetchData, 5000)
     }
 
     updateBook = (newBook) => {
@@ -62,6 +63,7 @@ class RemoteControlDashboard extends Component {
             <>
                 <div id="remote_control_space">
                     <RemoteControlList
+                        key={this.state.key}
                         books={this.state.books}
                         onUpdateClick={this.updateBook}
                     />
@@ -457,8 +459,6 @@ class RemoteToggleButton extends Component {
 }
 
 ReactDOM.render(<RemoteControlDashboard />, document.getElementById('remote-control'))
-
-fetchData();
 
 function Main() {
     // If at least one plug load is ON, master button is automatically toggled to ON.
