@@ -123,7 +123,7 @@ def update_bar_chart(n1, n2, int, **kwargs):
         hovertext2 = []
         for date in dff.index:
             # hovertext
-            sorted_list = [x for _,x in sorted(zip(dff.loc[date].tolist(),list(dff)))]
+            sorted_list = [x for _,x in sorted(zip(dff.loc[date].tolist(),list(dff)), reverse=True)]
             sorted_list.remove('total')
             string = ''
             for plug_load in sorted_list:
