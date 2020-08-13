@@ -18,10 +18,12 @@ from datetime import datetime
 
 def get_achievements():
     """Reads achievement dataframes from database"""
-    reference = pd.read_csv('plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_points.csv')
+    reference = pd.read_csv(
+        'plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_points.csv')
     reference = reference.set_index('achievement')
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM achievements_daily WHERE user_id=%s", [1])
+        cursor.execute(
+            "SELECT * FROM achievements_daily WHERE user_id=%s", [1])
         results = cursor.fetchall()
         colnames = [desc[0] for desc in cursor.description]
     daily = pd.DataFrame(results, columns=colnames)
@@ -29,14 +31,16 @@ def get_achievements():
     daily = daily.set_index('week_day')
     # #
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM achievements_weekly WHERE user_id=%s", [1])
+        cursor.execute(
+            "SELECT * FROM achievements_weekly WHERE user_id=%s", [1])
         results = cursor.fetchall()
         colnames = [desc[0] for desc in cursor.description]
     weekly = pd.DataFrame(results, columns=colnames)
     weekly.drop(columns=['user_id', 'id'], inplace=True)
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM achievements_bonus WHERE user_id=%s", [1])
+        cursor.execute(
+            "SELECT * FROM achievements_bonus WHERE user_id=%s", [1])
         results = cursor.fetchall()
         colnames = [desc[0] for desc in cursor.description]
     bonus = pd.DataFrame(results, columns=colnames)
@@ -46,7 +50,8 @@ def get_achievements():
 
 
 app = DjangoDash('progress',
-                 external_stylesheets=["https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"],
+                 external_stylesheets=[
+                     "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"],
                  serve_locally=True, add_bootstrap_links=True)
 
 app.layout = html.Div([
@@ -84,11 +89,12 @@ app.layout = html.Div([
     html.Div(id='placeholder'),
 
     html.Div([
-        dcc.Interval(id='interval', interval=800000, n_intervals=0, max_intervals=1),
+        dcc.Interval(id='interval', interval=800000,
+                     n_intervals=0, max_intervals=1),
         html.Table(id='achievements', className='table',
 
                    )
-    ], style={"maxHeight": "19rem", "overflow": "scroll"})
+    ], style={'height': '100%'})
 
 ], style={'display': 'inline-block', 'vertical-align': 'middle'})
 
@@ -106,7 +112,8 @@ def update_achievements_table(n):
     def create_table_row(achievement, points):
         if points > 0:
             return html.Tr([
-                html.Td(reference.loc[achievement]['description'], style={'opacity': 0.3}),
+                html.Td(reference.loc[achievement]
+                        ['description'], style={'opacity': 0.3}),
                 html.Td(html.Img(src='https://i.ibb.co/qJqjkk8/trophy.png',
                                  style={'height': '6%'}))])
         else:
