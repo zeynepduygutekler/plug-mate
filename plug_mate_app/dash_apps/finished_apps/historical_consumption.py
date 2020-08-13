@@ -536,25 +536,24 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         }
     )
 
-    piechart.update_layout(
-        margin=dict(l=0, r=0, t=0, b=0, pad=0),
-        uniformtext_minsize=12,
-        uniformtext_mode='hide',
-        legend=dict(
-            orientation="h",
-            yanchor="top",
-            xanchor="center",
-            x=0.5,
-            y=-0.1,
-            font=dict(
-                family='"Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans -serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-                size=11,
-                color="black"
-            ),
-        ),
+    # piechart.update_layout(
+    #     margin=dict(l=0, r=0, t=0, b=0, pad=0),
+    #     uniformtext_minsize=12,
+    #     uniformtext_mode='hide',
+    #     legend=dict(
+    #         orientation="h",
+    #         yanchor="top",
+    #         xanchor="center",
+    #         x=0.5,
+    #         y=-0.1,
+    #         font=dict(
+    #             family='"Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans -serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+    #             size=11,
+    #             color="black"
+    #         ),
+    #     ),
 
-    )
-    piechart.update_traces(textposition='inside')
+    # )
 
 # I) Once graphs generated, implement Unit Changes based on Toggle and Misc Layout+Design changes
 
@@ -601,7 +600,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         # Change to $ for pie and line graph
 
         fig2.update_yaxes(tickprefix='$ ')
-        print(values_pie)
         piechart.update_traces(
             values=values_pie,
             labels=df4['device_type'],
@@ -716,7 +714,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     )
 
     piechart.update_layout(
-
+        margin=dict(l=0, r=0, t=0, b=0, pad=0),
+        uniformtext_minsize=12,
+        uniformtext_mode='hide',
         showlegend=True,
         hoverlabel=dict(
             bgcolor="white",
@@ -731,7 +731,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             yanchor="top",
             xanchor="center",
             x=0.5,
-            y=-0.1,
+            y=-0.2,
             font=dict(
                 family='"Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans -serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
                 size=11,
@@ -743,6 +743,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     )
     piechart.update_traces(
         sort=False,
+        textposition='inside'
+
     )
 
     fig2.update_xaxes(showspikes=True, spikecolor="black",
