@@ -25,7 +25,7 @@ pio.templates.default = "simple_white"
 # A) Function to create new essential columns
 
 
-# end_date = '24/7/2020'
+end_date = '24/7/2020'
 
 # Manipulate and Initialise variables for later
 
@@ -36,7 +36,7 @@ def initialise_variables():
     global start, end
     global singapore_tariff_rate
     singapore_tariff_rate = 0.201
-    # end = end_date
+    end = end_date
     end = dt.datetime.strptime(end, '%d/%m/%Y')
     start = end - dt.timedelta(7)
 

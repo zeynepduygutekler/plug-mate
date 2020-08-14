@@ -1130,7 +1130,7 @@ class Calendar extends Component {
     updateEventStart = (schedulerData, event, newStart) => {
         var old_start = event.start;
         schedulerData.updateEventStart(event, newStart);
-        event.title = event.title.substring(0, event.title.length - 20) + " (" + from24to12(moment(newStart).format('HH:mm')) + " - " + from24to12(moment(event.end).format('HH:mm')) + ")";
+        event.title = event.title.substring(0, event.title.length - 22) + " (" + from24to12(moment(newStart).format('HH:mm')) + " - " + from24to12(moment(event.end).format('HH:mm')) + ")";
         this.setState({
             viewModel: schedulerData
         })
@@ -1526,7 +1526,7 @@ class Calendar extends Component {
     updateEventEnd = (schedulerData, event, newEnd) => {
         var old_end = event.end;
         schedulerData.updateEventEnd(event, newEnd);
-        event.title = event.title.substring(0, event.title.length - 20) + " (" + from24to12(moment(event.start).format('HH:mm')) + " - " + from24to12(moment(newEnd).format('HH:mm')) + ")";
+        event.title = event.title.substring(0, event.title.length - 22) + " (" + from24to12(moment(event.start).format('HH:mm')) + " - " + from24to12(moment(newEnd).format('HH:mm')) + ")";
         this.setState({
             viewModel: schedulerData
         })
@@ -1922,7 +1922,7 @@ class Calendar extends Component {
         var old_end = event.end;
         schedulerData.updateEventStart(event, start);
         schedulerData.updateEventEnd(event, end);
-        event.title = event.title.substring(0, event.title.length - 20) + " (" + from24to12(moment(start).format('HH:mm')) + " - " + from24to12(moment(end).format('HH:mm')) + ")";
+        event.title = event.title.substring(0, event.title.length - 22) + " (" + from24to12(moment(start).format('HH:mm')) + " - " + from24to12(moment(end).format('HH:mm')) + ")";
         this.setState({
             viewModel: schedulerData
         })
