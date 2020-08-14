@@ -68,7 +68,7 @@ class Presence(models.Model):
 
 
 class PointsWallet(models.Model):
-    user = models.IntegerField(primary_key=True)
+    user_id = models.IntegerField()
     points = models.IntegerField()
 
     class Meta:
