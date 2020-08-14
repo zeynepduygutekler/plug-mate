@@ -363,7 +363,7 @@
 }
 
 #schedule_popup {
-    width: 50vw;
+    width: 35vw;
     height: fit-content;
     max-height: 80vh;
     border: 1px solid black;
@@ -413,25 +413,18 @@
 }
 
 #schedule_popup_delete {
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-#schedule_popup_cancel {
-    float: right;
     cursor: pointer;
     width: 80px;
+    background: #E74A3B;
+    float: right;
 }
 
 #schedule_popup_ok {
-    float: right;
     cursor: pointer;
     width: 80px;
     margin-left: 10px;
+    float: right;
 }
-
-
 
 .whiteRing {
     background: white;

@@ -92,9 +92,8 @@ class ScheduleControlPopup extends Component {
                             <ScheduleControlApply devices={["Desktop", "Monitor", "Laptop", "Fan", "Task Lamp"]} />
                         </div>
                         <br/>
-                        <button id="schedule_popup_delete" onClick={this.props.deleteButtonClicked}> <FontAwesomeIcon icon={faTrash} style={{color:"#E74A3B"}} /> </button>
                         <button id="schedule_popup_ok" onClick={this.props.okButtonClicked}> OK </button>
-                        <button id="schedule_popup_cancel" onClick={this.props.cancelButtonClicked}> Cancel </button>
+                        <button id="schedule_popup_delete" onClick={this.props.deleteButtonClicked}> Delete </button>
                     </div>
                 </div>
             </>
