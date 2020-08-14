@@ -581,7 +581,7 @@ class ScheduleControlDashboard extends Component {
             this.setState({books: data})
             var events_datas = [];
             for (var input of data) {
-                this.setState({current_user_id: input.user_id})
+                this.setState({current_user_id: input.user_id}, function(){console.log(this.state.current_user_id)})
                 var resourceId = input.device_type_id;
                 var eventId = input.event_id;
                 var event_start = input.event_start;
@@ -673,7 +673,7 @@ class ScheduleControlDashboard extends Component {
             this.setState({books: data})
             var events_datas = [];
             for (var input of data) {
-                this.setState({current_user_id: input.user_id})
+                this.setState({current_user_id: input.user_id}, function() {console.log(this.state.current_user_id)})
                 var resourceId = input.device_type_id;
                 var eventId = input.event_id;
                 var event_start = input.event_start;

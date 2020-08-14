@@ -48,7 +48,7 @@ function formatForDatabaseAdd(book, current_user_id) {
     const devices = ["Desktop", "Monitor", "Laptop", "Task Lamp", "Fan"]
 
     return({
-        user_id: current_user_id,
+        user_id: Number(current_user_id),
         event_id: book.id,
         event_start: book.start.substring(book.start.length-8, book.start.length),
         event_end: book.end.substring(book.end.length-8, book.end.length),
@@ -92,7 +92,7 @@ function formatForDatabaseUpdate(book, current_user_id) {
         event_id = book.id
     }
     return({
-        user_id: current_user_id,
+        user_id: Number(current_user_id),
         event_id: event_id,
         event_start: book.start.substring(book.start.length-8, book.start.length),
         event_end: book.end.substring(book.end.length-8, book.end.length),
@@ -616,7 +616,7 @@ class Calendar extends Component {
                 })
 
                 // Update database (Update)
-                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event));
+                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, this.props.current_user_id));
                 window.calendar.props.refetchData();
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
@@ -630,7 +630,7 @@ class Calendar extends Component {
                                 first_schedule: 70
                             }
                         ]
-                    }, window.calendar.handleAchievementsFormSubmit())
+                    }, function() {window.calendar.handleAchievementsFormSubmit()})
                     window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
@@ -1058,7 +1058,7 @@ class Calendar extends Component {
 
         function closeButtonClicked() {
             // Update database (Update)
-            window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event));
+            window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, this.props.current_user_id));
             window.calendar.props.refetchData();
 
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
@@ -1379,7 +1379,7 @@ class Calendar extends Component {
                 })
 
                 // Update database (Update)
-                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event));
+                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, this.props.current_user_id));
                 window.calendar.props.refetchData();
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
@@ -1438,7 +1438,7 @@ class Calendar extends Component {
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
             // Update database (Update)
-            window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event));
+            window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, this.props.current_user_id));
             window.calendar.props.refetchData();
         }
         function deleteButtonClicked() {
@@ -1756,7 +1756,7 @@ class Calendar extends Component {
                 })
 
                 // Update database (Update)
-                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event));
+                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, this.props.current_user_id));
                 window.calendar.props.refetchData();
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
@@ -1818,7 +1818,7 @@ class Calendar extends Component {
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
             // Update database (Update)
-            window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event));
+            window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, this.props.current_user_id));
             window.calendar.props.refetchData();
         }
 
@@ -2137,7 +2137,7 @@ class Calendar extends Component {
                 })
 
                 // Update database (Update)
-                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event));
+                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, this.props.current_user_id));
                 window.calendar.props.refetchData();
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
