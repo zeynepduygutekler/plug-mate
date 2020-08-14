@@ -537,7 +537,7 @@ class Calendar extends Component {
                 }
 
                 // Apply to other devices
-                document.getElementById("ScheduleApply" + slotName).checked = false;
+                document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
                 if (document.getElementById("ScheduleApplyDesktop").checked) {
                     let newFreshId = 0;
                     schedulerData.events.forEach(item => {
@@ -939,7 +939,7 @@ class Calendar extends Component {
                 }
 
                 // Apply to other devices
-                document.getElementById("ScheduleApply" + slotName).checked = false;
+                document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
                 if (document.getElementById("ScheduleApplyDesktop").checked) {
                     let newFreshId = 0;
                     schedulerData.events.forEach(item => {
@@ -1335,7 +1335,7 @@ class Calendar extends Component {
                 }
 
                 // Apply to other devices
-                document.getElementById("ScheduleApply" + slotName).checked = false;
+                document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
                 if (document.getElementById("ScheduleApplyDesktop").checked) {
                     let newFreshId = 0;
                     schedulerData.events.forEach(item => {
@@ -1730,7 +1730,7 @@ class Calendar extends Component {
                 }
 
                 // Apply to other devices
-                document.getElementById("ScheduleApply" + slotName).checked = false;
+                document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
                 if (document.getElementById("ScheduleApplyDesktop").checked) {
                     let newFreshId = 0;
                     schedulerData.events.forEach(item => {
@@ -2127,7 +2127,7 @@ class Calendar extends Component {
                 }
 
                 // Apply to other devices
-                document.getElementById("ScheduleApply" + slotName).checked = false;
+                document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
                 if (document.getElementById("ScheduleApplyDesktop").checked) {
                     let newFreshId = 0;
                     schedulerData.events.forEach(item => {
