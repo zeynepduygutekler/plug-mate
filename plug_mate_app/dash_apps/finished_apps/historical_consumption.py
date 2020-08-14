@@ -22,32 +22,7 @@ import copy
 
 pio.templates.default = "simple_white"
 
-<<<<<<< HEAD
-# Manipulate and Initialise variables for later
 
-
-=======
-# A) Function to create new essential columns
-
-
-# end_date = '24/7/2020'
-
-# Manipulate and Initialise variables for later
-
-
-# @profile
-def initialise_variables():
-    # Initialise some variables
-    global start, end
-    global singapore_tariff_rate
-    singapore_tariff_rate = 0.201
-    # end = end_date
-    end = dt.datetime.strptime(end, '%d/%m/%Y')
-    start = end - dt.timedelta(7)
-
-
-# @profile
->>>>>>> 43c003c682dc0187453f503df137edaf275b2b0a
 def dayClickDataPiechart(df_day_bytype):
     # Aggregate df_day_bytype separating type of device
     # '''Insert SQL Code'''
