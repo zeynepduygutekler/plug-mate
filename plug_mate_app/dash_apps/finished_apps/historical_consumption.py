@@ -25,7 +25,7 @@ pio.templates.default = "simple_white"
 # A) Function to create new essential columns
 
 
-end_date = '24/7/2020'
+# end_date = '24/7/2020'
 
 # Manipulate and Initialise variables for later
 
@@ -36,7 +36,7 @@ def initialise_variables():
     global start, end
     global singapore_tariff_rate
     singapore_tariff_rate = 0.201
-    end = end_date
+    # end = end_date
     end = dt.datetime.strptime(end, '%d/%m/%Y')
     start = end - dt.timedelta(7)
 
@@ -579,10 +579,10 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             values_pie = df4['cost']
 
         elif hourbtn > monthbtn and hourbtn > weekbtn and hourbtn > daybtn:
-            print(df3)
+            # print(df3)
             x = df3['dates_AMPM']
             y = df3['cost']
-            print(df4)
+            # print(df4)
             values_pie = df4['cost']
             fig2.update_xaxes(
                 ticktext=["12AM", "", "", "3AM", "", "", "6AM", "", "", "9AM",
@@ -775,6 +775,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         )
     )
     # 4. Return all graphs
-    print("DONE SHOWING GRAPHS <======", str(dt.datetime.now()))
+    # print("DONE SHOWING GRAPHS <======", str(dt.datetime.now()))
 
     return fig2, piechart, ("Aggregated {}".format(units), html.Br(), "{}".format(pie_middletext)), ("{} Breakdown".format(units), html.Br(), "{}".format(pie_middletext)), dayActive, weekActive,    monthActive,   hourActive
