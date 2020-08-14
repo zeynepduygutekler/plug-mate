@@ -182,7 +182,8 @@ class Calendar extends Component {
             viewModel: schedulerData,
             achievements_books: [],
             weekly_achievements_books: [],
-            points_wallet_books: []
+            points_wallet_books: [],
+            key: 1
         };
         window.calendar = this;
     }
@@ -193,6 +194,7 @@ class Calendar extends Component {
             <div>
                 <div>
                     <Scheduler
+                        key={this.state.key}
                         schedulerData={viewModel}
                         eventItemClick={this.eventClicked}
                         updateEventStart={this.updateEventStart}
@@ -538,13 +540,14 @@ class Calendar extends Component {
 
                 // Apply to other devices
                 document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
+                var newFreshId = 0;
+                schedulerData.events.forEach(item => {
+                    if (item.database_id >= newFreshId || item.id >= newFreshId) {
+                        newFreshId = item.database_id;
+                    }
+                })
                 if (document.getElementById("ScheduleApplyDesktop").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1;
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -562,12 +565,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyMonitor").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -585,12 +583,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyLaptop").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -608,12 +601,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyTaskLamp").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -631,12 +619,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyFan").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -662,6 +645,7 @@ class Calendar extends Component {
                 // Update database (Update)
                 window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
                 window.calendar.props.refetchData();
+
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
@@ -705,7 +689,10 @@ class Calendar extends Component {
                             ]
                         }, function() {window.calendar.handlePointsWalletFormSubmit()})
                     }
+
                 }
+
+                setTimeout(function() {document.getElementById(window.calendar.props.day + "Schedule").click()}, 0.1)
             }
         }
 
@@ -726,7 +713,7 @@ class Calendar extends Component {
     newEvent = (schedulerData, slotId, slotName, start, end, type, item) => {
         let newFreshId = 0;
         schedulerData.events.forEach(item => {
-            if (item.database_id >= newFreshId) newFreshId = item.database_id + 1;
+            if (item.database_id >= newFreshId || item.id >= newFreshId) newFreshId = item.database_id + 1;
         });
 
         let newEvent = {
@@ -940,13 +927,9 @@ class Calendar extends Component {
 
                 // Apply to other devices
                 document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
+
                 if (document.getElementById("ScheduleApplyDesktop").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1;
                     let anotherNewEvent = {
                         id: newFreshId,
                         title: newEvent.title,
@@ -964,12 +947,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyMonitor").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1;
                     let anotherNewEvent = {
                         id: newFreshId,
                         title: newEvent.title,
@@ -987,12 +965,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyLaptop").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let anotherNewEvent = {
                         id: newFreshId,
                         title: newEvent.title,
@@ -1010,12 +983,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyTaskLamp").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let anotherNewEvent = {
                         id: newFreshId,
                         title: newEvent.title,
@@ -1033,12 +1001,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyFan").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let anotherNewEvent = {
                         id: newFreshId,
                         title: newEvent.title,
@@ -1061,12 +1024,11 @@ class Calendar extends Component {
                     viewModel: schedulerData
                 })
 
-                // Update database (Update)
+                // Update database (Add)
                 window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                 window.calendar.props.refetchData();
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
-
 
                 // Update weekly achievement
                 if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
@@ -1109,6 +1071,8 @@ class Calendar extends Component {
                         }, function() {window.calendar.handlePointsWalletFormSubmit()})
                     }
                 }
+
+                setTimeout(function() {document.getElementById(window.calendar.props.day + "Schedule").click()}, 0.1)
             }
         }
 
@@ -1336,13 +1300,15 @@ class Calendar extends Component {
 
                 // Apply to other devices
                 document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
+                var newFreshId = 0;
+                schedulerData.events.forEach(item => {
+                    if (item.database_id >= newFreshId || item.id >= newFreshId) {
+                        newFreshId = item.database_id;
+                    }
+                })
+
                 if (document.getElementById("ScheduleApplyDesktop").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1;
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -1360,12 +1326,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyMonitor").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -1383,12 +1344,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyLaptop").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -1406,12 +1362,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyTaskLamp").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -1429,12 +1380,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyFan").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -1505,6 +1451,8 @@ class Calendar extends Component {
                         }, function() {window.calendar.handlePointsWalletFormSubmit()})
                     }
                 }
+
+                setTimeout(function() {document.getElementById(window.calendar.props.day + "Schedule").click()}, 0.1)
             }
         }
 
@@ -1552,7 +1500,7 @@ class Calendar extends Component {
         }
 
         function okButtonClicked() {
-                        // Checking conflicts
+            // Checking conflicts
             var hasConflict = false;
             var conflictedEvents = [];
             var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
@@ -1731,13 +1679,14 @@ class Calendar extends Component {
 
                 // Apply to other devices
                 document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
+                let newFreshId = 0;
+                schedulerData.events.forEach(item => {
+                    if (item.database_id >= newFreshId || item.id >= newFreshId) {
+                        newFreshId = item.database_id;
+                    }
+                })
                 if (document.getElementById("ScheduleApplyDesktop").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1;
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -1755,12 +1704,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyMonitor").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -1778,12 +1722,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyLaptop").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -1801,12 +1740,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyTaskLamp").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -1824,12 +1758,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyFan").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -1898,6 +1827,8 @@ class Calendar extends Component {
                         }, function() {window.calendar.handlePointsWalletFormSubmit()})
                     }
                 }
+
+                setTimeout(function() {document.getElementById(window.calendar.props.day + "Schedule").click()}, 0.1)
             }
         }
 
@@ -1949,7 +1880,7 @@ class Calendar extends Component {
         }
 
         function okButtonClicked() {
-                        // Checking conflicts
+            // Checking conflicts
             var hasConflict = false;
             var conflictedEvents = [];
             var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
@@ -2127,14 +2058,15 @@ class Calendar extends Component {
                 }
 
                 // Apply to other devices
+                var newFreshId = 0;
+                schedulerData.events.forEach(item => {
+                    if (item.database_id >= newFreshId || item.id >= newFreshId) {
+                        newFreshId = item.database_id;
+                    }
+                })
                 document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
                 if (document.getElementById("ScheduleApplyDesktop").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -2152,12 +2084,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyMonitor").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -2175,12 +2102,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyLaptop").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -2198,12 +2120,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyTaskLamp").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,
@@ -2221,12 +2138,7 @@ class Calendar extends Component {
                     })
                 }
                 if (document.getElementById("ScheduleApplyFan").checked) {
-                    let newFreshId = 0;
-                    schedulerData.events.forEach(item => {
-                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                            newFreshId = item.database_id;
-                        }
-                    })
+                    newFreshId = newFreshId + 1
                     let newEvent = {
                         id: newFreshId,
                         title: event.title,

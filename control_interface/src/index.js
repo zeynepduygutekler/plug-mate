@@ -646,7 +646,7 @@ class ScheduleControlDashboard extends Component {
         dates: [],
         chosen_day: "",
         books: [],
-        current_user_id: 1
+        key: 1
     }
 
     componentDidMount() {
@@ -1140,6 +1140,7 @@ class ScheduleControlDashboard extends Component {
                     <button id="SundayCalendar" onClick={this.chooseSunday}> Sunday </button>
                 </div>
                 <ScheduleControlItem
+                    key={this.state.key}
                     refetchData={this.refetchData}
                     events={this.state.events}
                     dates={this.state.dates}
