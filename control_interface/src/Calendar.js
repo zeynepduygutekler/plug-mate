@@ -555,7 +555,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -578,7 +578,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -601,7 +601,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -624,7 +624,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -647,7 +647,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -747,7 +747,7 @@ class Calendar extends Component {
 
         function closeButtonClicked() {
             // Update database (Add)
-            window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent))
+            window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id))
             window.calendar.props.refetchData();
 
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
@@ -957,7 +957,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: newEvent.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(anotherNewEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -980,7 +980,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: newEvent.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(anotherNewEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -1003,7 +1003,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: newEvent.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(anotherNewEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -1026,7 +1026,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: newEvent.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(anotherNewEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -1049,7 +1049,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: newEvent.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(anotherNewEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -1062,7 +1062,7 @@ class Calendar extends Component {
                 })
 
                 // Update database (Update)
-                window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                 window.calendar.props.refetchData();
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
@@ -1353,7 +1353,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -1376,7 +1376,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -1399,7 +1399,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -1422,7 +1422,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -1445,7 +1445,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -1748,7 +1748,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -1771,7 +1771,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -1794,7 +1794,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -1817,7 +1817,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -1840,7 +1840,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -2145,7 +2145,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -2168,7 +2168,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -2191,7 +2191,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -2214,7 +2214,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
@@ -2237,7 +2237,7 @@ class Calendar extends Component {
                         showPopover: false,
                         rrule: event.rrule
                     }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent));
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     schedulerData.addEvent(newEvent);
                     window.calendar.setState({
                         viewModel: schedulerData
