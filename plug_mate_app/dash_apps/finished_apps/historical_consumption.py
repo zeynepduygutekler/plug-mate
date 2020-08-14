@@ -106,7 +106,7 @@ app.layout = \
                                     style={'margin-left': '5%'}),
                             html.Div(dbc.Spinner(color="primary", id="loadingLine",
                                                  children=[
-                                                     dcc.Graph(id='line-chart', config={'displayModeBar': False}, clear_on_unhover=True, style={'width': '100vh', 'height': '67vh'})],
+                                                     dcc.Graph(id='line-chart', config={'displayModeBar': False}, clear_on_unhover=True, style={'width': '100vh', 'height': '60vh'})],
                                                  spinner_style={"width": "3rem", "height": "3rem"}))
 
                         ], style={'text-align': 'center', 'padding': '0'}, width=7),
@@ -126,8 +126,8 @@ app.layout = \
         ], style={'width': '97%'}),
         dcc.Interval(
             id='interval-component',
-            interval=0,  # in milliseconds
-            max_intervals=1
+            interval=800,  # in milliseconds
+            max_intervals=2
         )
     ], style={'height': '100%'})
 
@@ -740,6 +740,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
         )
 
+
     )
     piechart.update_traces(
         sort=False,
@@ -757,6 +758,21 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         # height=230,
         # width=350,
 
+    )
+    piechart.update_layout(
+        legend=dict(
+            orientation="h",
+            yanchor="top",
+            xanchor="center",
+            x=0.5,
+            y=-0.1,
+            font=dict(
+                family='"Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans -serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
+                size=11,
+                color="black"
+            ),
+
+        )
     )
     # 4. Return all graphs
     print("DONE SHOWING GRAPHS <======", str(dt.datetime.now()))

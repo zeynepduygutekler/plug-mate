@@ -20,7 +20,7 @@ function from24to12(hour) {
     return (finalTime);
 }
 
-function formatForDatabaseAdd(book) {
+function formatForDatabaseAdd(book, current_user_id) {
     var event_rrule = ""
     if (book.rrule.substring(60,book.rrule.length).includes("MO")) {
         event_rrule = event_rrule + "Monday, "
@@ -48,7 +48,7 @@ function formatForDatabaseAdd(book) {
     const devices = ["Desktop", "Monitor", "Laptop", "Task Lamp", "Fan"]
 
     return({
-        user_id: 1,
+        user_id: Number(current_user_id),
         event_id: book.id,
         event_start: book.start.substring(book.start.length-8, book.start.length),
         event_end: book.end.substring(book.end.length-8, book.end.length),
@@ -59,7 +59,7 @@ function formatForDatabaseAdd(book) {
     })
 }
 
-function formatForDatabaseUpdate(book) {
+function formatForDatabaseUpdate(book, current_user_id) {
     var event_rrule = ""
     if (book.rrule.substring(60,book.rrule.length).includes("MO")) {
         event_rrule = event_rrule + "Monday, "
@@ -92,7 +92,7 @@ function formatForDatabaseUpdate(book) {
         event_id = book.id
     }
     return({
-        user_id: 1,
+        user_id: Number(current_user_id),
         event_id: event_id,
         event_start: book.start.substring(book.start.length-8, book.start.length),
         event_end: book.end.substring(book.end.length-8, book.end.length),
@@ -268,12 +268,12 @@ class Calendar extends Component {
     }
 
     handleAchievementsUpdate = (book) => {
-        book.id = this.props.user_id;
+        book.id = this.props.current_user_id;
         this.updateAchievementsBooks(book);
     }
 
     handleWeeklyAchievementsUpdate = (book) => {
-        book.id = this.props.user_id;
+        book.id = this.props.current_user_id;
         this.updateWeeklyAchievementsBooks(book);
     }
 
@@ -616,34 +616,34 @@ class Calendar extends Component {
                 })
 
                 // Update database (Update)
-                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event));
+                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, this.props.current_user_id));
                 window.calendar.props.refetchData();
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
                 // If first time clicking, update achievement
-                if (this.state.achievements_books[0].first_schedule === 0) {
-                    this.setState({
+                if (window.calendar.state.achievements_books[0].first_schedule === 0) {
+                    window.calendar.setState({
                         achievements_books: [
                             {
-                                ...this.state.achievements_books[0],
+                                ...window.calendar.state.achievements_books[0],
                                 first_schedule: 70
                             }
                         ]
-                    })
+                    }, function() {window.calendar.handleAchievementsFormSubmit()})
                     window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
                 // Update weekly achievement
-                if (this.state.weekly_achievements_books[0].schedule_based === 0) {
-                    this.setState({
+                if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
+                    window.calendar.setState({
                         weekly_achievements_books: [
                             {
-                                ...this.state.weekly_achievements_books[0],
+                                ...window.calendar.state.weekly_achievements_books[0],
                                 schedule_based: 20
                             }
                         ]
-                    })
+                    }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
                 }
             }
         }
@@ -1007,28 +1007,28 @@ class Calendar extends Component {
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
                 // If first time clicking, update achievement
-                if (this.state.achievements_books[0].first_schedule === 0) {
-                    this.setState({
+                if (window.calendar.state.achievements_books[0].first_schedule === 0) {
+                    window.calendar.setState({
                         achievements_books: [
                             {
-                                ...this.state.achievements_books[0],
+                                ...window.calendar.state.achievements_books[0],
                                 first_schedule: 70
                             }
                         ]
-                    })
+                    }, function() {window.calendar.handleAchievementsFormSubmit()})
                     window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
                 // Update weekly achievement
-                if (this.state.weekly_achievements_books[0].schedule_based === 0) {
-                    this.setState({
+                if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
+                    window.calendar.setState({
                         weekly_achievements_books: [
                             {
-                                ...this.state.weekly_achievements_books[0],
+                                ...window.calendar.state.weekly_achievements_books[0],
                                 schedule_based: 20
                             }
                         ]
-                    })
+                    }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
                 }
             }
         }
@@ -1058,7 +1058,7 @@ class Calendar extends Component {
 
         function closeButtonClicked() {
             // Update database (Update)
-            window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event));
+            window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, this.props.current_user_id));
             window.calendar.props.refetchData();
 
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
@@ -1379,34 +1379,34 @@ class Calendar extends Component {
                 })
 
                 // Update database (Update)
-                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event));
+                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, this.props.current_user_id));
                 window.calendar.props.refetchData();
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
                 // If first time clicking, update achievement
-                if (this.state.achievements_books[0].first_schedule === 0) {
-                    this.setState({
+                if (window.calendar.state.achievements_books[0].first_schedule === 0) {
+                    window.calendar.setState({
                         achievements_books: [
                             {
-                                ...this.state.achievements_books[0],
+                                ...window.calendar.state.achievements_books[0],
                                 first_schedule: 70
                             }
                         ]
-                    })
+                    }, function() {window.calendar.handleAchievementsFormSubmit()})
                     window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
                 // Update weekly achievement
-                if (this.state.weekly_achievements_books[0].schedule_based === 0) {
-                    this.setState({
+                if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
+                    window.calendar.setState({
                         weekly_achievements_books: [
                             {
-                                ...this.state.weekly_achievements_books[0],
+                                ...window.calendar.state.weekly_achievements_books[0],
                                 schedule_based: 20
                             }
                         ]
-                    })
+                    }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
                 }
             }
         }
@@ -1438,7 +1438,7 @@ class Calendar extends Component {
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
             // Update database (Update)
-            window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event));
+            window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, this.props.current_user_id));
             window.calendar.props.refetchData();
         }
         function deleteButtonClicked() {
@@ -1756,34 +1756,34 @@ class Calendar extends Component {
                 })
 
                 // Update database (Update)
-                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event));
+                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, this.props.current_user_id));
                 window.calendar.props.refetchData();
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
                 // If first time clicking, update achievement
-                if (this.state.achievements_books[0].first_schedule === 0) {
-                    this.setState({
+                if (window.calendar.state.achievements_books[0].first_schedule === 0) {
+                    window.calendar.setState({
                         achievements_books: [
                             {
-                                ...this.state.achievements_books[0],
+                                ...window.calendar.state.achievements_books[0],
                                 first_schedule: 70
                             }
                         ]
-                    })
+                    }, function() {window.calendar.handleAchievementsFormSubmit()})
                     window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
                 // Update weekly achievement
-                if (this.state.weekly_achievements_books[0].schedule_based === 0) {
-                    this.setState({
+                if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
+                    window.calendar.setState({
                         weekly_achievements_books: [
                             {
-                                ...this.state.weekly_achievements_books[0],
+                                ...window.calendar.state.weekly_achievements_books[0],
                                 schedule_based: 20
                             }
                         ]
-                    })
+                    }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
                 }
             }
         }
@@ -1818,7 +1818,7 @@ class Calendar extends Component {
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
             // Update database (Update)
-            window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event));
+            window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, this.props.current_user_id));
             window.calendar.props.refetchData();
         }
 
@@ -2137,34 +2137,34 @@ class Calendar extends Component {
                 })
 
                 // Update database (Update)
-                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event));
+                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, this.props.current_user_id));
                 window.calendar.props.refetchData();
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
                 // If first time clicking, update achievement
-                if (this.state.achievements_books[0].first_schedule === 0) {
-                    this.setState({
+                if (window.calendar.state.achievements_books[0].first_schedule === 0) {
+                    window.calendar.setState({
                         achievements_books: [
                             {
-                                ...this.state.achievements_books[0],
+                                ...window.calendar.state.achievements_books[0],
                                 first_schedule: 70
                             }
                         ]
-                    })
+                    }, function() {window.calendar.handleAchievementsFormSubmit()})
                     window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 }
 
                 // Update weekly achievement
-                if (this.state.weekly_achievements_books[0].schedule_based === 0) {
-                    this.setState({
+                if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
+                    window.calendar.setState({
                         weekly_achievements_books: [
                             {
-                                ...this.state.weekly_achievements_books[0],
+                                ...window.calendar.state.weekly_achievements_books[0],
                                 schedule_based: 20
                             }
                         ]
-                    })
+                    }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
                 }
             }
         }
