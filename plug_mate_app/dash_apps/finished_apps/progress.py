@@ -94,7 +94,7 @@ app.layout = html.Div([
         html.Table(id='achievements', className='table',
 
                    )
-    ], style={'height': '80%', 'overflow-y': 'scroll'})
+    ], style={'height': '80%'})
 
 ], style={'display': 'inline-block', 'vertical-align': 'middle'})
 
