@@ -22,26 +22,9 @@ import copy
 
 pio.templates.default = "simple_white"
 
-# A) Function to create new essential columns
-
-
-end_date = '24/7/2020'
-
 # Manipulate and Initialise variables for later
 
 
-# @profile
-def initialise_variables():
-    # Initialise some variables
-    global start, end
-    global singapore_tariff_rate
-    singapore_tariff_rate = 0.201
-    end = end_date
-    end = dt.datetime.strptime(end, '%d/%m/%Y')
-    start = end - dt.timedelta(7)
-
-
-# @profile
 def dayClickDataPiechart(df_day_bytype):
     # Aggregate df_day_bytype separating type of device
     # '''Insert SQL Code'''
@@ -54,9 +37,6 @@ def dayClickDataPiechart(df_day_bytype):
     df_day_bytype['date_withoutYear'] = df_day_bytype['date'].dt.strftime(
         '%d/%m')
     return df_day_bytype
-
-
-initialise_variables()
 
 
 # B) Dash App initialisation
@@ -160,10 +140,9 @@ app.layout = \
 def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, btnkwhdollars,
                               clickData, interval,
                               hoverData, hourbtn, daybtn, weekbtn, monthbtn, **kwargs):
-    global df_hour, df_hour_pie, df_week_line, df_week_pie, start, end, end_date
+    global df_hour, df_hour_pie, df_week_line, df_week_pie
     global df3, df4, piechart
     global fig2
-    global start, end
     global values_pie, pie_middletext
     global dayActive, weekActive, monthActive, hourActive
     global df_hour_bytype, df_month_bytype, df_day_bytype, df_week_bytype
