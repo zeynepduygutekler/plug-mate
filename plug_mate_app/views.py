@@ -129,8 +129,8 @@ def user_login(request):
         return render(request, 'plug_mate_app/login.html', {})
 
 
-from .models import PresenceData, RemoteData, ScheduleData, AchievementsBonus, AchievementsWeekly
-from .serializers import PresenceSerializer, RemoteSerializer, ScheduleSerializer, AchievementsBonusSerializer, AchievementsWeeklySerializer
+from .models import PointsWallet, PresenceData, RemoteData, ScheduleData, AchievementsBonus, AchievementsWeekly
+from .serializers import PointsWalletSerializer, PresenceSerializer, RemoteSerializer, ScheduleSerializer, AchievementsBonusSerializer, AchievementsWeeklySerializer
 from rest_framework import generics
 
 
@@ -212,3 +212,18 @@ class AchievementsWeeklyDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = AchievementsWeekly.objects.all()
     serializer_class = AchievementsWeeklySerializer
+
+class PointsWalletDataList(generics.ListCreateAPIView):
+    authentication_classes = [authentication.SessionAuthentication]
+    serializer_class = PointsWalletSerializer
+
+    def get_queryset(self):
+        """ This view should return the points in the energy wallet
+        of the current authenticated user. """
+        user = self.request.user.id
+        return PointsWallet.objects.filter(user_id = user)
+
+class PointsWalletDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    queryset = PointsWallet.objects.all()
+    serializer_class = PointsWalletSerializer

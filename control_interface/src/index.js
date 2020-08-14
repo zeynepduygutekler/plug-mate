@@ -133,7 +133,8 @@ class RemoteControlItem extends Component {
         user_id: this.props.user_id,
         device_type: this.props.device_type,
         device_state: this.props.device_state,
-        achievements_books: []
+        achievements_books: [],
+        points_wallet_books: []
     }
 
     componentDidMount() {
@@ -142,6 +143,13 @@ class RemoteControlItem extends Component {
         .then(response => response.json())
         .then(data => {
             this.setState({achievements_books: data})
+        })
+
+        // Fetch data for points wallet
+        fetch('http://127.0.0.1:8000/control_interface/api/points_wallet/')
+        .then(response => response.json())
+        .then(data => {
+            this.setState({points_wallet_books: data})
         })
 
         Main();
@@ -167,13 +175,42 @@ class RemoteControlItem extends Component {
         })
     }
 
+    updatePointsWalletBooks = (newBook) => {
+        fetch('http://127.0.0.1:8000/control_interface/api/points_wallet/' + newBook.id.toString() + '/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newBook)
+        }).then(response => response.json())
+        .then(newBook => {
+            const newBooks = this.state.points_wallet_books.map(book => {
+                if (book.id === newBook.id) {
+                    return Object.assign({}, newBook);
+                } else {
+                    return book;
+                }
+            });
+            this.setState({points_wallet_books: newBooks})
+        })
+    }
+
     handleAchievementsUpdate = (book) => {
         book.id = this.props.user_id;
         this.updateAchievementsBooks(book);
     }
 
+    handlePointsWalletUpdate = (book) => {
+        book.id = this.props.user_id;
+        this.updatePointsWalletBooks(book);
+    }
+
     handleAchievementsFormSubmit = () => {
         this.handleAchievementsUpdate(this.state.achievements_books[0])
+    }
+
+    handlePointsWalletFormSubmit = () => {
+        this.handlePointsWalletUpdate(this.state.points_wallet_books[0])
     }
 
     handleFormSubmit = () => {
@@ -197,6 +234,14 @@ class RemoteControlItem extends Component {
                     }
                 ]
             }, function() {this.handleAchievementsFormSubmit()})
+            this.setState({
+                points_wallet_books: [
+                    {
+                        ...this.state.points_wallet_books[0],
+                        points: this.state.points_wallet_books[0].points + 60
+                    }
+                ]
+            }, function() {this.handlePointsWalletFormSubmit()})
             window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
              // Open the calendar for today
              const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -224,6 +269,14 @@ class RemoteControlItem extends Component {
                     }
                 ]
             }, function() {this.handleAchievementsFormSubmit()})
+            this.setState({
+                points_wallet_books: [
+                    {
+                        ...this.state.points_wallet_books[0],
+                        points: this.state.points_wallet_books[0].points + 60
+                    }
+                ]
+            }, function() {this.handlePointsWalletFormSubmit()})
             window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
             // Open the calendar for today
             const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -289,6 +342,14 @@ class RemoteControlItem extends Component {
                         }
                     ]
                 }, function() {this.handleAchievementsFormSubmit()})
+                this.setState({
+                    points_wallet_books: [
+                        {
+                            ...this.state.points_wallet_books[0],
+                            points: this.state.points_wallet_books[0].points + 60
+                        }
+                    ]
+                }, function() {this.handlePointsWalletFormSubmit()})
                 window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
                 // Open the calendar for today
                 const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -1215,16 +1276,33 @@ class PresenceControlItem extends Component {
         user_id: this.props.user_id,
         device_type: this.props.device_type,
         presence_setting: this.props.presence_setting,
-        achievements_books: []
+        achievements_books: [],
+        points_wallet_books: []
     }
 
     componentDidMount() {
-        // Fetch data for achievements
+        this.refetchBonusAchievementsData();
+        this.refetchPointsWalletData();
+    }
+
+    refetchBonusAchievementsData = () => {
         fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/')
         .then(response => response.json())
         .then(data => {
             this.setState({achievements_books: data})
         })
+
+        setTimeout(this.refetchBonusAchievementsData, 5000)
+    }
+
+    refetchPointsWalletData = () => {
+        fetch('http://127.0.0.1:8000/control_interface/api/points_wallet/')
+        .then(response => response.json())
+        .then(data => {
+            this.setState({points_wallet_books: data})
+        })
+
+        setTimeout(this.refetchPointsWalletData, 5000)
     }
 
     updateAchievementsBooks = (newBook) => {
@@ -1247,13 +1325,42 @@ class PresenceControlItem extends Component {
         })
     }
 
+    updatePointsWalletBooks = (newBook) => {
+        fetch('http://127.0.0.1:8000/control_interface/api/points_wallet/' + newBook.id.toString() + '/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newBook)
+        }).then(response => response.json())
+        .then(newBook => {
+            const newBooks = this.state.points_wallet_books.map(book => {
+                if (book.id === newBook.id) {
+                    return Object.assign({}, newBook);
+                } else {
+                    return book;
+                }
+            });
+            this.setState({points_wallet_books: newBooks})
+        })
+    }
+
     handleAchievementsUpdate = (book) => {
         book.id = this.props.user_id;
         this.updateAchievementsBooks(book);
     }
 
+    handlePointsWalletUpdate = (book) => {
+        book.id = this.props.user_id;
+        this.updatePointsWalletBooks(book);
+    }
+
     handleAchievementsFormSubmit = () => {
         this.handleAchievementsUpdate(this.state.achievements_books[0])
+    }
+
+    handlePointsWalletFormSubmit = () => {
+        this.handlePointsWalletUpdate(this.state.points_wallet_books[0])
     }
 
     onConfirm1 = () => {
@@ -1271,6 +1378,15 @@ class PresenceControlItem extends Component {
                     }
                 ]
             }, function() {this.handleAchievementsFormSubmit()})
+
+            this.setState({
+                points_wallet_books: [
+                    {
+                        ...this.state.points_wallet_books[0],
+                        points: this.state.points_wallet_books[0].points + 70
+                    }
+                ]
+            }, function() {this.handlePointsWalletFormSubmit()})
             // Open the calendar for today
             const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
             var today = new Date();
@@ -1306,6 +1422,14 @@ class PresenceControlItem extends Component {
                         }
                     ]
                 }, function() {this.handleAchievementsFormSubmit()})
+                this.setState({
+                    points_wallet_books: [
+                        {
+                            ...this.state.points_wallet_books[0],
+                            points: this.state.points_wallet_books[0].points + 70
+                        }
+                    ]
+                }, function() {this.handlePointsWalletFormSubmit()})
                 // Open the calendar for today
                 const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
                 var today = new Date();
@@ -1368,6 +1492,14 @@ class PresenceControlItem extends Component {
                     }
                 ]
             }, function() {this.handleAchievementsFormSubmit()})
+            this.setState({
+                points_wallet_books: [
+                    {
+                        ...this.state.points_wallet_books[0],
+                        points: this.state.points_wallet_books[0].points + 70
+                    }
+                ]
+            })
             // Open the calendar for today
             const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
             var today = new Date();
@@ -1408,6 +1540,14 @@ class PresenceControlItem extends Component {
                         }
                     ]
                 }, function() {this.handleAchievementsFormSubmit()})
+                this.setState({
+                    points_wallet_books: [
+                        {
+                            ...this.state.points_wallet_books[0],
+                            points: this.state.points_wallet_books[0].points + 70
+                        }
+                    ]
+                }, function() {this.handlePointsWalletFormSubmit()})
                 // Open the calendar for today
                 const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
                 var today = new Date();
@@ -1447,6 +1587,14 @@ class PresenceControlItem extends Component {
                     }
                 ]
             }, function() {this.handleAchievementsFormSubmit()})
+            this.setState({
+                points_wallet_books: [
+                    {
+                        ...this.state.points_wallet_books[0],
+                        points: this.state.points_wallet_books[0].points + 70
+                    }
+                ]
+            }, function() {this.handlePointsWalletFormSubmit()})
             // Open the calendar for today
             const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
             var today = new Date();

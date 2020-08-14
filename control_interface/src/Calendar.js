@@ -45,7 +45,7 @@ function formatForDatabaseAdd(book, current_user_id) {
     }
 
 
-    const devices = ["Desktop", "Monitor", "Laptop", "Task Lamp", "Fan"]
+    const devices = ["Desktop", "Laptop", "Monitor", "Task Lamp", "Fan"]
 
     return({
         user_id: Number(current_user_id),
@@ -83,7 +83,7 @@ function formatForDatabaseUpdate(book, current_user_id) {
         event_rrule = event_rrule + "Sunday, "
     }
 
-    const devices = ["Desktop", "Monitor", "Laptop", "Task Lamp", "Fan"]
+    const devices = ["Desktop", "Laptop", "Monitor", "Task Lamp", "Fan"]
 
     if (typeof book.id === "string") {
         var n = book.id.indexOf("-")
@@ -176,12 +176,13 @@ class Calendar extends Component {
                 isNonWorkingTimeFunc: this.isNonWorkingTime
             }
         );
-        schedulerData.setResources([{id:1, name:"Desktop"}, {id:5, name:"Fan"}, {id:3, name:"Laptop"}, {id:2, name:"Monitor"}, {id:4, name:"Task Lamp"}]);
+        schedulerData.setResources([{id:1, name:"Desktop"}, {id:5, name:"Fan"}, {id:2, name:"Laptop"}, {id:3, name:"Monitor"}, {id:4, name:"Task Lamp"}]);
         schedulerData.setEvents(this.props.events);
         this.state = {
             viewModel: schedulerData,
             achievements_books: [],
-            weekly_achievements_books: []
+            weekly_achievements_books: [],
+            points_wallet_books: []
         };
         window.calendar = this;
     }
@@ -206,15 +207,19 @@ class Calendar extends Component {
     }
 
     componentDidMount() {
-        // Fetch data for achievements
+        this.refetchBonusAchievementsData();
+        this.refetchWeeklyAchievementsData();
+        this.refetchPointsWalletData();
+    }
+
+    refetchBonusAchievementsData = () => {
         fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/')
         .then(response => response.json())
         .then(data => {
             this.setState({achievements_books: data})
         })
 
-        // Fetch data for weekly achievements
-        this.refetchWeeklyAchievementsData();
+        setTimeout(this.refetchBonusAchievementsData, 5000)
     }
 
     refetchWeeklyAchievementsData = () => {
@@ -225,6 +230,16 @@ class Calendar extends Component {
         })
 
         setTimeout(this.refetchWeeklyAchievementsData, 5000)
+    }
+
+    refetchPointsWalletData = () => {
+        fetch('http://127.0.0.1:8000/control_interface/api/points_wallet/')
+        .then(response => response.json())
+        .then(data => {
+            this.setState({points_wallet_books: data})
+        })
+
+        setTimeout(this.refetchPointsWalletData, 5000)
     }
 
     updateAchievementsBooks = (newBook) => {
@@ -267,6 +282,26 @@ class Calendar extends Component {
         })
     }
 
+    updatePointsWalletBooks = (newBook) => {
+        fetch('http://127.0.0.1:8000/control_interface/api/points_wallet/' + newBook.id.toString() + '/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newBook)
+        }).then(response => response.json())
+        .then(newBook => {
+            const newBooks = this.state.points_wallet_books.map(book => {
+                if (book.id === newBook.id) {
+                    return Object.assign({}, newBook);
+                } else {
+                    return book;
+                }
+            });
+            this.setState({points_wallet_books: newBooks})
+        })
+    }
+
     handleAchievementsUpdate = (book) => {
         book.id = this.props.current_user_id;
         this.updateAchievementsBooks(book);
@@ -277,12 +312,21 @@ class Calendar extends Component {
         this.updateWeeklyAchievementsBooks(book);
     }
 
+    handlePointsWalletUpdate = (book) => {
+        book.id = this.props.user_id;
+        this.updatePointsWalletBooks(book);
+    }
+
     handleAchievementsFormSubmit = () => {
         this.handleAchievementsUpdate(this.state.achievements_books[0])
     }
 
     handleWeeklyAchievementsFormSubmit = () => {
         this.handleWeeklyAchievementsUpdate(this.state.weekly_achievements_books[0])
+    }
+
+    handlePointsWalletFormSubmit = () => {
+        this.handlePointsWalletUpdate(this.state.points_wallet_books[0])
     }
 
     isNonWorkingTime = (schedulerData, time) => {
@@ -529,7 +573,7 @@ class Calendar extends Component {
                         title: event.title,
                         start: event.start,
                         end: event.end,
-                        resourceId: 2,
+                        resourceId: 3,
                         bgColor: "#06D6A0",
                         showPopover: false,
                         rrule: event.rrule
@@ -552,7 +596,7 @@ class Calendar extends Component {
                         title: event.title,
                         start: event.start,
                         end: event.end,
-                        resourceId: 3,
+                        resourceId: 2,
                         bgColor: "#06D6A0",
                         showPopover: false,
                         rrule: event.rrule
@@ -621,18 +665,6 @@ class Calendar extends Component {
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
-                // If first time clicking, update achievement
-                if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                    window.calendar.setState({
-                        achievements_books: [
-                            {
-                                ...window.calendar.state.achievements_books[0],
-                                first_schedule: 70
-                            }
-                        ]
-                    }, function() {window.calendar.handleAchievementsFormSubmit()})
-                    window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                }
 
                 // Update weekly achievement
                 if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
@@ -644,6 +676,35 @@ class Calendar extends Component {
                             }
                         ]
                     }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
+                    // If first time clicking, update achievement
+                    if (window.calendar.state.achievements_books[0].first_schedule === 0) {
+                        window.calendar.setState({
+                            achievements_books: [
+                                {
+                                    ...window.calendar.state.achievements_books[0],
+                                    first_schedule: 70
+                                }
+                            ]
+                        }, function() {window.calendar.handleAchievementsFormSubmit()})
+                        window.calendar.setState({
+                            points_wallet_books: [
+                                {
+                                    ...window.calendar.state.points_wallet_books[0],
+                                    points: window.calendar.state.points_wallet_books[0].points + 90
+                                }
+                            ]
+                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                        window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
+                    } else {
+                        window.calendar.setState({
+                            points_wallet_books: [
+                                {
+                                    ...window.calendar.state.points_wallet_books[0],
+                                    points: window.calendar.state.points_wallet_books[0].points + 20
+                                }
+                            ]
+                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                    }
                 }
             }
         }
@@ -914,7 +975,7 @@ class Calendar extends Component {
                         title: newEvent.title,
                         start: newEvent.start,
                         end: newEvent.end,
-                        resourceId: 2,
+                        resourceId: 3,
                         bgColor: "#06D6A0",
                         showPopover: false,
                         rrule: newEvent.rrule
@@ -937,7 +998,7 @@ class Calendar extends Component {
                         title: newEvent.title,
                         start: newEvent.start,
                         end: newEvent.end,
-                        resourceId: 3,
+                        resourceId: 2,
                         bgColor: "#06D6A0",
                         showPopover: false,
                         rrule: newEvent.rrule
@@ -1006,18 +1067,6 @@ class Calendar extends Component {
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
-                // If first time clicking, update achievement
-                if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                    window.calendar.setState({
-                        achievements_books: [
-                            {
-                                ...window.calendar.state.achievements_books[0],
-                                first_schedule: 70
-                            }
-                        ]
-                    }, function() {window.calendar.handleAchievementsFormSubmit()})
-                    window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                }
 
                 // Update weekly achievement
                 if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
@@ -1029,6 +1078,36 @@ class Calendar extends Component {
                             }
                         ]
                     }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
+
+                    // If first time clicking, update achievement
+                    if (window.calendar.state.achievements_books[0].first_schedule === 0) {
+                        window.calendar.setState({
+                            achievements_books: [
+                                {
+                                    ...window.calendar.state.achievements_books[0],
+                                    first_schedule: 70
+                                }
+                            ]
+                        }, function() {window.calendar.handleAchievementsFormSubmit()})
+                        window.calendar.setState({
+                            points_wallet_books: [
+                                {
+                                    ...window.calendar.state.points_wallet_books[0],
+                                    points: window.calendar.state.points_wallet_books[0].points + 90
+                                }
+                            ]
+                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                        window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
+                    } else {
+                        window.calendar.setState({
+                            points_wallet_books: [
+                                {
+                                    ...window.calendar.state.points_wallet_books[0],
+                                    points: window.calendar.state.points_wallet_books[0].points + 20
+                                }
+                            ]
+                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                    }
                 }
             }
         }
@@ -1292,7 +1371,7 @@ class Calendar extends Component {
                         title: event.title,
                         start: event.start,
                         end: event.end,
-                        resourceId: 2,
+                        resourceId: 3,
                         bgColor: "#06D6A0",
                         showPopover: false,
                         rrule: event.rrule
@@ -1315,7 +1394,7 @@ class Calendar extends Component {
                         title: event.title,
                         start: event.start,
                         end: event.end,
-                        resourceId: 3,
+                        resourceId: 2,
                         bgColor: "#06D6A0",
                         showPopover: false,
                         rrule: event.rrule
@@ -1384,18 +1463,7 @@ class Calendar extends Component {
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
-                // If first time clicking, update achievement
-                if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                    window.calendar.setState({
-                        achievements_books: [
-                            {
-                                ...window.calendar.state.achievements_books[0],
-                                first_schedule: 70
-                            }
-                        ]
-                    }, function() {window.calendar.handleAchievementsFormSubmit()})
-                    window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                }
+
 
                 // Update weekly achievement
                 if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
@@ -1407,6 +1475,35 @@ class Calendar extends Component {
                             }
                         ]
                     }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
+                    // If first time clicking, update achievement
+                    if (window.calendar.state.achievements_books[0].first_schedule === 0) {
+                        window.calendar.setState({
+                            achievements_books: [
+                                {
+                                    ...window.calendar.state.achievements_books[0],
+                                    first_schedule: 70
+                                }
+                            ]
+                        }, function() {window.calendar.handleAchievementsFormSubmit()})
+                        window.calendar.setState({
+                            points_wallet_books: [
+                                {
+                                    ...window.calendar.state.points_wallet_books[0],
+                                    points: window.calendar.state.points_wallet_books[0].points + 90
+                                }
+                            ]
+                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                        window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
+                    } else {
+                        window.calendar.setState({
+                            points_wallet_books: [
+                                {
+                                    ...window.calendar.state.points_wallet_books[0],
+                                    points: window.calendar.state.points_wallet_books[0].points + 20
+                                }
+                            ]
+                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                    }
                 }
             }
         }
@@ -1669,7 +1766,7 @@ class Calendar extends Component {
                         title: event.title,
                         start: event.start,
                         end: event.end,
-                        resourceId: 2,
+                        resourceId: 3,
                         bgColor: "#06D6A0",
                         showPopover: false,
                         rrule: event.rrule
@@ -1692,7 +1789,7 @@ class Calendar extends Component {
                         title: event.title,
                         start: event.start,
                         end: event.end,
-                        resourceId: 3,
+                        resourceId: 2,
                         bgColor: "#06D6A0",
                         showPopover: false,
                         rrule: event.rrule
@@ -1761,19 +1858,6 @@ class Calendar extends Component {
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
-                // If first time clicking, update achievement
-                if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                    window.calendar.setState({
-                        achievements_books: [
-                            {
-                                ...window.calendar.state.achievements_books[0],
-                                first_schedule: 70
-                            }
-                        ]
-                    }, function() {window.calendar.handleAchievementsFormSubmit()})
-                    window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                }
-
                 // Update weekly achievement
                 if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
                     window.calendar.setState({
@@ -1784,6 +1868,35 @@ class Calendar extends Component {
                             }
                         ]
                     }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
+                    // If first time clicking, update achievement
+                    if (window.calendar.state.achievements_books[0].first_schedule === 0) {
+                        window.calendar.setState({
+                            achievements_books: [
+                                {
+                                    ...window.calendar.state.achievements_books[0],
+                                    first_schedule: 70
+                                }
+                            ]
+                        }, function() {window.calendar.handleAchievementsFormSubmit()})
+                        window.calendar.setState({
+                            points_wallet_books: [
+                                {
+                                    ...window.calendar.state.points_wallet_books[0],
+                                    points: window.calendar.state.points_wallet_books[0].points + 90
+                                }
+                            ]
+                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                        window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
+                    } else {
+                        window.calendar.setState({
+                            points_wallet_books: [
+                                {
+                                    ...window.calendar.state.points_wallet_books[0],
+                                    points: window.calendar.state.points_wallet_books[0].points + 20
+                                }
+                            ]
+                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                    }
                 }
             }
         }
@@ -2050,7 +2163,7 @@ class Calendar extends Component {
                         title: event.title,
                         start: event.start,
                         end: event.end,
-                        resourceId: 2,
+                        resourceId: 3,
                         bgColor: "#06D6A0",
                         showPopover: false,
                         rrule: event.rrule
@@ -2073,7 +2186,7 @@ class Calendar extends Component {
                         title: event.title,
                         start: event.start,
                         end: event.end,
-                        resourceId: 3,
+                        resourceId: 2,
                         bgColor: "#06D6A0",
                         showPopover: false,
                         rrule: event.rrule
@@ -2142,19 +2255,6 @@ class Calendar extends Component {
 
                 ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
-                // If first time clicking, update achievement
-                if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                    window.calendar.setState({
-                        achievements_books: [
-                            {
-                                ...window.calendar.state.achievements_books[0],
-                                first_schedule: 70
-                            }
-                        ]
-                    }, function() {window.calendar.handleAchievementsFormSubmit()})
-                    window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                }
-
                 // Update weekly achievement
                 if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
                     window.calendar.setState({
@@ -2165,6 +2265,35 @@ class Calendar extends Component {
                             }
                         ]
                     }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
+                    // If first time clicking, update achievement
+                    if (window.calendar.state.achievements_books[0].first_schedule === 0) {
+                        window.calendar.setState({
+                            achievements_books: [
+                                {
+                                    ...window.calendar.state.achievements_books[0],
+                                    first_schedule: 70
+                                }
+                            ]
+                        }, function() {window.calendar.handleAchievementsFormSubmit()})
+                        window.calendar.setState({
+                            points_wallet_books: [
+                                {
+                                    ...window.calendar.state.points_wallet_books[0],
+                                    points: window.calendar.state.points_wallet_books[0].points + 90
+                                }
+                            ]
+                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                        window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
+                    } else {
+                        window.calendar.setState({
+                            points_wallet_books: [
+                                {
+                                    ...window.calendar.state.points_wallet_books[0],
+                                    points: window.calendar.state.points_wallet_books[0].points + 20
+                                }
+                            ]
+                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                    }
                 }
             }
         }
