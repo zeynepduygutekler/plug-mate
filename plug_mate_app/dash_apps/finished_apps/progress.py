@@ -94,7 +94,7 @@ app.layout = html.Div([
         html.Table(id='achievements', className='table',
 
                    )
-    ], style={'height': '100%'})
+    ], style={'height': '80%', 'overflow-y': 'scroll'})
 
 ], style={'display': 'inline-block', 'vertical-align': 'middle'})
 
@@ -118,9 +118,9 @@ def update_achievements_table(n):
                                  style={'height': '6%'}))])
         else:
             return html.Tr([html.Td(reference.loc[achievement]['description']),
-                            html.Td(f'{reference.loc[achievement]["points"]} points')])
+                            html.Td(f'{reference.loc[achievement]["points"]}')])
 
-    daily_header = [html.Tr([html.Th('Daily Achievements'), html.Th("Energy Points")],
+    daily_header = [html.Tr([html.Th('Daily Achievements'), html.Th("Points")],
                             style={'background-color': '#1cc88a', 'color': 'white'})]
     weekly_header = [html.Tr([html.Th('Weekly Achievements'), html.Th("Points")],
                              style={'background-color': '#4e73df', 'color': 'white'})]
@@ -167,6 +167,6 @@ def update_progress_bar(n):
     # remaining_points = max_weekly_points - points
     percentage = round((points / max_weekly_points) * 100)
 
-    if percentage < 5:
+    if percentage < 10:
         return '', points, max_weekly_points, f'{points}/{max_weekly_points}'
-    return percentage, points, max_weekly_points, f'{points}/{max_weekly_points}'
+    return f'{percentage}%', points, max_weekly_points, f'{points}/{max_weekly_points}'
