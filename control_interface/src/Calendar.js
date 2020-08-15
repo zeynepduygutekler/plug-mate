@@ -737,8 +737,7 @@ class Calendar extends Component {
 
                     }
 
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
             }
         }
@@ -1148,8 +1147,7 @@ class Calendar extends Component {
                         }
                     }
 
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
             }
         }
@@ -1559,8 +1557,7 @@ class Calendar extends Component {
                         }
                     }
 
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
             }
         }
@@ -1966,8 +1963,7 @@ class Calendar extends Component {
                         }
                     }
 
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
             }
         }
@@ -2377,8 +2373,7 @@ class Calendar extends Component {
                         }
                     }
 
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
             }
         }
