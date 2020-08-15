@@ -90,8 +90,6 @@
 }
 
 .confirm_alert_content {
-    max-height: 30%;
-    overflow: auto;
     text-align: center;
 }
 
@@ -113,6 +111,8 @@
 
 .confirm_alert_popup {
     margin: 13% auto;
+    max-height: 50vh;
+    overflow-y: auto;
     padding: 35px 10px;
     background: white;
     border-radius: 5px;

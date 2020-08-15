@@ -657,7 +657,7 @@ class ScheduleControlDashboard extends Component {
             this.setState({books: data})
             var events_datas = [];
             for (var input of data) {
-                this.setState({current_user_id: input.user_id}, function(){console.log(this.state.current_user_id)})
+                this.setState({current_user_id: input.user_id})
                 var resourceId = input.device_type_id;
                 var eventId = input.event_id;
                 var event_start = input.event_start;
@@ -748,7 +748,7 @@ class ScheduleControlDashboard extends Component {
             this.setState({books: data})
             var events_datas = [];
             for (var input of data) {
-                this.setState({current_user_id: input.user_id}, function() {console.log(this.state.current_user_id)})
+                this.setState({current_user_id: input.user_id})
                 var resourceId = input.device_type_id;
                 var eventId = input.event_id;
                 var event_start = input.event_start;
@@ -1309,7 +1309,7 @@ class PresenceControlItem extends Component {
             this.setState({achievements_books: data})
         })
 
-        setTimeout(this.refetchBonusAchievementsData, 5000)
+        setTimeout(this.refetchBonusAchievementsData, 10000)
     }
 
     refetchPointsWalletData = () => {
@@ -1319,7 +1319,7 @@ class PresenceControlItem extends Component {
             this.setState({points_wallet_books: data})
         })
 
-        setTimeout(this.refetchPointsWalletData, 5000)
+        setTimeout(this.refetchPointsWalletData, 10000)
     }
 
     updateAchievementsBooks = (newBook) => {

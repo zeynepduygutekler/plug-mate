@@ -5,6 +5,7 @@ import Scheduler, { SchedulerData, ViewTypes } from 'react-big-scheduler';
 import 'react-big-scheduler/lib/css/style.css';
 import withDragDropContext from './withDnDContext';
 import OnlyAlert from './OnlyAlert';
+import ConflictAlert from './ConflictAlert';
 import ScheduleControlPopup from './ScheduleControlPopup';
 import './index.css';
 
@@ -18,6 +19,21 @@ function from24to12(hour) {
         finalTime = "0" + finalTime
     }
     return (finalTime);
+}
+
+function from12to24(hour) {
+    var new_hour = Number(hour.substring(0,2))
+    if (hour.substring(6,8) === "PM" && new_hour !== 12) {
+        new_hour = new_hour + 12;
+    }
+    if (hour.substring(6,8) === "AM" && new_hour === 12) {
+        new_hour = "00"
+    }
+    var finalTime = new_hour + ":" + hour.substring(3,5) + ":00"
+    if (finalTime.length !== 8) {
+        finalTime = "0" + finalTime
+    }
+    return(finalTime)
 }
 
 function formatForDatabaseAdd(book, current_user_id) {
@@ -221,7 +237,7 @@ class Calendar extends Component {
             this.setState({achievements_books: data})
         })
 
-        setTimeout(this.refetchBonusAchievementsData, 5000)
+        setTimeout(this.refetchBonusAchievementsData, 10000)
     }
 
     refetchWeeklyAchievementsData = () => {
@@ -231,7 +247,7 @@ class Calendar extends Component {
             this.setState({weekly_achievements_books: data})
         })
 
-        setTimeout(this.refetchWeeklyAchievementsData, 5000)
+        setTimeout(this.refetchWeeklyAchievementsData, 10000)
     }
 
     refetchPointsWalletData = () => {
@@ -241,7 +257,7 @@ class Calendar extends Component {
             this.setState({points_wallet_books: data})
         })
 
-        setTimeout(this.refetchPointsWalletData, 5000)
+        setTimeout(this.refetchPointsWalletData, 10000)
     }
 
     updateAchievementsBooks = (newBook) => {
@@ -361,338 +377,369 @@ class Calendar extends Component {
         }
 
         function okButtonClicked() {
-            // Checking conflicts
-            var hasConflict = false;
-            var conflictedEvents = [];
-            var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-            var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-            var new_days_to_loop_over = [];
-            for (var repeat_day of repeat_option) {
-                if (repeat_day.value === "Monday") {
-                    new_days_to_loop_over.push(getDates()[0])
-                }
-                if (repeat_day.value === "Tuesday") {
-                    new_days_to_loop_over.push(getDates()[1])
-                }
-                if (repeat_day.value === "Wednesday") {
-                    new_days_to_loop_over.push(getDates()[2])
-                }
-                if (repeat_day.value === "Thursday") {
-                    new_days_to_loop_over.push(getDates()[3])
-                }
-                if (repeat_day.value === "Friday") {
-                    new_days_to_loop_over.push(getDates()[4])
-                }
-                if (repeat_day.value === "Saturday") {
-                    new_days_to_loop_over.push(getDates()[5])
-                }
-                if (repeat_day.value === "Sunday") {
-                    new_days_to_loop_over.push(getDates()[6])
-                }
+            var check_start_time = "2020-01-01 " + from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
+            var check_end_time = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
+            if (check_end_time === "00:00:00") {
+                check_end_time = "2020-01-02 " + check_end_time
+            } else {
+                check_end_time = "2020-01-01 " + check_end_time
             }
+            if (check_start_time >= check_end_time) {
+                ReactDOM.render(
+                    <OnlyAlert
+                        message="Check your timings! Start time should be before end time."
+                        onOK={function() {
+                            ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                        }}
+                    />, document.getElementById("confirm-alert")
+                )
+            } else {
+                // Checking conflicts
+                var hasConflict = false;
+                var conflictedEvents = [];
+                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
+                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
+                var new_days_to_loop_over = [];
+                for (var repeat_day of repeat_option) {
+                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
+                        new_days_to_loop_over.push(getDates()[0])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
+                        new_days_to_loop_over.push(getDates()[1])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
+                        new_days_to_loop_over.push(getDates()[2])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
+                        new_days_to_loop_over.push(getDates()[3])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
+                        new_days_to_loop_over.push(getDates()[4])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
+                        new_days_to_loop_over.push(getDates()[5])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
+                        new_days_to_loop_over.push(getDates()[6])
+                    }
+                }
 
-            schedulerData.events.forEach(function(e) {
-                var eStart = e.start;
-                var eEnd = e.end;
-                var eRrule = e.rrule;
-                var existing_days_to_loop_over = [];
-                if (eRrule.substring(60, eRrule.length).includes("MO")) {
-                    existing_days_to_loop_over.push(getDates()[0])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("TU")) {
-                    existing_days_to_loop_over.push(getDates()[1])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("WE")) {
-                    existing_days_to_loop_over.push(getDates()[2])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("TH")) {
-                    existing_days_to_loop_over.push(getDates()[3])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("FR")) {
-                    existing_days_to_loop_over.push(getDates()[4])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("SA")) {
-                    existing_days_to_loop_over.push(getDates()[5])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("SU")) {
-                    existing_days_to_loop_over.push(getDates()[6])
-                }
+                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
+                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
 
                 var new_start_for_this = "";
                 var new_end_for_this = "";
                 var existing_start_for_this = "";
                 var existing_end_for_this = "";
                 for (var new_day of new_days_to_loop_over) {
-                    new_start_for_this = new_day + event.start.substring(10,19);
-                    new_end_for_this = new_day + event.end.substring(10,19);
-                    if (e.resourceId === event.resourceId) {
-                        for (var existing_day of existing_days_to_loop_over) {
-                            existing_start_for_this = existing_day + eStart.substring(10,19);
-                            existing_end_for_this = existing_day + eEnd.substring(10,19);
-                            if (((new_start_for_this >= existing_start_for_this && new_start_for_this < existing_end_for_this) ||
-                                  (new_end_for_this > existing_start_for_this && new_end_for_this <= existing_end_for_this) ||
-                                  (existing_start_for_this >= new_start_for_this && existing_start_for_this < new_end_for_this) ||
-                                  (existing_end_for_this > new_start_for_this && existing_end_for_this <= new_end_for_this)) &&
-                                  (e.id !== event.id)) {
-                                    hasConflict = true;
-                                    conflictedEvents.push(e);
-                                    break
-                            }
-                        }
-                    }
+                    new_start_for_this = new_day + " " + new_start;
+                    new_end_for_this = new_day + " " + new_end;
                     for (var plugload of plugload_option) {
-                        if (e.resouceId === plugload.value) {
-                            for (var existing_day of existing_days_to_loop_over) {
-                                existing_start_for_this = existing_day + eStart.substring(10,19);
-                                existing_end_for_this = existing_day + eEnd.substring(10,19);
-                                if (((new_start_for_this >= existing_start_for_this && new_start_for_this < existing_end_for_this) ||
-                                      (new_end_for_this > existing_start_for_this && new_end_for_this <= existing_end_for_this) ||
-                                      (existing_start_for_this >= new_start_for_this && existing_start_for_this < new_end_for_this) ||
-                                      (existing_end_for_this > new_start_for_this && existing_end_for_this <= new_end_for_this)) &&
-                                      (e.id !== event.id)) {
-                                        hasConflict = true;
-                                        conflictedEvents.push(e);
-                                        break
+                        schedulerData.events.forEach(function(e) {
+                            var current_resource_id = 0
+                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
+                                current_resource_id = 1
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
+                                current_resource_id = 2
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
+                                current_resource_id = 3
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
+                                current_resource_id = 4
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyFan")) {
+                                current_resource_id = 5
+                            }
+                            if (e.resourceId === current_resource_id) {
+                                var existing_days_to_loop_over = [];
+                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
+                                    existing_days_to_loop_over.push(getDates()[0])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
+                                    existing_days_to_loop_over.push(getDates()[1])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
+                                    existing_days_to_loop_over.push(getDates()[2])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
+                                    existing_days_to_loop_over.push(getDates()[3])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
+                                    existing_days_to_loop_over.push(getDates()[4])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
+                                    existing_days_to_loop_over.push(getDates()[5])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
+                                    existing_days_to_loop_over.push(getDates()[6])
+                                }
+
+                                for (var existing_day of existing_days_to_loop_over) {
+                                    existing_start_for_this = existing_day + e.start.substring(10,19);
+                                    existing_end_for_this = existing_day + e.end.substring(10,19);
+                                    if (((new_start_for_this >= existing_start_for_this &&
+                                          new_start_for_this < existing_end_for_this) || (
+                                          new_end_for_this > existing_start_for_this &&
+                                          new_end_for_this <= existing_end_for_this) || (
+                                          existing_start_for_this >= new_start_for_this &&
+                                          existing_start_for_this < new_end_for_this) || (
+                                          existing_end_for_this > new_start_for_this &&
+                                          existing_end_for_this <= new_end_for_this)) && (
+                                          e.id !== event.id)) {
+                                            hasConflict = true;
+                                            if (!conflictedEvents.includes(e)) {
+                                                conflictedEvents.push(e)
+                                            }
+                                          }
                                 }
                             }
+                        })
+                    }
+                }
+
+                if (hasConflict) {
+                    var message = "Conflict occurred for the following events:"
+                    for (var events of conflictedEvents) {
+                        var day = "";
+                        if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                            day = day + "Monday, "
                         }
+                        if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                            day = day + "Tuesday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                            day = day + "Wednesday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                            day = day + "Thursday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                            day = day + "Friday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                            day = day + "Saturday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                            day = day + "Sunday, "
+                        }
+                        var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
+                        message += `<new>- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-2)}`
                     }
-                }
-
-            })
-
-            if (hasConflict) {
-                var message = "Conflict occurred for the following events:"
-                var day = ""
-                for (var events of conflictedEvents) {
-                    if (events.rrule.substring(60,event.rrule.length).includes("MO")) {
-                        day = "Monday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("TU")) {
-                        day = "Tuesday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("WE")) {
-                        day = "Wednesday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("TH")) {
-                        day = "Thursday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("FR")) {
-                        day = "Friday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("SA")) {
-                        day = "Saturday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("SU")) {
-                        day = "Sunday,"
-                    }
-                    var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
-                    message += `\n- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-1)}`
-                }
-                alert(message)
-            } else {
-                // Rename
-                event.title = document.getElementById("schedule_name_input").value + " (" +
-                              document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " +
-                              document.getElementById("StartAMPM").value + " - " + document.getElementById("EndHour").value + ":" +
-                              document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value + ")";
-
-                // Update start
-                schedulerData.updateEventStart(event, window.calendar.props.date + " " + processHourInput("Start") + ":" + document.getElementById("StartMinute").value + ":00");
-
-                // Update end
-                schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
-
-                // Update repeat
-                var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
-                                  window.calendar.props.mondayDate.substring(5,7) +
-                                  window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
-                                  window.calendar.props.sundayDate.substring(0,4) +
-                                  window.calendar.props.sundayDate.substring(5,7) +
-                                  window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
-                if (document.getElementById("ScheduleRepeatEveryDay").checked) {
-                    // Repeat Every Day
-                    event.rrule = event_rrule + "MO,TU,WE,TH,FR,SA,SU";
+                    ReactDOM.render(
+                        <ConflictAlert
+                            message={message}
+                            onOK={function() {
+                                ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                            }}
+                        />, document.getElementById("confirm-alert")
+                    )
                 } else {
-                    if (document.getElementById("ScheduleRepeatMonday").checked) {
-                        event_rrule = event_rrule + "MO,"
-                    }
-                    if (document.getElementById("ScheduleRepeatTuesday").checked) {
-                        event_rrule = event_rrule + "TU,"
-                    }
-                    if (document.getElementById("ScheduleRepeatWednesday").checked) {
-                        event_rrule = event_rrule + "WE,"
-                    }
-                    if (document.getElementById("ScheduleRepeatThursday").checked) {
-                        event_rrule = event_rrule + "TH,"
-                    }
-                    if (document.getElementById("ScheduleRepeatFriday").checked) {
-                        event_rrule = event_rrule + "FR,"
-                    }
-                    if (document.getElementById("ScheduleRepeatSaturday").checked) {
-                        event_rrule = event_rrule + "SA,"
-                    }
-                    if (document.getElementById("ScheduleRepeatSunday").checked) {
-                        event_rrule = event_rrule + "SU,"
-                    }
-                    event.rrule = event_rrule.substring(0,event_rrule.length-1)
-                }
+                    // Rename
+                    event.title = document.getElementById("schedule_name_input").value + " (" +
+                                  document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " +
+                                  document.getElementById("StartAMPM").value + " - " + document.getElementById("EndHour").value + ":" +
+                                  document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value + ")";
 
-                // Apply to other devices
-                document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
-                var newFreshId = 0;
-                schedulerData.events.forEach(item => {
-                    if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                        newFreshId = item.database_id;
-                    }
-                })
-                if (document.getElementById("ScheduleApplyDesktop").checked) {
-                    newFreshId = newFreshId + 1;
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 1,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyMonitor").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 3,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyLaptop").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 2,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyTaskLamp").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 4,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyFan").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 5,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
+                    // Update start
+                    schedulerData.updateEventStart(event, window.calendar.props.date + " " + processHourInput("Start") + ":" + document.getElementById("StartMinute").value + ":00");
 
-                // Update calendar
-                window.calendar.setState({
-                    viewModel: schedulerData
-                })
+                    // Update end
+                    schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
 
-                // Update database (Update)
-                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
-                window.calendar.props.refetchData();
-
-
-                ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
-
-
-                // Update weekly achievement
-                if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
-                    window.calendar.setState({
-                        weekly_achievements_books: [
-                            {
-                                ...window.calendar.state.weekly_achievements_books[0],
-                                schedule_based: 20
-                            }
-                        ]
-                    }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
-                    // If first time clicking, update achievement
-                    if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                        window.calendar.setState({
-                            achievements_books: [
-                                {
-                                    ...window.calendar.state.achievements_books[0],
-                                    first_schedule: 70
-                                }
-                            ]
-                        }, function() {window.calendar.handleAchievementsFormSubmit()})
-                        window.calendar.setState({
-                            points_wallet_books: [
-                                {
-                                    ...window.calendar.state.points_wallet_books[0],
-                                    points: window.calendar.state.points_wallet_books[0].points + 90
-                                }
-                            ]
-                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                        window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
+                    // Update repeat
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
+                                      window.calendar.props.mondayDate.substring(5,7) +
+                                      window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
+                                      window.calendar.props.sundayDate.substring(0,4) +
+                                      window.calendar.props.sundayDate.substring(5,7) +
+                                      window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
+                    if (document.getElementById("ScheduleRepeatEveryDay").checked) {
+                        // Repeat Every Day
+                        event.rrule = event_rrule + "MO,TU,WE,TH,FR,SA,SU";
                     } else {
-                        window.calendar.setState({
-                            points_wallet_books: [
-                                {
-                                    ...window.calendar.state.points_wallet_books[0],
-                                    points: window.calendar.state.points_wallet_books[0].points + 20
-                                }
-                            ]
-                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                        if (document.getElementById("ScheduleRepeatMonday").checked) {
+                            event_rrule = event_rrule + "MO,"
+                        }
+                        if (document.getElementById("ScheduleRepeatTuesday").checked) {
+                            event_rrule = event_rrule + "TU,"
+                        }
+                        if (document.getElementById("ScheduleRepeatWednesday").checked) {
+                            event_rrule = event_rrule + "WE,"
+                        }
+                        if (document.getElementById("ScheduleRepeatThursday").checked) {
+                            event_rrule = event_rrule + "TH,"
+                        }
+                        if (document.getElementById("ScheduleRepeatFriday").checked) {
+                            event_rrule = event_rrule + "FR,"
+                        }
+                        if (document.getElementById("ScheduleRepeatSaturday").checked) {
+                            event_rrule = event_rrule + "SA,"
+                        }
+                        if (document.getElementById("ScheduleRepeatSunday").checked) {
+                            event_rrule = event_rrule + "SU,"
+                        }
+                        event.rrule = event_rrule.substring(0,event_rrule.length-1)
                     }
 
-                }
+                    // Apply to other devices
+                    document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
+                    var newFreshId = 0;
+                    schedulerData.events.forEach(item => {
+                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
+                            newFreshId = item.database_id;
+                        }
+                    })
+                    if (document.getElementById("ScheduleApplyDesktop").checked) {
+                        newFreshId = newFreshId + 1;
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 1,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyMonitor").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 3,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyLaptop").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 2,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyTaskLamp").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 4,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyFan").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 5,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
 
-                setTimeout(function() {document.getElementById(window.calendar.props.day + "Schedule").click()}, 0.1)
+                    // Update calendar
+                    window.calendar.setState({
+                        viewModel: schedulerData
+                    })
+
+                    // Update database (Update)
+                    window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
+                    window.calendar.props.refetchData();
+
+
+                    ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+
+                    // Update weekly achievement
+                    if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
+                        window.calendar.setState({
+                            weekly_achievements_books: [
+                                {
+                                    ...window.calendar.state.weekly_achievements_books[0],
+                                    schedule_based: 20
+                                }
+                            ]
+                        }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
+                        // If first time clicking, update achievement
+                        if (window.calendar.state.achievements_books[0].first_schedule === 0) {
+                            window.calendar.setState({
+                                achievements_books: [
+                                    {
+                                        ...window.calendar.state.achievements_books[0],
+                                        first_schedule: 70
+                                    }
+                                ]
+                            }, function() {window.calendar.handleAchievementsFormSubmit()})
+                            window.calendar.setState({
+                                points_wallet_books: [
+                                    {
+                                        ...window.calendar.state.points_wallet_books[0],
+                                        points: window.calendar.state.points_wallet_books[0].points + 90
+                                    }
+                                ]
+                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
+                        } else {
+                            window.calendar.setState({
+                                points_wallet_books: [
+                                    {
+                                        ...window.calendar.state.points_wallet_books[0],
+                                        points: window.calendar.state.points_wallet_books[0].points + 20
+                                    }
+                                ]
+                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                        }
+
+                    }
+
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
+                }
             }
         }
 
@@ -748,331 +795,362 @@ class Calendar extends Component {
         }
 
         function okButtonClicked() {
-            // Checking conflicts
-            var hasConflict = false;
-            var conflictedEvents = [];
-            var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-            var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-            var new_days_to_loop_over = [];
-            for (var repeat_day of repeat_option) {
-                if (repeat_day.value === "Monday") {
-                    new_days_to_loop_over.push(getDates()[0])
-                }
-                if (repeat_day.value === "Tuesday") {
-                    new_days_to_loop_over.push(getDates()[1])
-                }
-                if (repeat_day.value === "Wednesday") {
-                    new_days_to_loop_over.push(getDates()[2])
-                }
-                if (repeat_day.value === "Thursday") {
-                    new_days_to_loop_over.push(getDates()[3])
-                }
-                if (repeat_day.value === "Friday") {
-                    new_days_to_loop_over.push(getDates()[4])
-                }
-                if (repeat_day.value === "Saturday") {
-                    new_days_to_loop_over.push(getDates()[5])
-                }
-                if (repeat_day.value === "Sunday") {
-                    new_days_to_loop_over.push(getDates()[6])
-                }
+            var check_start_time = "2020-01-01 " + from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
+            var check_end_time = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
+            if (check_end_time === "00:00:00") {
+                check_end_time = "2020-01-02 " + check_end_time
+            } else {
+                check_end_time = "2020-01-01 " + check_end_time
             }
+            if (check_start_time >= check_end_time) {
+                ReactDOM.render(
+                    <OnlyAlert
+                        message="Check your timings! Start time should be before end time."
+                        onOK={function() {
+                            ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                        }}
+                    />, document.getElementById("confirm-alert")
+                )
+            } else {
+                // Checking conflicts
+                var hasConflict = false;
+                var conflictedEvents = [];
+                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
+                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
+                var new_days_to_loop_over = [];
+                for (var repeat_day of repeat_option) {
+                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
+                        new_days_to_loop_over.push(getDates()[0])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
+                        new_days_to_loop_over.push(getDates()[1])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
+                        new_days_to_loop_over.push(getDates()[2])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
+                        new_days_to_loop_over.push(getDates()[3])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
+                        new_days_to_loop_over.push(getDates()[4])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
+                        new_days_to_loop_over.push(getDates()[5])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
+                        new_days_to_loop_over.push(getDates()[6])
+                    }
+                }
 
-            schedulerData.events.forEach(function(e) {
-                var eStart = e.start;
-                var eEnd = e.end;
-                var eRrule = e.rrule;
-                var existing_days_to_loop_over = [];
-                if (eRrule.substring(60, eRrule.length).includes("MO")) {
-                    existing_days_to_loop_over.push(getDates()[0])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("TU")) {
-                    existing_days_to_loop_over.push(getDates()[1])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("WE")) {
-                    existing_days_to_loop_over.push(getDates()[2])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("TH")) {
-                    existing_days_to_loop_over.push(getDates()[3])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("FR")) {
-                    existing_days_to_loop_over.push(getDates()[4])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("SA")) {
-                    existing_days_to_loop_over.push(getDates()[5])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("SU")) {
-                    existing_days_to_loop_over.push(getDates()[6])
-                }
+                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
+                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
 
                 var new_start_for_this = "";
                 var new_end_for_this = "";
                 var existing_start_for_this = "";
                 var existing_end_for_this = "";
                 for (var new_day of new_days_to_loop_over) {
-                    new_start_for_this = new_day + newEvent.start.substring(10,19);
-                    new_end_for_this = new_day + newEvent.end.substring(10,19);
-                    if (e.resourceId === newEvent.resourceId) {
-                        for (var existing_day of existing_days_to_loop_over) {
-                            existing_start_for_this = existing_day + eStart.substring(10,19);
-                            existing_end_for_this = existing_day + eEnd.substring(10,19);
-                            if (((new_start_for_this >= existing_start_for_this && new_start_for_this < existing_end_for_this) ||
-                                  (new_end_for_this > existing_start_for_this && new_end_for_this <= existing_end_for_this) ||
-                                  (existing_start_for_this >= new_start_for_this && existing_start_for_this < new_end_for_this) ||
-                                  (existing_end_for_this > new_start_for_this && existing_end_for_this <= new_end_for_this)) &&
-                                  (e.id !== newEvent.id)) {
-                                    hasConflict = true;
-                                    conflictedEvents.push(e);
-                                    break
-                            }
-                        }
-                    }
+                    new_start_for_this = new_day + " " + new_start;
+                    new_end_for_this = new_day + " " + new_end;
                     for (var plugload of plugload_option) {
-                        if (e.resouceId === plugload.value) {
-                            for (var existing_day of existing_days_to_loop_over) {
-                                existing_start_for_this = existing_day + eStart.substring(10,19);
-                                existing_end_for_this = existing_day + eEnd.substring(10,19);
-                                if (((new_start_for_this >= existing_start_for_this && new_start_for_this < existing_end_for_this) ||
-                                      (new_end_for_this > existing_start_for_this && new_end_for_this <= existing_end_for_this) ||
-                                      (existing_start_for_this >= new_start_for_this && existing_start_for_this < new_end_for_this) ||
-                                      (existing_end_for_this > new_start_for_this && existing_end_for_this <= new_end_for_this)) &&
-                                      (e.id !== newEvent.id)) {
-                                        hasConflict = true;
-                                        conflictedEvents.push(e);
-                                        break
+                        schedulerData.events.forEach(function(e) {
+                            var current_resource_id = 0
+                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
+                                current_resource_id = 1
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
+                                current_resource_id = 2
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
+                                current_resource_id = 3
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
+                                current_resource_id = 4
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyFan")) {
+                                current_resource_id = 5
+                            }
+                            if (e.resourceId === current_resource_id) {
+                                var existing_days_to_loop_over = [];
+                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
+                                    existing_days_to_loop_over.push(getDates()[0])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
+                                    existing_days_to_loop_over.push(getDates()[1])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
+                                    existing_days_to_loop_over.push(getDates()[2])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
+                                    existing_days_to_loop_over.push(getDates()[3])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
+                                    existing_days_to_loop_over.push(getDates()[4])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
+                                    existing_days_to_loop_over.push(getDates()[5])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
+                                    existing_days_to_loop_over.push(getDates()[6])
+                                }
+
+                                for (var existing_day of existing_days_to_loop_over) {
+                                    existing_start_for_this = existing_day + e.start.substring(10,19);
+                                    existing_end_for_this = existing_day + e.end.substring(10,19);
+                                    if (((new_start_for_this >= existing_start_for_this &&
+                                          new_start_for_this < existing_end_for_this) || (
+                                          new_end_for_this > existing_start_for_this &&
+                                          new_end_for_this <= existing_end_for_this) || (
+                                          existing_start_for_this >= new_start_for_this &&
+                                          existing_start_for_this < new_end_for_this) || (
+                                          existing_end_for_this > new_start_for_this &&
+                                          existing_end_for_this <= new_end_for_this)) && (
+                                          e.id !== newEvent.id)) {
+                                            hasConflict = true;
+                                            if (!conflictedEvents.includes(e)) {
+                                                conflictedEvents.push(e)
+                                            }
+                                          }
                                 }
                             }
+                        })
+                    }
+                }
+
+                if (hasConflict) {
+                    var message = "Conflict occurred for the following events:"
+                    for (var events of conflictedEvents) {
+                        var day = ""
+                        if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                            day = day + "Monday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                            day = day + "Tuesday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                            day = day + "Wednesday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                            day = day + "Thursday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                            day = day + "Friday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                            day = day + "Saturday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                            day = day + "Sunday, "
+                        }
+                        var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
+                        message += `<new>- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-2)}`
+                    }
+                    ReactDOM.render(
+                        <ConflictAlert
+                            message={message}
+                            onOK={function() {
+                                ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                            }}
+                        />, document.getElementById("confirm-alert")
+                    )
+                } else {
+                    // Rename
+                    newEvent.title = document.getElementById("schedule_name_input").value + " (" +
+                                     document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " +
+                                     document.getElementById("StartAMPM").value + " - " + document.getElementById("EndHour").value + ":" +
+                                     document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value + ")";
+
+                    // Update start
+                    schedulerData.updateEventStart(newEvent, window.calendar.props.date + " " + processHourInput("Start") + ":" + document.getElementById("StartMinute").value + ":00");
+
+                    // Update end
+                    schedulerData.updateEventEnd(newEvent, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
+
+                    // Update repeat
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
+                                      window.calendar.props.mondayDate.substring(5,7) +
+                                      window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
+                                      window.calendar.props.sundayDate.substring(0,4) +
+                                      window.calendar.props.sundayDate.substring(5,7) +
+                                      window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
+                    if (document.getElementById("ScheduleRepeatEveryDay").checked) {
+                        // Repeat Every Day
+                        newEvent.rrule = event_rrule + "MO,TU,WE,TH,FR,SA,SU";
+                    } else {
+                        if (document.getElementById("ScheduleRepeatMonday").checked) {
+                            event_rrule = event_rrule + "MO,"
+                        }
+                        if (document.getElementById("ScheduleRepeatTuesday").checked) {
+                            event_rrule = event_rrule + "TU,"
+                        }
+                        if (document.getElementById("ScheduleRepeatWednesday").checked) {
+                            event_rrule = event_rrule + "WE,"
+                        }
+                        if (document.getElementById("ScheduleRepeatThursday").checked) {
+                            event_rrule = event_rrule + "TH,"
+                        }
+                        if (document.getElementById("ScheduleRepeatFriday").checked) {
+                            event_rrule = event_rrule + "FR,"
+                        }
+                        if (document.getElementById("ScheduleRepeatSaturday").checked) {
+                            event_rrule = event_rrule + "SA,"
+                        }
+                        if (document.getElementById("ScheduleRepeatSunday").checked) {
+                            event_rrule = event_rrule + "SU,"
+                        }
+                        newEvent.rrule = event_rrule.substring(0,event_rrule.length-1)
+                    }
+
+                    // Apply to other devices
+                    document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
+
+                    if (document.getElementById("ScheduleApplyDesktop").checked) {
+                        newFreshId = newFreshId + 1;
+                        let anotherNewEvent = {
+                            id: newFreshId,
+                            title: newEvent.title,
+                            start: newEvent.start,
+                            end: newEvent.end,
+                            resourceId: 1,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: newEvent.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(anotherNewEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyMonitor").checked) {
+                        newFreshId = newFreshId + 1;
+                        let anotherNewEvent = {
+                            id: newFreshId,
+                            title: newEvent.title,
+                            start: newEvent.start,
+                            end: newEvent.end,
+                            resourceId: 3,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: newEvent.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(anotherNewEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyLaptop").checked) {
+                        newFreshId = newFreshId + 1
+                        let anotherNewEvent = {
+                            id: newFreshId,
+                            title: newEvent.title,
+                            start: newEvent.start,
+                            end: newEvent.end,
+                            resourceId: 2,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: newEvent.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(anotherNewEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyTaskLamp").checked) {
+                        newFreshId = newFreshId + 1
+                        let anotherNewEvent = {
+                            id: newFreshId,
+                            title: newEvent.title,
+                            start: newEvent.start,
+                            end: newEvent.end,
+                            resourceId: 4,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: newEvent.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(anotherNewEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyFan").checked) {
+                        newFreshId = newFreshId + 1
+                        let anotherNewEvent = {
+                            id: newFreshId,
+                            title: newEvent.title,
+                            start: newEvent.start,
+                            end: newEvent.end,
+                            resourceId: 5,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: newEvent.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(anotherNewEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+
+                    // Update calendar
+                    window.calendar.setState({
+                        viewModel: schedulerData
+                    })
+
+                    // Update database (Add)
+                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                    window.calendar.props.refetchData();
+
+                    ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+                    // Update weekly achievement
+                    if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
+                        window.calendar.setState({
+                            weekly_achievements_books: [
+                                {
+                                    ...window.calendar.state.weekly_achievements_books[0],
+                                    schedule_based: 20
+                                }
+                            ]
+                        }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
+
+                        // If first time clicking, update achievement
+                        if (window.calendar.state.achievements_books[0].first_schedule === 0) {
+                            window.calendar.setState({
+                                achievements_books: [
+                                    {
+                                        ...window.calendar.state.achievements_books[0],
+                                        first_schedule: 70
+                                    }
+                                ]
+                            }, function() {window.calendar.handleAchievementsFormSubmit()})
+                            window.calendar.setState({
+                                points_wallet_books: [
+                                    {
+                                        ...window.calendar.state.points_wallet_books[0],
+                                        points: window.calendar.state.points_wallet_books[0].points + 90
+                                    }
+                                ]
+                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
+                        } else {
+                            window.calendar.setState({
+                                points_wallet_books: [
+                                    {
+                                        ...window.calendar.state.points_wallet_books[0],
+                                        points: window.calendar.state.points_wallet_books[0].points + 20
+                                    }
+                                ]
+                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
                         }
                     }
+
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
                 }
-
-            })
-
-            if (hasConflict) {
-                var message = "Conflict occurred for the following events:"
-                var day = ""
-                for (var events of conflictedEvents) {
-                    if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
-                        day = "Monday,"
-                    }
-                    if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
-                        day = "Tuesday,"
-                    }
-                    if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
-                        day = "Wednesday,"
-                    }
-                    if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
-                        day = "Thursday,"
-                    }
-                    if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
-                        day = "Friday,"
-                    }
-                    if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
-                        day = "Saturday,"
-                    }
-                    if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
-                        day = "Sunday,"
-                    }
-                    var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
-                    message += `\n- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-1)}`
-                }
-                alert(message)
-            } else {
-                // Rename
-                newEvent.title = document.getElementById("schedule_name_input").value + " (" +
-                                 document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " +
-                                 document.getElementById("StartAMPM").value + " - " + document.getElementById("EndHour").value + ":" +
-                                 document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value + ")";
-
-                // Update start
-                schedulerData.updateEventStart(newEvent, window.calendar.props.date + " " + processHourInput("Start") + ":" + document.getElementById("StartMinute").value + ":00");
-
-                // Update end
-                schedulerData.updateEventEnd(newEvent, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
-
-                // Update repeat
-                var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
-                                  window.calendar.props.mondayDate.substring(5,7) +
-                                  window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
-                                  window.calendar.props.sundayDate.substring(0,4) +
-                                  window.calendar.props.sundayDate.substring(5,7) +
-                                  window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
-                if (document.getElementById("ScheduleRepeatEveryDay").checked) {
-                    // Repeat Every Day
-                    newEvent.rrule = event_rrule + "MO,TU,WE,TH,FR,SA,SU";
-                } else {
-                    if (document.getElementById("ScheduleRepeatMonday").checked) {
-                        event_rrule = event_rrule + "MO,"
-                    }
-                    if (document.getElementById("ScheduleRepeatTuesday").checked) {
-                        event_rrule = event_rrule + "TU,"
-                    }
-                    if (document.getElementById("ScheduleRepeatWednesday").checked) {
-                        event_rrule = event_rrule + "WE,"
-                    }
-                    if (document.getElementById("ScheduleRepeatThursday").checked) {
-                        event_rrule = event_rrule + "TH,"
-                    }
-                    if (document.getElementById("ScheduleRepeatFriday").checked) {
-                        event_rrule = event_rrule + "FR,"
-                    }
-                    if (document.getElementById("ScheduleRepeatSaturday").checked) {
-                        event_rrule = event_rrule + "SA,"
-                    }
-                    if (document.getElementById("ScheduleRepeatSunday").checked) {
-                        event_rrule = event_rrule + "SU,"
-                    }
-                    newEvent.rrule = event_rrule.substring(0,event_rrule.length-1)
-                }
-
-                // Apply to other devices
-                document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
-
-                if (document.getElementById("ScheduleApplyDesktop").checked) {
-                    newFreshId = newFreshId + 1;
-                    let anotherNewEvent = {
-                        id: newFreshId,
-                        title: newEvent.title,
-                        start: newEvent.start,
-                        end: newEvent.end,
-                        resourceId: 1,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: newEvent.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(anotherNewEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyMonitor").checked) {
-                    newFreshId = newFreshId + 1;
-                    let anotherNewEvent = {
-                        id: newFreshId,
-                        title: newEvent.title,
-                        start: newEvent.start,
-                        end: newEvent.end,
-                        resourceId: 3,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: newEvent.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(anotherNewEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyLaptop").checked) {
-                    newFreshId = newFreshId + 1
-                    let anotherNewEvent = {
-                        id: newFreshId,
-                        title: newEvent.title,
-                        start: newEvent.start,
-                        end: newEvent.end,
-                        resourceId: 2,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: newEvent.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(anotherNewEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyTaskLamp").checked) {
-                    newFreshId = newFreshId + 1
-                    let anotherNewEvent = {
-                        id: newFreshId,
-                        title: newEvent.title,
-                        start: newEvent.start,
-                        end: newEvent.end,
-                        resourceId: 4,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: newEvent.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(anotherNewEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyFan").checked) {
-                    newFreshId = newFreshId + 1
-                    let anotherNewEvent = {
-                        id: newFreshId,
-                        title: newEvent.title,
-                        start: newEvent.start,
-                        end: newEvent.end,
-                        resourceId: 5,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: newEvent.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(anotherNewEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(anotherNewEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-
-                // Update calendar
-                window.calendar.setState({
-                    viewModel: schedulerData
-                })
-
-                // Update database (Add)
-                window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                window.calendar.props.refetchData();
-
-                ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
-
-                // Update weekly achievement
-                if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
-                    window.calendar.setState({
-                        weekly_achievements_books: [
-                            {
-                                ...window.calendar.state.weekly_achievements_books[0],
-                                schedule_based: 20
-                            }
-                        ]
-                    }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
-
-                    // If first time clicking, update achievement
-                    if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                        window.calendar.setState({
-                            achievements_books: [
-                                {
-                                    ...window.calendar.state.achievements_books[0],
-                                    first_schedule: 70
-                                }
-                            ]
-                        }, function() {window.calendar.handleAchievementsFormSubmit()})
-                        window.calendar.setState({
-                            points_wallet_books: [
-                                {
-                                    ...window.calendar.state.points_wallet_books[0],
-                                    points: window.calendar.state.points_wallet_books[0].points + 90
-                                }
-                            ]
-                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                        window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                    } else {
-                        window.calendar.setState({
-                            points_wallet_books: [
-                                {
-                                    ...window.calendar.state.points_wallet_books[0],
-                                    points: window.calendar.state.points_wallet_books[0].points + 20
-                                }
-                            ]
-                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                    }
-                }
-
-                setTimeout(function() {document.getElementById(window.calendar.props.day + "Schedule").click()}, 0.1)
             }
         }
 
@@ -1121,338 +1199,369 @@ class Calendar extends Component {
         }
 
         function okButtonClicked() {
-            // Checking conflicts
-            var hasConflict = false;
-            var conflictedEvents = [];
-            var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-            var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-            var new_days_to_loop_over = [];
-            for (var repeat_day of repeat_option) {
-                if (repeat_day.value === "Monday") {
-                    new_days_to_loop_over.push(getDates()[0])
-                }
-                if (repeat_day.value === "Tuesday") {
-                    new_days_to_loop_over.push(getDates()[1])
-                }
-                if (repeat_day.value === "Wednesday") {
-                    new_days_to_loop_over.push(getDates()[2])
-                }
-                if (repeat_day.value === "Thursday") {
-                    new_days_to_loop_over.push(getDates()[3])
-                }
-                if (repeat_day.value === "Friday") {
-                    new_days_to_loop_over.push(getDates()[4])
-                }
-                if (repeat_day.value === "Saturday") {
-                    new_days_to_loop_over.push(getDates()[5])
-                }
-                if (repeat_day.value === "Sunday") {
-                    new_days_to_loop_over.push(getDates()[6])
-                }
+            var check_start_time = "2020-01-01 " + from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
+            var check_end_time = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
+            if (check_end_time === "00:00:00") {
+                check_end_time = "2020-01-02 " + check_end_time
+            } else {
+                check_end_time = "2020-01-01 " + check_end_time
             }
+            if (check_start_time >= check_end_time) {
+                ReactDOM.render(
+                    <OnlyAlert
+                        message="Check your timings! Start time should be before end time."
+                        onOK={function() {
+                            ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                        }}
+                    />, document.getElementById("confirm-alert")
+                )
+            } else {
+                // Checking conflicts
+                var hasConflict = false;
+                var conflictedEvents = [];
+                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
+                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
+                var new_days_to_loop_over = [];
+                for (var repeat_day of repeat_option) {
+                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
+                        new_days_to_loop_over.push(getDates()[0])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
+                        new_days_to_loop_over.push(getDates()[1])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
+                        new_days_to_loop_over.push(getDates()[2])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
+                        new_days_to_loop_over.push(getDates()[3])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
+                        new_days_to_loop_over.push(getDates()[4])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
+                        new_days_to_loop_over.push(getDates()[5])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
+                        new_days_to_loop_over.push(getDates()[6])
+                    }
+                }
 
-            schedulerData.events.forEach(function(e) {
-                var eStart = e.start;
-                var eEnd = e.end;
-                var eRrule = e.rrule;
-                var existing_days_to_loop_over = [];
-                if (eRrule.substring(60, eRrule.length).includes("MO")) {
-                    existing_days_to_loop_over.push(getDates()[0])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("TU")) {
-                    existing_days_to_loop_over.push(getDates()[1])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("WE")) {
-                    existing_days_to_loop_over.push(getDates()[2])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("TH")) {
-                    existing_days_to_loop_over.push(getDates()[3])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("FR")) {
-                    existing_days_to_loop_over.push(getDates()[4])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("SA")) {
-                    existing_days_to_loop_over.push(getDates()[5])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("SU")) {
-                    existing_days_to_loop_over.push(getDates()[6])
-                }
+                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
+                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
 
                 var new_start_for_this = "";
                 var new_end_for_this = "";
                 var existing_start_for_this = "";
                 var existing_end_for_this = "";
                 for (var new_day of new_days_to_loop_over) {
-                    new_start_for_this = new_day + event.start.substring(10,19);
-                    new_end_for_this = new_day + event.end.substring(10,19);
-                    if (e.resourceId === event.resourceId) {
-                        for (var existing_day of existing_days_to_loop_over) {
-                            existing_start_for_this = existing_day + eStart.substring(10,19);
-                            existing_end_for_this = existing_day + eEnd.substring(10,19);
-                            if (((new_start_for_this >= existing_start_for_this && new_start_for_this < existing_end_for_this) ||
-                                  (new_end_for_this > existing_start_for_this && new_end_for_this <= existing_end_for_this) ||
-                                  (existing_start_for_this >= new_start_for_this && existing_start_for_this < new_end_for_this) ||
-                                  (existing_end_for_this > new_start_for_this && existing_end_for_this <= new_end_for_this)) &&
-                                  (e.id !== event.id)) {
-                                    hasConflict = true;
-                                    conflictedEvents.push(e);
-                                    break
-                            }
-                        }
-                    }
+                    new_start_for_this = new_day + " " + new_start;
+                    new_end_for_this = new_day + " " + new_end;
                     for (var plugload of plugload_option) {
-                        if (e.resouceId === plugload.value) {
-                            for (var existing_day of existing_days_to_loop_over) {
-                                existing_start_for_this = existing_day + eStart.substring(10,19);
-                                existing_end_for_this = existing_day + eEnd.substring(10,19);
-                                if (((new_start_for_this >= existing_start_for_this && new_start_for_this < existing_end_for_this) ||
-                                      (new_end_for_this > existing_start_for_this && new_end_for_this <= existing_end_for_this) ||
-                                      (existing_start_for_this >= new_start_for_this && existing_start_for_this < new_end_for_this) ||
-                                      (existing_end_for_this > new_start_for_this && existing_end_for_this <= new_end_for_this)) &&
-                                      (e.id !== event.id)) {
-                                        hasConflict = true;
-                                        conflictedEvents.push(e);
-                                        break
+                        schedulerData.events.forEach(function(e) {
+                            var current_resource_id = 0
+                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
+                                current_resource_id = 1
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
+                                current_resource_id = 2
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
+                                current_resource_id = 3
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
+                                current_resource_id = 4
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyFan")) {
+                                current_resource_id = 5
+                            }
+                            if (e.resourceId === current_resource_id) {
+                                var existing_days_to_loop_over = [];
+                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
+                                    existing_days_to_loop_over.push(getDates()[0])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
+                                    existing_days_to_loop_over.push(getDates()[1])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
+                                    existing_days_to_loop_over.push(getDates()[2])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
+                                    existing_days_to_loop_over.push(getDates()[3])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
+                                    existing_days_to_loop_over.push(getDates()[4])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
+                                    existing_days_to_loop_over.push(getDates()[5])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
+                                    existing_days_to_loop_over.push(getDates()[6])
+                                }
+
+                                for (var existing_day of existing_days_to_loop_over) {
+                                    existing_start_for_this = existing_day + e.start.substring(10,19);
+                                    existing_end_for_this = existing_day + e.end.substring(10,19);
+                                    if (((new_start_for_this >= existing_start_for_this &&
+                                          new_start_for_this < existing_end_for_this) || (
+                                          new_end_for_this > existing_start_for_this &&
+                                          new_end_for_this <= existing_end_for_this) || (
+                                          existing_start_for_this >= new_start_for_this &&
+                                          existing_start_for_this < new_end_for_this) || (
+                                          existing_end_for_this > new_start_for_this &&
+                                          existing_end_for_this <= new_end_for_this)) && (
+                                          e.id !== event.id)) {
+                                            hasConflict = true;
+                                            if (!conflictedEvents.includes(e)) {
+                                                conflictedEvents.push(e)
+                                            }
+                                          }
                                 }
                             }
+                        })
+                    }
+                }
+
+                if (hasConflict) {
+                    var message = "Conflict occurred for the following events:"
+                    for (var events of conflictedEvents) {
+                        var day = ""
+                        if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                            day =  day + "Monday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                            day = day + "Tuesday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                            day = day + "Wednesday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                            day = day + "Thursday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                            day = day + "Friday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                            day = day + "Saturday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                            day = day + "Sunday, "
+                        }
+                        var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
+                        message += `<new>- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-2)}`
+                    }
+                    ReactDOM.render(
+                        <ConflictAlert
+                            message={message}
+                            onOK={function() {
+                                ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                            }}
+                        />, document.getElementById("confirm-alert")
+                    )
+                } else {
+                    // Rename
+                    event.title = document.getElementById("schedule_name_input").value + " (" +
+                                  document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " +
+                                  document.getElementById("StartAMPM").value + " - " + document.getElementById("EndHour").value + ":" +
+                                  document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value + ")";
+
+                    // Update start
+                    schedulerData.updateEventStart(event, window.calendar.props.date + " " + processHourInput("Start") + ":" + document.getElementById("StartMinute").value + ":00");
+
+                    // Update end
+                    schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
+
+                    // Update repeat
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
+                                      window.calendar.props.mondayDate.substring(5,7) +
+                                      window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
+                                      window.calendar.props.sundayDate.substring(0,4) +
+                                      window.calendar.props.sundayDate.substring(5,7) +
+                                      window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
+                    if (document.getElementById("ScheduleRepeatEveryDay").checked) {
+                        // Repeat Every Day
+                        event.rrule = event_rrule + "MO,TU,WE,TH,FR,SA,SU";
+                    } else {
+                        if (document.getElementById("ScheduleRepeatMonday").checked) {
+                            event_rrule = event_rrule + "MO,"
+                        }
+                        if (document.getElementById("ScheduleRepeatTuesday").checked) {
+                            event_rrule = event_rrule + "TU,"
+                        }
+                        if (document.getElementById("ScheduleRepeatWednesday").checked) {
+                            event_rrule = event_rrule + "WE,"
+                        }
+                        if (document.getElementById("ScheduleRepeatThursday").checked) {
+                            event_rrule = event_rrule + "TH,"
+                        }
+                        if (document.getElementById("ScheduleRepeatFriday").checked) {
+                            event_rrule = event_rrule + "FR,"
+                        }
+                        if (document.getElementById("ScheduleRepeatSaturday").checked) {
+                            event_rrule = event_rrule + "SA,"
+                        }
+                        if (document.getElementById("ScheduleRepeatSunday").checked) {
+                            event_rrule = event_rrule + "SU,"
+                        }
+                        event.rrule = event_rrule.substring(0,event_rrule.length-1)
+                    }
+
+                    // Apply to other devices
+                    document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
+                    var newFreshId = 0;
+                    schedulerData.events.forEach(item => {
+                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
+                            newFreshId = item.database_id;
+                        }
+                    })
+
+                    if (document.getElementById("ScheduleApplyDesktop").checked) {
+                        newFreshId = newFreshId + 1;
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 1,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyMonitor").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 3,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyLaptop").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 2,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyTaskLamp").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 4,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyFan").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 5,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+
+                    // Update calendar
+                    window.calendar.setState({
+                        viewModel: schedulerData
+                    })
+
+                    // Update database (Update)
+                    window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
+                    window.calendar.props.refetchData();
+
+                    ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+
+
+                    // Update weekly achievement
+                    if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
+                        window.calendar.setState({
+                            weekly_achievements_books: [
+                                {
+                                    ...window.calendar.state.weekly_achievements_books[0],
+                                    schedule_based: 20
+                                }
+                            ]
+                        }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
+                        // If first time clicking, update achievement
+                        if (window.calendar.state.achievements_books[0].first_schedule === 0) {
+                            window.calendar.setState({
+                                achievements_books: [
+                                    {
+                                        ...window.calendar.state.achievements_books[0],
+                                        first_schedule: 70
+                                    }
+                                ]
+                            }, function() {window.calendar.handleAchievementsFormSubmit()})
+                            window.calendar.setState({
+                                points_wallet_books: [
+                                    {
+                                        ...window.calendar.state.points_wallet_books[0],
+                                        points: window.calendar.state.points_wallet_books[0].points + 90
+                                    }
+                                ]
+                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
+                        } else {
+                            window.calendar.setState({
+                                points_wallet_books: [
+                                    {
+                                        ...window.calendar.state.points_wallet_books[0],
+                                        points: window.calendar.state.points_wallet_books[0].points + 20
+                                    }
+                                ]
+                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
                         }
                     }
+
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
                 }
-
-            })
-
-            if (hasConflict) {
-                var message = "Conflict occurred for the following events:"
-                var day = ""
-                for (var events of conflictedEvents) {
-                    if (events.rrule.substring(60,event.rrule.length).includes("MO")) {
-                        day = "Monday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("TU")) {
-                        day = "Tuesday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("WE")) {
-                        day = "Wednesday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("TH")) {
-                        day = "Thursday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("FR")) {
-                        day = "Friday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("SA")) {
-                        day = "Saturday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("SU")) {
-                        day = "Sunday,"
-                    }
-                    var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
-                    message += `\n- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-1)}`
-                }
-                alert(message)
-            } else {
-                // Rename
-                event.title = document.getElementById("schedule_name_input").value + " (" +
-                              document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " +
-                              document.getElementById("StartAMPM").value + " - " + document.getElementById("EndHour").value + ":" +
-                              document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value + ")";
-
-                // Update start
-                schedulerData.updateEventStart(event, window.calendar.props.date + " " + processHourInput("Start") + ":" + document.getElementById("StartMinute").value + ":00");
-
-                // Update end
-                schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
-
-                // Update repeat
-                var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
-                                  window.calendar.props.mondayDate.substring(5,7) +
-                                  window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
-                                  window.calendar.props.sundayDate.substring(0,4) +
-                                  window.calendar.props.sundayDate.substring(5,7) +
-                                  window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
-                if (document.getElementById("ScheduleRepeatEveryDay").checked) {
-                    // Repeat Every Day
-                    event.rrule = event_rrule + "MO,TU,WE,TH,FR,SA,SU";
-                } else {
-                    if (document.getElementById("ScheduleRepeatMonday").checked) {
-                        event_rrule = event_rrule + "MO,"
-                    }
-                    if (document.getElementById("ScheduleRepeatTuesday").checked) {
-                        event_rrule = event_rrule + "TU,"
-                    }
-                    if (document.getElementById("ScheduleRepeatWednesday").checked) {
-                        event_rrule = event_rrule + "WE,"
-                    }
-                    if (document.getElementById("ScheduleRepeatThursday").checked) {
-                        event_rrule = event_rrule + "TH,"
-                    }
-                    if (document.getElementById("ScheduleRepeatFriday").checked) {
-                        event_rrule = event_rrule + "FR,"
-                    }
-                    if (document.getElementById("ScheduleRepeatSaturday").checked) {
-                        event_rrule = event_rrule + "SA,"
-                    }
-                    if (document.getElementById("ScheduleRepeatSunday").checked) {
-                        event_rrule = event_rrule + "SU,"
-                    }
-                    event.rrule = event_rrule.substring(0,event_rrule.length-1)
-                }
-
-                // Apply to other devices
-                document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
-                var newFreshId = 0;
-                schedulerData.events.forEach(item => {
-                    if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                        newFreshId = item.database_id;
-                    }
-                })
-
-                if (document.getElementById("ScheduleApplyDesktop").checked) {
-                    newFreshId = newFreshId + 1;
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 1,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyMonitor").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 3,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyLaptop").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 2,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyTaskLamp").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 4,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyFan").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 5,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-
-                // Update calendar
-                window.calendar.setState({
-                    viewModel: schedulerData
-                })
-
-                // Update database (Update)
-                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
-                window.calendar.props.refetchData();
-
-                ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
-
-
-
-                // Update weekly achievement
-                if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
-                    window.calendar.setState({
-                        weekly_achievements_books: [
-                            {
-                                ...window.calendar.state.weekly_achievements_books[0],
-                                schedule_based: 20
-                            }
-                        ]
-                    }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
-                    // If first time clicking, update achievement
-                    if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                        window.calendar.setState({
-                            achievements_books: [
-                                {
-                                    ...window.calendar.state.achievements_books[0],
-                                    first_schedule: 70
-                                }
-                            ]
-                        }, function() {window.calendar.handleAchievementsFormSubmit()})
-                        window.calendar.setState({
-                            points_wallet_books: [
-                                {
-                                    ...window.calendar.state.points_wallet_books[0],
-                                    points: window.calendar.state.points_wallet_books[0].points + 90
-                                }
-                            ]
-                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                        window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                    } else {
-                        window.calendar.setState({
-                            points_wallet_books: [
-                                {
-                                    ...window.calendar.state.points_wallet_books[0],
-                                    points: window.calendar.state.points_wallet_books[0].points + 20
-                                }
-                            ]
-                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                    }
-                }
-
-                setTimeout(function() {document.getElementById(window.calendar.props.day + "Schedule").click()}, 0.1)
             }
         }
 
@@ -1500,335 +1609,366 @@ class Calendar extends Component {
         }
 
         function okButtonClicked() {
-            // Checking conflicts
-            var hasConflict = false;
-            var conflictedEvents = [];
-            var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-            var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-            var new_days_to_loop_over = [];
-            for (var repeat_day of repeat_option) {
-                if (repeat_day.value === "Monday") {
-                    new_days_to_loop_over.push(getDates()[0])
-                }
-                if (repeat_day.value === "Tuesday") {
-                    new_days_to_loop_over.push(getDates()[1])
-                }
-                if (repeat_day.value === "Wednesday") {
-                    new_days_to_loop_over.push(getDates()[2])
-                }
-                if (repeat_day.value === "Thursday") {
-                    new_days_to_loop_over.push(getDates()[3])
-                }
-                if (repeat_day.value === "Friday") {
-                    new_days_to_loop_over.push(getDates()[4])
-                }
-                if (repeat_day.value === "Saturday") {
-                    new_days_to_loop_over.push(getDates()[5])
-                }
-                if (repeat_day.value === "Sunday") {
-                    new_days_to_loop_over.push(getDates()[6])
-                }
+            var check_start_time = "2020-01-01 " + from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
+            var check_end_time = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
+            if (check_end_time === "00:00:00") {
+                check_end_time = "2020-01-02 " + check_end_time
+            } else {
+                check_end_time = "2020-01-01 " + check_end_time
             }
+            if (check_start_time >= check_end_time) {
+                ReactDOM.render(
+                    <OnlyAlert
+                        message="Check your timings! Start time should be before end time."
+                        onOK={function() {
+                            ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                        }}
+                    />, document.getElementById("confirm-alert")
+                )
+            } else {
+                // Checking conflicts
+                var hasConflict = false;
+                var conflictedEvents = [];
+                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
+                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
+                var new_days_to_loop_over = [];
+                for (var repeat_day of repeat_option) {
+                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
+                        new_days_to_loop_over.push(getDates()[0])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
+                        new_days_to_loop_over.push(getDates()[1])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
+                        new_days_to_loop_over.push(getDates()[2])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
+                        new_days_to_loop_over.push(getDates()[3])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
+                        new_days_to_loop_over.push(getDates()[4])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
+                        new_days_to_loop_over.push(getDates()[5])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
+                        new_days_to_loop_over.push(getDates()[6])
+                    }
+                }
 
-            schedulerData.events.forEach(function(e) {
-                var eStart = e.start;
-                var eEnd = e.end;
-                var eRrule = e.rrule;
-                var existing_days_to_loop_over = [];
-                if (eRrule.substring(60, eRrule.length).includes("MO")) {
-                    existing_days_to_loop_over.push(getDates()[0])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("TU")) {
-                    existing_days_to_loop_over.push(getDates()[1])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("WE")) {
-                    existing_days_to_loop_over.push(getDates()[2])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("TH")) {
-                    existing_days_to_loop_over.push(getDates()[3])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("FR")) {
-                    existing_days_to_loop_over.push(getDates()[4])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("SA")) {
-                    existing_days_to_loop_over.push(getDates()[5])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("SU")) {
-                    existing_days_to_loop_over.push(getDates()[6])
-                }
+                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
+                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
 
                 var new_start_for_this = "";
                 var new_end_for_this = "";
                 var existing_start_for_this = "";
                 var existing_end_for_this = "";
                 for (var new_day of new_days_to_loop_over) {
-                    new_start_for_this = new_day + event.start.substring(10,19);
-                    new_end_for_this = new_day + event.end.substring(10,19);
-                    if (e.resourceId === event.resourceId) {
-                        for (var existing_day of existing_days_to_loop_over) {
-                            existing_start_for_this = existing_day + eStart.substring(10,19);
-                            existing_end_for_this = existing_day + eEnd.substring(10,19);
-                            if (((new_start_for_this >= existing_start_for_this && new_start_for_this < existing_end_for_this) ||
-                                  (new_end_for_this > existing_start_for_this && new_end_for_this <= existing_end_for_this) ||
-                                  (existing_start_for_this >= new_start_for_this && existing_start_for_this < new_end_for_this) ||
-                                  (existing_end_for_this > new_start_for_this && existing_end_for_this <= new_end_for_this)) &&
-                                  (e.id !== event.id)) {
-                                    hasConflict = true;
-                                    conflictedEvents.push(e);
-                                    break
-                            }
-                        }
-                    }
+                    new_start_for_this = new_day + " " + new_start;
+                    new_end_for_this = new_day + " " + new_end;
                     for (var plugload of plugload_option) {
-                        if (e.resouceId === plugload.value) {
-                            for (var existing_day of existing_days_to_loop_over) {
-                                existing_start_for_this = existing_day + eStart.substring(10,19);
-                                existing_end_for_this = existing_day + eEnd.substring(10,19);
-                                if (((new_start_for_this >= existing_start_for_this && new_start_for_this < existing_end_for_this) ||
-                                      (new_end_for_this > existing_start_for_this && new_end_for_this <= existing_end_for_this) ||
-                                      (existing_start_for_this >= new_start_for_this && existing_start_for_this < new_end_for_this) ||
-                                      (existing_end_for_this > new_start_for_this && existing_end_for_this <= new_end_for_this)) &&
-                                      (e.id !== event.id)) {
-                                        hasConflict = true;
-                                        conflictedEvents.push(e);
-                                        break
+                        schedulerData.events.forEach(function(e) {
+                            var current_resource_id = 0
+                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
+                                current_resource_id = 1
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
+                                current_resource_id = 2
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
+                                current_resource_id = 3
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
+                                current_resource_id = 4
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyFan")) {
+                                current_resource_id = 5
+                            }
+                            if (e.resourceId === current_resource_id) {
+                                var existing_days_to_loop_over = [];
+                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
+                                    existing_days_to_loop_over.push(getDates()[0])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
+                                    existing_days_to_loop_over.push(getDates()[1])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
+                                    existing_days_to_loop_over.push(getDates()[2])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
+                                    existing_days_to_loop_over.push(getDates()[3])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
+                                    existing_days_to_loop_over.push(getDates()[4])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
+                                    existing_days_to_loop_over.push(getDates()[5])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
+                                    existing_days_to_loop_over.push(getDates()[6])
+                                }
+
+                                for (var existing_day of existing_days_to_loop_over) {
+                                    existing_start_for_this = existing_day + e.start.substring(10,19);
+                                    existing_end_for_this = existing_day + e.end.substring(10,19);
+                                    if (((new_start_for_this >= existing_start_for_this &&
+                                          new_start_for_this < existing_end_for_this) || (
+                                          new_end_for_this > existing_start_for_this &&
+                                          new_end_for_this <= existing_end_for_this) || (
+                                          existing_start_for_this >= new_start_for_this &&
+                                          existing_start_for_this < new_end_for_this) || (
+                                          existing_end_for_this > new_start_for_this &&
+                                          existing_end_for_this <= new_end_for_this)) && (
+                                          e.id !== event.id)) {
+                                            hasConflict = true;
+                                            if (!conflictedEvents.includes(e)) {
+                                                conflictedEvents.push(e)
+                                            }
+                                          }
                                 }
                             }
+                        })
+                    }
+                }
+
+                if (hasConflict) {
+                    var message = "Conflict occurred for the following events:"
+                    for (var events of conflictedEvents) {
+                        var day = ""
+                        if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                            day = day + "Monday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                            day = day + "Tuesday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                            day = day + "Wednesday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                            day = day + "Thursday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                            day = day + "Friday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                            day = day + "Saturday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                            day = day + "Sunday, "
+                        }
+                        var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
+                        message += `<new>- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-2)}`
+                    }
+                    ReactDOM.render(
+                        <ConflictAlert
+                            message={message}
+                            onOK={function() {
+                                ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                            }}
+                        />, document.getElementById("confirm-alert")
+                    )
+                } else {
+                    // Rename
+                    event.title = document.getElementById("schedule_name_input").value + " (" +
+                                  document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " +
+                                  document.getElementById("StartAMPM").value + " - " + document.getElementById("EndHour").value + ":" +
+                                  document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value + ")";
+
+                    // Update start
+                    schedulerData.updateEventStart(event, window.calendar.props.date + " " + processHourInput("Start") + ":" + document.getElementById("StartMinute").value + ":00");
+
+                    // Update end
+                    schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
+
+                    // Update repeat
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
+                                      window.calendar.props.mondayDate.substring(5,7) +
+                                      window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
+                                      window.calendar.props.sundayDate.substring(0,4) +
+                                      window.calendar.props.sundayDate.substring(5,7) +
+                                      window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
+                    if (document.getElementById("ScheduleRepeatEveryDay").checked) {
+                        // Repeat Every Day
+                        event.rrule = event_rrule + "MO,TU,WE,TH,FR,SA,SU";
+                    } else {
+                        if (document.getElementById("ScheduleRepeatMonday").checked) {
+                            event_rrule = event_rrule + "MO,"
+                        }
+                        if (document.getElementById("ScheduleRepeatTuesday").checked) {
+                            event_rrule = event_rrule + "TU,"
+                        }
+                        if (document.getElementById("ScheduleRepeatWednesday").checked) {
+                            event_rrule = event_rrule + "WE,"
+                        }
+                        if (document.getElementById("ScheduleRepeatThursday").checked) {
+                            event_rrule = event_rrule + "TH,"
+                        }
+                        if (document.getElementById("ScheduleRepeatFriday").checked) {
+                            event_rrule = event_rrule + "FR,"
+                        }
+                        if (document.getElementById("ScheduleRepeatSaturday").checked) {
+                            event_rrule = event_rrule + "SA,"
+                        }
+                        if (document.getElementById("ScheduleRepeatSunday").checked) {
+                            event_rrule = event_rrule + "SU,"
+                        }
+                        event.rrule = event_rrule.substring(0,event_rrule.length-1)
+                    }
+
+                    // Apply to other devices
+                    document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
+                    let newFreshId = 0;
+                    schedulerData.events.forEach(item => {
+                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
+                            newFreshId = item.database_id;
+                        }
+                    })
+                    if (document.getElementById("ScheduleApplyDesktop").checked) {
+                        newFreshId = newFreshId + 1;
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 1,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyMonitor").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 3,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyLaptop").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 2,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyTaskLamp").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 4,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyFan").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 5,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+
+                    // Update calendar
+                    window.calendar.setState({
+                        viewModel: schedulerData
+                    })
+
+                    // Update database (Update)
+                    window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
+                    window.calendar.props.refetchData();
+
+                    ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+                    // Update weekly achievement
+                    if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
+                        window.calendar.setState({
+                            weekly_achievements_books: [
+                                {
+                                    ...window.calendar.state.weekly_achievements_books[0],
+                                    schedule_based: 20
+                                }
+                            ]
+                        }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
+                        // If first time clicking, update achievement
+                        if (window.calendar.state.achievements_books[0].first_schedule === 0) {
+                            window.calendar.setState({
+                                achievements_books: [
+                                    {
+                                        ...window.calendar.state.achievements_books[0],
+                                        first_schedule: 70
+                                    }
+                                ]
+                            }, function() {window.calendar.handleAchievementsFormSubmit()})
+                            window.calendar.setState({
+                                points_wallet_books: [
+                                    {
+                                        ...window.calendar.state.points_wallet_books[0],
+                                        points: window.calendar.state.points_wallet_books[0].points + 90
+                                    }
+                                ]
+                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
+                        } else {
+                            window.calendar.setState({
+                                points_wallet_books: [
+                                    {
+                                        ...window.calendar.state.points_wallet_books[0],
+                                        points: window.calendar.state.points_wallet_books[0].points + 20
+                                    }
+                                ]
+                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
                         }
                     }
+
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
                 }
-
-            })
-
-            if (hasConflict) {
-                var message = "Conflict occured for the following events:"
-                var day = ""
-                for (var events of conflictedEvents) {
-                    if (events.rrule.substring(60,event.rrule.length).includes("MO")) {
-                        day = "Monday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("TU")) {
-                        day = "Tuesday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("WE")) {
-                        day = "Wednesday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("TH")) {
-                        day = "Thursday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("FR")) {
-                        day = "Friday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("SA")) {
-                        day = "Saturday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("SU")) {
-                        day = "Sunday,"
-                    }
-                    var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
-                    message += `\n- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-1)}`
-                }
-                alert(message)
-            } else {
-                // Rename
-                event.title = document.getElementById("schedule_name_input").value + " (" +
-                              document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " +
-                              document.getElementById("StartAMPM").value + " - " + document.getElementById("EndHour").value + ":" +
-                              document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value + ")";
-
-                // Update start
-                schedulerData.updateEventStart(event, window.calendar.props.date + " " + processHourInput("Start") + ":" + document.getElementById("StartMinute").value + ":00");
-
-                // Update end
-                schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
-
-                // Update repeat
-                var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
-                                  window.calendar.props.mondayDate.substring(5,7) +
-                                  window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
-                                  window.calendar.props.sundayDate.substring(0,4) +
-                                  window.calendar.props.sundayDate.substring(5,7) +
-                                  window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
-                if (document.getElementById("ScheduleRepeatEveryDay").checked) {
-                    // Repeat Every Day
-                    event.rrule = event_rrule + "MO,TU,WE,TH,FR,SA,SU";
-                } else {
-                    if (document.getElementById("ScheduleRepeatMonday").checked) {
-                        event_rrule = event_rrule + "MO,"
-                    }
-                    if (document.getElementById("ScheduleRepeatTuesday").checked) {
-                        event_rrule = event_rrule + "TU,"
-                    }
-                    if (document.getElementById("ScheduleRepeatWednesday").checked) {
-                        event_rrule = event_rrule + "WE,"
-                    }
-                    if (document.getElementById("ScheduleRepeatThursday").checked) {
-                        event_rrule = event_rrule + "TH,"
-                    }
-                    if (document.getElementById("ScheduleRepeatFriday").checked) {
-                        event_rrule = event_rrule + "FR,"
-                    }
-                    if (document.getElementById("ScheduleRepeatSaturday").checked) {
-                        event_rrule = event_rrule + "SA,"
-                    }
-                    if (document.getElementById("ScheduleRepeatSunday").checked) {
-                        event_rrule = event_rrule + "SU,"
-                    }
-                    event.rrule = event_rrule.substring(0,event_rrule.length-1)
-                }
-
-                // Apply to other devices
-                document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
-                let newFreshId = 0;
-                schedulerData.events.forEach(item => {
-                    if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                        newFreshId = item.database_id;
-                    }
-                })
-                if (document.getElementById("ScheduleApplyDesktop").checked) {
-                    newFreshId = newFreshId + 1;
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 1,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyMonitor").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 3,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyLaptop").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 2,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyTaskLamp").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 4,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyFan").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 5,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-
-                // Update calendar
-                window.calendar.setState({
-                    viewModel: schedulerData
-                })
-
-                // Update database (Update)
-                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
-                window.calendar.props.refetchData();
-
-                ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
-
-                // Update weekly achievement
-                if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
-                    window.calendar.setState({
-                        weekly_achievements_books: [
-                            {
-                                ...window.calendar.state.weekly_achievements_books[0],
-                                schedule_based: 20
-                            }
-                        ]
-                    }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
-                    // If first time clicking, update achievement
-                    if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                        window.calendar.setState({
-                            achievements_books: [
-                                {
-                                    ...window.calendar.state.achievements_books[0],
-                                    first_schedule: 70
-                                }
-                            ]
-                        }, function() {window.calendar.handleAchievementsFormSubmit()})
-                        window.calendar.setState({
-                            points_wallet_books: [
-                                {
-                                    ...window.calendar.state.points_wallet_books[0],
-                                    points: window.calendar.state.points_wallet_books[0].points + 90
-                                }
-                            ]
-                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                        window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                    } else {
-                        window.calendar.setState({
-                            points_wallet_books: [
-                                {
-                                    ...window.calendar.state.points_wallet_books[0],
-                                    points: window.calendar.state.points_wallet_books[0].points + 20
-                                }
-                            ]
-                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                    }
-                }
-
-                setTimeout(function() {document.getElementById(window.calendar.props.day + "Schedule").click()}, 0.1)
             }
         }
 
@@ -1880,332 +2020,365 @@ class Calendar extends Component {
         }
 
         function okButtonClicked() {
-            // Checking conflicts
-            var hasConflict = false;
-            var conflictedEvents = [];
-            var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-            var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-            var new_days_to_loop_over = [];
-            for (var repeat_day of repeat_option) {
-                if (repeat_day.value === "Monday") {
-                    new_days_to_loop_over.push(getDates()[0])
-                }
-                if (repeat_day.value === "Tuesday") {
-                    new_days_to_loop_over.push(getDates()[1])
-                }
-                if (repeat_day.value === "Wednesday") {
-                    new_days_to_loop_over.push(getDates()[2])
-                }
-                if (repeat_day.value === "Thursday") {
-                    new_days_to_loop_over.push(getDates()[3])
-                }
-                if (repeat_day.value === "Friday") {
-                    new_days_to_loop_over.push(getDates()[4])
-                }
-                if (repeat_day.value === "Saturday") {
-                    new_days_to_loop_over.push(getDates()[5])
-                }
-                if (repeat_day.value === "Sunday") {
-                    new_days_to_loop_over.push(getDates()[6])
-                }
+            var check_start_time = "2020-01-01 " + from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
+            var check_end_time = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
+            if (check_end_time === "00:00:00") {
+                check_end_time = "2020-01-02 " + check_end_time
+            } else {
+                check_end_time = "2020-01-01 " + check_end_time
             }
+            if (check_start_time >= check_end_time) {
+                ReactDOM.render(
+                    <OnlyAlert
+                        message="Check your timings! Start time should be before end time."
+                        onOK={function() {
+                            ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                        }}
+                    />, document.getElementById("confirm-alert")
+                )
+            } else {
+                // Checking conflicts
+                var hasConflict = false;
+                var conflictedEvents = [];
+                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
+                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
+                var new_days_to_loop_over = [];
+                for (var repeat_day of repeat_option) {
+                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
+                        new_days_to_loop_over.push(getDates()[0])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
+                        new_days_to_loop_over.push(getDates()[1])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
+                        new_days_to_loop_over.push(getDates()[2])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
+                        new_days_to_loop_over.push(getDates()[3])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
+                        new_days_to_loop_over.push(getDates()[4])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
+                        new_days_to_loop_over.push(getDates()[5])
+                    }
+                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
+                        new_days_to_loop_over.push(getDates()[6])
+                    }
+                }
 
-            schedulerData.events.forEach(function(e) {
-                var eStart = e.start;
-                var eEnd = e.end;
-                var eRrule = e.rrule;
-                var existing_days_to_loop_over = [];
-                if (eRrule.substring(60, eRrule.length).includes("MO")) {
-                    existing_days_to_loop_over.push(getDates()[0])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("TU")) {
-                    existing_days_to_loop_over.push(getDates()[1])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("WE")) {
-                    existing_days_to_loop_over.push(getDates()[2])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("TH")) {
-                    existing_days_to_loop_over.push(getDates()[3])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("FR")) {
-                    existing_days_to_loop_over.push(getDates()[4])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("SA")) {
-                    existing_days_to_loop_over.push(getDates()[5])
-                }
-                if (eRrule.substring(60, eRrule.length).includes("SU")) {
-                    existing_days_to_loop_over.push(getDates()[6])
-                }
+                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
+                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
 
                 var new_start_for_this = "";
                 var new_end_for_this = "";
                 var existing_start_for_this = "";
                 var existing_end_for_this = "";
                 for (var new_day of new_days_to_loop_over) {
-                    new_start_for_this = new_day + event.start.substring(10,19);
-                    new_end_for_this = new_day + event.end.substring(10,19);
-                    if (e.resourceId === event.resourceId) {
-                        for (var existing_day of existing_days_to_loop_over) {
-                            existing_start_for_this = existing_day + eStart.substring(10,19);
-                            existing_end_for_this = existing_day + eEnd.substring(10,19);
-                            if (((new_start_for_this >= existing_start_for_this && new_start_for_this < existing_end_for_this) ||
-                                  (new_end_for_this > existing_start_for_this && new_end_for_this <= existing_end_for_this) ||
-                                  (existing_start_for_this >= new_start_for_this && existing_start_for_this < new_end_for_this) ||
-                                  (existing_end_for_this > new_start_for_this && existing_end_for_this <= new_end_for_this)) &&
-                                  (e.id !== event.id)) {
-                                    hasConflict = true;
-                                    conflictedEvents.push(e);
-                                    break
-                            }
-                        }
-                    }
+                    new_start_for_this = new_day + " " + new_start;
+                    new_end_for_this = new_day + " " + new_end;
                     for (var plugload of plugload_option) {
-                        if (e.resouceId === plugload.value) {
-                            for (var existing_day of existing_days_to_loop_over) {
-                                existing_start_for_this = existing_day + eStart.substring(10,19);
-                                existing_end_for_this = existing_day + eEnd.substring(10,19);
-                                if (((new_start_for_this >= existing_start_for_this && new_start_for_this < existing_end_for_this) ||
-                                      (new_end_for_this > existing_start_for_this && new_end_for_this <= existing_end_for_this) ||
-                                      (existing_start_for_this >= new_start_for_this && existing_start_for_this < new_end_for_this) ||
-                                      (existing_end_for_this > new_start_for_this && existing_end_for_this <= new_end_for_this)) &&
-                                      (e.id !== event.id)) {
-                                        hasConflict = true;
-                                        conflictedEvents.push(e);
-                                        break
+                        schedulerData.events.forEach(function(e) {
+                            var current_resource_id = 0
+                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
+                                current_resource_id = 1
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
+                                current_resource_id = 2
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
+                                current_resource_id = 3
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
+                                current_resource_id = 4
+                            }
+                            if (plugload === document.getElementById("ScheduleApplyFan")) {
+                                current_resource_id = 5
+                            }
+                            if (e.resourceId === current_resource_id) {
+                                var existing_days_to_loop_over = [];
+                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
+                                    existing_days_to_loop_over.push(getDates()[0])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
+                                    existing_days_to_loop_over.push(getDates()[1])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
+                                    existing_days_to_loop_over.push(getDates()[2])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
+                                    existing_days_to_loop_over.push(getDates()[3])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
+                                    existing_days_to_loop_over.push(getDates()[4])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
+                                    existing_days_to_loop_over.push(getDates()[5])
+                                }
+                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
+                                    existing_days_to_loop_over.push(getDates()[6])
+                                }
+
+                                for (var existing_day of existing_days_to_loop_over) {
+                                    existing_start_for_this = existing_day + e.start.substring(10,19);
+                                    existing_end_for_this = existing_day + e.end.substring(10,19);
+                                    if (((new_start_for_this >= existing_start_for_this &&
+                                          new_start_for_this < existing_end_for_this) || (
+                                          new_end_for_this > existing_start_for_this &&
+                                          new_end_for_this <= existing_end_for_this) || (
+                                          existing_start_for_this >= new_start_for_this &&
+                                          existing_start_for_this < new_end_for_this) || (
+                                          existing_end_for_this > new_start_for_this &&
+                                          existing_end_for_this <= new_end_for_this)) && (
+                                          e.id !== event.id)) {
+                                            hasConflict = true;
+                                            if (!conflictedEvents.includes(e)) {
+                                                conflictedEvents.push(e)
+                                            }
+                                          }
                                 }
                             }
+                        })
+                    }
+                }
+
+                if (hasConflict) {
+                    var message = "Conflict occurred for the following events:"
+                    for (var events of conflictedEvents) {
+                        var day = ""
+                        if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                            day = day + "Monday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                            day = day + "Tuesday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                            day = day + "Wednesday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                            day = day + "Thursday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                            day = day + "Friday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                            day = day + "Saturday, "
+                        }
+                        if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                            day = day + "Sunday, "
+                        }
+                        var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
+                        message += `<new>- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-2)}`
+                    }
+                    ReactDOM.render(
+                        <ConflictAlert
+                            message={message}
+                            onOK={function() {
+                                ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"))
+                            }}
+                        />, document.getElementById("confirm-alert")
+                    )
+                } else {
+                    // Rename
+                    event.title = document.getElementById("schedule_name_input").value + " (" +
+                                  document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " +
+                                  document.getElementById("StartAMPM").value + " - " + document.getElementById("EndHour").value + ":" +
+                                  document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value + ")";
+
+                    // Update start
+                    schedulerData.updateEventStart(event, window.calendar.props.date + " " + processHourInput("Start") + ":" + document.getElementById("StartMinute").value + ":00");
+
+                    // Update end
+                    schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
+
+                    // Update repeat
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
+                                      window.calendar.props.mondayDate.substring(5,7) +
+                                      window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
+                                      window.calendar.props.sundayDate.substring(0,4) +
+                                      window.calendar.props.sundayDate.substring(5,7) +
+                                      window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
+                    if (document.getElementById("ScheduleRepeatEveryDay").checked) {
+                        // Repeat Every Day
+                        event.rrule = event_rrule + "MO,TU,WE,TH,FR,SA,SU";
+                    } else {
+                        if (document.getElementById("ScheduleRepeatMonday").checked) {
+                            event_rrule = event_rrule + "MO,"
+                        }
+                        if (document.getElementById("ScheduleRepeatTuesday").checked) {
+                            event_rrule = event_rrule + "TU,"
+                        }
+                        if (document.getElementById("ScheduleRepeatWednesday").checked) {
+                            event_rrule = event_rrule + "WE,"
+                        }
+                        if (document.getElementById("ScheduleRepeatThursday").checked) {
+                            event_rrule = event_rrule + "TH,"
+                        }
+                        if (document.getElementById("ScheduleRepeatFriday").checked) {
+                            event_rrule = event_rrule + "FR,"
+                        }
+                        if (document.getElementById("ScheduleRepeatSaturday").checked) {
+                            event_rrule = event_rrule + "SA,"
+                        }
+                        if (document.getElementById("ScheduleRepeatSunday").checked) {
+                            event_rrule = event_rrule + "SU,"
+                        }
+                        event.rrule = event_rrule.substring(0,event_rrule.length-1)
+                    }
+
+                    // Apply to other devices
+                    var newFreshId = 0;
+                    schedulerData.events.forEach(item => {
+                        if (item.database_id >= newFreshId || item.id >= newFreshId) {
+                            newFreshId = item.database_id;
+                        }
+                    })
+                    document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
+                    if (document.getElementById("ScheduleApplyDesktop").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 1,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyMonitor").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 3,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyLaptop").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 2,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyTaskLamp").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 4,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+                    if (document.getElementById("ScheduleApplyFan").checked) {
+                        newFreshId = newFreshId + 1
+                        let newEvent = {
+                            id: newFreshId,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end,
+                            resourceId: 5,
+                            bgColor: "#06D6A0",
+                            showPopover: false,
+                            rrule: event.rrule
+                        }
+                        window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
+                        schedulerData.addEvent(newEvent);
+                        window.calendar.setState({
+                            viewModel: schedulerData
+                        })
+                    }
+
+                    // Update calendar
+                    window.calendar.setState({
+                        viewModel: schedulerData
+                    })
+
+                    // Update database (Update)
+                    window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
+                    window.calendar.props.refetchData();
+
+                    ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+                    // Update weekly achievement
+                    if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
+                        window.calendar.setState({
+                            weekly_achievements_books: [
+                                {
+                                    ...window.calendar.state.weekly_achievements_books[0],
+                                    schedule_based: 20
+                                }
+                            ]
+                        }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
+                        // If first time clicking, update achievement
+                        if (window.calendar.state.achievements_books[0].first_schedule === 0) {
+                            window.calendar.setState({
+                                achievements_books: [
+                                    {
+                                        ...window.calendar.state.achievements_books[0],
+                                        first_schedule: 70
+                                    }
+                                ]
+                            }, function() {window.calendar.handleAchievementsFormSubmit()})
+                            window.calendar.setState({
+                                points_wallet_books: [
+                                    {
+                                        ...window.calendar.state.points_wallet_books[0],
+                                        points: window.calendar.state.points_wallet_books[0].points + 90
+                                    }
+                                ]
+                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
+                            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
+                        } else {
+                            window.calendar.setState({
+                                points_wallet_books: [
+                                    {
+                                        ...window.calendar.state.points_wallet_books[0],
+                                        points: window.calendar.state.points_wallet_books[0].points + 20
+                                    }
+                                ]
+                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
                         }
                     }
-                }
 
-            })
-
-            if (hasConflict) {
-                var message = "Conflict occured for the following events:"
-                var day = ""
-                for (var events of conflictedEvents) {
-                    if (events.rrule.substring(60,event.rrule.length).includes("MO")) {
-                        day = "Monday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("TU")) {
-                        day = "Tuesday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("WE")) {
-                        day = "Wednesday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("TH")) {
-                        day = "Thursday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("FR")) {
-                        day = "Friday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("SA")) {
-                        day = "Saturday,"
-                    }
-                    if (events.rrule.substring(60,event.rrule.length).includes("SU")) {
-                        day = "Sunday,"
-                    }
-                    var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
-                    message += `\n- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-1)}`
-                }
-                alert(message)
-            } else {
-                // Rename
-                event.title = document.getElementById("schedule_name_input").value + " (" +
-                              document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " +
-                              document.getElementById("StartAMPM").value + " - " + document.getElementById("EndHour").value + ":" +
-                              document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value + ")";
-
-                // Update start
-                schedulerData.updateEventStart(event, window.calendar.props.date + " " + processHourInput("Start") + ":" + document.getElementById("StartMinute").value + ":00");
-
-                // Update end
-                schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
-
-                // Update repeat
-                var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
-                                  window.calendar.props.mondayDate.substring(5,7) +
-                                  window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
-                                  window.calendar.props.sundayDate.substring(0,4) +
-                                  window.calendar.props.sundayDate.substring(5,7) +
-                                  window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
-                if (document.getElementById("ScheduleRepeatEveryDay").checked) {
-                    // Repeat Every Day
-                    event.rrule = event_rrule + "MO,TU,WE,TH,FR,SA,SU";
-                } else {
-                    if (document.getElementById("ScheduleRepeatMonday").checked) {
-                        event_rrule = event_rrule + "MO,"
-                    }
-                    if (document.getElementById("ScheduleRepeatTuesday").checked) {
-                        event_rrule = event_rrule + "TU,"
-                    }
-                    if (document.getElementById("ScheduleRepeatWednesday").checked) {
-                        event_rrule = event_rrule + "WE,"
-                    }
-                    if (document.getElementById("ScheduleRepeatThursday").checked) {
-                        event_rrule = event_rrule + "TH,"
-                    }
-                    if (document.getElementById("ScheduleRepeatFriday").checked) {
-                        event_rrule = event_rrule + "FR,"
-                    }
-                    if (document.getElementById("ScheduleRepeatSaturday").checked) {
-                        event_rrule = event_rrule + "SA,"
-                    }
-                    if (document.getElementById("ScheduleRepeatSunday").checked) {
-                        event_rrule = event_rrule + "SU,"
-                    }
-                    event.rrule = event_rrule.substring(0,event_rrule.length-1)
-                }
-
-                // Apply to other devices
-                var newFreshId = 0;
-                schedulerData.events.forEach(item => {
-                    if (item.database_id >= newFreshId || item.id >= newFreshId) {
-                        newFreshId = item.database_id;
-                    }
-                })
-                document.getElementById("ScheduleApply" + slotName.replace(/\s/g, '')).checked = false;
-                if (document.getElementById("ScheduleApplyDesktop").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 1,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyMonitor").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 3,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyLaptop").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 2,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyTaskLamp").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 4,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-                if (document.getElementById("ScheduleApplyFan").checked) {
-                    newFreshId = newFreshId + 1
-                    let newEvent = {
-                        id: newFreshId,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end,
-                        resourceId: 5,
-                        bgColor: "#06D6A0",
-                        showPopover: false,
-                        rrule: event.rrule
-                    }
-                    window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
-                    schedulerData.addEvent(newEvent);
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-                }
-
-                // Update calendar
-                window.calendar.setState({
-                    viewModel: schedulerData
-                })
-
-                // Update database (Update)
-                window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
-                window.calendar.props.refetchData();
-
-                ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
-
-                // Update weekly achievement
-                if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
-                    window.calendar.setState({
-                        weekly_achievements_books: [
-                            {
-                                ...window.calendar.state.weekly_achievements_books[0],
-                                schedule_based: 20
-                            }
-                        ]
-                    }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
-                    // If first time clicking, update achievement
-                    if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                        window.calendar.setState({
-                            achievements_books: [
-                                {
-                                    ...window.calendar.state.achievements_books[0],
-                                    first_schedule: 70
-                                }
-                            ]
-                        }, function() {window.calendar.handleAchievementsFormSubmit()})
-                        window.calendar.setState({
-                            points_wallet_books: [
-                                {
-                                    ...window.calendar.state.points_wallet_books[0],
-                                    points: window.calendar.state.points_wallet_books[0].points + 90
-                                }
-                            ]
-                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                        window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                    } else {
-                        window.calendar.setState({
-                            points_wallet_books: [
-                                {
-                                    ...window.calendar.state.points_wallet_books[0],
-                                    points: window.calendar.state.points_wallet_books[0].points + 20
-                                }
-                            ]
-                        }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                    }
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 0.1)
                 }
             }
         }
@@ -2226,8 +2399,6 @@ class Calendar extends Component {
     }
 
     conflictOccurred = (schedulerData, action, event, type, slotId, slotName, start, end) => {
-        console.log(action)
-        console.log(type)
         ReactDOM.render(
             <OnlyAlert
                 message={"This is conflicting with a schedule set for " + slotName + "."}
