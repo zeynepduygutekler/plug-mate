@@ -671,7 +671,12 @@ class ScheduleControlDashboard extends Component {
                 var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate] = getDates();
                 var event_rrule = "FREQ=WEEKLY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
                 event_start = mondayDate + " " + event_start;
-                event_end = mondayDate + " " + event_end;
+                if (event_end === "00:00:00") {
+                    event_end = tuesdayDate + " " + event_end;
+                } else {
+                    event_end = mondayDate + " " + event_end;
+                }
+
                 if (input.event_rrule.includes("Monday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "MO";
@@ -762,7 +767,11 @@ class ScheduleControlDashboard extends Component {
                 var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate] = getDates();
                 var event_rrule = "FREQ=WEEKLY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
                 event_start = mondayDate + " " + event_start;
-                event_end = mondayDate + " " + event_end;
+                if (event_end === "00:00:00") {
+                    event_end = tuesdayDate + " " + event_end;
+                } else {
+                    event_end = mondayDate + " " + event_end;
+                }
                 if (input.event_rrule.includes("Monday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "MO";
