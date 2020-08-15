@@ -670,20 +670,30 @@ class ScheduleControlDashboard extends Component {
 
                 var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate] = getDates();
                 var event_rrule = "FREQ=WEEKLY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
-                event_start = mondayDate + " " + event_start;
-                if (event_end === "00:00:00") {
-                    event_end = tuesdayDate + " " + event_end;
-                } else {
-                    event_end = mondayDate + " " + event_end;
-                }
+//                event_start = mondayDate + " " + event_start;
+                event_start = "2020-01-01 " + event_start
 
+                if (event_end === "00:00:00") {
+//                    event_end = tuesdayDate + " " + event_end;
+                    event_end = "2020-01-02 " + event_end
+                } else {
+//                    event_end = mondayDate + " " + event_end;
+                    event_end = "2020-01-01 " + event_end
+                }
                 if (input.event_rrule.includes("Monday")) {
-                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                                event_rrule = event_rrule + "MO";
-                            } else {
-                                event_rrule = event_rrule + ",MO";
-                            }
-                        }
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "MO";
+                    } else {
+                        event_rrule = event_rrule + ",MO";
+                    }
+                }
+                if (input.event_rrule.includes("BeforeTue")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "MO";
+                    } else {
+                        event_rrule = event_rrule + ",MO";
+                    }
+                }
                 if (input.event_rrule.includes("Tuesday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "TU";
@@ -691,6 +701,13 @@ class ScheduleControlDashboard extends Component {
                                 event_rrule = event_rrule + ",TU";
                             }
                         }
+                if (input.event_rrule.includes("BeforeWed")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "TU";
+                    } else {
+                        event_rrule = event_rrule + ",TU";
+                    }
+                }
                 if (input.event_rrule.includes("Wednesday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "WE";
@@ -698,6 +715,13 @@ class ScheduleControlDashboard extends Component {
                                 event_rrule = event_rrule + ",WE";
                             }
                         }
+                if (input.event_rrule.includes("BeforeThu")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "WE";
+                    } else {
+                        event_rrule = event_rrule + ",WE";
+                    }
+                }
                 if (input.event_rrule.includes("Thursday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "TH";
@@ -705,6 +729,13 @@ class ScheduleControlDashboard extends Component {
                                 event_rrule = event_rrule + ",TH";
                             }
                         }
+                if (input.event_rrule.includes("BeforeFri")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "TH";
+                    } else {
+                        event_rrule = event_rrule + ",TH";
+                    }
+                }
                 if (input.event_rrule.includes("Friday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "FR";
@@ -712,6 +743,13 @@ class ScheduleControlDashboard extends Component {
                                 event_rrule = event_rrule + ",FR";
                             }
                         }
+                if (input.event_rrule.includes("BeforeSat")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "FR";
+                    } else {
+                        event_rrule = event_rrule + ",FR";
+                    }
+                }
                 if (input.event_rrule.includes("Saturday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "SA";
@@ -719,6 +757,13 @@ class ScheduleControlDashboard extends Component {
                                 event_rrule = event_rrule + ",SA";
                             }
                         }
+                if (input.event_rrule.includes("BeforeSun")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "SA";
+                    } else {
+                        event_rrule = event_rrule + ",SA";
+                    }
+                }
                 if (input.event_rrule.includes("Sunday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "SU";
@@ -726,6 +771,13 @@ class ScheduleControlDashboard extends Component {
                                 event_rrule = event_rrule + ",SU";
                             }
                         }
+                if (input.event_rrule.includes("BeforeMon")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "SU";
+                    } else {
+                        event_rrule = event_rrule + ",SU";
+                    }
+                }
 
                 // Set the events for the scheduler
                 events_datas.push({id: eventId, start: event_start, end: event_end, title: event_name, rrule: event_rrule, resourceId: resourceId, showPopover: false, bgColor: '#06D6A0', database_id: input.id})
@@ -766,19 +818,30 @@ class ScheduleControlDashboard extends Component {
 
                 var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate] = getDates();
                 var event_rrule = "FREQ=WEEKLY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
-                event_start = mondayDate + " " + event_start;
+//                event_start = mondayDate + " " + event_start;
+                event_start = "2020-01-01 " + event_start
+
                 if (event_end === "00:00:00") {
-                    event_end = tuesdayDate + " " + event_end;
+//                    event_end = tuesdayDate + " " + event_end;
+                    event_end = "2020-01-02 " + event_end
                 } else {
-                    event_end = mondayDate + " " + event_end;
+//                    event_end = mondayDate + " " + event_end;
+                    event_end = "2020-01-01 " + event_end
                 }
                 if (input.event_rrule.includes("Monday")) {
-                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                                event_rrule = event_rrule + "MO";
-                            } else {
-                                event_rrule = event_rrule + ",MO";
-                            }
-                        }
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "MO";
+                    } else {
+                        event_rrule = event_rrule + ",MO";
+                    }
+                }
+                if (input.event_rrule.includes("BeforeTue")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "MO";
+                    } else {
+                        event_rrule = event_rrule + ",MO";
+                    }
+                }
                 if (input.event_rrule.includes("Tuesday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "TU";
@@ -786,6 +849,13 @@ class ScheduleControlDashboard extends Component {
                                 event_rrule = event_rrule + ",TU";
                             }
                         }
+                if (input.event_rrule.includes("BeforeWed")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "TU";
+                    } else {
+                        event_rrule = event_rrule + ",TU";
+                    }
+                }
                 if (input.event_rrule.includes("Wednesday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "WE";
@@ -793,6 +863,13 @@ class ScheduleControlDashboard extends Component {
                                 event_rrule = event_rrule + ",WE";
                             }
                         }
+                if (input.event_rrule.includes("BeforeThu")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "WE";
+                    } else {
+                        event_rrule = event_rrule + ",WE";
+                    }
+                }
                 if (input.event_rrule.includes("Thursday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "TH";
@@ -800,6 +877,13 @@ class ScheduleControlDashboard extends Component {
                                 event_rrule = event_rrule + ",TH";
                             }
                         }
+                if (input.event_rrule.includes("BeforeFri")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "TH";
+                    } else {
+                        event_rrule = event_rrule + ",TH";
+                    }
+                }
                 if (input.event_rrule.includes("Friday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "FR";
@@ -807,6 +891,13 @@ class ScheduleControlDashboard extends Component {
                                 event_rrule = event_rrule + ",FR";
                             }
                         }
+                if (input.event_rrule.includes("BeforeSat")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "FR";
+                    } else {
+                        event_rrule = event_rrule + ",FR";
+                    }
+                }
                 if (input.event_rrule.includes("Saturday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "SA";
@@ -814,6 +905,13 @@ class ScheduleControlDashboard extends Component {
                                 event_rrule = event_rrule + ",SA";
                             }
                         }
+                if (input.event_rrule.includes("BeforeSun")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "SA";
+                    } else {
+                        event_rrule = event_rrule + ",SA";
+                    }
+                }
                 if (input.event_rrule.includes("Sunday")) {
                             if (event_rrule.charAt(event_rrule.length-1) === "=") {
                                 event_rrule = event_rrule + "SU";
@@ -821,6 +919,13 @@ class ScheduleControlDashboard extends Component {
                                 event_rrule = event_rrule + ",SU";
                             }
                         }
+                if (input.event_rrule.includes("BeforeMon")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "SU";
+                    } else {
+                        event_rrule = event_rrule + ",SU";
+                    }
+                }
 
                 // Set the events for the scheduler
                 events_datas.push({id: eventId, start: event_start, end: event_end, title: event_name, rrule: event_rrule, resourceId: resourceId, showPopover: false, bgColor: '#06D6A0', database_id: input.id})

@@ -39,25 +39,53 @@ function from12to24(hour) {
 function formatForDatabaseAdd(book, current_user_id) {
     var event_rrule = ""
     if (book.rrule.substring(60,book.rrule.length).includes("MO")) {
-        event_rrule = event_rrule + "Monday, "
+        if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
+            event_rrule = event_rrule + "BeforeMon, "
+        } else {
+            event_rrule = event_rrule + "Monday, "
+        }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("TU")) {
-        event_rrule = event_rrule + "Tuesday, "
+        if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
+            event_rrule = event_rrule + "BeforeTue, "
+        } else {
+            event_rrule = event_rrule + "Tuesday, "
+        }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("WE")) {
-        event_rrule = event_rrule + "Wednesday, "
+        if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
+            event_rrule = event_rrule + "BeforeWed, "
+        } else {
+            event_rrule = event_rrule + "Wednesday, "
+        }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("TH")) {
-        event_rrule = event_rrule + "Thursday, "
+        if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
+            event_rrule = event_rrule + "BeforeThu, "
+        } else {
+            event_rrule = event_rrule + "Thursday, "
+        }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("FR")) {
-        event_rrule = event_rrule + "Friday, "
+        if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
+            event_rrule = event_rrule + "BeforeFri, "
+        } else {
+            event_rrule = event_rrule + "Friday, "
+        }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("SA")) {
-        event_rrule = event_rrule + "Saturday, "
+        if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
+            event_rrule = event_rrule + "BeforeSat, "
+        } else {
+            event_rrule = event_rrule + "Saturday, "
+        }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("SU")) {
-        event_rrule = event_rrule + "Sunday, "
+        if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
+            event_rrule = event_rrule + "BeforeSun, "
+        } else {
+            event_rrule = event_rrule + "Sunday, "
+        }
     }
 
 
@@ -78,25 +106,53 @@ function formatForDatabaseAdd(book, current_user_id) {
 function formatForDatabaseUpdate(book, current_user_id) {
     var event_rrule = ""
     if (book.rrule.substring(60,book.rrule.length).includes("MO")) {
-        event_rrule = event_rrule + "Monday, "
+        if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
+            event_rrule = event_rrule + "BeforeMon, "
+        } else {
+            event_rrule = event_rrule + "Monday, "
+        }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("TU")) {
-        event_rrule = event_rrule + "Tuesday, "
+        if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
+            event_rrule = event_rrule + "BeforeTue, "
+        } else {
+            event_rrule = event_rrule + "Tuesday, "
+        }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("WE")) {
-        event_rrule = event_rrule + "Wednesday, "
+        if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
+            event_rrule = event_rrule + "BeforeWed, "
+        } else {
+            event_rrule = event_rrule + "Wednesday, "
+        }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("TH")) {
-        event_rrule = event_rrule + "Thursday, "
+        if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
+            event_rrule = event_rrule + "BeforeThu, "
+        } else {
+            event_rrule = event_rrule + "Thursday, "
+        }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("FR")) {
-        event_rrule = event_rrule + "Friday, "
+        if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
+            event_rrule = event_rrule + "BeforeFri, "
+        } else {
+            event_rrule = event_rrule + "Friday, "
+        }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("SA")) {
-        event_rrule = event_rrule + "Saturday, "
+        if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
+            event_rrule = event_rrule + "BeforeSat, "
+        } else {
+            event_rrule = event_rrule + "Saturday, "
+        }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("SU")) {
-        event_rrule = event_rrule + "Sunday, "
+        if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
+            event_rrule = event_rrule + "BeforeSun, "
+        } else {
+            event_rrule = event_rrule + "Sunday, "
+        }
     }
 
     const devices = ["Desktop", "Laptop", "Monitor", "Task Lamp", "Fan"]
@@ -736,7 +792,8 @@ class Calendar extends Component {
                         }
 
                     }
-
+                    console.log(event);
+                    window.calendar.props.refetchData();
                     setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
             }
@@ -1146,7 +1203,8 @@ class Calendar extends Component {
                             }, function() {window.calendar.handlePointsWalletFormSubmit()})
                         }
                     }
-
+                    console.log(newEvent);
+                    window.calendar.props.refetchData();
                     setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
             }
@@ -1556,7 +1614,8 @@ class Calendar extends Component {
                             }, function() {window.calendar.handlePointsWalletFormSubmit()})
                         }
                     }
-
+                    console.log(event);
+                    window.calendar.props.refetchData();
                     setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
             }
@@ -1962,7 +2021,8 @@ class Calendar extends Component {
                             }, function() {window.calendar.handlePointsWalletFormSubmit()})
                         }
                     }
-
+                    console.log(event);
+                    window.calendar.props.refetchData();
                     setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
             }
@@ -2372,7 +2432,8 @@ class Calendar extends Component {
                             }, function() {window.calendar.handlePointsWalletFormSubmit()})
                         }
                     }
-
+                    console.log(event);
+                    window.calendar.props.refetchData();
                     setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
             }
