@@ -28,7 +28,7 @@ class RemoteControlDashboard extends Component {
 
     fetchData = () => {
         // Fetch data from database
-        fetch('https://plugmate.herokuapp.com/control_interface/api/remote/')
+        fetch('/control_interface/api/remote/')
         .then(response => response.json())
         .then(data => {
             data.sort(compare);
@@ -39,7 +39,7 @@ class RemoteControlDashboard extends Component {
     }
 
     updateBook = (newBook) => {
-        fetch('https://plugmate.herokuapp.com/control_interface/api/remote/' + newBook.id.toString() + '/', {
+        fetch('/control_interface/api/remote/' + newBook.id.toString() + '/', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -139,14 +139,14 @@ class RemoteControlItem extends Component {
 
     componentDidMount() {
         // Fetch data for achievements
-        fetch('https://plugmate.herokuapp.com/control_interface/api/achievements_bonus/')
+        fetch('/control_interface/api/achievements_bonus/')
         .then(response => response.json())
         .then(data => {
             this.setState({achievements_books: data})
         })
 
         // Fetch data for points wallet
-        fetch('https://plugmate.herokuapp.com/control_interface/api/points_wallet/')
+        fetch('/control_interface/api/points_wallet/')
         .then(response => response.json())
         .then(data => {
             this.setState({points_wallet_books: data})
@@ -156,7 +156,7 @@ class RemoteControlItem extends Component {
     }
 
     updateAchievementsBooks = (newBook) => {
-        fetch('https://plugmate.herokuapp.com/control_interface/api/achievements_bonus/' + newBook.id.toString() + '/', {
+        fetch('/control_interface/api/achievements_bonus/' + newBook.id.toString() + '/', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -176,7 +176,7 @@ class RemoteControlItem extends Component {
     }
 
     updatePointsWalletBooks = (newBook) => {
-        fetch('https://plugmate.herokuapp.com/control_interface/api/points_wallet/' + newBook.id.toString() + '/', {
+        fetch('/control_interface/api/points_wallet/' + newBook.id.toString() + '/', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -651,7 +651,7 @@ class ScheduleControlDashboard extends Component {
 
     componentDidMount() {
         // Fetch data from database
-        fetch('https://plugmate.herokuapp.com/control_interface/api/schedule/')
+        fetch('/control_interface/api/schedule/')
         .then(response => response.json())
         .then(data => {
             this.setState({books: data})
@@ -799,7 +799,7 @@ class ScheduleControlDashboard extends Component {
 
     refetchData = () => {
         // Fetch data from database
-        fetch('https://plugmate.herokuapp.com/control_interface/api/schedule/')
+        fetch('/control_interface/api/schedule/')
         .then(response => response.json())
         .then(data => {
             this.setState({books: data})
@@ -940,7 +940,7 @@ class ScheduleControlDashboard extends Component {
 
     createNewBook = (book) => {
         const csrftoken = getCookie('csrftoken');
-        fetch('https://plugmate.herokuapp.com/control_interface/api/schedule/', {
+        fetch('/control_interface/api/schedule/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -955,7 +955,7 @@ class ScheduleControlDashboard extends Component {
     }
 
     updateBook = (newBook) => {
-        fetch('https://plugmate.herokuapp.com/control_interface/api/schedule/' + newBook.id.toString() + '/', {
+        fetch('/control_interface/api/schedule/' + newBook.id.toString() + '/', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -976,7 +976,7 @@ class ScheduleControlDashboard extends Component {
     }
 
     deleteBook = (bookId) => {
-        fetch('https://plugmate.herokuapp.com/control_interface/api/schedule/' + bookId + '/', {
+        fetch('/control_interface/api/schedule/' + bookId + '/', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -1312,7 +1312,7 @@ class PresenceControlDashboard extends Component {
 
     componentDidMount() {
         // Fetch data from database
-        fetch('https://plugmate.herokuapp.com/control_interface/api/presence/')
+        fetch('/control_interface/api/presence/')
         .then(response => response.json())
         .then(data => {
             data.sort(compare);
@@ -1321,7 +1321,7 @@ class PresenceControlDashboard extends Component {
     }
 
     updateBook = (newBook) => {
-        fetch('https://plugmate.herokuapp.com/control_interface/api/presence/' + newBook.id.toString() + '/', {
+        fetch('/control_interface/api/presence/' + newBook.id.toString() + '/', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -1417,7 +1417,7 @@ class PresenceControlItem extends Component {
     }
 
     refetchBonusAchievementsData = () => {
-        fetch('https://plugmate.herokuapp.com/control_interface/api/achievements_bonus/')
+        fetch('/control_interface/api/achievements_bonus/')
         .then(response => response.json())
         .then(data => {
             this.setState({achievements_books: data})
@@ -1427,7 +1427,7 @@ class PresenceControlItem extends Component {
     }
 
     refetchPointsWalletData = () => {
-        fetch('https://plugmate.herokuapp.com/control_interface/api/points_wallet/')
+        fetch('/control_interface/api/points_wallet/')
         .then(response => response.json())
         .then(data => {
             this.setState({points_wallet_books: data})
@@ -1437,7 +1437,7 @@ class PresenceControlItem extends Component {
     }
 
     updateAchievementsBooks = (newBook) => {
-        fetch('https://plugmate.herokuapp.com/control_interface/api/achievements_bonus/' + newBook.id.toString() + '/', {
+        fetch('/control_interface/api/achievements_bonus/' + newBook.id.toString() + '/', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -1457,7 +1457,7 @@ class PresenceControlItem extends Component {
     }
 
     updatePointsWalletBooks = (newBook) => {
-        fetch('https://plugmate.herokuapp.com/control_interface/api/points_wallet/' + newBook.id.toString() + '/', {
+        fetch('/control_interface/api/points_wallet/' + newBook.id.toString() + '/', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -1501,30 +1501,29 @@ class PresenceControlItem extends Component {
 
         // If first time clicking, update achievement
         if (this.state.achievements_books[0].first_presence === 0) {
-            this.setState({
-                achievements_books: [
-                    {
-                        ...this.state.achievements_books[0],
-                        first_presence: 70
-                    }
-                ]
-            }, function() {this.handleAchievementsFormSubmit()})
-
-            this.setState({
-                points_wallet_books: [
-                    {
-                        ...this.state.points_wallet_books[0],
-                        points: this.state.points_wallet_books[0].points + 70
-                    }
-                ]
-            }, function() {this.handlePointsWalletFormSubmit()})
-            // Open the calendar for today
-            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            var today = new Date();
-            var wanted_id = days[today.getDay()] + "Calendar";
-            document.getElementById(wanted_id).className="selected";
-            setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
-        }
+                this.setState({
+                    achievements_books: [
+                        {
+                            ...this.state.achievements_books[0],
+                            first_presence: 70
+                        }
+                    ]
+                }, function() {this.handleAchievementsFormSubmit()})
+                this.setState({
+                    points_wallet_books: [
+                        {
+                            ...this.state.points_wallet_books[0],
+                            points: this.state.points_wallet_books[0].points + 70
+                        }
+                    ]
+                }, function() {this.handlePointsWalletFormSubmit()})
+                // Open the calendar for today
+                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                var today = new Date();
+                var wanted_id = days[today.getDay()] + "Calendar";
+                document.getElementById(wanted_id).className="selected";
+                setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
+            }
     }
 
     onCancel1 = () => {
@@ -1615,29 +1614,29 @@ class PresenceControlItem extends Component {
 
         // If first time clicking, update achievement
         if (this.state.achievements_books[0].first_presence === 0) {
-            this.setState({
-                achievements_books: [
-                    {
-                        ...this.state.achievements_books[0],
-                        first_presence: 70
-                    }
-                ]
-            }, function() {this.handleAchievementsFormSubmit()})
-            this.setState({
-                points_wallet_books: [
-                    {
-                        ...this.state.points_wallet_books[0],
-                        points: this.state.points_wallet_books[0].points + 70
-                    }
-                ]
-            })
-            // Open the calendar for today
-            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            var today = new Date();
-            var wanted_id = days[today.getDay()] + "Calendar";
-            document.getElementById(wanted_id).className="selected";
-            setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
-        }
+                this.setState({
+                    achievements_books: [
+                        {
+                            ...this.state.achievements_books[0],
+                            first_presence: 70
+                        }
+                    ]
+                }, function() {this.handleAchievementsFormSubmit()})
+                this.setState({
+                    points_wallet_books: [
+                        {
+                            ...this.state.points_wallet_books[0],
+                            points: this.state.points_wallet_books[0].points + 70
+                        }
+                    ]
+                }, function() {this.handlePointsWalletFormSubmit()})
+                // Open the calendar for today
+                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                var today = new Date();
+                var wanted_id = days[today.getDay()] + "Calendar";
+                document.getElementById(wanted_id).className="selected";
+                setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
+            }
     }
 
     onCancel2 = () => {
@@ -1710,29 +1709,29 @@ class PresenceControlItem extends Component {
 
         // If first time clicking, update achievement
         if (this.state.achievements_books[0].first_presence === 0) {
-            this.setState({
-                achievements_books: [
-                    {
-                        ...this.state.achievements_books[0],
-                        first_presence: 70
-                    }
-                ]
-            }, function() {this.handleAchievementsFormSubmit()})
-            this.setState({
-                points_wallet_books: [
-                    {
-                        ...this.state.points_wallet_books[0],
-                        points: this.state.points_wallet_books[0].points + 70
-                    }
-                ]
-            }, function() {this.handlePointsWalletFormSubmit()})
-            // Open the calendar for today
-            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            var today = new Date();
-            var wanted_id = days[today.getDay()] + "Calendar";
-            document.getElementById(wanted_id).className="selected";
-            setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
-        }
+                this.setState({
+                    achievements_books: [
+                        {
+                            ...this.state.achievements_books[0],
+                            first_presence: 70
+                        }
+                    ]
+                }, function() {this.handleAchievementsFormSubmit()})
+                this.setState({
+                    points_wallet_books: [
+                        {
+                            ...this.state.points_wallet_books[0],
+                            points: this.state.points_wallet_books[0].points + 70
+                        }
+                    ]
+                }, function() {this.handlePointsWalletFormSubmit()})
+                // Open the calendar for today
+                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                var today = new Date();
+                var wanted_id = days[today.getDay()] + "Calendar";
+                document.getElementById(wanted_id).className="selected";
+                setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
+            }
     }
 
     render() {

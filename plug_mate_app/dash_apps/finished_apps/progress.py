@@ -16,14 +16,14 @@ from datetime import datetime
 # static_image_route = '/static/'
 # img_style = {'height': '50%', 'width': '50%'}
 
-def get_achievements(user_id):
+def get_achievements():
     """Reads achievement dataframes from database"""
     reference = pd.read_csv(
         'plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_points.csv')
     reference = reference.set_index('achievement')
     with connection.cursor() as cursor:
         cursor.execute(
-            "SELECT * FROM achievements_daily WHERE user_id=%s", [user_id])
+            "SELECT * FROM achievements_daily WHERE user_id=%s", [1])
         results = cursor.fetchall()
         colnames = [desc[0] for desc in cursor.description]
     daily = pd.DataFrame(results, columns=colnames)
@@ -32,7 +32,7 @@ def get_achievements(user_id):
     # #
     with connection.cursor() as cursor:
         cursor.execute(
-            "SELECT * FROM achievements_weekly WHERE user_id=%s", [user_id])
+            "SELECT * FROM achievements_weekly WHERE user_id=%s", [1])
         results = cursor.fetchall()
         colnames = [desc[0] for desc in cursor.description]
     weekly = pd.DataFrame(results, columns=colnames)
@@ -40,7 +40,7 @@ def get_achievements(user_id):
 
     with connection.cursor() as cursor:
         cursor.execute(
-            "SELECT * FROM achievements_bonus WHERE user_id=%s", [user_id])
+            "SELECT * FROM achievements_bonus WHERE user_id=%s", [1])
         results = cursor.fetchall()
         colnames = [desc[0] for desc in cursor.description]
     bonus = pd.DataFrame(results, columns=colnames)
@@ -99,13 +99,13 @@ app.layout = html.Div([
 ], style={'display': 'inline-block', 'vertical-align': 'middle'})
 
 
-@app.expanded_callback(
+@app.callback(
     [dash.dependencies.Output('achievements', 'children'),
      dash.dependencies.Output('placeholder', 'children')],
     [dash.dependencies.Input('interval', 'n_intervals')]
 )
-def update_achievements_table(n, **kwargs):
-    daily, weekly, bonus, reference = get_achievements(kwargs['user'].id)
+def update_achievements_table(n):
+    daily, weekly, bonus, reference = get_achievements()
     today = datetime.today().strftime('%a')
     table = []
 
@@ -144,35 +144,28 @@ def update_achievements_table(n, **kwargs):
     return table, ''
 
 
-@app.expanded_callback(
+@app.callback(
     [dash.dependencies.Output('progress-bar', 'children'),
      dash.dependencies.Output('progress-bar', 'value'),
      dash.dependencies.Output('progress-bar', 'max'),
      dash.dependencies.Output('text', 'children')],
     [dash.dependencies.Input('interval', 'n_intervals')]
 )
-def update_progress_bar(n, **kwargs):
+def update_progress_bar(n):
     with connection.cursor() as cursor:
         cursor.execute(
             "SELECT SUM(lower_energy_con + turn_off_leave + turn_off_end + complete_all_daily) FROM achievements_daily WHERE user_id=%s",
-            [kwargs['user'].id])
+            [1])
         daily_achievements = cursor.fetchone()[0]
         cursor.execute(
             "SELECT SUM(cost_saving + schedule_based + complete_daily + complete_weekly) FROM achievements_weekly WHERE user_id=%s",
-            [kwargs['user'].id])
+            [1])
         weekly_achievements = cursor.fetchone()[0]
 
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    points_table = pd.read_csv(os.path.join(BASE_DIR, 'finished_apps/tables_csv/achievements_points.csv'))
-    max_weekly_points = sum(points_table[points_table['type'] == 'daily']['points']) * 5 + sum(points_table[points_table['type'] == 'weekly']['points'])
+    max_weekly_points = 400
     points = daily_achievements + weekly_achievements
     # remaining_points = max_weekly_points - points
     percentage = round((points / max_weekly_points) * 100)
-
-    print('max weekly points: {}'.format(max_weekly_points))
-    print('points: {}'.format(points))
-    print('percentage: {}'.format(percentage))
-
 
     if percentage < 10:
         return '', points, max_weekly_points, f'{points}/{max_weekly_points}'
