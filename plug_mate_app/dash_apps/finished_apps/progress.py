@@ -163,11 +163,16 @@ def update_progress_bar(n, **kwargs):
         weekly_achievements = cursor.fetchone()[0]
 
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    points_table = pd.read_csv(os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_points.csv'))
+    points_table = pd.read_csv(os.path.join(BASE_DIR, 'finished_apps/tables_csv/achievements_points.csv'))
     max_weekly_points = sum(points_table[points_table['type'] == 'daily']['points']) * 5 + sum(points_table[points_table['type'] == 'weekly']['points'])
     points = daily_achievements + weekly_achievements
     # remaining_points = max_weekly_points - points
     percentage = round((points / max_weekly_points) * 100)
+
+    print('max weekly points: {}'.format(max_weekly_points))
+    print('points: {}'.format(points))
+    print('percentage: {}'.format(percentage))
+
 
     if percentage < 10:
         return '', points, max_weekly_points, f'{points}/{max_weekly_points}'
