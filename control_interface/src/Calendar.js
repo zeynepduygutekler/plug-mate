@@ -287,7 +287,7 @@ class Calendar extends Component {
     }
 
     refetchBonusAchievementsData = () => {
-        fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/')
+        fetch('https://plugmate.herokuapp.com/control_interface/api/achievements_bonus/')
         .then(response => response.json())
         .then(data => {
             this.setState({achievements_books: data})
@@ -297,7 +297,7 @@ class Calendar extends Component {
     }
 
     refetchWeeklyAchievementsData = () => {
-        fetch('http://127.0.0.1:8000/control_interface/api/achievements_weekly/')
+        fetch('https://plugmate.herokuapp.com/control_interface/api/achievements_weekly/')
         .then(response => response.json())
         .then(data => {
             this.setState({weekly_achievements_books: data})
@@ -307,7 +307,7 @@ class Calendar extends Component {
     }
 
     refetchPointsWalletData = () => {
-        fetch('http://127.0.0.1:8000/control_interface/api/points_wallet/')
+        fetch('https://plugmate.herokuapp.com/control_interface/api/points_wallet/')
         .then(response => response.json())
         .then(data => {
             this.setState({points_wallet_books: data})
@@ -317,7 +317,7 @@ class Calendar extends Component {
     }
 
     updateAchievementsBooks = (newBook) => {
-        fetch('http://127.0.0.1:8000/control_interface/api/achievements_bonus/' + newBook.id.toString() + '/', {
+        fetch('https://plugmate.herokuapp.com/control_interface/api/achievements_bonus/' + newBook.id.toString() + '/', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -337,7 +337,7 @@ class Calendar extends Component {
     }
 
     updateWeeklyAchievementsBooks = (newBook) => {
-        fetch('http://127.0.0.1:8000/control_interface/api/achievements_weekly/' + newBook.id.toString() + '/', {
+        fetch('https://plugmate.herokuapp.com/control_interface/api/achievements_weekly/' + newBook.id.toString() + '/', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -357,7 +357,7 @@ class Calendar extends Component {
     }
 
     updatePointsWalletBooks = (newBook) => {
-        fetch('http://127.0.0.1:8000/control_interface/api/points_wallet/' + newBook.id.toString() + '/', {
+        fetch('https://plugmate.herokuapp.com/control_interface/api/points_wallet/' + newBook.id.toString() + '/', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
