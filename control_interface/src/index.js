@@ -138,20 +138,6 @@ class RemoteControlItem extends Component {
     }
 
     componentDidMount() {
-        // Fetch data for achievements
-        fetch('/control_interface/api/achievements_bonus/')
-        .then(response => response.json())
-        .then(data => {
-            this.setState({achievements_books: data})
-        })
-
-        // Fetch data for points wallet
-        fetch('/control_interface/api/points_wallet/')
-        .then(response => response.json())
-        .then(data => {
-            this.setState({points_wallet_books: data})
-        })
-
         Main();
     }
 
@@ -205,12 +191,28 @@ class RemoteControlItem extends Component {
         this.updatePointsWalletBooks(book);
     }
 
-    handleAchievementsFormSubmit = () => {
-        this.handleAchievementsUpdate(this.state.achievements_books[0])
-    }
+    updateRemoteAchievements = () => {
+        fetch('/control_interface/api/achievements_bonus/')
+        .then(response => response.json())
+        .then(bonus_data => {
+            this.setState({achievements_books: bonus_data}, function() {
+                if (bonus_data[0].first_remote === 0) {
+                    // First remote achievement completed
+                    bonus_data[0].first_remote = 60
+                    this.handleAchievementsUpdate(bonus_data[0])
 
-    handlePointsWalletFormSubmit = () => {
-        this.handlePointsWalletUpdate(this.state.points_wallet_books[0])
+                    fetch('/control_interface/api/points_wallet/')
+                    .then(response => response.json())
+                    .then(points_data => {
+                        this.setState({points_wallet_books: points_data}, function() {
+                            points_data[0].points = points_data[0].points + 60
+                            this.handlePointsWalletUpdate(points_data[0])
+                        })
+                    })
+
+                }
+            })
+        })
     }
 
     handleFormSubmit = () => {
@@ -224,32 +226,8 @@ class RemoteControlItem extends Component {
         ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
         Main();
 
-        // If first time clicking, update achievement
-        if (this.state.achievements_books[0].first_remote === 0) {
-            this.setState({
-                achievements_books: [
-                    {
-                        ...this.state.achievements_books[0],
-                        first_remote: 60
-                    }
-                ]
-            }, function() {this.handleAchievementsFormSubmit()})
-            this.setState({
-                points_wallet_books: [
-                    {
-                        ...this.state.points_wallet_books[0],
-                        points: this.state.points_wallet_books[0].points + 60
-                    }
-                ]
-            }, function() {this.handlePointsWalletFormSubmit()})
-            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-             // Open the calendar for today
-             const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-             var today = new Date();
-             var wanted_id = days[today.getDay()] + "Calendar";
-             document.getElementById(wanted_id).className="selected";
-             setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
-        }
+        // Checking for achievements
+        this.updateRemoteAchievements()
     }
 
     onConfirm2 = () => {
@@ -259,32 +237,8 @@ class RemoteControlItem extends Component {
         ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
         Main();
 
-        // If first time clicking, update achievement
-        if (this.state.achievements_books[0].first_remote === 0) {
-            this.setState({
-                achievements_books: [
-                    {
-                        ...this.state.achievements_books[0],
-                        first_remote: 60
-                    }
-                ]
-            }, function() {this.handleAchievementsFormSubmit()})
-            this.setState({
-                points_wallet_books: [
-                    {
-                        ...this.state.points_wallet_books[0],
-                        points: this.state.points_wallet_books[0].points + 60
-                    }
-                ]
-            }, function() {this.handlePointsWalletFormSubmit()})
-            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-            // Open the calendar for today
-            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            var today = new Date();
-            var wanted_id = days[today.getDay()] + "Calendar";
-            document.getElementById(wanted_id).className="selected";
-            setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
-        }
+        // Checking for achievements
+        this.updateRemoteAchievements()
     }
 
     onCancel1 = () => {
@@ -332,37 +286,12 @@ class RemoteControlItem extends Component {
             this.setState({device_state: e.target.checked}, function() {this.handleFormSubmit()})
             Main();
 
-            // If first time clicking, update achievement
-            if (this.state.achievements_books[0].first_remote === 0) {
-                this.setState({
-                    achievements_books: [
-                        {
-                            ...this.state.achievements_books[0],
-                            first_remote: 60
-                        }
-                    ]
-                }, function() {this.handleAchievementsFormSubmit()})
-                this.setState({
-                    points_wallet_books: [
-                        {
-                            ...this.state.points_wallet_books[0],
-                            points: this.state.points_wallet_books[0].points + 60
-                        }
-                    ]
-                }, function() {this.handlePointsWalletFormSubmit()})
-                window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                // Open the calendar for today
-                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                var today = new Date();
-                var wanted_id = days[today.getDay()] + "Calendar";
-                document.getElementById(wanted_id).className="selected";
-                setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
-            }
+            // Checking for achievements
+            this.updateRemoteAchievements()
         }
     }
 
     render() {
-
         if (this.state.device_state === false) {
             var remote_control_outer_ring = "greyRing";
             var remote_control_image = "/static/Images/" + this.state.device_type.toString() + " OFF.png";
@@ -370,7 +299,6 @@ class RemoteControlItem extends Component {
             remote_control_outer_ring = "greenRing";
             remote_control_image = "/static/Images/" + this.state.device_type.toString() + " ON.png";
         }
-
         return (
             <div id={this.state.device_type.replace(/\s/g,'') + "BoxRemote"} className="containerRemote">
                 <p style={{textAlign:"center", fontWeight:"bold", color:"black"}}> {this.state.device_type} </p>
@@ -1411,31 +1339,6 @@ class PresenceControlItem extends Component {
         points_wallet_books: []
     }
 
-    componentDidMount() {
-        this.refetchBonusAchievementsData();
-        this.refetchPointsWalletData();
-    }
-
-    refetchBonusAchievementsData = () => {
-        fetch('/control_interface/api/achievements_bonus/')
-        .then(response => response.json())
-        .then(data => {
-            this.setState({achievements_books: data})
-        })
-
-        setTimeout(this.refetchBonusAchievementsData, 10000)
-    }
-
-    refetchPointsWalletData = () => {
-        fetch('/control_interface/api/points_wallet/')
-        .then(response => response.json())
-        .then(data => {
-            this.setState({points_wallet_books: data})
-        })
-
-        setTimeout(this.refetchPointsWalletData, 10000)
-    }
-
     updateAchievementsBooks = (newBook) => {
         fetch('/control_interface/api/achievements_bonus/' + newBook.id.toString() + '/', {
             method: 'PUT',
@@ -1486,12 +1389,28 @@ class PresenceControlItem extends Component {
         this.updatePointsWalletBooks(book);
     }
 
-    handleAchievementsFormSubmit = () => {
-        this.handleAchievementsUpdate(this.state.achievements_books[0])
-    }
+    updatePresenceAchievements = () => {
+        fetch('/control_interface/api/achievements_bonus/')
+        .then(response => response.json())
+        .then(bonus_data => {
+            this.setState({achievements_books: bonus_data}, function() {
+                if (bonus_data[0].first_presence === 0) {
+                    // First remote achievement completed
+                    bonus_data[0].first_presence = 70
+                    this.handleAchievementsUpdate(bonus_data[0])
 
-    handlePointsWalletFormSubmit = () => {
-        this.handlePointsWalletUpdate(this.state.points_wallet_books[0])
+                    fetch('/control_interface/api/points_wallet/')
+                    .then(response => response.json())
+                    .then(points_data => {
+                        this.setState({points_wallet_books: points_data}, function() {
+                            points_data[0].points = points_data[0].points + 70
+                            this.handlePointsWalletUpdate(points_data[0])
+                        })
+                    })
+
+                }
+            })
+        })
     }
 
     onConfirm1 = () => {
@@ -1499,31 +1418,8 @@ class PresenceControlItem extends Component {
         this.setState({presence_setting: "1000000"}, function() {this.handleFormSubmit()});
         ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
 
-        // If first time clicking, update achievement
-        if (this.state.achievements_books[0].first_presence === 0) {
-                this.setState({
-                    achievements_books: [
-                        {
-                            ...this.state.achievements_books[0],
-                            first_presence: 70
-                        }
-                    ]
-                }, function() {this.handleAchievementsFormSubmit()})
-                this.setState({
-                    points_wallet_books: [
-                        {
-                            ...this.state.points_wallet_books[0],
-                            points: this.state.points_wallet_books[0].points + 70
-                        }
-                    ]
-                }, function() {this.handlePointsWalletFormSubmit()})
-                // Open the calendar for today
-                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                var today = new Date();
-                var wanted_id = days[today.getDay()] + "Calendar";
-                document.getElementById(wanted_id).className="selected";
-                setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
-            }
+        // Checking for achievements
+        this.updatePresenceAchievements()
     }
 
     onCancel1 = () => {
@@ -1542,31 +1438,8 @@ class PresenceControlItem extends Component {
             // Update database
             this.setState({presence_setting: evt.target.value}, function() {this.handleFormSubmit()})
 
-            // If first time clicking, update achievement
-            if (this.state.achievements_books[0].first_presence === 0) {
-                this.setState({
-                    achievements_books: [
-                        {
-                            ...this.state.achievements_books[0],
-                            first_presence: 70
-                        }
-                    ]
-                }, function() {this.handleAchievementsFormSubmit()})
-                this.setState({
-                    points_wallet_books: [
-                        {
-                            ...this.state.points_wallet_books[0],
-                            points: this.state.points_wallet_books[0].points + 70
-                        }
-                    ]
-                }, function() {this.handlePointsWalletFormSubmit()})
-                // Open the calendar for today
-                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                var today = new Date();
-                var wanted_id = days[today.getDay()] + "Calendar";
-                document.getElementById(wanted_id).className="selected";
-                setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
-            }
+            // Checking for achievements
+            this.updatePresenceAchievements()
         }
         if (evt.target.value === "other") {
             // Show popup
@@ -1612,31 +1485,8 @@ class PresenceControlItem extends Component {
         this.setState({presence_setting: "1000000"}, function() {this.handleFormSubmit()})
         ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
 
-        // If first time clicking, update achievement
-        if (this.state.achievements_books[0].first_presence === 0) {
-                this.setState({
-                    achievements_books: [
-                        {
-                            ...this.state.achievements_books[0],
-                            first_presence: 70
-                        }
-                    ]
-                }, function() {this.handleAchievementsFormSubmit()})
-                this.setState({
-                    points_wallet_books: [
-                        {
-                            ...this.state.points_wallet_books[0],
-                            points: this.state.points_wallet_books[0].points + 70
-                        }
-                    ]
-                }, function() {this.handlePointsWalletFormSubmit()})
-                // Open the calendar for today
-                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                var today = new Date();
-                var wanted_id = days[today.getDay()] + "Calendar";
-                document.getElementById(wanted_id).className="selected";
-                setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
-            }
+       // Checking for achievements
+       this.updatePresenceAchievements()
     }
 
     onCancel2 = () => {
@@ -1660,31 +1510,8 @@ class PresenceControlItem extends Component {
             // Update database
             this.setState({presence_setting: "5"}, function() {this.handleFormSubmit()})
 
-            // If first time clicking, update achievement
-            if (this.state.achievements_books[0].first_presence === 0) {
-                this.setState({
-                    achievements_books: [
-                        {
-                            ...this.state.achievements_books[0],
-                            first_presence: 70
-                        }
-                    ]
-                }, function() {this.handleAchievementsFormSubmit()})
-                this.setState({
-                    points_wallet_books: [
-                        {
-                            ...this.state.points_wallet_books[0],
-                            points: this.state.points_wallet_books[0].points + 70
-                        }
-                    ]
-                }, function() {this.handlePointsWalletFormSubmit()})
-                // Open the calendar for today
-                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                var today = new Date();
-                var wanted_id = days[today.getDay()] + "Calendar";
-                document.getElementById(wanted_id).className="selected";
-                setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
-            }
+            // Checking for achievements
+            this.updatePresenceAchievements()
         }
     }
 
@@ -1707,31 +1534,8 @@ class PresenceControlItem extends Component {
         // Update database
         this.handleFormSubmit();
 
-        // If first time clicking, update achievement
-        if (this.state.achievements_books[0].first_presence === 0) {
-                this.setState({
-                    achievements_books: [
-                        {
-                            ...this.state.achievements_books[0],
-                            first_presence: 70
-                        }
-                    ]
-                }, function() {this.handleAchievementsFormSubmit()})
-                this.setState({
-                    points_wallet_books: [
-                        {
-                            ...this.state.points_wallet_books[0],
-                            points: this.state.points_wallet_books[0].points + 70
-                        }
-                    ]
-                }, function() {this.handlePointsWalletFormSubmit()})
-                // Open the calendar for today
-                const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                var today = new Date();
-                var wanted_id = days[today.getDay()] + "Calendar";
-                document.getElementById(wanted_id).className="selected";
-                setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
-            }
+        // Checking for achievements
+        this.updatePresenceAchievements()
     }
 
     render() {

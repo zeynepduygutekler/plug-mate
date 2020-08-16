@@ -280,42 +280,6 @@ class Calendar extends Component {
         );
     }
 
-    componentDidMount() {
-        this.refetchBonusAchievementsData();
-        this.refetchWeeklyAchievementsData();
-        this.refetchPointsWalletData();
-    }
-
-    refetchBonusAchievementsData = () => {
-        fetch('/control_interface/api/achievements_bonus/')
-        .then(response => response.json())
-        .then(data => {
-            this.setState({achievements_books: data})
-        })
-
-        setTimeout(this.refetchBonusAchievementsData, 10000)
-    }
-
-    refetchWeeklyAchievementsData = () => {
-        fetch('/control_interface/api/achievements_weekly/')
-        .then(response => response.json())
-        .then(data => {
-            this.setState({weekly_achievements_books: data})
-        })
-
-        setTimeout(this.refetchWeeklyAchievementsData, 10000)
-    }
-
-    refetchPointsWalletData = () => {
-        fetch('/control_interface/api/points_wallet/')
-        .then(response => response.json())
-        .then(data => {
-            this.setState({points_wallet_books: data})
-        })
-
-        setTimeout(this.refetchPointsWalletData, 10000)
-    }
-
     updateAchievementsBooks = (newBook) => {
         fetch('/control_interface/api/achievements_bonus/' + newBook.id.toString() + '/', {
             method: 'PUT',
@@ -391,16 +355,48 @@ class Calendar extends Component {
         this.updatePointsWalletBooks(book);
     }
 
-    handleAchievementsFormSubmit = () => {
-        this.handleAchievementsUpdate(this.state.achievements_books[0])
-    }
+    updateScheduleAchievements = () => {
+        fetch('/control_interface/api/achievements_weekly/')
+        .then(response => response.json())
+        .then(weekly_data => {
+            this.setState({weekly_achievements_books: weekly_data}, function() {
+                if (weekly_data[0].schedule_based === 0) {
+                    // Weekly schedule achievement completed
+                    weekly_data[0].schedule_based = 20;
+                    this.handleWeeklyAchievementsUpdate(weekly_data[0])
 
-    handleWeeklyAchievementsFormSubmit = () => {
-        this.handleWeeklyAchievementsUpdate(this.state.weekly_achievements_books[0])
-    }
+                    fetch('/control_interface/api/achievements_bonus/')
+                    .then(response => response.json())
+                    .then(bonus_data => {
+                        this.setState({achievements_books: bonus_data}, function() {
+                            if (bonus_data[0].first_schedule === 0) {
+                                // First schedule achievement completed
+                                bonus_data[0].first_schedule = 70
+                                this.handleAchievementsUpdate(bonus_data[0])
 
-    handlePointsWalletFormSubmit = () => {
-        this.handlePointsWalletUpdate(this.state.points_wallet_books[0])
+                                fetch('/control_interface/api/points_wallet/')
+                                .then(response => response.json())
+                                .then(points_data => {
+                                    this.setState({points_wallet_books: points_data}, function() {
+                                        points_data[0].points = points_data[0].points + 90
+                                        this.handlePointsWalletUpdate(points_data[0])
+                                    })
+                                })
+                            } else {
+                                fetch('/control_interface/api/points_wallet/')
+                                .then(response => response.json())
+                                .then(points_data => {
+                                    this.setState({points_wallet_books: points_data}, function() {
+                                        points_data[0].points = points_data[0].points + 20
+                                        this.handlePointsWalletUpdate(points_data[0])
+                                    })
+                                })
+                            }
+                        })
+                    })
+                }
+            })
+        })
     }
 
     isNonWorkingTime = (schedulerData, time) => {
@@ -430,6 +426,9 @@ class Calendar extends Component {
                 viewModel: schedulerData
             });
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
         }
 
         function okButtonClicked() {
@@ -750,49 +749,9 @@ class Calendar extends Component {
 
                     ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
+                    // Checking for achievements
+                    window.calendar.updateScheduleAchievements()
 
-                    // Update weekly achievement
-                    if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
-                        window.calendar.setState({
-                            weekly_achievements_books: [
-                                {
-                                    ...window.calendar.state.weekly_achievements_books[0],
-                                    schedule_based: 20
-                                }
-                            ]
-                        }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
-                        // If first time clicking, update achievement
-                        if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                            window.calendar.setState({
-                                achievements_books: [
-                                    {
-                                        ...window.calendar.state.achievements_books[0],
-                                        first_schedule: 70
-                                    }
-                                ]
-                            }, function() {window.calendar.handleAchievementsFormSubmit()})
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 90
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                        } else {
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 20
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                        }
-
-                    }
-                    console.log(event);
                     window.calendar.props.refetchData();
                     setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
@@ -841,6 +800,9 @@ class Calendar extends Component {
             window.calendar.props.refetchData();
 
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
         }
         function deleteButtonClicked() {
             schedulerData.removeEvent(newEvent);
@@ -1162,48 +1124,9 @@ class Calendar extends Component {
 
                     ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
-                    // Update weekly achievement
-                    if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
-                        window.calendar.setState({
-                            weekly_achievements_books: [
-                                {
-                                    ...window.calendar.state.weekly_achievements_books[0],
-                                    schedule_based: 20
-                                }
-                            ]
-                        }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
+                    // Checking for achievements
+                    window.calendar.updateScheduleAchievements()
 
-                        // If first time clicking, update achievement
-                        if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                            window.calendar.setState({
-                                achievements_books: [
-                                    {
-                                        ...window.calendar.state.achievements_books[0],
-                                        first_schedule: 70
-                                    }
-                                ]
-                            }, function() {window.calendar.handleAchievementsFormSubmit()})
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 90
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                        } else {
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 20
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                        }
-                    }
-                    console.log(newEvent);
                     window.calendar.props.refetchData();
                     setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
@@ -1239,6 +1162,9 @@ class Calendar extends Component {
             window.calendar.props.refetchData();
 
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
         }
         function deleteButtonClicked() {
             // Update calendar
@@ -1252,6 +1178,9 @@ class Calendar extends Component {
             window.calendar.props.refetchData();
 
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
         }
 
         function okButtonClicked() {
@@ -1572,49 +1501,9 @@ class Calendar extends Component {
 
                     ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
+                    // Checking for achievements
+                    window.calendar.updateScheduleAchievements()
 
-
-                    // Update weekly achievement
-                    if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
-                        window.calendar.setState({
-                            weekly_achievements_books: [
-                                {
-                                    ...window.calendar.state.weekly_achievements_books[0],
-                                    schedule_based: 20
-                                }
-                            ]
-                        }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
-                        // If first time clicking, update achievement
-                        if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                            window.calendar.setState({
-                                achievements_books: [
-                                    {
-                                        ...window.calendar.state.achievements_books[0],
-                                        first_schedule: 70
-                                    }
-                                ]
-                            }, function() {window.calendar.handleAchievementsFormSubmit()})
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 90
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                        } else {
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 20
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                        }
-                    }
-                    console.log(event);
                     window.calendar.props.refetchData();
                     setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
@@ -1650,6 +1539,9 @@ class Calendar extends Component {
             // Update database (Update)
             window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
             window.calendar.props.refetchData();
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
         }
         function deleteButtonClicked() {
             // Update database (Delete)
@@ -1662,6 +1554,9 @@ class Calendar extends Component {
                 viewModel: schedulerData
             })
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
         }
 
         function okButtonClicked() {
@@ -1981,47 +1876,9 @@ class Calendar extends Component {
 
                     ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
-                    // Update weekly achievement
-                    if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
-                        window.calendar.setState({
-                            weekly_achievements_books: [
-                                {
-                                    ...window.calendar.state.weekly_achievements_books[0],
-                                    schedule_based: 20
-                                }
-                            ]
-                        }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
-                        // If first time clicking, update achievement
-                        if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                            window.calendar.setState({
-                                achievements_books: [
-                                    {
-                                        ...window.calendar.state.achievements_books[0],
-                                        first_schedule: 70
-                                    }
-                                ]
-                            }, function() {window.calendar.handleAchievementsFormSubmit()})
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 90
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                        } else {
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 20
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                        }
-                    }
-                    console.log(event);
+                    // Checking for achievements
+                    window.calendar.updateScheduleAchievements()
+
                     window.calendar.props.refetchData();
                     setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
@@ -2060,6 +1917,9 @@ class Calendar extends Component {
             // Update database (Update)
             window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
             window.calendar.props.refetchData();
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
         }
 
         function deleteButtonClicked() {
@@ -2073,6 +1933,9 @@ class Calendar extends Component {
                 viewModel: schedulerData
             })
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
         }
 
         function okButtonClicked() {
@@ -2392,47 +2255,9 @@ class Calendar extends Component {
 
                     ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
-                    // Update weekly achievement
-                    if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
-                        window.calendar.setState({
-                            weekly_achievements_books: [
-                                {
-                                    ...window.calendar.state.weekly_achievements_books[0],
-                                    schedule_based: 20
-                                }
-                            ]
-                        }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
-                        // If first time clicking, update achievement
-                        if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                            window.calendar.setState({
-                                achievements_books: [
-                                    {
-                                        ...window.calendar.state.achievements_books[0],
-                                        first_schedule: 70
-                                    }
-                                ]
-                            }, function() {window.calendar.handleAchievementsFormSubmit()})
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 90
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                        } else {
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 20
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                        }
-                    }
-                    console.log(event);
+                    // Checking for achievements
+                    window.calendar.updateScheduleAchievements()
+
                     window.calendar.props.refetchData();
                     setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
