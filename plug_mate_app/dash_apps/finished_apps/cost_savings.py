@@ -116,7 +116,7 @@ def update_bar_chart(n1, n2, int, **kwargs):
 
     def create_trace(discount):
         dff = df.fillna(0)
-        print(dff)
+        # print(dff)
         dff = dff + abs(dff) * discount
         # dff = df.apply(lambda x: x.min() if pd.isnull(x.min()) else
         # x[np.argmin(x.abs())], axis=1)
