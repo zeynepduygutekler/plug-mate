@@ -7,6 +7,7 @@ import dash_bootstrap_components as dbc
 from django_plotly_dash import DjangoDash
 from django.db import connection
 from time import time
+import numpy as np
 
 
 def calculate_cost(power):
@@ -114,7 +115,11 @@ def update_bar_chart(n1, n2, int, **kwargs):
     hovertemplate = '<em>Week of %{x}</em><br>%{hovertext}' if view == 'Week' else '<em>Month of %{x}</em><br>%{hovertext}'
 
     def create_trace(discount):
-        dff = df + abs(df) * discount
+        dff = df.fillna(0)
+        print(dff)
+        dff = dff + abs(dff) * discount
+        # dff = df.apply(lambda x: x.min() if pd.isnull(x.min()) else
+        # x[np.argmin(x.abs())], axis=1)
         ser = dff['total']
         pos = ser.loc[ser > 0]
         neg = ser.loc[ser < 0]
@@ -123,7 +128,7 @@ def update_bar_chart(n1, n2, int, **kwargs):
         hovertext2 = []
         for date in dff.index:
             # hovertext
-            sorted_list = [x for _,x in sorted(zip(dff.loc[date].tolist(),list(dff)), reverse=True)]
+            sorted_list = [x for _, x in sorted(zip(dff.loc[date].tolist(), list(dff)), reverse=True)]
             sorted_list.remove('total')
             string = ''
             for plug_load in sorted_list:
@@ -131,9 +136,9 @@ def update_bar_chart(n1, n2, int, **kwargs):
                 string = string + '<b>' + plug_load.capitalize() + '</b>' + ': ' + currency_format(
                     dff[plug_load][date]) + '<br>'
             string = string + '<b>' + 'Total' + '</b>' + ': ' + currency_format(
-                    dff['total'][date]) + '<br>'
-            energy_points_earned = round(dff['total'][date]*10) if dff['total'][date] > 0 else round(
-                dff['total'][date] * 0.5*10)
+                dff['total'][date]) + '<br>'
+            energy_points_earned = round(dff['total'][date] * 10) if dff['total'][date] > 0 else round(
+                dff['total'][date] * 0.5 * 10)
             string += f'<span style="color:blue"><b>Energy points earned</b>: {energy_points_earned} points</span>'
             if energy_points_earned > 0:
                 hovertext1.append(string)
@@ -244,7 +249,7 @@ def update_bar_chart(n1, n2, int, **kwargs):
             x=0.99,
             borderwidth=0
         ),
-        margin=dict(t=75,b=0)
+        margin=dict(t=75, b=0)
     )
     fig.update_yaxes(tickprefix="$")
 
