@@ -199,9 +199,11 @@ function getDates() {
     var fridayDate = new Date();
     var saturdayDate = new Date();
     var sundayDate = new Date();
+    var startDate = new Date();
 
     if (today.getDay() === 0) {
         // Today is Sunday
+        startDate.setDate(today.getDate() - 7)
         mondayDate.setDate(today.getDate() - 6);
         tuesdayDate.setDate(today.getDate() - 5);
         wednesdayDate.setDate(today.getDate() - 4);
@@ -210,6 +212,7 @@ function getDates() {
         saturdayDate.setDate(today.getDate() - 1);
         sundayDate.setDate(today.getDate());
     } else {
+        startDate.setDate(today.getDate() + (0 - today.getDay()))
         mondayDate.setDate(today.getDate() + (1 - today.getDay()));
         tuesdayDate.setDate(today.getDate() + (2 - today.getDay()));
         wednesdayDate.setDate(today.getDate() + (3 - today.getDay()));
@@ -219,6 +222,7 @@ function getDates() {
         sundayDate.setDate(today.getDate() + (7 - today.getDay()));
     }
 
+    startDate = startDate.getFullYear() + "-" + ((startDate.getMonth() + 1).toString().length === 1 ? "0" + (startDate.getMonth() + 1).toString() : (startDate.getMonth() + 1)) + "-" + (startDate.getDate().toString().length === 1 ? "0" + startDate.getDate().toString() : startDate.getDate())
     mondayDate = mondayDate.getFullYear() + "-" + ((mondayDate.getMonth() + 1).toString().length === 1 ? "0" + (mondayDate.getMonth() + 1).toString() : (mondayDate.getMonth() + 1)) + "-" + (mondayDate.getDate().toString().length === 1 ? "0" + mondayDate.getDate().toString() : mondayDate.getDate())
     tuesdayDate = tuesdayDate.getFullYear() + "-" + ((tuesdayDate.getMonth() + 1).toString().length === 1 ? "0" + (tuesdayDate.getMonth() + 1).toString() : (tuesdayDate.getMonth() + 1)) + "-" + (tuesdayDate.getDate().toString().length === 1 ? "0" + tuesdayDate.getDate().toString() : tuesdayDate.getDate())
     wednesdayDate = wednesdayDate.getFullYear() + "-" + ((wednesdayDate.getMonth() + 1).toString().length === 1 ? "0" + (wednesdayDate.getMonth() + 1).toString() : (wednesdayDate.getMonth() + 1)) + "-" + (wednesdayDate.getDate().toString().length === 1 ? "0" + wednesdayDate.getDate().toString() : wednesdayDate.getDate())
@@ -227,7 +231,7 @@ function getDates() {
     saturdayDate = saturdayDate.getFullYear() + "-" + ((saturdayDate.getMonth() + 1).toString().length === 1 ? "0" + (saturdayDate.getMonth() + 1).toString() : (saturdayDate.getMonth() + 1)) + "-" + (saturdayDate.getDate().toString().length === 1 ? "0" + saturdayDate.getDate().toString() : saturdayDate.getDate())
     sundayDate = sundayDate.getFullYear() + "-" + ((sundayDate.getMonth() + 1).toString().length === 1 ? "0" + (sundayDate.getMonth() + 1).toString() : (sundayDate.getMonth() + 1)) + "-" + (sundayDate.getDate().toString().length === 1 ? "0" + sundayDate.getDate().toString() : sundayDate.getDate())
 
-    return([mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate])
+    return([mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate, startDate])
 }
 
 class Calendar extends Component {
@@ -397,6 +401,18 @@ class Calendar extends Component {
                 }
             })
         })
+    }
+
+    checkConflicts = (schedulerData, event) => {
+        var hasConflict = false;
+        var conflictedEvents = [];
+        var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
+        var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
+        var new_days_to_loop_over = [];
+        var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
+        for (var repeat_day of repeat_option) {
+
+        }
     }
 
     isNonWorkingTime = (schedulerData, time) => {
@@ -604,9 +620,9 @@ class Calendar extends Component {
                     schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
 
                     // Update repeat
-                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
-                                      window.calendar.props.mondayDate.substring(5,7) +
-                                      window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.startDate.substring(0,4) +
+                                      window.calendar.props.startDate.substring(5,7) +
+                                      window.calendar.props.startDate.substring(8,10) + "T000000Z;UNTIL=" +
                                       window.calendar.props.sundayDate.substring(0,4) +
                                       window.calendar.props.sundayDate.substring(5,7) +
                                       window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
@@ -737,11 +753,6 @@ class Calendar extends Component {
                         })
                     }
 
-                    // Update calendar
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-
                     // Update database (Update)
                     window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
                     window.calendar.props.refetchData();
@@ -752,6 +763,11 @@ class Calendar extends Component {
                     // Checking for achievements
                     window.calendar.updateScheduleAchievements()
 
+                    // Update calendar
+                    window.calendar.setState({
+                        viewModel: schedulerData
+                    })
+
                     window.calendar.props.refetchData();
                     setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
@@ -760,6 +776,7 @@ class Calendar extends Component {
 
          ReactDOM.render(
             <ScheduleControlPopup
+                type=""
                 device_type={"Edit Schedule: " + slotName}
                 event_rrule={event.rrule}
                 event_start={event.start}
@@ -786,7 +803,7 @@ class Calendar extends Component {
             resourceId: slotId,
             bgColor: "#06D6A0",
             showPopover: false,
-            rrule: "FREQ=WEEKLY;DTSTART=" + this.props.mondayDate.substring(0,4) + this.props.mondayDate.substring(5,7) + this.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" + this.props.sundayDate.substring(0,4) + this.props.sundayDate.substring(5,7) + this.props.sundayDate.substring(8,10) + "T235900Z;BYDAY=" + this.props.day.substring(0,2).toUpperCase()
+            rrule: "FREQ=WEEKLY;DTSTART=" + this.props.startDate.substring(0,4) + this.props.startDate.substring(5,7) + this.props.startDate.substring(8,10) + "T000000Z;UNTIL=" + this.props.sundayDate.substring(0,4) + this.props.sundayDate.substring(5,7) + this.props.sundayDate.substring(8,10) + "T235900Z;BYDAY=" + this.props.day.substring(0,2).toUpperCase()
         }
 
         schedulerData.addEvent(newEvent);
@@ -985,9 +1002,9 @@ class Calendar extends Component {
                     schedulerData.updateEventEnd(newEvent, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
 
                     // Update repeat
-                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
-                                      window.calendar.props.mondayDate.substring(5,7) +
-                                      window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.startDate.substring(0,4) +
+                                      window.calendar.props.startDate.substring(5,7) +
+                                      window.calendar.props.startDate.substring(8,10) + "T000000Z;UNTIL=" +
                                       window.calendar.props.sundayDate.substring(0,4) +
                                       window.calendar.props.sundayDate.substring(5,7) +
                                       window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
@@ -1113,11 +1130,6 @@ class Calendar extends Component {
                         })
                     }
 
-                    // Update calendar
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-
                     // Update database (Add)
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     window.calendar.props.refetchData();
@@ -1126,6 +1138,11 @@ class Calendar extends Component {
 
                     // Checking for achievements
                     window.calendar.updateScheduleAchievements()
+
+                    // Update calendar
+                    window.calendar.setState({
+                        viewModel: schedulerData
+                    })
 
                     window.calendar.props.refetchData();
                     setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
@@ -1136,6 +1153,7 @@ class Calendar extends Component {
 
         ReactDOM.render(
             <ScheduleControlPopup
+                type="new"
                 device_type={"Add Schedule: " + slotName}
                 event_rrule={newEvent.rrule}
                 event_start={newEvent.start}
@@ -1165,13 +1183,11 @@ class Calendar extends Component {
 
             // Checking for achievements
             window.calendar.updateScheduleAchievements()
+
         }
         function deleteButtonClicked() {
             // Update calendar
             schedulerData.removeEvent(event);
-            window.calendar.setState({
-                viewModel: schedulerData
-            })
 
             // Update database
             window.calendar.props.onDeleteClick(event.database_id);
@@ -1181,6 +1197,10 @@ class Calendar extends Component {
 
             // Checking for achievements
             window.calendar.updateScheduleAchievements()
+
+            window.calendar.setState({
+                viewModel: schedulerData
+            })
         }
 
         function okButtonClicked() {
@@ -1282,6 +1302,9 @@ class Calendar extends Component {
                                 if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
                                     existing_days_to_loop_over.push(getDates()[6])
                                 }
+                                if (e.rrule.substring(60, e.rrule.length).includes("SU") && e.start.substring(11,19) < "08:00:00") {
+                                    existing_days_to_loop_over.push(getDates()[7])
+                                }
 
                                 for (var existing_day of existing_days_to_loop_over) {
                                     existing_start_for_this = existing_day + e.start.substring(10,19);
@@ -1356,9 +1379,9 @@ class Calendar extends Component {
                     schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
 
                     // Update repeat
-                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
-                                      window.calendar.props.mondayDate.substring(5,7) +
-                                      window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.startDate.substring(0,4) +
+                                      window.calendar.props.startDate.substring(5,7) +
+                                      window.calendar.props.startDate.substring(8,10) + "T000000Z;UNTIL=" +
                                       window.calendar.props.sundayDate.substring(0,4) +
                                       window.calendar.props.sundayDate.substring(5,7) +
                                       window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
@@ -1490,10 +1513,6 @@ class Calendar extends Component {
                         })
                     }
 
-                    // Update calendar
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
 
                     // Update database (Update)
                     window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
@@ -1504,6 +1523,11 @@ class Calendar extends Component {
                     // Checking for achievements
                     window.calendar.updateScheduleAchievements()
 
+                    // Update calendar
+                    window.calendar.setState({
+                        viewModel: schedulerData
+                    })
+
                     window.calendar.props.refetchData();
                     setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
                 }
@@ -1513,6 +1537,7 @@ class Calendar extends Component {
         var slotName = schedulerData.getSlotById(event.resourceId).name;
         ReactDOM.render(
             <ScheduleControlPopup
+                type=""
                 device_type={"Edit Schedule: " + slotName}
                 event_rrule={event.rrule}
                 event_start={newStart}
@@ -1732,9 +1757,9 @@ class Calendar extends Component {
                     schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
 
                     // Update repeat
-                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
-                                      window.calendar.props.mondayDate.substring(5,7) +
-                                      window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.startDate.substring(0,4) +
+                                      window.calendar.props.startDate.substring(5,7) +
+                                      window.calendar.props.startDate.substring(8,10) + "T000000Z;UNTIL=" +
                                       window.calendar.props.sundayDate.substring(0,4) +
                                       window.calendar.props.sundayDate.substring(5,7) +
                                       window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
@@ -1865,11 +1890,6 @@ class Calendar extends Component {
                         })
                     }
 
-                    // Update calendar
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-
                     // Update database (Update)
                     window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
                     window.calendar.props.refetchData();
@@ -1879,8 +1899,13 @@ class Calendar extends Component {
                     // Checking for achievements
                     window.calendar.updateScheduleAchievements()
 
+                    // Update calendar
+                    window.calendar.setState({
+                        viewModel: schedulerData
+                    })
+
                     window.calendar.props.refetchData();
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 2000)
                 }
             }
         }
@@ -1889,6 +1914,7 @@ class Calendar extends Component {
         var slotName = schedulerData.getSlotById(event.resourceId).name;
         ReactDOM.render(
             <ScheduleControlPopup
+                type=""
                 device_type={"Edit Schedule: " + slotName}
                 event_rrule={event.rrule}
                 event_start={event.start}
@@ -1927,15 +1953,16 @@ class Calendar extends Component {
             window.calendar.props.onDeleteClick(event.database_id);
             window.calendar.props.refetchData();
 
+            ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
+
             // Update calendar
             schedulerData.removeEvent(event);
             window.calendar.setState({
                 viewModel: schedulerData
             })
-            ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
-
-            // Checking for achievements
-            window.calendar.updateScheduleAchievements()
         }
 
         function okButtonClicked() {
@@ -2111,9 +2138,9 @@ class Calendar extends Component {
                     schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
 
                     // Update repeat
-                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
-                                      window.calendar.props.mondayDate.substring(5,7) +
-                                      window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.startDate.substring(0,4) +
+                                      window.calendar.props.startDate.substring(5,7) +
+                                      window.calendar.props.startDate.substring(8,10) + "T000000Z;UNTIL=" +
                                       window.calendar.props.sundayDate.substring(0,4) +
                                       window.calendar.props.sundayDate.substring(5,7) +
                                       window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
@@ -2244,11 +2271,6 @@ class Calendar extends Component {
                         })
                     }
 
-                    // Update calendar
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-
                     // Update database (Update)
                     window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
                     window.calendar.props.refetchData();
@@ -2257,6 +2279,11 @@ class Calendar extends Component {
 
                     // Checking for achievements
                     window.calendar.updateScheduleAchievements()
+
+                    // Update calendar
+                    window.calendar.setState({
+                        viewModel: schedulerData
+                    })
 
                     window.calendar.props.refetchData();
                     setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
@@ -2267,6 +2294,7 @@ class Calendar extends Component {
 
         ReactDOM.render(
             <ScheduleControlPopup
+                type=""
                 device_type={"Edit Schedule: " + slotName}
                 event_rrule={event.rrule}
                 event_start={start}

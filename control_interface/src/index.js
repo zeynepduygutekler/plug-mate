@@ -522,9 +522,11 @@ function getDates() {
     var fridayDate = new Date();
     var saturdayDate = new Date();
     var sundayDate = new Date();
+    var startDate = new Date();
 
     if (today.getDay() === 0) {
         // Today is Sunday
+        startDate.setDate(today.getDate() - 7)
         mondayDate.setDate(today.getDate() - 6);
         tuesdayDate.setDate(today.getDate() - 5);
         wednesdayDate.setDate(today.getDate() - 4);
@@ -533,6 +535,7 @@ function getDates() {
         saturdayDate.setDate(today.getDate() - 1);
         sundayDate.setDate(today.getDate());
     } else {
+        startDate.setDate(today.getDate() + (0 - today.getDay()))
         mondayDate.setDate(today.getDate() + (1 - today.getDay()));
         tuesdayDate.setDate(today.getDate() + (2 - today.getDay()));
         wednesdayDate.setDate(today.getDate() + (3 - today.getDay()));
@@ -542,6 +545,7 @@ function getDates() {
         sundayDate.setDate(today.getDate() + (7 - today.getDay()));
     }
 
+    startDate = startDate.getFullYear() + "-" + ((startDate.getMonth() + 1).toString().length === 1 ? "0" + (startDate.getMonth() + 1).toString() : (startDate.getMonth() + 1)) + "-" + (startDate.getDate().toString().length === 1 ? "0" + startDate.getDate().toString() : startDate.getDate())
     mondayDate = mondayDate.getFullYear() + "-" + ((mondayDate.getMonth() + 1).toString().length === 1 ? "0" + (mondayDate.getMonth() + 1).toString() : (mondayDate.getMonth() + 1)) + "-" + (mondayDate.getDate().toString().length === 1 ? "0" + mondayDate.getDate().toString() : mondayDate.getDate())
     tuesdayDate = tuesdayDate.getFullYear() + "-" + ((tuesdayDate.getMonth() + 1).toString().length === 1 ? "0" + (tuesdayDate.getMonth() + 1).toString() : (tuesdayDate.getMonth() + 1)) + "-" + (tuesdayDate.getDate().toString().length === 1 ? "0" + tuesdayDate.getDate().toString() : tuesdayDate.getDate())
     wednesdayDate = wednesdayDate.getFullYear() + "-" + ((wednesdayDate.getMonth() + 1).toString().length === 1 ? "0" + (wednesdayDate.getMonth() + 1).toString() : (wednesdayDate.getMonth() + 1)) + "-" + (wednesdayDate.getDate().toString().length === 1 ? "0" + wednesdayDate.getDate().toString() : wednesdayDate.getDate())
@@ -550,7 +554,7 @@ function getDates() {
     saturdayDate = saturdayDate.getFullYear() + "-" + ((saturdayDate.getMonth() + 1).toString().length === 1 ? "0" + (saturdayDate.getMonth() + 1).toString() : (saturdayDate.getMonth() + 1)) + "-" + (saturdayDate.getDate().toString().length === 1 ? "0" + saturdayDate.getDate().toString() : saturdayDate.getDate())
     sundayDate = sundayDate.getFullYear() + "-" + ((sundayDate.getMonth() + 1).toString().length === 1 ? "0" + (sundayDate.getMonth() + 1).toString() : (sundayDate.getMonth() + 1)) + "-" + (sundayDate.getDate().toString().length === 1 ? "0" + sundayDate.getDate().toString() : sundayDate.getDate())
 
-    return([mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate])
+    return([mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate, startDate])
 }
 
 function getCookie(name) {
@@ -596,8 +600,8 @@ class ScheduleControlDashboard extends Component {
                 var finalEnd = from24to12(event_end)
                 var event_name = input.event_name + " (" + finalStart + " - " + finalEnd + ")"
 
-                var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate] = getDates();
-                var event_rrule = "FREQ=WEEKLY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
+                var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate, startDate] = getDates();
+                var event_rrule = "FREQ=WEEKLY;DTSTART=" + startDate.substring(0,4) + startDate.substring(5,7) + startDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
 //                event_start = mondayDate + " " + event_start;
                 event_start = "2020-01-01 " + event_start
 
@@ -720,7 +724,7 @@ class ScheduleControlDashboard extends Component {
             events_datas.sort(sort_events)
             this.setState({
                 events: events_datas,
-                dates: [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate]
+                dates: [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate, startDate]
             })
         })
     }
@@ -744,8 +748,8 @@ class ScheduleControlDashboard extends Component {
                 var finalEnd = from24to12(event_end)
                 var event_name = input.event_name + " (" + finalStart + " - " + finalEnd + ")"
 
-                var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate] = getDates();
-                var event_rrule = "FREQ=WEEKLY;DTSTART=" + mondayDate.substring(0,4) + mondayDate.substring(5,7) + mondayDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
+                var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate, startDate] = getDates();
+                var event_rrule = "FREQ=WEEKLY;DTSTART=" + startDate.substring(0,4) + startDate.substring(5,7) + startDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
 //                event_start = mondayDate + " " + event_start;
                 event_start = "2020-01-01 " + event_start
 
@@ -861,7 +865,7 @@ class ScheduleControlDashboard extends Component {
             events_datas.sort(sort_events)
             this.setState({
                 events: events_datas,
-                dates: [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate]
+                dates: [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate, startDate]
             })
         })
     }
@@ -956,13 +960,14 @@ class ScheduleControlDashboard extends Component {
                 onAddClick={this.createNewBook}
                 onUpdateClick={this.updateBook}
                 books={this.state.books}
+                startDate={this.state.dates[7]}
                 mondayDate={this.state.dates[0]}
                 sundayDate={this.state.dates[6]}
                 day="Monday"
                 current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
-        this.removeCalendarHeader();
-        this.addLines();
+//        this.removeCalendarHeader();
+//        this.addLines();
     }
 
     chooseTuesday = () => {
@@ -990,13 +995,14 @@ class ScheduleControlDashboard extends Component {
                 onAddClick={this.createNewBook}
                 onUpdateClick={this.updateBook}
                 books={this.state.books}
+                startDate={this.state.dates[7]}
                 mondayDate={this.state.dates[0]}
                 sundayDate={this.state.dates[6]}
                 day="Tuesday"
                 current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
-        this.removeCalendarHeader();
-        this.addLines();
+//        this.removeCalendarHeader();
+//        this.addLines();
     }
 
     chooseWednesday = () => {
@@ -1024,13 +1030,14 @@ class ScheduleControlDashboard extends Component {
                 onAddClick={this.createNewBook}
                 onUpdateClick={this.updateBook}
                 books={this.state.books}
+                startDate={this.state.dates[7]}
                 mondayDate={this.state.dates[0]}
                 sundayDate={this.state.dates[6]}
                 day="Wednesday"
                 current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
-        this.removeCalendarHeader();
-        this.addLines();
+//        this.removeCalendarHeader();
+//        this.addLines();
     }
 
     chooseThursday = () => {
@@ -1058,13 +1065,14 @@ class ScheduleControlDashboard extends Component {
                 onAddClick={this.createNewBook}
                 onUpdateClick={this.updateBook}
                 books={this.state.books}
+                startDate={this.state.dates[7]}
                 mondayDate={this.state.dates[0]}
                 sundayDate={this.state.dates[6]}
                 day="Thursday"
                 current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
-        this.removeCalendarHeader();
-        this.addLines();
+//        this.removeCalendarHeader();
+//        this.addLines();
     }
 
     chooseFriday = () => {
@@ -1092,13 +1100,14 @@ class ScheduleControlDashboard extends Component {
                 onAddClick={this.createNewBook}
                 onUpdateClick={this.updateBook}
                 books={this.state.books}
+                startDate={this.state.dates[7]}
                 mondayDate={this.state.dates[0]}
                 sundayDate={this.state.dates[6]}
                 day="Friday"
                 current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
-        this.removeCalendarHeader();
-        this.addLines();
+//        this.removeCalendarHeader();
+//        this.addLines();
     }
 
     chooseSaturday = () => {
@@ -1126,13 +1135,14 @@ class ScheduleControlDashboard extends Component {
                 onAddClick={this.createNewBook}
                 onUpdateClick={this.updateBook}
                 books={this.state.books}
+                startDate={this.state.dates[7]}
                 mondayDate={this.state.dates[0]}
                 sundayDate={this.state.dates[6]}
                 day="Saturday"
                 current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
-        this.removeCalendarHeader();
-        this.addLines();
+//        this.removeCalendarHeader();
+//        this.addLines();
     }
 
     chooseSunday = () => {
@@ -1160,13 +1170,14 @@ class ScheduleControlDashboard extends Component {
                 onAddClick={this.createNewBook}
                 onUpdateClick={this.updateBook}
                 books={this.state.books}
+                startDate={this.state.dates[7]}
                 mondayDate={this.state.dates[0]}
                 sundayDate={this.state.dates[6]}
                 day="Sunday"
                 current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
-        this.removeCalendarHeader();
-        this.addLines();
+//        this.removeCalendarHeader();
+//        this.addLines();
     }
 
     render() {
@@ -1213,6 +1224,7 @@ class ScheduleControlItem extends Component {
                     onAddClick={this.props.onAddClick}
                     onUpdateClick={this.props.onUpdateClick}
                     books={this.props.books}
+                    startDate={this.props.dates[7]}
                     mondayDate={this.props.dates[0]}
                     sundayDate={this.props.dates[6]}
                     day={days[today.getDay()]}
@@ -1605,11 +1617,11 @@ class PresenceControlPopup extends Component {
         <>
             <div id="PopupPresenceOverlay" className="popup_presence_overlay" onClick={this.exitClick}></div>
             <div id={this.props.device_type.replace(/\s/g,'') + "PopupPresence"} className="visiblePresence">
-                <input type="text" id={this.props.device_type.replace(/\s/g,'') + "TextOther"} onChange={this.props.handleOtherUpdate} onKeyUp={this.props.handleEnterClick} />
-                <p class="minutes"> minutes </p>
+                <p style={{fontWeight:"bold"}}> Custom Time </p>
+                <input type="text" id={this.props.device_type.replace(/\s/g,'') + "TextOther"} onChange={this.props.handleOtherUpdate} onKeyUp={this.props.handleEnterClick} placeholder="Enter a time in minutes." />
                 <br />
-                <button id={this.props.device_type.replace(/\s/g,'') + "CancelButton"} onClick={this.props.cancelButtonClicked}> Cancel </button>
-                <button id={this.props.device_type.replace(/\s/g,'') + "OkButton"} onClick={this.props.okButtonClicked}> OK </button>
+                <button id={this.props.device_type.replace(/\s/g,'') + "CancelButton"} onClick={this.props.cancelButtonClicked} className="btn btn-sm"> Cancel </button>
+                <button id={this.props.device_type.replace(/\s/g,'') + "OkButton" className="btn btn-sm"} onClick={this.props.okButtonClicked}> OK </button>
             </div>
         </>
         )

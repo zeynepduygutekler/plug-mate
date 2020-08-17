@@ -62,9 +62,15 @@
     padding-left: 36.5px;
 }
 
+#DesktopCancelButton, #MonitorCancelButton, #LaptopCancelButton, #TaskLampCancelButton, #FanCancelButton {
+    border: 1px solid black;
+    background: #E74A3B;
+}
+
 #DesktopOkButton, #MonitorOkButton, #LaptopOkButton, #TaskLampOkButton, #FanOkButton {
-    margin-left: 5px;
+    margin-left: 10%;
     background: #1CC88A;
+    border: 1px solid black;
 }
 
 #DesktopPopupPresence, #MonitorPopupPresence, #LaptopPopupPresence, #TaskLampPopupPresence, #FanPopupPresence{
@@ -80,9 +86,15 @@
 }
 
 #DesktopTextOther, #MonitorTextOther, #LaptopTextOther, #TaskLampTextOther, #FanTextOther {
-    width: 35px;
+    width: 60%;
     text-align: center;
     display: inline-block;
+    border: none;
+    border-bottom: 3px solid #4E73DF;
+}
+
+#DesktopTextOther:focus, #MonitorTextOther:focus, #LaptopTextOther:focus, #TaskLampTextOther:focus, #FanTextOther:focus {
+    outline: none;
 }
 
 .confirm_alert_confirm {

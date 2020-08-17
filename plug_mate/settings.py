@@ -96,25 +96,25 @@ WSGI_APPLICATION = 'plug_mate.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'plug_mate_dev_db',
-#         'USER': 'raymondlow',
-#         'PASSWORD': 'password123',
-#         'HOST': 'localhost',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd53rn0nsdh7eok',
-        'USER': 'dadtkzpuzwfows',
-        'PASSWORD': '1a62e7d11e87864c20e4635015040a6cb0537b1f863abcebe91c50ef78ee4410',
-        'HOST': 'ec2-46-137-79-235.eu-west-1.compute.amazonaws.com',
+        'NAME': 'plug_mate_dev_db',
+        'USER': 'raymondlow',
+        'PASSWORD': 'password123',
+        'HOST': 'localhost',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'd53rn0nsdh7eok',
+#         'USER': 'dadtkzpuzwfows',
+#         'PASSWORD': '1a62e7d11e87864c20e4635015040a6cb0537b1f863abcebe91c50ef78ee4410',
+#         'HOST': 'ec2-46-137-79-235.eu-west-1.compute.amazonaws.com',
+#     }
+# }
 
 db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)

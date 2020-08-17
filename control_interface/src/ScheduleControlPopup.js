@@ -12,32 +12,60 @@ class ScheduleControlPopup extends Component {
             document.getElementById("ScheduleRepeatEveryDay").checked = true;
         }
         if (this.props.event_rrule.substring(66,this.props.event_rrule.length).includes("MO")) {
-            // Automatically select Monday
-            document.getElementById("ScheduleRepeatMonday").checked = true;
+            if (this.props.event_start.substring(this.props.event_start.length-8, this.props.event_start.length) < "08:00:00" && this.props.type !== "new") {
+                document.getElementById("ScheduleRepeatTuesday").checked = true;
+            } else {
+                // Automatically select Monday
+                document.getElementById("ScheduleRepeatMonday").checked = true;
+            }
         }
         if (this.props.event_rrule.substring(66,this.props.event_rrule.length).includes("TU")) {
-            // Automatically select Tuesday
-            document.getElementById("ScheduleRepeatTuesday").checked = true;
+            if (this.props.event_start.substring(this.props.event_start.length-8, this.props.event_start.length) < "08:00:00" && this.props.type !== "new") {
+                document.getElementById("ScheduleRepeatWednesday").checked = true;
+            } else {
+                // Automatically select Tuesday
+                document.getElementById("ScheduleRepeatTuesday").checked = true;
+            }
         }
         if (this.props.event_rrule.substring(66,this.props.event_rrule.length).includes("WE")) {
-            // Automatically select Wednesday
-            document.getElementById("ScheduleRepeatWednesday").checked = true;
+            if (this.props.event_start.substring(this.props.event_start.length-8, this.props.event_start.length) < "08:00:00" && this.props.type !== "new") {
+                document.getElementById("ScheduleRepeatThursday").checked = true;
+            } else {
+                // Automatically select Wednesday
+                document.getElementById("ScheduleRepeatWednesday").checked = true;
+            }
         }
         if (this.props.event_rrule.substring(66,this.props.event_rrule.length).includes("TH")) {
-            // Automatically select Thursday
-            document.getElementById("ScheduleRepeatThursday").checked = true;
+            if (this.props.event_start.substring(this.props.event_start.length-8, this.props.event_start.length) < "08:00:00" && this.props.type !== "new") {
+                document.getElementById("ScheduleRepeatFriday").checked = true;
+            } else {
+                // Automatically select Thursday
+                document.getElementById("ScheduleRepeatThursday").checked = true;
+            }
         }
         if (this.props.event_rrule.substring(66,this.props.event_rrule.length).includes("FR")) {
-            // Automatically select Friday
-            document.getElementById("ScheduleRepeatFriday").checked = true;
+            if (this.props.event_start.substring(this.props.event_start.length-8, this.props.event_start.length) < "08:00:00" && this.props.type !== "new") {
+                document.getElementById("ScheduleRepeatSaturday").checked = true;
+            } else {
+                // Automatically select Friday
+                document.getElementById("ScheduleRepeatFriday").checked = true;
+            }
         }
         if (this.props.event_rrule.substring(66,this.props.event_rrule.length).includes("SA")) {
-            // Automatically select Saturday
-            document.getElementById("ScheduleRepeatSaturday").checked = true;
+            if (this.props.event_start.substring(this.props.event_start.length-8, this.props.event_start.length) < "08:00:00" && this.props.type !== "new") {
+                document.getElementById("ScheduleRepeatSunday").checked = true;
+            } else {
+                // Automatically select Saturday
+                document.getElementById("ScheduleRepeatSaturday").checked = true;
+            }
         }
         if (this.props.event_rrule.substring(66,this.props.event_rrule.length).includes("SU")) {
-            // Automatically select Sunday
-            document.getElementById("ScheduleRepeatSunday").checked = true;
+            if (this.props.event_start.substring(this.props.event_start.length-8, this.props.event_start.length) < "08:00:00" && this.props.type !== "new") {
+                document.getElementById("ScheduleRepeatMonday").checked = true;
+            } else {
+                // Automatically select Sunday
+                document.getElementById("ScheduleRepeatSunday").checked = true;
+            }
         }
 
         // Automatically select plug load
