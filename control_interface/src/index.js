@@ -488,6 +488,399 @@ function Main() {
     }
 }
 
+// Presence Based Control
+
+class PresenceControlDashboard extends Component {
+    state = {
+        books: [],
+        key: 1
+    }
+
+    constructor(props) {
+        super(props);
+        window.presencecontrol = this;
+    }
+
+    componentDidMount() {
+        // Fetch data from database
+        fetch('/control_interface/api/presence/')
+        .then(response => response.json())
+        .then(data => {
+            data.sort(compare);
+            this.setState({books: data})
+        })
+    }
+
+    updateBook = (newBook) => {
+        fetch('/control_interface/api/presence/' + newBook.id.toString() + '/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newBook)
+        }).then(response => response.json())
+        .then(newBook => {
+            const newBooks = this.state.books.map(book => {
+                if (book.id === newBook.id) {
+                    return Object.assign({}, newBook)
+                } else {
+                    return book;
+                }
+            });
+            this.setState({books: newBooks});
+        })
+    }
+
+    render() {
+        return (
+            <>
+              <br/>
+
+                  <PresenceControlList
+                      key={this.state.key}
+                      books={this.state.books}
+                      onUpdateClick={this.updateBook}
+                  />
+
+            </>
+        )
+    }
+}
+
+class PresenceControlList extends Component {
+    render() {
+        const books = this.props.books.map(book => (
+            <PresenceControlEditableItem
+                key={book.id}
+                id={book.id}
+                user_id={book.user_id}
+                device_type={book.device_type}
+                presence_setting={book.presence_setting}
+                onUpdateClick={this.props.onUpdateClick}
+            />
+        ));
+        return (
+            <div class="plugloadboxes">
+                {books}
+            </div>
+        )
+    }
+}
+
+class PresenceControlEditableItem extends Component {
+    handleUpdate = (book) => {
+        book.id = this.props.id;
+        this.props.onUpdateClick(book);
+    }
+
+    render() {
+        const component = () => {
+            return (
+                <>
+                    <PresenceControlItem
+                        id={this.props.id}
+                        user_id={this.props.user_id}
+                        device_type={this.props.device_type}
+                        presence_setting={this.props.presence_setting}
+                        onFormSubmit={this.handleUpdate}
+                    />
+                </>
+            )
+        }
+        return (
+            component()
+        )
+    }
+}
+
+class PresenceControlItem extends Component {
+    state = {
+        user_id: this.props.user_id,
+        device_type: this.props.device_type,
+        presence_setting: this.props.presence_setting,
+        achievements_books: [],
+        points_wallet_books: []
+    }
+
+    updateAchievementsBooks = (newBook) => {
+        fetch('/control_interface/api/achievements_bonus/' + newBook.id.toString() + '/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newBook)
+        }).then(response => response.json())
+        .then(newBook => {
+            const newBooks = this.state.achievements_books.map(book => {
+                if (book.id === newBook.id) {
+                    return Object.assign({}, newBook);
+                } else {
+                    return book;
+                }
+            });
+            this.setState({achievements_books: newBooks})
+        })
+    }
+
+    updatePointsWalletBooks = (newBook) => {
+        fetch('/control_interface/api/points_wallet/' + newBook.id.toString() + '/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newBook)
+        }).then(response => response.json())
+        .then(newBook => {
+            const newBooks = this.state.points_wallet_books.map(book => {
+                if (book.id === newBook.id) {
+                    return Object.assign({}, newBook);
+                } else {
+                    return book;
+                }
+            });
+            this.setState({points_wallet_books: newBooks})
+        })
+    }
+
+    handleAchievementsUpdate = (book) => {
+        book.id = this.props.user_id;
+        this.updateAchievementsBooks(book);
+    }
+
+    handlePointsWalletUpdate = (book) => {
+        book.id = this.props.user_id;
+        this.updatePointsWalletBooks(book);
+    }
+
+    updatePresenceAchievements = () => {
+        fetch('/control_interface/api/achievements_bonus/')
+        .then(response => response.json())
+        .then(bonus_data => {
+            this.setState({achievements_books: bonus_data}, function() {
+                if (bonus_data[0].first_presence === 0) {
+                    // First remote achievement completed
+                    bonus_data[0].first_presence = 70
+                    this.handleAchievementsUpdate(bonus_data[0])
+
+                    fetch('/control_interface/api/points_wallet/')
+                    .then(response => response.json())
+                    .then(points_data => {
+                        this.setState({points_wallet_books: points_data}, function() {
+                            points_data[0].points = points_data[0].points + 70
+                            this.handlePointsWalletUpdate(points_data[0])
+                        })
+                    })
+
+                }
+            })
+        })
+    }
+
+    onConfirm1 = () => {
+        // Update database
+        this.setState({presence_setting: "1000000"}, function() {this.handleFormSubmit()});
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+
+        // Checking for achievements
+        this.updatePresenceAchievements()
+    }
+
+    onCancel1 = () => {
+        document.getElementById(this.state.device_type.replace(/\s/g, '') + "Select").value = this.state.presence_setting;
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+    }
+
+    handleFormSubmit = () => {
+        this.props.onFormSubmit({...this.state});
+    }
+
+    handleSettingUpdate = (evt) => {
+        if (evt.target.value !== "other" && evt.target.value !== "1000000") {
+            // Hide popup
+            ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
+            // Update database
+            this.setState({presence_setting: evt.target.value}, function() {this.handleFormSubmit()})
+
+            // Checking for achievements
+            this.updatePresenceAchievements()
+        }
+        if (evt.target.value === "other") {
+            // Show popup
+            ReactDOM.render(
+                <PresenceControlPopup
+                    device_type={this.state.device_type}
+                    handleOtherUpdate={this.handleOtherUpdate}
+                    handleEnterClick={this.handleEnterClick}
+                    cancelButtonClicked={this.cancelButtonClicked}
+                    okButtonClicked={this.okButtonClicked}
+                />, document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox")
+            )
+        }
+        if (evt.target.value === "1000000") {
+            // Hide popup
+            ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
+            ReactDOM.render(<ConfirmAlert
+                                message={"You are deactivating presence-based control for " + this.state.device_type + "."}
+                                onConfirm = {this.onConfirm1}
+                                onCancel = {this.onCancel1}
+                            />, document.getElementById("confirm-alert"))
+        }
+    }
+
+    handleOtherUpdate = (evt) => {
+        this.setState({presence_setting: evt.target.value});
+    }
+
+    handleEnterClick = (evt) => {
+        if (evt.key === "Enter" || evt.keyCode === 13) {
+            this.okButtonClicked();
+        }
+    }
+
+    onConfirm2 = () => {
+        // Change outer ring to red
+        document.getElementById(this.state.device_type.replace(/\s/g,'')).className = "redRing";
+        // Change image to OFF
+        document.getElementById(this.state.device_type.replace(/\s/g,'')).childNodes[0].childNodes[0].src = "/static/Images/" + this.state.device_type.toString() + " OFF.png";
+        // Set value to OFF
+        document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "1000000";
+        // Update database
+        this.setState({presence_setting: "1000000"}, function() {this.handleFormSubmit()})
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+
+       // Checking for achievements
+       this.updatePresenceAchievements()
+    }
+
+    onCancel2 = () => {
+        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
+    }
+
+    handlePresenceIconClick = () => {
+        if (document.getElementById(this.state.device_type.replace(/\s/g,'')).className === "greenRing") {
+            ReactDOM.render(<ConfirmAlert
+                                message={"You are deactivating presence-based control for " + this.state.device_type + "."}
+                                onConfirm = {this.onConfirm2}
+                                onCancel = {this.onCancel2}
+                            />, document.getElementById("confirm-alert"))
+        } else {
+            // Change outer ring to green
+            document.getElementById(this.state.device_type.replace(/\s/g,'')).className = "greenRing"
+            // Change image to ON
+            document.getElementById(this.state.device_type.replace(/\s/g,'')).childNodes[0].childNodes[0].src = "/static/Images/" + this.state.device_type.toString() + " ON.png";
+            // Set value to 5 minutes
+            document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "5";
+            // Update database
+            this.setState({presence_setting: "5"}, function() {this.handleFormSubmit()})
+
+            // Checking for achievements
+            this.updatePresenceAchievements()
+        }
+    }
+
+    cancelButtonClicked = () => {
+        // Hide popup
+        ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
+        // Set value to 5 minutes
+        document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "5";
+        this.setState({presence_setting: 5}, function() {this.handleFormSubmit()})
+
+    }
+
+    okButtonClicked = () => {
+        // Display value on dropdown
+        document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = document.getElementById(this.state.device_type.replace(/\s/g,'') + "TextOther").value.toString();
+        // Clear text box on popup
+        document.getElementById(this.state.device_type.replace(/\s/g,'') + "TextOther").value = "";
+        // Hide popup
+        ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
+        // Update database
+        this.handleFormSubmit();
+
+        // Checking for achievements
+        this.updatePresenceAchievements()
+    }
+
+    render() {
+        const possible_option = ["1000000", "5", "10", "20", "30", "60", "other"]
+        if (possible_option.includes(this.state.presence_setting.toString())) {
+            var disabled = true;
+            var display_value = "";
+            var display_text = "";
+        } else {
+            disabled = false;
+            display_value = this.state.presence_setting;
+            display_text = this.state.presence_setting + " minutes";
+        }
+
+        if (this.state.presence_setting.toString() === "1000000") {
+            var presence_control_outer_ring = "redRing";
+            var presence_control_image = "/static/Images/" + this.state.device_type.toString() + " OFF.png";
+        } else {
+            presence_control_outer_ring = "greenRing";
+            presence_control_image = "/static/Images/" + this.state.device_type.toString() + " ON.png";
+        }
+
+        return (
+            <div id={this.state.device_type.replace(/\s/g,'') + "BoxPresence"} className="containerPresence" onClick={this.exitClick}>
+                <div className="iconPresence">
+                    <div className={presence_control_outer_ring} id={this.state.device_type.replace(/\s/g,'')} onClick={this.handlePresenceIconClick}>
+                        <div className="whiteRing">
+                            <img class="PlugLoadIcon" src={presence_control_image} alt="Icon" />
+                        </div>
+                    </div>
+                </div>
+                <div style={{width:"200px", height:"10px", overflowY:"visible"}}>
+                    <div style={{position:"relative", width:"200px", height:"1px", overflowY:"visible"}}>
+                        <div className="dropdownPresence" id={this.state.device_type.replace(/\s/g,'') + "Dropdown"}>
+                            <div class="wordPresence">
+                                <p> {this.state.device_type} </p>
+                            </div>
+                            <select defaultValue={this.state.presence_setting} onChange={this.handleSettingUpdate} id={this.state.device_type.replace(/\s/g,'') + "Select"}>
+                                <option value="1000000"> Deactivate </option>
+                                <optgroup label="Off after I leave for:">
+                                    <option value="5"> 5 minutes </option>
+                                    <option value="10"> 10 minutes </option>
+                                    <option value="20"> 20 minutes </option>
+                                    <option value="30"> 30 minutes </option>
+                                    <option value="60"> 1 hour </option>
+                                    <option value="other"> Custom Time </option>
+                                </optgroup>
+                                <option value={display_value} disabled={disabled}> {display_text} </option>
+                            </select>
+                        </div>
+
+                        <div id={this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"}> </div>
+
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+
+class PresenceControlPopup extends Component {
+    exitClick = () => {
+        this.props.cancelButtonClicked();
+    }
+    render() {
+        return (
+        <>
+            <div id="PopupPresenceOverlay" className="popup_presence_overlay" onClick={this.exitClick}></div>
+            <div id={this.props.device_type.replace(/\s/g,'') + "PopupPresence"} className="visiblePresence">
+                <input type="number" id={this.props.device_type.replace(/\s/g,'') + "TextOther"} onChange={this.props.handleOtherUpdate} onKeyUp={this.props.handleEnterClick} placeholder="5" />
+                <p className="minutes"> Minutes </p>
+                <br />
+                <button id={this.props.device_type.replace(/\s/g,'') + "CancelButton"} onClick={this.props.cancelButtonClicked} className="btn btn-sm"> Cancel </button>
+                <button id={this.props.device_type.replace(/\s/g,'') + "OkButton"} className="btn btn-sm" onClick={this.props.okButtonClicked}> OK </button>
+            </div>
+        </>
+        )
+    }
+}
+
+ReactDOM.render(<PresenceControlDashboard />, document.getElementById('presence-based-control'))
+
 
 // Schedule Based control
 
@@ -1237,398 +1630,6 @@ class ScheduleControlItem extends Component {
 
 ReactDOM.render(<ScheduleControlDashboard />, document.getElementById('schedule-based-control'))
 
-// Presence Based Control
-
-class PresenceControlDashboard extends Component {
-    state = {
-        books: [],
-        key: 1
-    }
-
-    constructor(props) {
-        super(props);
-        window.presencecontrol = this;
-    }
-
-    componentDidMount() {
-        // Fetch data from database
-        fetch('/control_interface/api/presence/')
-        .then(response => response.json())
-        .then(data => {
-            data.sort(compare);
-            this.setState({books: data})
-        })
-    }
-
-    updateBook = (newBook) => {
-        fetch('/control_interface/api/presence/' + newBook.id.toString() + '/', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newBook)
-        }).then(response => response.json())
-        .then(newBook => {
-            const newBooks = this.state.books.map(book => {
-                if (book.id === newBook.id) {
-                    return Object.assign({}, newBook)
-                } else {
-                    return book;
-                }
-            });
-            this.setState({books: newBooks});
-        })
-    }
-
-    render() {
-        return (
-            <>
-              <br/>
-
-                  <PresenceControlList
-                      key={this.state.key}
-                      books={this.state.books}
-                      onUpdateClick={this.updateBook}
-                  />
-
-            </>
-        )
-    }
-}
-
-class PresenceControlList extends Component {
-    render() {
-        const books = this.props.books.map(book => (
-            <PresenceControlEditableItem
-                key={book.id}
-                id={book.id}
-                user_id={book.user_id}
-                device_type={book.device_type}
-                presence_setting={book.presence_setting}
-                onUpdateClick={this.props.onUpdateClick}
-            />
-        ));
-        return (
-            <div class="plugloadboxes">
-                {books}
-            </div>
-        )
-    }
-}
-
-class PresenceControlEditableItem extends Component {
-    handleUpdate = (book) => {
-        book.id = this.props.id;
-        this.props.onUpdateClick(book);
-    }
-
-    render() {
-        const component = () => {
-            return (
-                <>
-                    <PresenceControlItem
-                        id={this.props.id}
-                        user_id={this.props.user_id}
-                        device_type={this.props.device_type}
-                        presence_setting={this.props.presence_setting}
-                        onFormSubmit={this.handleUpdate}
-                    />
-                </>
-            )
-        }
-        return (
-            component()
-        )
-    }
-}
-
-class PresenceControlItem extends Component {
-    state = {
-        user_id: this.props.user_id,
-        device_type: this.props.device_type,
-        presence_setting: this.props.presence_setting,
-        achievements_books: [],
-        points_wallet_books: []
-    }
-
-    updateAchievementsBooks = (newBook) => {
-        fetch('/control_interface/api/achievements_bonus/' + newBook.id.toString() + '/', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newBook)
-        }).then(response => response.json())
-        .then(newBook => {
-            const newBooks = this.state.achievements_books.map(book => {
-                if (book.id === newBook.id) {
-                    return Object.assign({}, newBook);
-                } else {
-                    return book;
-                }
-            });
-            this.setState({achievements_books: newBooks})
-        })
-    }
-
-    updatePointsWalletBooks = (newBook) => {
-        fetch('/control_interface/api/points_wallet/' + newBook.id.toString() + '/', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newBook)
-        }).then(response => response.json())
-        .then(newBook => {
-            const newBooks = this.state.points_wallet_books.map(book => {
-                if (book.id === newBook.id) {
-                    return Object.assign({}, newBook);
-                } else {
-                    return book;
-                }
-            });
-            this.setState({points_wallet_books: newBooks})
-        })
-    }
-
-    handleAchievementsUpdate = (book) => {
-        book.id = this.props.user_id;
-        this.updateAchievementsBooks(book);
-    }
-
-    handlePointsWalletUpdate = (book) => {
-        book.id = this.props.user_id;
-        this.updatePointsWalletBooks(book);
-    }
-
-    updatePresenceAchievements = () => {
-        fetch('/control_interface/api/achievements_bonus/')
-        .then(response => response.json())
-        .then(bonus_data => {
-            this.setState({achievements_books: bonus_data}, function() {
-                if (bonus_data[0].first_presence === 0) {
-                    // First remote achievement completed
-                    bonus_data[0].first_presence = 70
-                    this.handleAchievementsUpdate(bonus_data[0])
-
-                    fetch('/control_interface/api/points_wallet/')
-                    .then(response => response.json())
-                    .then(points_data => {
-                        this.setState({points_wallet_books: points_data}, function() {
-                            points_data[0].points = points_data[0].points + 70
-                            this.handlePointsWalletUpdate(points_data[0])
-                        })
-                    })
-
-                }
-            })
-        })
-    }
-
-    onConfirm1 = () => {
-        // Update database
-        this.setState({presence_setting: "1000000"}, function() {this.handleFormSubmit()});
-        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
-
-        // Checking for achievements
-        this.updatePresenceAchievements()
-    }
-
-    onCancel1 = () => {
-        document.getElementById(this.state.device_type.replace(/\s/g, '') + "Select").value = this.state.presence_setting;
-        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
-    }
-
-    handleFormSubmit = () => {
-        this.props.onFormSubmit({...this.state});
-    }
-
-    handleSettingUpdate = (evt) => {
-        if (evt.target.value !== "other" && evt.target.value !== "1000000") {
-            // Hide popup
-            ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
-            // Update database
-            this.setState({presence_setting: evt.target.value}, function() {this.handleFormSubmit()})
-
-            // Checking for achievements
-            this.updatePresenceAchievements()
-        }
-        if (evt.target.value === "other") {
-            // Show popup
-            ReactDOM.render(
-                <PresenceControlPopup
-                    device_type={this.state.device_type}
-                    handleOtherUpdate={this.handleOtherUpdate}
-                    handleEnterClick={this.handleEnterClick}
-                    cancelButtonClicked={this.cancelButtonClicked}
-                    okButtonClicked={this.okButtonClicked}
-                />, document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox")
-            )
-        }
-        if (evt.target.value === "1000000") {
-            // Hide popup
-            ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
-            ReactDOM.render(<ConfirmAlert
-                                message={"You are deactivating presence-based control for " + this.state.device_type + "."}
-                                onConfirm = {this.onConfirm1}
-                                onCancel = {this.onCancel1}
-                            />, document.getElementById("confirm-alert"))
-        }
-    }
-
-    handleOtherUpdate = (evt) => {
-        this.setState({presence_setting: evt.target.value});
-    }
-
-    handleEnterClick = (evt) => {
-        if (evt.key === "Enter" || evt.keyCode === 13) {
-            this.okButtonClicked();
-        }
-    }
-
-    onConfirm2 = () => {
-        // Change outer ring to red
-        document.getElementById(this.state.device_type.replace(/\s/g,'')).className = "redRing";
-        // Change image to OFF
-        document.getElementById(this.state.device_type.replace(/\s/g,'')).childNodes[0].childNodes[0].src = "/static/Images/" + this.state.device_type.toString() + " OFF.png";
-        // Set value to OFF
-        document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "1000000";
-        // Update database
-        this.setState({presence_setting: "1000000"}, function() {this.handleFormSubmit()})
-        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
-
-       // Checking for achievements
-       this.updatePresenceAchievements()
-    }
-
-    onCancel2 = () => {
-        ReactDOM.unmountComponentAtNode(document.getElementById("confirm-alert"));
-    }
-
-    handlePresenceIconClick = () => {
-        if (document.getElementById(this.state.device_type.replace(/\s/g,'')).className === "greenRing") {
-            ReactDOM.render(<ConfirmAlert
-                                message={"You are deactivating presence-based control for " + this.state.device_type + "."}
-                                onConfirm = {this.onConfirm2}
-                                onCancel = {this.onCancel2}
-                            />, document.getElementById("confirm-alert"))
-        } else {
-            // Change outer ring to green
-            document.getElementById(this.state.device_type.replace(/\s/g,'')).className = "greenRing"
-            // Change image to ON
-            document.getElementById(this.state.device_type.replace(/\s/g,'')).childNodes[0].childNodes[0].src = "/static/Images/" + this.state.device_type.toString() + " ON.png";
-            // Set value to 5 minutes
-            document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "5";
-            // Update database
-            this.setState({presence_setting: "5"}, function() {this.handleFormSubmit()})
-
-            // Checking for achievements
-            this.updatePresenceAchievements()
-        }
-    }
-
-    cancelButtonClicked = () => {
-        // Hide popup
-        ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
-        // Set value to 5 minutes
-        document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "5";
-        this.setState({presence_setting: 5}, function() {this.handleFormSubmit()})
-
-    }
-
-    okButtonClicked = () => {
-        // Display value on dropdown
-        document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = document.getElementById(this.state.device_type.replace(/\s/g,'') + "TextOther").value;
-        // Clear text box on popup
-        document.getElementById(this.state.device_type.replace(/\s/g,'') + "TextOther").value = "";
-        // Hide popup
-        ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
-        // Update database
-        this.handleFormSubmit();
-
-        // Checking for achievements
-        this.updatePresenceAchievements()
-    }
-
-    render() {
-        const possible_option = ["1000000", "5", "10", "20", "30", "60", "other"]
-        if (possible_option.includes(this.state.presence_setting.toString())) {
-            var disabled = true;
-            var display_value = "";
-            var display_text = "";
-        } else {
-            disabled = false;
-            display_value = this.state.presence_setting;
-            display_text = this.state.presence_setting + " minutes";
-        }
-
-        if (this.state.presence_setting.toString() === "1000000") {
-            var presence_control_outer_ring = "redRing";
-            var presence_control_image = "/static/Images/" + this.state.device_type.toString() + " OFF.png";
-        } else {
-            presence_control_outer_ring = "greenRing";
-            presence_control_image = "/static/Images/" + this.state.device_type.toString() + " ON.png";
-        }
-
-        return (
-            <div id={this.state.device_type.replace(/\s/g,'') + "BoxPresence"} className="containerPresence" onClick={this.exitClick}>
-                <div className="iconPresence">
-                    <div className={presence_control_outer_ring} id={this.state.device_type.replace(/\s/g,'')} onClick={this.handlePresenceIconClick}>
-                        <div className="whiteRing">
-                            <img class="PlugLoadIcon" src={presence_control_image} alt="Icon" />
-                        </div>
-                    </div>
-                </div>
-                <div style={{width:"200px", height:"10px", overflowY:"visible"}}>
-                    <div style={{position:"relative", width:"200px", height:"1px", overflowY:"visible"}}>
-                        <div className="dropdownPresence" id={this.state.device_type.replace(/\s/g,'') + "Dropdown"}>
-                            <div class="wordPresence">
-                                <p> {this.state.device_type} </p>
-                            </div>
-                            <select defaultValue={this.state.presence_setting} onChange={this.handleSettingUpdate} id={this.state.device_type.replace(/\s/g,'') + "Select"}>
-                                <option value="1000000"> Deactivate </option>
-                                <optgroup label="Off after I leave for:">
-                                    <option value="5"> 5 minutes </option>
-                                    <option value="10"> 10 minutes </option>
-                                    <option value="20"> 20 minutes </option>
-                                    <option value="30"> 30 minutes </option>
-                                    <option value="60"> 1 hour </option>
-                                    <option value="other"> Custom Time </option>
-                                </optgroup>
-                                <option value={display_value} disabled={disabled}> {display_text} </option>
-                            </select>
-                        </div>
-
-                        <div id={this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"}> </div>
-
-                    </div>
-                </div>
-            </div>
-        );
-    }
-}
-
-class PresenceControlPopup extends Component {
-    exitClick = () => {
-        this.props.cancelButtonClicked();
-    }
-    render() {
-        return (
-        <>
-            <div id="PopupPresenceOverlay" className="popup_presence_overlay" onClick={this.exitClick}></div>
-            <div id={this.props.device_type.replace(/\s/g,'') + "PopupPresence"} className="visiblePresence">
-                <p style={{fontWeight:"bold"}}> Custom Time </p>
-                <input type="text" id={this.props.device_type.replace(/\s/g,'') + "TextOther"} onChange={this.props.handleOtherUpdate} onKeyUp={this.props.handleEnterClick} placeholder="Enter a time in minutes." />
-                <br />
-                <button id={this.props.device_type.replace(/\s/g,'') + "CancelButton"} onClick={this.props.cancelButtonClicked} className="btn btn-sm"> Cancel </button>
-                <button id={this.props.device_type.replace(/\s/g,'') + "OkButton" className="btn btn-sm"} onClick={this.props.okButtonClicked}> OK </button>
-            </div>
-        </>
-        )
-    }
-}
-
-ReactDOM.render(<PresenceControlDashboard />, document.getElementById('presence-based-control'))
 
 // Others
 

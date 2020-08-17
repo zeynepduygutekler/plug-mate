@@ -64,13 +64,14 @@
 
 #DesktopCancelButton, #MonitorCancelButton, #LaptopCancelButton, #TaskLampCancelButton, #FanCancelButton {
     border: 1px solid black;
-    background: #E74A3B;
+    color: black;
 }
 
 #DesktopOkButton, #MonitorOkButton, #LaptopOkButton, #TaskLampOkButton, #FanOkButton {
     margin-left: 10%;
     background: #1CC88A;
     border: 1px solid black;
+    color: black;
 }
 
 #DesktopPopupPresence, #MonitorPopupPresence, #LaptopPopupPresence, #TaskLampPopupPresence, #FanPopupPresence{

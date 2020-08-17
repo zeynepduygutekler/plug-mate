@@ -359,43 +359,66 @@ class Calendar extends Component {
         this.updatePointsWalletBooks(book);
     }
 
+//    updateScheduleAchievements = () => {
+//        fetch('/control_interface/api/achievements_weekly/')
+//        .then(response => response.json())
+//        .then(weekly_data => {
+//            this.setState({weekly_achievements_books: weekly_data}, function() {
+//                if (weekly_data[0].schedule_based === 0) {
+//                    // Weekly schedule achievement completed
+//                    weekly_data[0].schedule_based = 20;
+//                    this.handleWeeklyAchievementsUpdate(weekly_data[0])
+//
+//                    fetch('/control_interface/api/achievements_bonus/')
+//                    .then(response => response.json())
+//                    .then(bonus_data => {
+//                        this.setState({achievements_books: bonus_data}, function() {
+//                            if (bonus_data[0].first_schedule === 0) {
+//                                // First schedule achievement completed
+//                                bonus_data[0].first_schedule = 70
+//                                this.handleAchievementsUpdate(bonus_data[0])
+//
+//                                fetch('/control_interface/api/points_wallet/')
+//                                .then(response => response.json())
+//                                .then(points_data => {
+//                                    this.setState({points_wallet_books: points_data}, function() {
+//                                        points_data[0].points = points_data[0].points + 90
+//                                        this.handlePointsWalletUpdate(points_data[0])
+//                                    })
+//                                })
+//                            } else {
+//                                fetch('/control_interface/api/points_wallet/')
+//                                .then(response => response.json())
+//                                .then(points_data => {
+//                                    this.setState({points_wallet_books: points_data}, function() {
+//                                        points_data[0].points = points_data[0].points + 20
+//                                        this.handlePointsWalletUpdate(points_data[0])
+//                                    })
+//                                })
+//                            }
+//                        })
+//                    })
+//                }
+//            })
+//        })
+//    }
+
     updateScheduleAchievements = () => {
-        fetch('/control_interface/api/achievements_weekly/')
+        fetch('/control_interface/api/achievements_bonus/')
         .then(response => response.json())
-        .then(weekly_data => {
-            this.setState({weekly_achievements_books: weekly_data}, function() {
-                if (weekly_data[0].schedule_based === 0) {
-                    // Weekly schedule achievement completed
-                    weekly_data[0].schedule_based = 20;
-                    this.handleWeeklyAchievementsUpdate(weekly_data[0])
+        .then(bonus_data => {
+            this.setState({achievements_books: bonus_data}, function() {
+                if (bonus_data[0].first_schedule === 0) {
+                    // First schedule achievement completed
+                    bonus_data[0].first_schedule = 70
+                    this.handleAchievementsUpdate(bonus_data[0])
 
-                    fetch('/control_interface/api/achievements_bonus/')
+                    fetch('/control_interface/api/points_wallet/')
                     .then(response => response.json())
-                    .then(bonus_data => {
-                        this.setState({achievements_books: bonus_data}, function() {
-                            if (bonus_data[0].first_schedule === 0) {
-                                // First schedule achievement completed
-                                bonus_data[0].first_schedule = 70
-                                this.handleAchievementsUpdate(bonus_data[0])
-
-                                fetch('/control_interface/api/points_wallet/')
-                                .then(response => response.json())
-                                .then(points_data => {
-                                    this.setState({points_wallet_books: points_data}, function() {
-                                        points_data[0].points = points_data[0].points + 90
-                                        this.handlePointsWalletUpdate(points_data[0])
-                                    })
-                                })
-                            } else {
-                                fetch('/control_interface/api/points_wallet/')
-                                .then(response => response.json())
-                                .then(points_data => {
-                                    this.setState({points_wallet_books: points_data}, function() {
-                                        points_data[0].points = points_data[0].points + 20
-                                        this.handlePointsWalletUpdate(points_data[0])
-                                    })
-                                })
-                            }
+                    .then(points_data => {
+                        this.setState({points_wallet_books: points_data}, function() {
+                            points_data[0].points = points_data[0].points + 70
+                            this.handlePointsWalletUpdate(points_data[0])
                         })
                     })
                 }
@@ -409,10 +432,159 @@ class Calendar extends Component {
         var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
         var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
         var new_days_to_loop_over = [];
-        var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
+        var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value);
+        var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
         for (var repeat_day of repeat_option) {
-
+            if (new_start < "08:00:00") {
+                if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
+                    new_days_to_loop_over.push(getDates()[7])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
+                    new_days_to_loop_over.push(getDates()[0])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
+                    new_days_to_loop_over.push(getDates()[1])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
+                    new_days_to_loop_over.push(getDates()[2])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
+                    new_days_to_loop_over.push(getDates()[3])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
+                    new_days_to_loop_over.push(getDates()[4])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
+                    new_days_to_loop_over.push(getDates()[5])
+                }
+            } else {
+                if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
+                    new_days_to_loop_over.push(getDates()[0])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
+                    new_days_to_loop_over.push(getDates()[1])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
+                    new_days_to_loop_over.push(getDates()[2])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
+                    new_days_to_loop_over.push(getDates()[3])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
+                    new_days_to_loop_over.push(getDates()[4])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
+                    new_days_to_loop_over.push(getDates()[5])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
+                    new_days_to_loop_over.push(getDates()[6])
+                }
+            }
         }
+
+        var new_start_for_this = "";
+        var new_end_for_this = "";
+        var existing_start_for_this = "";
+        var existing_end_for_this = "";
+        for (var new_day of new_days_to_loop_over) {
+            new_start_for_this = new_day + " " + new_start;
+            new_end_for_this = new_day + " " + new_end;
+            console.log(new_start_for_this)
+            for (var plugload of plugload_option) {
+                var current_resource_id = 0;
+                if (plugload === document.getElementById("ScheduleApplyDesktop")) {
+                    current_resource_id = 1;
+                }
+                if (plugload === document.getElementById("ScheduleApplyLaptop")) {
+                    current_resource_id = 2;
+                }
+                if (plugload === document.getElementById("ScheduleApplyMonitor")) {
+                    current_resource_id = 3;
+                }
+                if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
+                    current_resource_id = 4;
+                }
+                if (plugload === document.getElementById("ScheduleApplyFan")) {
+                    current_resource_id = 5;
+                }
+                console.log(plugload)
+                console.log(this.props.events)
+                this.props.events.forEach(function(e) {
+                    console.log(e)
+                    if (e.resourceId === current_resource_id) {
+                        var existing_days_to_loop_over = [];
+                        if (e.start.substring(11,19) < "08:00:00") {
+                            if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
+                                existing_days_to_loop_over.push(getDates()[7]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
+                                existing_days_to_loop_over.push(getDates()[0]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
+                                existing_days_to_loop_over.push(getDates()[1]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
+                                existing_days_to_loop_over.push(getDates()[2]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
+                                existing_days_to_loop_over.push(getDates()[3]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
+                                existing_days_to_loop_over.push(getDates()[4]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
+                                existing_days_to_loop_over.push(getDates()[5]);
+                            }
+                        } else {
+                            if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
+                                existing_days_to_loop_over.push(getDates()[0]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
+                                existing_days_to_loop_over.push(getDates()[1]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
+                                existing_days_to_loop_over.push(getDates()[2]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
+                                existing_days_to_loop_over.push(getDates()[3]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
+                                existing_days_to_loop_over.push(getDates()[4]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
+                                existing_days_to_loop_over.push(getDates()[5]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
+                                existing_days_to_loop_over.push(getDates()[6]);
+                            }
+                        }
+                        for (var existing_day of existing_days_to_loop_over) {
+                            existing_start_for_this = existing_day + e.start.substring(10,19);
+                            existing_end_for_this = existing_day + e.end.substring(10,19);
+                            console.log(existing_start_for_this)
+                            if (((new_start_for_this >= existing_start_for_this &&
+                                  new_start_for_this < existing_end_for_this) || (
+                                  new_end_for_this > existing_start_for_this &&
+                                  new_end_for_this <= existing_end_for_this) || (
+                                  existing_start_for_this >= new_start_for_this &&
+                                  existing_start_for_this < new_end_for_this) || (
+                                  existing_end_for_this > new_start_for_this &&
+                                  existing_end_for_this <= new_end_for_this)) && (
+                                  e.id !== event.id)) {
+                                hasConflict = true;
+                                if (!conflictedEvents.includes(e)) {
+                                    conflictedEvents.push(e)
+                                }
+                                console.log(hasConflict)
+                                console.log(conflictedEvents)
+                            }
+                        }
+                    }
+                })
+            }
+        }
+
+        return [hasConflict, conflictedEvents]
     }
 
     isNonWorkingTime = (schedulerData, time) => {
@@ -466,109 +638,7 @@ class Calendar extends Component {
                 )
             } else {
                 // Checking conflicts
-                var hasConflict = false;
-                var conflictedEvents = [];
-                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-                var new_days_to_loop_over = [];
-                for (var repeat_day of repeat_option) {
-                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
-                        new_days_to_loop_over.push(getDates()[0])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
-                        new_days_to_loop_over.push(getDates()[1])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
-                        new_days_to_loop_over.push(getDates()[2])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
-                        new_days_to_loop_over.push(getDates()[3])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
-                        new_days_to_loop_over.push(getDates()[4])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
-                        new_days_to_loop_over.push(getDates()[5])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
-                        new_days_to_loop_over.push(getDates()[6])
-                    }
-                }
-
-                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
-                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
-
-                var new_start_for_this = "";
-                var new_end_for_this = "";
-                var existing_start_for_this = "";
-                var existing_end_for_this = "";
-                for (var new_day of new_days_to_loop_over) {
-                    new_start_for_this = new_day + " " + new_start;
-                    new_end_for_this = new_day + " " + new_end;
-                    for (var plugload of plugload_option) {
-                        schedulerData.events.forEach(function(e) {
-                            var current_resource_id = 0
-                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
-                                current_resource_id = 1
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
-                                current_resource_id = 2
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
-                                current_resource_id = 3
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
-                                current_resource_id = 4
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyFan")) {
-                                current_resource_id = 5
-                            }
-                            if (e.resourceId === current_resource_id) {
-                                var existing_days_to_loop_over = [];
-                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
-                                    existing_days_to_loop_over.push(getDates()[0])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
-                                    existing_days_to_loop_over.push(getDates()[1])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
-                                    existing_days_to_loop_over.push(getDates()[2])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
-                                    existing_days_to_loop_over.push(getDates()[3])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
-                                    existing_days_to_loop_over.push(getDates()[4])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
-                                    existing_days_to_loop_over.push(getDates()[5])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
-                                    existing_days_to_loop_over.push(getDates()[6])
-                                }
-
-                                for (var existing_day of existing_days_to_loop_over) {
-                                    existing_start_for_this = existing_day + e.start.substring(10,19);
-                                    existing_end_for_this = existing_day + e.end.substring(10,19);
-                                    if (((new_start_for_this >= existing_start_for_this &&
-                                          new_start_for_this < existing_end_for_this) || (
-                                          new_end_for_this > existing_start_for_this &&
-                                          new_end_for_this <= existing_end_for_this) || (
-                                          existing_start_for_this >= new_start_for_this &&
-                                          existing_start_for_this < new_end_for_this) || (
-                                          existing_end_for_this > new_start_for_this &&
-                                          existing_end_for_this <= new_end_for_this)) && (
-                                          e.id !== event.id)) {
-                                            hasConflict = true;
-                                            if (!conflictedEvents.includes(e)) {
-                                                conflictedEvents.push(e)
-                                            }
-                                          }
-                                }
-                            }
-                        })
-                    }
-                }
+                var [hasConflict, conflictedEvents] = window.calendar.checkConflicts(schedulerData, event)
 
                 if (hasConflict) {
                     var message = "Conflict occurred for the following events:"
@@ -848,109 +918,7 @@ class Calendar extends Component {
                 )
             } else {
                 // Checking conflicts
-                var hasConflict = false;
-                var conflictedEvents = [];
-                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-                var new_days_to_loop_over = [];
-                for (var repeat_day of repeat_option) {
-                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
-                        new_days_to_loop_over.push(getDates()[0])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
-                        new_days_to_loop_over.push(getDates()[1])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
-                        new_days_to_loop_over.push(getDates()[2])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
-                        new_days_to_loop_over.push(getDates()[3])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
-                        new_days_to_loop_over.push(getDates()[4])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
-                        new_days_to_loop_over.push(getDates()[5])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
-                        new_days_to_loop_over.push(getDates()[6])
-                    }
-                }
-
-                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
-                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
-
-                var new_start_for_this = "";
-                var new_end_for_this = "";
-                var existing_start_for_this = "";
-                var existing_end_for_this = "";
-                for (var new_day of new_days_to_loop_over) {
-                    new_start_for_this = new_day + " " + new_start;
-                    new_end_for_this = new_day + " " + new_end;
-                    for (var plugload of plugload_option) {
-                        schedulerData.events.forEach(function(e) {
-                            var current_resource_id = 0
-                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
-                                current_resource_id = 1
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
-                                current_resource_id = 2
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
-                                current_resource_id = 3
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
-                                current_resource_id = 4
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyFan")) {
-                                current_resource_id = 5
-                            }
-                            if (e.resourceId === current_resource_id) {
-                                var existing_days_to_loop_over = [];
-                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
-                                    existing_days_to_loop_over.push(getDates()[0])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
-                                    existing_days_to_loop_over.push(getDates()[1])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
-                                    existing_days_to_loop_over.push(getDates()[2])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
-                                    existing_days_to_loop_over.push(getDates()[3])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
-                                    existing_days_to_loop_over.push(getDates()[4])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
-                                    existing_days_to_loop_over.push(getDates()[5])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
-                                    existing_days_to_loop_over.push(getDates()[6])
-                                }
-
-                                for (var existing_day of existing_days_to_loop_over) {
-                                    existing_start_for_this = existing_day + e.start.substring(10,19);
-                                    existing_end_for_this = existing_day + e.end.substring(10,19);
-                                    if (((new_start_for_this >= existing_start_for_this &&
-                                          new_start_for_this < existing_end_for_this) || (
-                                          new_end_for_this > existing_start_for_this &&
-                                          new_end_for_this <= existing_end_for_this) || (
-                                          existing_start_for_this >= new_start_for_this &&
-                                          existing_start_for_this < new_end_for_this) || (
-                                          existing_end_for_this > new_start_for_this &&
-                                          existing_end_for_this <= new_end_for_this)) && (
-                                          e.id !== newEvent.id)) {
-                                            hasConflict = true;
-                                            if (!conflictedEvents.includes(e)) {
-                                                conflictedEvents.push(e)
-                                            }
-                                          }
-                                }
-                            }
-                        })
-                    }
-                }
+                var [hasConflict, conflictedEvents] = window.calendar.checkConflicts(schedulerData, newEvent)
 
                 if (hasConflict) {
                     var message = "Conflict occurred for the following events:"
@@ -1222,112 +1190,7 @@ class Calendar extends Component {
                 )
             } else {
                 // Checking conflicts
-                var hasConflict = false;
-                var conflictedEvents = [];
-                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-                var new_days_to_loop_over = [];
-                for (var repeat_day of repeat_option) {
-                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
-                        new_days_to_loop_over.push(getDates()[0])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
-                        new_days_to_loop_over.push(getDates()[1])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
-                        new_days_to_loop_over.push(getDates()[2])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
-                        new_days_to_loop_over.push(getDates()[3])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
-                        new_days_to_loop_over.push(getDates()[4])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
-                        new_days_to_loop_over.push(getDates()[5])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
-                        new_days_to_loop_over.push(getDates()[6])
-                    }
-                }
-
-                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
-                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
-
-                var new_start_for_this = "";
-                var new_end_for_this = "";
-                var existing_start_for_this = "";
-                var existing_end_for_this = "";
-                for (var new_day of new_days_to_loop_over) {
-                    new_start_for_this = new_day + " " + new_start;
-                    new_end_for_this = new_day + " " + new_end;
-                    for (var plugload of plugload_option) {
-                        schedulerData.events.forEach(function(e) {
-                            var current_resource_id = 0
-                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
-                                current_resource_id = 1
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
-                                current_resource_id = 2
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
-                                current_resource_id = 3
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
-                                current_resource_id = 4
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyFan")) {
-                                current_resource_id = 5
-                            }
-                            if (e.resourceId === current_resource_id) {
-                                var existing_days_to_loop_over = [];
-                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
-                                    existing_days_to_loop_over.push(getDates()[0])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
-                                    existing_days_to_loop_over.push(getDates()[1])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
-                                    existing_days_to_loop_over.push(getDates()[2])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
-                                    existing_days_to_loop_over.push(getDates()[3])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
-                                    existing_days_to_loop_over.push(getDates()[4])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
-                                    existing_days_to_loop_over.push(getDates()[5])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
-                                    existing_days_to_loop_over.push(getDates()[6])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SU") && e.start.substring(11,19) < "08:00:00") {
-                                    existing_days_to_loop_over.push(getDates()[7])
-                                }
-
-                                for (var existing_day of existing_days_to_loop_over) {
-                                    existing_start_for_this = existing_day + e.start.substring(10,19);
-                                    existing_end_for_this = existing_day + e.end.substring(10,19);
-                                    if (((new_start_for_this >= existing_start_for_this &&
-                                          new_start_for_this < existing_end_for_this) || (
-                                          new_end_for_this > existing_start_for_this &&
-                                          new_end_for_this <= existing_end_for_this) || (
-                                          existing_start_for_this >= new_start_for_this &&
-                                          existing_start_for_this < new_end_for_this) || (
-                                          existing_end_for_this > new_start_for_this &&
-                                          existing_end_for_this <= new_end_for_this)) && (
-                                          e.id !== event.id)) {
-                                            hasConflict = true;
-                                            if (!conflictedEvents.includes(e)) {
-                                                conflictedEvents.push(e)
-                                            }
-                                          }
-                                }
-                            }
-                        })
-                    }
-                }
+                var [hasConflict, conflictedEvents] = window.calendar.checkConflicts(schedulerData, event)
 
                 if (hasConflict) {
                     var message = "Conflict occurred for the following events:"
@@ -1603,109 +1466,7 @@ class Calendar extends Component {
                 )
             } else {
                 // Checking conflicts
-                var hasConflict = false;
-                var conflictedEvents = [];
-                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-                var new_days_to_loop_over = [];
-                for (var repeat_day of repeat_option) {
-                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
-                        new_days_to_loop_over.push(getDates()[0])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
-                        new_days_to_loop_over.push(getDates()[1])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
-                        new_days_to_loop_over.push(getDates()[2])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
-                        new_days_to_loop_over.push(getDates()[3])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
-                        new_days_to_loop_over.push(getDates()[4])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
-                        new_days_to_loop_over.push(getDates()[5])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
-                        new_days_to_loop_over.push(getDates()[6])
-                    }
-                }
-
-                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
-                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
-
-                var new_start_for_this = "";
-                var new_end_for_this = "";
-                var existing_start_for_this = "";
-                var existing_end_for_this = "";
-                for (var new_day of new_days_to_loop_over) {
-                    new_start_for_this = new_day + " " + new_start;
-                    new_end_for_this = new_day + " " + new_end;
-                    for (var plugload of plugload_option) {
-                        schedulerData.events.forEach(function(e) {
-                            var current_resource_id = 0
-                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
-                                current_resource_id = 1
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
-                                current_resource_id = 2
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
-                                current_resource_id = 3
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
-                                current_resource_id = 4
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyFan")) {
-                                current_resource_id = 5
-                            }
-                            if (e.resourceId === current_resource_id) {
-                                var existing_days_to_loop_over = [];
-                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
-                                    existing_days_to_loop_over.push(getDates()[0])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
-                                    existing_days_to_loop_over.push(getDates()[1])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
-                                    existing_days_to_loop_over.push(getDates()[2])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
-                                    existing_days_to_loop_over.push(getDates()[3])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
-                                    existing_days_to_loop_over.push(getDates()[4])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
-                                    existing_days_to_loop_over.push(getDates()[5])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
-                                    existing_days_to_loop_over.push(getDates()[6])
-                                }
-
-                                for (var existing_day of existing_days_to_loop_over) {
-                                    existing_start_for_this = existing_day + e.start.substring(10,19);
-                                    existing_end_for_this = existing_day + e.end.substring(10,19);
-                                    if (((new_start_for_this >= existing_start_for_this &&
-                                          new_start_for_this < existing_end_for_this) || (
-                                          new_end_for_this > existing_start_for_this &&
-                                          new_end_for_this <= existing_end_for_this) || (
-                                          existing_start_for_this >= new_start_for_this &&
-                                          existing_start_for_this < new_end_for_this) || (
-                                          existing_end_for_this > new_start_for_this &&
-                                          existing_end_for_this <= new_end_for_this)) && (
-                                          e.id !== event.id)) {
-                                            hasConflict = true;
-                                            if (!conflictedEvents.includes(e)) {
-                                                conflictedEvents.push(e)
-                                            }
-                                          }
-                                }
-                            }
-                        })
-                    }
-                }
+                var [hasConflict, conflictedEvents] = window.calendar.checkConflicts(schedulerData, event)
 
                 if (hasConflict) {
                     var message = "Conflict occurred for the following events:"
@@ -1984,109 +1745,110 @@ class Calendar extends Component {
                 )
             } else {
                 // Checking conflicts
-                var hasConflict = false;
-                var conflictedEvents = [];
-                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-                var new_days_to_loop_over = [];
-                for (var repeat_day of repeat_option) {
-                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
-                        new_days_to_loop_over.push(getDates()[0])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
-                        new_days_to_loop_over.push(getDates()[1])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
-                        new_days_to_loop_over.push(getDates()[2])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
-                        new_days_to_loop_over.push(getDates()[3])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
-                        new_days_to_loop_over.push(getDates()[4])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
-                        new_days_to_loop_over.push(getDates()[5])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
-                        new_days_to_loop_over.push(getDates()[6])
-                    }
-                }
-
-                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
-                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
-
-                var new_start_for_this = "";
-                var new_end_for_this = "";
-                var existing_start_for_this = "";
-                var existing_end_for_this = "";
-                for (var new_day of new_days_to_loop_over) {
-                    new_start_for_this = new_day + " " + new_start;
-                    new_end_for_this = new_day + " " + new_end;
-                    for (var plugload of plugload_option) {
-                        schedulerData.events.forEach(function(e) {
-                            var current_resource_id = 0
-                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
-                                current_resource_id = 1
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
-                                current_resource_id = 2
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
-                                current_resource_id = 3
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
-                                current_resource_id = 4
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyFan")) {
-                                current_resource_id = 5
-                            }
-                            if (e.resourceId === current_resource_id) {
-                                var existing_days_to_loop_over = [];
-                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
-                                    existing_days_to_loop_over.push(getDates()[0])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
-                                    existing_days_to_loop_over.push(getDates()[1])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
-                                    existing_days_to_loop_over.push(getDates()[2])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
-                                    existing_days_to_loop_over.push(getDates()[3])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
-                                    existing_days_to_loop_over.push(getDates()[4])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
-                                    existing_days_to_loop_over.push(getDates()[5])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
-                                    existing_days_to_loop_over.push(getDates()[6])
-                                }
-
-                                for (var existing_day of existing_days_to_loop_over) {
-                                    existing_start_for_this = existing_day + e.start.substring(10,19);
-                                    existing_end_for_this = existing_day + e.end.substring(10,19);
-                                    if (((new_start_for_this >= existing_start_for_this &&
-                                          new_start_for_this < existing_end_for_this) || (
-                                          new_end_for_this > existing_start_for_this &&
-                                          new_end_for_this <= existing_end_for_this) || (
-                                          existing_start_for_this >= new_start_for_this &&
-                                          existing_start_for_this < new_end_for_this) || (
-                                          existing_end_for_this > new_start_for_this &&
-                                          existing_end_for_this <= new_end_for_this)) && (
-                                          e.id !== event.id)) {
-                                            hasConflict = true;
-                                            if (!conflictedEvents.includes(e)) {
-                                                conflictedEvents.push(e)
-                                            }
-                                          }
-                                }
-                            }
-                        })
-                    }
-                }
+//                var hasConflict = false;
+//                var conflictedEvents = [];
+//                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
+//                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
+//                var new_days_to_loop_over = [];
+//                for (var repeat_day of repeat_option) {
+//                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
+//                        new_days_to_loop_over.push(getDates()[0])
+//                    }
+//                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
+//                        new_days_to_loop_over.push(getDates()[1])
+//                    }
+//                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
+//                        new_days_to_loop_over.push(getDates()[2])
+//                    }
+//                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
+//                        new_days_to_loop_over.push(getDates()[3])
+//                    }
+//                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
+//                        new_days_to_loop_over.push(getDates()[4])
+//                    }
+//                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
+//                        new_days_to_loop_over.push(getDates()[5])
+//                    }
+//                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
+//                        new_days_to_loop_over.push(getDates()[6])
+//                    }
+//                }
+//
+//                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
+//                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
+//
+//                var new_start_for_this = "";
+//                var new_end_for_this = "";
+//                var existing_start_for_this = "";
+//                var existing_end_for_this = "";
+//                for (var new_day of new_days_to_loop_over) {
+//                    new_start_for_this = new_day + " " + new_start;
+//                    new_end_for_this = new_day + " " + new_end;
+//                    for (var plugload of plugload_option) {
+//                        schedulerData.events.forEach(function(e) {
+//                            var current_resource_id = 0
+//                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
+//                                current_resource_id = 1
+//                            }
+//                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
+//                                current_resource_id = 2
+//                            }
+//                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
+//                                current_resource_id = 3
+//                            }
+//                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
+//                                current_resource_id = 4
+//                            }
+//                            if (plugload === document.getElementById("ScheduleApplyFan")) {
+//                                current_resource_id = 5
+//                            }
+//                            if (e.resourceId === current_resource_id) {
+//                                var existing_days_to_loop_over = [];
+//                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
+//                                    existing_days_to_loop_over.push(getDates()[0])
+//                                }
+//                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
+//                                    existing_days_to_loop_over.push(getDates()[1])
+//                                }
+//                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
+//                                    existing_days_to_loop_over.push(getDates()[2])
+//                                }
+//                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
+//                                    existing_days_to_loop_over.push(getDates()[3])
+//                                }
+//                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
+//                                    existing_days_to_loop_over.push(getDates()[4])
+//                                }
+//                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
+//                                    existing_days_to_loop_over.push(getDates()[5])
+//                                }
+//                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
+//                                    existing_days_to_loop_over.push(getDates()[6])
+//                                }
+//
+//                                for (var existing_day of existing_days_to_loop_over) {
+//                                    existing_start_for_this = existing_day + e.start.substring(10,19);
+//                                    existing_end_for_this = existing_day + e.end.substring(10,19);
+//                                    if (((new_start_for_this >= existing_start_for_this &&
+//                                          new_start_for_this < existing_end_for_this) || (
+//                                          new_end_for_this > existing_start_for_this &&
+//                                          new_end_for_this <= existing_end_for_this) || (
+//                                          existing_start_for_this >= new_start_for_this &&
+//                                          existing_start_for_this < new_end_for_this) || (
+//                                          existing_end_for_this > new_start_for_this &&
+//                                          existing_end_for_this <= new_end_for_this)) && (
+//                                          e.id !== event.id)) {
+//                                            hasConflict = true;
+//                                            if (!conflictedEvents.includes(e)) {
+//                                                conflictedEvents.push(e)
+//                                            }
+//                                          }
+//                                }
+//                            }
+//                        })
+//                    }
+//                }
+                var [hasConflict, conflictedEvents] = window.calendar.checkConflicts(schedulerData, event)
 
                 if (hasConflict) {
                     var message = "Conflict occurred for the following events:"
