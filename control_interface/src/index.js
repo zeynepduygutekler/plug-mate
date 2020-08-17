@@ -996,112 +996,117 @@ class ScheduleControlDashboard extends Component {
 
                 var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate, startDate] = getDates();
                 var event_rrule = "FREQ=WEEKLY;DTSTART=" + startDate.substring(0,4) + startDate.substring(5,7) + startDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
-//                event_start = mondayDate + " " + event_start;
                 event_start = "2020-01-01 " + event_start
 
                 if (event_end === "00:00:00") {
-//                    event_end = tuesdayDate + " " + event_end;
                     event_end = "2020-01-02 " + event_end
                 } else {
-//                    event_end = mondayDate + " " + event_end;
                     event_end = "2020-01-01 " + event_end
                 }
-                if (input.event_rrule.includes("Monday")) {
+
+                if (input.event_rrule.includes("MondayMorning")) {
                     if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                        event_rrule = event_rrule + "MO";
+                        event_rrule = event_rrule + "SU";
                     } else {
-                        event_rrule = event_rrule + ",MO";
+                        event_rrule = event_rrule + ",SU";
                     }
-                }
-                if (input.event_rrule.includes("BeforeTue")) {
-                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                        event_rrule = event_rrule + "MO";
-                    } else {
-                        event_rrule = event_rrule + ",MO";
-                    }
-                }
-                if (input.event_rrule.includes("Tuesday")) {
-                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                                event_rrule = event_rrule + "TU";
-                            } else {
-                                event_rrule = event_rrule + ",TU";
-                            }
+                } else {
+                    if (input.event_rrule.includes("Monday")) {
+                        if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                            event_rrule = event_rrule + "MO";
+                        } else {
+                            event_rrule = event_rrule + ",MO";
                         }
-                if (input.event_rrule.includes("BeforeWed")) {
+                    }
+                }
+                if (input.event_rrule.includes("TuesdayMorning")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "MO";
+                    } else {
+                        event_rrule = event_rrule + ",MO";
+                    }
+                } else {
+                    if (input.event_rrule.includes("Tuesday")) {
+                        if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                            event_rrule = event_rrule + "TU";
+                        } else {
+                            event_rrule = event_rrule + ",TU";
+                        }
+                    }
+                }
+                if (input.event_rrule.includes("WednesdayMorning")) {
                     if (event_rrule.charAt(event_rrule.length-1) === "=") {
                         event_rrule = event_rrule + "TU";
                     } else {
                         event_rrule = event_rrule + ",TU";
                     }
-                }
-                if (input.event_rrule.includes("Wednesday")) {
-                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                                event_rrule = event_rrule + "WE";
-                            } else {
-                                event_rrule = event_rrule + ",WE";
-                            }
+                } else {
+                    if (input.event_rrule.includes("Wednesday")) {
+                        if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                            event_rrule = event_rrule + "WE";
+                        } else {
+                            event_rrule = event_rrule + ",WE";
                         }
-                if (input.event_rrule.includes("BeforeThu")) {
+                    }
+                }
+                if (input.event_rrule.includes("ThursdayMorning")) {
                     if (event_rrule.charAt(event_rrule.length-1) === "=") {
                         event_rrule = event_rrule + "WE";
                     } else {
                         event_rrule = event_rrule + ",WE";
                     }
-                }
-                if (input.event_rrule.includes("Thursday")) {
-                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                                event_rrule = event_rrule + "TH";
-                            } else {
-                                event_rrule = event_rrule + ",TH";
-                            }
+                } else {
+                    if (input.event_rrule.includes("Thursday")) {
+                        if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                            event_rrule = event_rrule + "TH";
+                        } else {
+                            event_rrule = event_rrule + ",TH";
                         }
-                if (input.event_rrule.includes("BeforeFri")) {
+                    }
+                }
+                if (input.event_rrule.includes("FridayMorning")) {
                     if (event_rrule.charAt(event_rrule.length-1) === "=") {
                         event_rrule = event_rrule + "TH";
                     } else {
                         event_rrule = event_rrule + ",TH";
                     }
-                }
-                if (input.event_rrule.includes("Friday")) {
-                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                                event_rrule = event_rrule + "FR";
-                            } else {
-                                event_rrule = event_rrule + ",FR";
-                            }
+                } else {
+                    if (input.event_rrule.includes("Friday")) {
+                        if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                            event_rrule = event_rrule + "FR";
+                        } else {
+                            event_rrule = event_rrule + ",FR";
                         }
-                if (input.event_rrule.includes("BeforeSat")) {
+                    }
+                }
+                if (input.event_rrule.includes("SaturdayMorning")) {
                     if (event_rrule.charAt(event_rrule.length-1) === "=") {
                         event_rrule = event_rrule + "FR";
                     } else {
                         event_rrule = event_rrule + ",FR";
                     }
-                }
-                if (input.event_rrule.includes("Saturday")) {
-                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                                event_rrule = event_rrule + "SA";
-                            } else {
-                                event_rrule = event_rrule + ",SA";
-                            }
+                } else {
+                    if (input.event_rrule.includes("Saturday")) {
+                        if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                            event_rrule = event_rrule + "SA";
+                        } else {
+                            event_rrule = event_rrule + ",SA";
                         }
-                if (input.event_rrule.includes("BeforeSun")) {
+                    }
+                }
+                if (input.event_rrule.includes("SundayMorning")) {
                     if (event_rrule.charAt(event_rrule.length-1) === "=") {
                         event_rrule = event_rrule + "SA";
                     } else {
                         event_rrule = event_rrule + ",SA";
                     }
-                }
-                if (input.event_rrule.includes("Sunday")) {
-                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                                event_rrule = event_rrule + "SU";
-                            } else {
-                                event_rrule = event_rrule + ",SU";
-                            }
+                } else {
+                    if (input.event_rrule.includes("Sunday")) {
+                        if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                            event_rrule = event_rrule + "SU";
+                        } else {
+                            event_rrule = event_rrule + ",SU";
                         }
-                if (input.event_rrule.includes("BeforeMon")) {
-                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                        event_rrule = event_rrule + "SU";
-                    } else {
-                        event_rrule = event_rrule + ",SU";
                     }
                 }
 
@@ -1116,6 +1121,9 @@ class ScheduleControlDashboard extends Component {
                 setTimeout(function() {document.getElementById(wanted_id).click()}, 0.1)
             }
             events_datas.sort(sort_events)
+            if (events_datas.length === 0) {
+                events_datas.push({id: 1, start: getDates()[7] + " 09:00:00", end: getDates()[7] + " 10:00:00", title: "Empty", resourceId: 1, showPopover: false, bgColor: "#06D6A0"})
+            }
             this.setState({
                 events: events_datas,
                 dates: [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate, startDate]
@@ -1144,112 +1152,117 @@ class ScheduleControlDashboard extends Component {
 
                 var [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate, startDate] = getDates();
                 var event_rrule = "FREQ=WEEKLY;DTSTART=" + startDate.substring(0,4) + startDate.substring(5,7) + startDate.substring(8,10) + "T000000Z;UNTIL=" + sundayDate.substring(0,4) + sundayDate.substring(5,7) + sundayDate.substring(8,10) + "T235900Z;BYDAY=";
-//                event_start = mondayDate + " " + event_start;
                 event_start = "2020-01-01 " + event_start
 
                 if (event_end === "00:00:00") {
-//                    event_end = tuesdayDate + " " + event_end;
                     event_end = "2020-01-02 " + event_end
                 } else {
-//                    event_end = mondayDate + " " + event_end;
                     event_end = "2020-01-01 " + event_end
                 }
-                if (input.event_rrule.includes("Monday")) {
+
+                if (input.event_rrule.includes("MondayMorning")) {
                     if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                        event_rrule = event_rrule + "MO";
+                        event_rrule = event_rrule + "SU";
                     } else {
-                        event_rrule = event_rrule + ",MO";
+                        event_rrule = event_rrule + ",SU";
                     }
-                }
-                if (input.event_rrule.includes("BeforeTue")) {
-                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                        event_rrule = event_rrule + "MO";
-                    } else {
-                        event_rrule = event_rrule + ",MO";
-                    }
-                }
-                if (input.event_rrule.includes("Tuesday")) {
-                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                                event_rrule = event_rrule + "TU";
-                            } else {
-                                event_rrule = event_rrule + ",TU";
-                            }
+                } else {
+                    if (input.event_rrule.includes("Monday")) {
+                        if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                            event_rrule = event_rrule + "MO";
+                        } else {
+                            event_rrule = event_rrule + ",MO";
                         }
-                if (input.event_rrule.includes("BeforeWed")) {
+                    }
+                }
+                if (input.event_rrule.includes("TuesdayMorning")) {
+                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                        event_rrule = event_rrule + "MO";
+                    } else {
+                        event_rrule = event_rrule + ",MO";
+                    }
+                } else {
+                    if (input.event_rrule.includes("Tuesday")) {
+                        if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                            event_rrule = event_rrule + "TU";
+                        } else {
+                            event_rrule = event_rrule + ",TU";
+                        }
+                    }
+                }
+                if (input.event_rrule.includes("WednesdayMorning")) {
                     if (event_rrule.charAt(event_rrule.length-1) === "=") {
                         event_rrule = event_rrule + "TU";
                     } else {
                         event_rrule = event_rrule + ",TU";
                     }
-                }
-                if (input.event_rrule.includes("Wednesday")) {
-                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                                event_rrule = event_rrule + "WE";
-                            } else {
-                                event_rrule = event_rrule + ",WE";
-                            }
+                } else {
+                    if (input.event_rrule.includes("Wednesday")) {
+                        if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                            event_rrule = event_rrule + "WE";
+                        } else {
+                            event_rrule = event_rrule + ",WE";
                         }
-                if (input.event_rrule.includes("BeforeThu")) {
+                    }
+                }
+                if (input.event_rrule.includes("ThursdayMorning")) {
                     if (event_rrule.charAt(event_rrule.length-1) === "=") {
                         event_rrule = event_rrule + "WE";
                     } else {
                         event_rrule = event_rrule + ",WE";
                     }
-                }
-                if (input.event_rrule.includes("Thursday")) {
-                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                                event_rrule = event_rrule + "TH";
-                            } else {
-                                event_rrule = event_rrule + ",TH";
-                            }
+                } else {
+                    if (input.event_rrule.includes("Thursday")) {
+                        if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                            event_rrule = event_rrule + "TH";
+                        } else {
+                            event_rrule = event_rrule + ",TH";
                         }
-                if (input.event_rrule.includes("BeforeFri")) {
+                    }
+                }
+                if (input.event_rrule.includes("FridayMorning")) {
                     if (event_rrule.charAt(event_rrule.length-1) === "=") {
                         event_rrule = event_rrule + "TH";
                     } else {
                         event_rrule = event_rrule + ",TH";
                     }
-                }
-                if (input.event_rrule.includes("Friday")) {
-                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                                event_rrule = event_rrule + "FR";
-                            } else {
-                                event_rrule = event_rrule + ",FR";
-                            }
+                } else {
+                    if (input.event_rrule.includes("Friday")) {
+                        if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                            event_rrule = event_rrule + "FR";
+                        } else {
+                            event_rrule = event_rrule + ",FR";
                         }
-                if (input.event_rrule.includes("BeforeSat")) {
+                    }
+                }
+                if (input.event_rrule.includes("SaturdayMorning")) {
                     if (event_rrule.charAt(event_rrule.length-1) === "=") {
                         event_rrule = event_rrule + "FR";
                     } else {
                         event_rrule = event_rrule + ",FR";
                     }
-                }
-                if (input.event_rrule.includes("Saturday")) {
-                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                                event_rrule = event_rrule + "SA";
-                            } else {
-                                event_rrule = event_rrule + ",SA";
-                            }
+                } else {
+                    if (input.event_rrule.includes("Saturday")) {
+                        if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                            event_rrule = event_rrule + "SA";
+                        } else {
+                            event_rrule = event_rrule + ",SA";
                         }
-                if (input.event_rrule.includes("BeforeSun")) {
+                    }
+                }
+                if (input.event_rrule.includes("SundayMorning")) {
                     if (event_rrule.charAt(event_rrule.length-1) === "=") {
                         event_rrule = event_rrule + "SA";
                     } else {
                         event_rrule = event_rrule + ",SA";
                     }
-                }
-                if (input.event_rrule.includes("Sunday")) {
-                            if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                                event_rrule = event_rrule + "SU";
-                            } else {
-                                event_rrule = event_rrule + ",SU";
-                            }
+                } else {
+                    if (input.event_rrule.includes("Sunday")) {
+                        if (event_rrule.charAt(event_rrule.length-1) === "=") {
+                            event_rrule = event_rrule + "SU";
+                        } else {
+                            event_rrule = event_rrule + ",SU";
                         }
-                if (input.event_rrule.includes("BeforeMon")) {
-                    if (event_rrule.charAt(event_rrule.length-1) === "=") {
-                        event_rrule = event_rrule + "SU";
-                    } else {
-                        event_rrule = event_rrule + ",SU";
                     }
                 }
 
@@ -1257,6 +1270,9 @@ class ScheduleControlDashboard extends Component {
                 events_datas.push({id: eventId, start: event_start, end: event_end, title: event_name, rrule: event_rrule, resourceId: resourceId, showPopover: false, bgColor: '#06D6A0', database_id: input.id})
             }
             events_datas.sort(sort_events)
+            if (events_datas.length === 0) {
+                events_datas.push({id: 1, start: getDates()[7] + " 09:00:00", end: getDates()[7] + " 10:00:00", title: "Empty", resourceId: 1, showPopover: false, bgColor: "#06D6A0"})
+            }
             this.setState({
                 events: events_datas,
                 dates: [mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate, startDate]
@@ -1313,22 +1329,6 @@ class ScheduleControlDashboard extends Component {
         })
     }
 
-    removeCalendarHeader = () => {
-        document.getElementById("root").childNodes[0].childNodes[0].childNodes[0].removeChild(document.getElementById("root").childNodes[0].childNodes[0].childNodes[0].childNodes[0]);
-    }
-
-    addLines = () => {
-        document.getElementsByClassName("scheduler-bg-table")[0].childNodes[0].childNodes[0].childNodes[23].style.borderRight = 0;
-
-        var i;
-        var j;
-        for (i=0; i<5; i++) {
-            for (j=3; j<93; j+=4) {
-                document.getElementsByClassName("scheduler-bg-table")[1].childNodes[0].childNodes[i].childNodes[j].style.borderRight = "1px solid #707070";
-            }
-        }
-    }
-
     chooseMonday = () => {
         this.refetchData();
         // Update chosen_day state
@@ -1360,8 +1360,6 @@ class ScheduleControlDashboard extends Component {
                 day="Monday"
                 current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
-//        this.removeCalendarHeader();
-//        this.addLines();
     }
 
     chooseTuesday = () => {
@@ -1395,8 +1393,6 @@ class ScheduleControlDashboard extends Component {
                 day="Tuesday"
                 current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
-//        this.removeCalendarHeader();
-//        this.addLines();
     }
 
     chooseWednesday = () => {
@@ -1430,8 +1426,6 @@ class ScheduleControlDashboard extends Component {
                 day="Wednesday"
                 current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
-//        this.removeCalendarHeader();
-//        this.addLines();
     }
 
     chooseThursday = () => {
@@ -1465,8 +1459,6 @@ class ScheduleControlDashboard extends Component {
                 day="Thursday"
                 current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
-//        this.removeCalendarHeader();
-//        this.addLines();
     }
 
     chooseFriday = () => {
@@ -1500,8 +1492,6 @@ class ScheduleControlDashboard extends Component {
                 day="Friday"
                 current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
-//        this.removeCalendarHeader();
-//        this.addLines();
     }
 
     chooseSaturday = () => {
@@ -1535,8 +1525,6 @@ class ScheduleControlDashboard extends Component {
                 day="Saturday"
                 current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
-//        this.removeCalendarHeader();
-//        this.addLines();
     }
 
     chooseSunday = () => {
@@ -1570,8 +1558,6 @@ class ScheduleControlDashboard extends Component {
                 day="Sunday"
                 current_user_id={this.state.current_user_id}
             />, document.getElementById("root"));
-//        this.removeCalendarHeader();
-//        this.addLines();
     }
 
     render() {

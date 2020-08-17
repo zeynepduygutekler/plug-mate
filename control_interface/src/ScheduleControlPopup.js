@@ -120,8 +120,8 @@ class ScheduleControlPopup extends Component {
                             <ScheduleControlApply devices={["Desktop", "Monitor", "Laptop", "Fan", "Task Lamp"]} />
                         </div>
                         <br/>
-                        <button id="schedule_popup_ok" onClick={this.props.okButtonClicked}> OK </button>
-                        <button id="schedule_popup_delete" onClick={this.props.deleteButtonClicked}> Delete </button>
+                        <button id="schedule_popup_ok" onClick={this.props.okButtonClicked} className="btn btn-sm"> OK </button>
+                        <button id="schedule_popup_delete" onClick={this.props.deleteButtonClicked} className="btn btn-sm"> Delete </button>
                     </div>
                 </div>
             </>

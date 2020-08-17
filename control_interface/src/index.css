@@ -68,7 +68,7 @@
 }
 
 #DesktopCancelButton:hover, #MonitorCancelButton:hover, #LaptopCancelButton:hover, #TaskLampCancelButton:hover, #FanCancelButton:hover {
-    background: rgba(133, 135, 150, 0.3);
+    background: rgba(133, 135, 150, 0.2);
 }
 
 #DesktopOkButton, #MonitorOkButton, #LaptopOkButton, #TaskLampOkButton, #FanOkButton {
@@ -79,7 +79,7 @@
 }
 
 #DesktopOkButton:hover, #MonitorOkButton:hover, #LaptopOkButton:hover, #TaskLampOkButton:hover, #FanOkButton:hover {
-    background: rgba(133, 135, 150, 0.3);
+    background: rgba(133, 135, 150, 0.2);
 }
 
 #DesktopPopupPresence, #MonitorPopupPresence, #LaptopPopupPresence, #TaskLampPopupPresence, #FanPopupPresence{
@@ -250,7 +250,7 @@
 }
 
 .tab button:hover {
-    background: rgba(6, 214, 160, 0.5)
+    background: rgba(6, 214, 160, 0.2)
 }
 
 .toggle-switch {
@@ -416,6 +416,8 @@
 #schedule_popup_close {
     float:right;
     cursor: pointer;
+    background: none;
+    border: none;
 }
 
 #schedule_time_input {
@@ -437,6 +439,12 @@
     width: 80px;
     background: #E74A3B;
     float: right;
+    border: 1px solid black;
+    color: black;
+}
+
+#schedule_popup_delete:hover {
+    background: rgba(133, 135, 150, 0.2);
 }
 
 #schedule_popup_ok {
@@ -444,6 +452,12 @@
     width: 80px;
     margin-left: 10px;
     float: right;
+    border: 1px solid black;
+    color: black;
+}
+
+#schedule_popup_ok:hover {
+    background: rgba(133, 135, 150, 0.2);
 }
 
 .whiteRing {

@@ -40,49 +40,49 @@ function formatForDatabaseAdd(book, current_user_id) {
     var event_rrule = ""
     if (book.rrule.substring(60,book.rrule.length).includes("MO")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeMon, "
+            event_rrule = event_rrule + "MondayMorning, "
         } else {
             event_rrule = event_rrule + "Monday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("TU")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeTue, "
+            event_rrule = event_rrule + "TuesdayMorning, "
         } else {
             event_rrule = event_rrule + "Tuesday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("WE")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeWed, "
+            event_rrule = event_rrule + "WednesdayMorning, "
         } else {
             event_rrule = event_rrule + "Wednesday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("TH")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeThu, "
+            event_rrule = event_rrule + "ThursdayMorning, "
         } else {
             event_rrule = event_rrule + "Thursday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("FR")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeFri, "
+            event_rrule = event_rrule + "FridayMorning, "
         } else {
             event_rrule = event_rrule + "Friday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("SA")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeSat, "
+            event_rrule = event_rrule + "SaturdayMorning, "
         } else {
             event_rrule = event_rrule + "Saturday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("SU")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeSun, "
+            event_rrule = event_rrule + "SundayMorning, "
         } else {
             event_rrule = event_rrule + "Sunday, "
         }
@@ -107,49 +107,49 @@ function formatForDatabaseUpdate(book, current_user_id) {
     var event_rrule = ""
     if (book.rrule.substring(60,book.rrule.length).includes("MO")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeMon, "
+            event_rrule = event_rrule + "MondayMorning, "
         } else {
             event_rrule = event_rrule + "Monday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("TU")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeTue, "
+            event_rrule = event_rrule + "TuesdayMorning, "
         } else {
             event_rrule = event_rrule + "Tuesday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("WE")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeWed, "
+            event_rrule = event_rrule + "WednesdayMorning, "
         } else {
             event_rrule = event_rrule + "Wednesday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("TH")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeThu, "
+            event_rrule = event_rrule + "ThursdayMorning, "
         } else {
             event_rrule = event_rrule + "Thursday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("FR")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeFri, "
+            event_rrule = event_rrule + "FridayMorning, "
         } else {
             event_rrule = event_rrule + "Friday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("SA")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeSat, "
+            event_rrule = event_rrule + "SaturdayMorning, "
         } else {
             event_rrule = event_rrule + "Saturday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("SU")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeSun, "
+            event_rrule = event_rrule + "SundayMorning, "
         } else {
             event_rrule = event_rrule + "Sunday, "
         }
@@ -254,6 +254,7 @@ class Calendar extends Component {
         );
         schedulerData.setResources([{id:1, name:"Desktop"}, {id:5, name:"Fan"}, {id:2, name:"Laptop"}, {id:3, name:"Monitor"}, {id:4, name:"Task Lamp"}]);
         schedulerData.setEvents(this.props.events);
+
         this.state = {
             viewModel: schedulerData,
             achievements_books: [],
@@ -486,10 +487,15 @@ class Calendar extends Component {
         var new_end_for_this = "";
         var existing_start_for_this = "";
         var existing_end_for_this = "";
+        if (typeof event.id === "string") {
+            var n = event.id.indexOf("-")
+            var processed_event_id = Number(event.id.substring(0,n))
+        } else {
+            processed_event_id = event.id
+        }
         for (var new_day of new_days_to_loop_over) {
             new_start_for_this = new_day + " " + new_start;
             new_end_for_this = new_day + " " + new_end;
-            console.log(new_start_for_this)
             for (var plugload of plugload_option) {
                 var current_resource_id = 0;
                 if (plugload === document.getElementById("ScheduleApplyDesktop")) {
@@ -507,10 +513,7 @@ class Calendar extends Component {
                 if (plugload === document.getElementById("ScheduleApplyFan")) {
                     current_resource_id = 5;
                 }
-                console.log(plugload)
-                console.log(this.props.events)
                 this.props.events.forEach(function(e) {
-                    console.log(e)
                     if (e.resourceId === current_resource_id) {
                         var existing_days_to_loop_over = [];
                         if (e.start.substring(11,19) < "08:00:00") {
@@ -561,7 +564,6 @@ class Calendar extends Component {
                         for (var existing_day of existing_days_to_loop_over) {
                             existing_start_for_this = existing_day + e.start.substring(10,19);
                             existing_end_for_this = existing_day + e.end.substring(10,19);
-                            console.log(existing_start_for_this)
                             if (((new_start_for_this >= existing_start_for_this &&
                                   new_start_for_this < existing_end_for_this) || (
                                   new_end_for_this > existing_start_for_this &&
@@ -570,13 +572,11 @@ class Calendar extends Component {
                                   existing_start_for_this < new_end_for_this) || (
                                   existing_end_for_this > new_start_for_this &&
                                   existing_end_for_this <= new_end_for_this)) && (
-                                  e.id !== event.id)) {
+                                  e.id !== processed_event_id)) {
                                 hasConflict = true;
                                 if (!conflictedEvents.includes(e)) {
                                     conflictedEvents.push(e)
                                 }
-                                console.log(hasConflict)
-                                console.log(conflictedEvents)
                             }
                         }
                     }
@@ -644,26 +644,50 @@ class Calendar extends Component {
                     var message = "Conflict occurred for the following events:"
                     for (var events of conflictedEvents) {
                         var day = "";
-                        if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
-                            day = day + "Monday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
-                            day = day + "Tuesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
-                            day = day + "Wednesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
-                            day = day + "Thursday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
-                            day = day + "Friday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
-                            day = day + "Saturday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
-                            day = day + "Sunday, "
+                        if (events.start.substring(11,19) < "08:00:00") {
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Sunday, "
+                            }
+                        } else {
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Sunday, "
+                            }
                         }
                         var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
                         message += `<new>- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-2)}`
@@ -924,26 +948,50 @@ class Calendar extends Component {
                     var message = "Conflict occurred for the following events:"
                     for (var events of conflictedEvents) {
                         var day = ""
-                        if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
-                            day = day + "Monday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
-                            day = day + "Tuesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
-                            day = day + "Wednesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
-                            day = day + "Thursday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
-                            day = day + "Friday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
-                            day = day + "Saturday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
-                            day = day + "Sunday, "
+                        if (events.start.substring(11,19) < "08:00:00") {
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Sunday, "
+                            }
+                        } else {
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Sunday, "
+                            }
                         }
                         var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
                         message += `<new>- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-2)}`
@@ -1196,26 +1244,50 @@ class Calendar extends Component {
                     var message = "Conflict occurred for the following events:"
                     for (var events of conflictedEvents) {
                         var day = ""
-                        if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
-                            day =  day + "Monday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
-                            day = day + "Tuesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
-                            day = day + "Wednesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
-                            day = day + "Thursday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
-                            day = day + "Friday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
-                            day = day + "Saturday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
-                            day = day + "Sunday, "
+                        if (events.start.substring(11,19) < "08:00:00") {
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Sunday, "
+                            }
+                        } else {
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Sunday, "
+                            }
                         }
                         var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
                         message += `<new>- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-2)}`
@@ -1472,26 +1544,50 @@ class Calendar extends Component {
                     var message = "Conflict occurred for the following events:"
                     for (var events of conflictedEvents) {
                         var day = ""
-                        if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
-                            day = day + "Monday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
-                            day = day + "Tuesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
-                            day = day + "Wednesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
-                            day = day + "Thursday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
-                            day = day + "Friday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
-                            day = day + "Saturday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
-                            day = day + "Sunday, "
+                        if (events.start.substring(11,19) < "08:00:00") {
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Sunday, "
+                            }
+                        } else {
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Sunday, "
+                            }
                         }
                         var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
                         message += `<new>- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-2)}`
@@ -1745,135 +1841,56 @@ class Calendar extends Component {
                 )
             } else {
                 // Checking conflicts
-//                var hasConflict = false;
-//                var conflictedEvents = [];
-//                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-//                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-//                var new_days_to_loop_over = [];
-//                for (var repeat_day of repeat_option) {
-//                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
-//                        new_days_to_loop_over.push(getDates()[0])
-//                    }
-//                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
-//                        new_days_to_loop_over.push(getDates()[1])
-//                    }
-//                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
-//                        new_days_to_loop_over.push(getDates()[2])
-//                    }
-//                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
-//                        new_days_to_loop_over.push(getDates()[3])
-//                    }
-//                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
-//                        new_days_to_loop_over.push(getDates()[4])
-//                    }
-//                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
-//                        new_days_to_loop_over.push(getDates()[5])
-//                    }
-//                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
-//                        new_days_to_loop_over.push(getDates()[6])
-//                    }
-//                }
-//
-//                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
-//                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
-//
-//                var new_start_for_this = "";
-//                var new_end_for_this = "";
-//                var existing_start_for_this = "";
-//                var existing_end_for_this = "";
-//                for (var new_day of new_days_to_loop_over) {
-//                    new_start_for_this = new_day + " " + new_start;
-//                    new_end_for_this = new_day + " " + new_end;
-//                    for (var plugload of plugload_option) {
-//                        schedulerData.events.forEach(function(e) {
-//                            var current_resource_id = 0
-//                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
-//                                current_resource_id = 1
-//                            }
-//                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
-//                                current_resource_id = 2
-//                            }
-//                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
-//                                current_resource_id = 3
-//                            }
-//                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
-//                                current_resource_id = 4
-//                            }
-//                            if (plugload === document.getElementById("ScheduleApplyFan")) {
-//                                current_resource_id = 5
-//                            }
-//                            if (e.resourceId === current_resource_id) {
-//                                var existing_days_to_loop_over = [];
-//                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
-//                                    existing_days_to_loop_over.push(getDates()[0])
-//                                }
-//                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
-//                                    existing_days_to_loop_over.push(getDates()[1])
-//                                }
-//                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
-//                                    existing_days_to_loop_over.push(getDates()[2])
-//                                }
-//                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
-//                                    existing_days_to_loop_over.push(getDates()[3])
-//                                }
-//                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
-//                                    existing_days_to_loop_over.push(getDates()[4])
-//                                }
-//                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
-//                                    existing_days_to_loop_over.push(getDates()[5])
-//                                }
-//                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
-//                                    existing_days_to_loop_over.push(getDates()[6])
-//                                }
-//
-//                                for (var existing_day of existing_days_to_loop_over) {
-//                                    existing_start_for_this = existing_day + e.start.substring(10,19);
-//                                    existing_end_for_this = existing_day + e.end.substring(10,19);
-//                                    if (((new_start_for_this >= existing_start_for_this &&
-//                                          new_start_for_this < existing_end_for_this) || (
-//                                          new_end_for_this > existing_start_for_this &&
-//                                          new_end_for_this <= existing_end_for_this) || (
-//                                          existing_start_for_this >= new_start_for_this &&
-//                                          existing_start_for_this < new_end_for_this) || (
-//                                          existing_end_for_this > new_start_for_this &&
-//                                          existing_end_for_this <= new_end_for_this)) && (
-//                                          e.id !== event.id)) {
-//                                            hasConflict = true;
-//                                            if (!conflictedEvents.includes(e)) {
-//                                                conflictedEvents.push(e)
-//                                            }
-//                                          }
-//                                }
-//                            }
-//                        })
-//                    }
-//                }
                 var [hasConflict, conflictedEvents] = window.calendar.checkConflicts(schedulerData, event)
 
                 if (hasConflict) {
                     var message = "Conflict occurred for the following events:"
                     for (var events of conflictedEvents) {
                         var day = ""
-                        if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
-                            day = day + "Monday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
-                            day = day + "Tuesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
-                            day = day + "Wednesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
-                            day = day + "Thursday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
-                            day = day + "Friday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
-                            day = day + "Saturday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
-                            day = day + "Sunday, "
+                        if (events.start.substring(11,19) < "08:00:00") {
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Sunday, "
+                            }
+                        } else {
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Sunday, "
+                            }
                         }
                         var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
                         message += `<new>- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-2)}`
