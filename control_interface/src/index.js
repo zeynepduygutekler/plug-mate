@@ -791,7 +791,7 @@ class PresenceControlItem extends Component {
         // Display value on dropdown
         document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = document.getElementById(this.state.device_type.replace(/\s/g,'') + "TextOther").value.toString();
         // Clear text box on popup
-        document.getElementById(this.state.device_type.replace(/\s/g,'') + "TextOther").value = "";
+        document.getElementById(this.state.device_type.replace(/\s/g,'') + "TextOther").value = "15";
         // Hide popup
         ReactDOM.unmountComponentAtNode(document.getElementById(this.state.device_type.replace(/\s/g,'') + "PopupPresenceBox"))
         // Update database
@@ -868,8 +868,9 @@ class PresenceControlPopup extends Component {
         <>
             <div id="PopupPresenceOverlay" className="popup_presence_overlay" onClick={this.exitClick}></div>
             <div id={this.props.device_type.replace(/\s/g,'') + "PopupPresence"} className="visiblePresence">
-                <input type="number" id={this.props.device_type.replace(/\s/g,'') + "TextOther"} onChange={this.props.handleOtherUpdate} onKeyUp={this.props.handleEnterClick} placeholder="5" />
-                <p className="minutes"> Minutes </p>
+                <input type="number" id={this.props.device_type.replace(/\s/g,'') + "TextOther"} onChange={this.props.handleOtherUpdate} onKeyUp={this.props.handleEnterClick} placeholder="15" />
+                <br />
+                <p className="minutes"> minutes </p>
                 <br />
                 <button id={this.props.device_type.replace(/\s/g,'') + "CancelButton"} onClick={this.props.cancelButtonClicked} className="btn btn-sm"> Cancel </button>
                 <button id={this.props.device_type.replace(/\s/g,'') + "OkButton"} className="btn btn-sm" onClick={this.props.okButtonClicked}> OK </button>

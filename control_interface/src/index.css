@@ -67,6 +67,10 @@
     color: black;
 }
 
+#DesktopCancelButton:hover, #MonitorCancelButton:hover, #LaptopCancelButton:hover, #TaskLampCancelButton:hover, #FanCancelButton:hover {
+    background: rgba(133, 135, 150, 0.3);
+}
+
 #DesktopOkButton, #MonitorOkButton, #LaptopOkButton, #TaskLampOkButton, #FanOkButton {
     margin-left: 10%;
     background: #1CC88A;
@@ -74,10 +78,14 @@
     color: black;
 }
 
+#DesktopOkButton:hover, #MonitorOkButton:hover, #LaptopOkButton:hover, #TaskLampOkButton:hover, #FanOkButton:hover {
+    background: rgba(133, 135, 150, 0.3);
+}
+
 #DesktopPopupPresence, #MonitorPopupPresence, #LaptopPopupPresence, #TaskLampPopupPresence, #FanPopupPresence{
   position: absolute;
-  top: 80px;
-  left: 80px;
+  top: 70px;
+  left: 70px;
   z-index: 100;
 }
 
@@ -186,7 +194,6 @@
 
 .minutes {
     font-size: 14px;
-    margin-left: 10px;
     display: inline-block;
     color: black;
 }
@@ -336,12 +343,12 @@
 
 .visiblePresence {
   border: 1px solid #707070;
-  box-shadow: 3px 3px 3px 3px #ccc;
   padding: 15px 5px;
   text-align: center;
-  width: 125px;
-  height: 100px;
+  width: 150px;
+  height: 120px;
   margin-left: 10px;
+  background: white;
 }
 
 .whiteRing {
