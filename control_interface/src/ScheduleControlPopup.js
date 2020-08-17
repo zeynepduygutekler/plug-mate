@@ -116,7 +116,7 @@ class ScheduleControlPopup extends Component {
                             <ScheduleControlRepeat />
                         </div>
                         <div id="schedule_apply_input">
-                            <p style={{fontWeight:"bold"}}> Also apply to: </p>
+                            <p style={{fontWeight:"bold", color:"black"}}> Also apply to: </p>
                             <ScheduleControlApply devices={["Desktop", "Monitor", "Laptop", "Fan", "Task Lamp"]} />
                         </div>
                         <br/>
@@ -188,7 +188,7 @@ class ScheduleControlRepeat extends Component {
     render() {
         return (
             <>
-                <p style={{fontWeight:"bold"}}> Repeat: </p>
+                <p style={{fontWeight:"bold", color:"black"}}> Repeat: </p>
                 <input
                     type="checkbox"
                     id="ScheduleRepeatEveryDay"
@@ -213,7 +213,7 @@ class ScheduleControlRepeat extends Component {
                         }
                     }}
                 />
-                <label htmlFor="ScheduleRepeatEveryDay" style={{marginLeft: "2px"}}> Every Day </label>
+                <label htmlFor="ScheduleRepeatEveryDay" style={{marginLeft: "10px", color:"black"}}> Every Day </label>
                 <br />
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -233,7 +233,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label style={{marginLeft: "2px"}}> Monday </label>
+                    <label style={{marginLeft: "10px", color:"black"}}> Monday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -253,7 +253,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label style={{marginLeft: "2px"}}> Tuesday </label>
+                    <label style={{marginLeft: "10px", color:"black"}}> Tuesday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -273,7 +273,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label style={{marginLeft: "2px"}}> Wednesday </label>
+                    <label style={{marginLeft: "10px", color:"black"}}> Wednesday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -293,7 +293,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label style={{marginLeft: "2px"}}> Thursday </label>
+                    <label style={{marginLeft: "10px", color:"black"}}> Thursday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -313,7 +313,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label style={{marginLeft: "2px"}}> Friday </label>
+                    <label style={{marginLeft: "10px", color:"black"}}> Friday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -333,7 +333,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label style={{marginLeft: "2px"}}> Saturday </label>
+                    <label style={{marginLeft: "10px", color:"black"}}> Saturday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -353,7 +353,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label style={{marginLeft: "2px"}}> Sunday </label>
+                    <label style={{marginLeft: "10px", color:"black"}}> Sunday </label>
                 </div>
             </>
         )
@@ -382,7 +382,7 @@ class ScheduleControlApplyItem extends Component {
                     name="ScheduleApplyOption"
                     id={"ScheduleApply" + this.props.device_type.replace(/\s/g,'')}
                 />
-                <label style={{marginLeft: "2px"}}> {this.props.device_type} </label>
+                <label style={{marginLeft: "10px", color:"black"}}> {this.props.device_type} </label>
             </div>
         )
     }

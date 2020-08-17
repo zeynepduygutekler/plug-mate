@@ -863,7 +863,7 @@ class Calendar extends Component {
                     })
 
                     window.calendar.props.refetchData();
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 3000)
                 }
             }
         }
@@ -1161,7 +1161,7 @@ class Calendar extends Component {
                     })
 
                     window.calendar.props.refetchData();
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 3000)
                 }
             }
         }
@@ -1464,7 +1464,7 @@ class Calendar extends Component {
                     })
 
                     window.calendar.props.refetchData();
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 3000)
                 }
             }
         }
@@ -1762,7 +1762,7 @@ class Calendar extends Component {
                     })
 
                     window.calendar.props.refetchData();
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 2000)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 3000)
                 }
             }
         }
@@ -2065,7 +2065,7 @@ class Calendar extends Component {
                     })
 
                     window.calendar.props.refetchData();
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 3000)
                 }
             }
         }

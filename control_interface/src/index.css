@@ -400,7 +400,8 @@
     margin: 0;
     margin-bottom: 4%;
     font-weight: bold;
-    display: inline-block
+    display: inline-block;
+    color: black;
 }
 
 #schedule_name_input {
@@ -418,6 +419,10 @@
     cursor: pointer;
     background: none;
     border: none;
+    font-size: 30px;
+    padding: 0;
+    margin-top: -15px;
+    margin-right: -30px;
 }
 
 #schedule_time_input {
