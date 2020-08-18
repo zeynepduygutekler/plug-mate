@@ -161,7 +161,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         df_hour = pd.DataFrame(results, columns=['user_id', 'date', 'hours', 'power', 'month',
                                                  'time', 'year', 'power_kWh', 'cost', 'dates_AMPM'])
         df_hour.drop(columns=['user_id'], inplace=True)
-
+        print(df_hour)
         # df_hour_pie
         with connection.cursor() as cursor:
             cursor.execute(
@@ -176,9 +176,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         pie_middletext = 'Today'
 
         # For changing units
-        df3 = df_hour
+        df3 = copy.deepcopy(df_hour)
 
-        df4 = df_hour_pie
+        df4 = copy.deepcopy(df_hour_pie)
         dayActive = False
         weekActive = False
         monthActive = False
