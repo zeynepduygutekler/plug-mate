@@ -119,7 +119,7 @@ def update_bar_chart(n1, n2, int, **kwargs):
         dff = dff + abs(dff) * discount
         ser = dff['total']
         ser.replace(0,0.001,inplace=True)
-        pos = ser.loc[ser > 0]
+        pos = ser.loc[ser >= 0]
         neg = ser.loc[ser < 0]
 
         hovertext1 = []
