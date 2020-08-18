@@ -40,49 +40,49 @@ function formatForDatabaseAdd(book, current_user_id) {
     var event_rrule = ""
     if (book.rrule.substring(60,book.rrule.length).includes("MO")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeMon, "
+            event_rrule = event_rrule + "MondayMorning, "
         } else {
             event_rrule = event_rrule + "Monday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("TU")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeTue, "
+            event_rrule = event_rrule + "TuesdayMorning, "
         } else {
             event_rrule = event_rrule + "Tuesday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("WE")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeWed, "
+            event_rrule = event_rrule + "WednesdayMorning, "
         } else {
             event_rrule = event_rrule + "Wednesday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("TH")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeThu, "
+            event_rrule = event_rrule + "ThursdayMorning, "
         } else {
             event_rrule = event_rrule + "Thursday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("FR")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeFri, "
+            event_rrule = event_rrule + "FridayMorning, "
         } else {
             event_rrule = event_rrule + "Friday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("SA")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeSat, "
+            event_rrule = event_rrule + "SaturdayMorning, "
         } else {
             event_rrule = event_rrule + "Saturday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("SU")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeSun, "
+            event_rrule = event_rrule + "SundayMorning, "
         } else {
             event_rrule = event_rrule + "Sunday, "
         }
@@ -107,49 +107,49 @@ function formatForDatabaseUpdate(book, current_user_id) {
     var event_rrule = ""
     if (book.rrule.substring(60,book.rrule.length).includes("MO")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeMon, "
+            event_rrule = event_rrule + "MondayMorning, "
         } else {
             event_rrule = event_rrule + "Monday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("TU")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeTue, "
+            event_rrule = event_rrule + "TuesdayMorning, "
         } else {
             event_rrule = event_rrule + "Tuesday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("WE")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeWed, "
+            event_rrule = event_rrule + "WednesdayMorning, "
         } else {
             event_rrule = event_rrule + "Wednesday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("TH")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeThu, "
+            event_rrule = event_rrule + "ThursdayMorning, "
         } else {
             event_rrule = event_rrule + "Thursday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("FR")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeFri, "
+            event_rrule = event_rrule + "FridayMorning, "
         } else {
             event_rrule = event_rrule + "Friday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("SA")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeSat, "
+            event_rrule = event_rrule + "SaturdayMorning, "
         } else {
             event_rrule = event_rrule + "Saturday, "
         }
     }
     if (book.rrule.substring(60,book.rrule.length).includes("SU")) {
         if (book.start.substring(book.start.length-8, book.start.length) < "08:00:00") {
-            event_rrule = event_rrule + "BeforeSun, "
+            event_rrule = event_rrule + "SundayMorning, "
         } else {
             event_rrule = event_rrule + "Sunday, "
         }
@@ -199,9 +199,11 @@ function getDates() {
     var fridayDate = new Date();
     var saturdayDate = new Date();
     var sundayDate = new Date();
+    var startDate = new Date();
 
     if (today.getDay() === 0) {
         // Today is Sunday
+        startDate.setDate(today.getDate() - 7)
         mondayDate.setDate(today.getDate() - 6);
         tuesdayDate.setDate(today.getDate() - 5);
         wednesdayDate.setDate(today.getDate() - 4);
@@ -210,6 +212,7 @@ function getDates() {
         saturdayDate.setDate(today.getDate() - 1);
         sundayDate.setDate(today.getDate());
     } else {
+        startDate.setDate(today.getDate() + (0 - today.getDay()))
         mondayDate.setDate(today.getDate() + (1 - today.getDay()));
         tuesdayDate.setDate(today.getDate() + (2 - today.getDay()));
         wednesdayDate.setDate(today.getDate() + (3 - today.getDay()));
@@ -219,6 +222,7 @@ function getDates() {
         sundayDate.setDate(today.getDate() + (7 - today.getDay()));
     }
 
+    startDate = startDate.getFullYear() + "-" + ((startDate.getMonth() + 1).toString().length === 1 ? "0" + (startDate.getMonth() + 1).toString() : (startDate.getMonth() + 1)) + "-" + (startDate.getDate().toString().length === 1 ? "0" + startDate.getDate().toString() : startDate.getDate())
     mondayDate = mondayDate.getFullYear() + "-" + ((mondayDate.getMonth() + 1).toString().length === 1 ? "0" + (mondayDate.getMonth() + 1).toString() : (mondayDate.getMonth() + 1)) + "-" + (mondayDate.getDate().toString().length === 1 ? "0" + mondayDate.getDate().toString() : mondayDate.getDate())
     tuesdayDate = tuesdayDate.getFullYear() + "-" + ((tuesdayDate.getMonth() + 1).toString().length === 1 ? "0" + (tuesdayDate.getMonth() + 1).toString() : (tuesdayDate.getMonth() + 1)) + "-" + (tuesdayDate.getDate().toString().length === 1 ? "0" + tuesdayDate.getDate().toString() : tuesdayDate.getDate())
     wednesdayDate = wednesdayDate.getFullYear() + "-" + ((wednesdayDate.getMonth() + 1).toString().length === 1 ? "0" + (wednesdayDate.getMonth() + 1).toString() : (wednesdayDate.getMonth() + 1)) + "-" + (wednesdayDate.getDate().toString().length === 1 ? "0" + wednesdayDate.getDate().toString() : wednesdayDate.getDate())
@@ -227,7 +231,7 @@ function getDates() {
     saturdayDate = saturdayDate.getFullYear() + "-" + ((saturdayDate.getMonth() + 1).toString().length === 1 ? "0" + (saturdayDate.getMonth() + 1).toString() : (saturdayDate.getMonth() + 1)) + "-" + (saturdayDate.getDate().toString().length === 1 ? "0" + saturdayDate.getDate().toString() : saturdayDate.getDate())
     sundayDate = sundayDate.getFullYear() + "-" + ((sundayDate.getMonth() + 1).toString().length === 1 ? "0" + (sundayDate.getMonth() + 1).toString() : (sundayDate.getMonth() + 1)) + "-" + (sundayDate.getDate().toString().length === 1 ? "0" + sundayDate.getDate().toString() : sundayDate.getDate())
 
-    return([mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate])
+    return([mondayDate, tuesdayDate, wednesdayDate, thursdayDate, fridayDate, saturdayDate, sundayDate, startDate])
 }
 
 class Calendar extends Component {
@@ -250,6 +254,7 @@ class Calendar extends Component {
         );
         schedulerData.setResources([{id:1, name:"Desktop"}, {id:5, name:"Fan"}, {id:2, name:"Laptop"}, {id:3, name:"Monitor"}, {id:4, name:"Task Lamp"}]);
         schedulerData.setEvents(this.props.events);
+
         this.state = {
             viewModel: schedulerData,
             achievements_books: [],
@@ -278,42 +283,6 @@ class Calendar extends Component {
                 </div>
             </div>
         );
-    }
-
-    componentDidMount() {
-        this.refetchBonusAchievementsData();
-        this.refetchWeeklyAchievementsData();
-        this.refetchPointsWalletData();
-    }
-
-    refetchBonusAchievementsData = () => {
-        fetch('/control_interface/api/achievements_bonus/')
-        .then(response => response.json())
-        .then(data => {
-            this.setState({achievements_books: data})
-        })
-
-        setTimeout(this.refetchBonusAchievementsData, 10000)
-    }
-
-    refetchWeeklyAchievementsData = () => {
-        fetch('/control_interface/api/achievements_weekly/')
-        .then(response => response.json())
-        .then(data => {
-            this.setState({weekly_achievements_books: data})
-        })
-
-        setTimeout(this.refetchWeeklyAchievementsData, 10000)
-    }
-
-    refetchPointsWalletData = () => {
-        fetch('/control_interface/api/points_wallet/')
-        .then(response => response.json())
-        .then(data => {
-            this.setState({points_wallet_books: data})
-        })
-
-        setTimeout(this.refetchPointsWalletData, 10000)
     }
 
     updateAchievementsBooks = (newBook) => {
@@ -391,16 +360,231 @@ class Calendar extends Component {
         this.updatePointsWalletBooks(book);
     }
 
-    handleAchievementsFormSubmit = () => {
-        this.handleAchievementsUpdate(this.state.achievements_books[0])
+//    updateScheduleAchievements = () => {
+//        fetch('/control_interface/api/achievements_weekly/')
+//        .then(response => response.json())
+//        .then(weekly_data => {
+//            this.setState({weekly_achievements_books: weekly_data}, function() {
+//                if (weekly_data[0].schedule_based === 0) {
+//                    // Weekly schedule achievement completed
+//                    weekly_data[0].schedule_based = 20;
+//                    this.handleWeeklyAchievementsUpdate(weekly_data[0])
+//
+//                    fetch('/control_interface/api/achievements_bonus/')
+//                    .then(response => response.json())
+//                    .then(bonus_data => {
+//                        this.setState({achievements_books: bonus_data}, function() {
+//                            if (bonus_data[0].first_schedule === 0) {
+//                                // First schedule achievement completed
+//                                bonus_data[0].first_schedule = 70
+//                                this.handleAchievementsUpdate(bonus_data[0])
+//
+//                                fetch('/control_interface/api/points_wallet/')
+//                                .then(response => response.json())
+//                                .then(points_data => {
+//                                    this.setState({points_wallet_books: points_data}, function() {
+//                                        points_data[0].points = points_data[0].points + 90
+//                                        this.handlePointsWalletUpdate(points_data[0])
+//                                    })
+//                                })
+//                            } else {
+//                                fetch('/control_interface/api/points_wallet/')
+//                                .then(response => response.json())
+//                                .then(points_data => {
+//                                    this.setState({points_wallet_books: points_data}, function() {
+//                                        points_data[0].points = points_data[0].points + 20
+//                                        this.handlePointsWalletUpdate(points_data[0])
+//                                    })
+//                                })
+//                            }
+//                        })
+//                    })
+//                }
+//            })
+//        })
+//    }
+
+    updateScheduleAchievements = () => {
+        fetch('/control_interface/api/achievements_bonus/')
+        .then(response => response.json())
+        .then(bonus_data => {
+            this.setState({achievements_books: bonus_data}, function() {
+                if (bonus_data[0].first_schedule === 0) {
+                    // First schedule achievement completed
+                    bonus_data[0].first_schedule = 70
+                    this.handleAchievementsUpdate(bonus_data[0])
+
+                    fetch('/control_interface/api/points_wallet/')
+                    .then(response => response.json())
+                    .then(points_data => {
+                        this.setState({points_wallet_books: points_data}, function() {
+                            points_data[0].points = points_data[0].points + 70
+                            this.handlePointsWalletUpdate(points_data[0])
+                        })
+                    })
+                }
+            })
+        })
     }
 
-    handleWeeklyAchievementsFormSubmit = () => {
-        this.handleWeeklyAchievementsUpdate(this.state.weekly_achievements_books[0])
-    }
+    checkConflicts = (schedulerData, event) => {
+        var hasConflict = false;
+        var conflictedEvents = [];
+        var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
+        var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
+        var new_days_to_loop_over = [];
+        var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value);
+        var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
+        for (var repeat_day of repeat_option) {
+            if (new_start < "08:00:00") {
+                if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
+                    new_days_to_loop_over.push(getDates()[7])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
+                    new_days_to_loop_over.push(getDates()[0])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
+                    new_days_to_loop_over.push(getDates()[1])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
+                    new_days_to_loop_over.push(getDates()[2])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
+                    new_days_to_loop_over.push(getDates()[3])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
+                    new_days_to_loop_over.push(getDates()[4])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
+                    new_days_to_loop_over.push(getDates()[5])
+                }
+            } else {
+                if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
+                    new_days_to_loop_over.push(getDates()[0])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
+                    new_days_to_loop_over.push(getDates()[1])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
+                    new_days_to_loop_over.push(getDates()[2])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
+                    new_days_to_loop_over.push(getDates()[3])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
+                    new_days_to_loop_over.push(getDates()[4])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
+                    new_days_to_loop_over.push(getDates()[5])
+                }
+                if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
+                    new_days_to_loop_over.push(getDates()[6])
+                }
+            }
+        }
 
-    handlePointsWalletFormSubmit = () => {
-        this.handlePointsWalletUpdate(this.state.points_wallet_books[0])
+        var new_start_for_this = "";
+        var new_end_for_this = "";
+        var existing_start_for_this = "";
+        var existing_end_for_this = "";
+        if (typeof event.id === "string") {
+            var n = event.id.indexOf("-")
+            var processed_event_id = Number(event.id.substring(0,n))
+        } else {
+            processed_event_id = event.id
+        }
+        for (var new_day of new_days_to_loop_over) {
+            new_start_for_this = new_day + " " + new_start;
+            new_end_for_this = new_day + " " + new_end;
+            for (var plugload of plugload_option) {
+                var current_resource_id = 0;
+                if (plugload === document.getElementById("ScheduleApplyDesktop")) {
+                    current_resource_id = 1;
+                }
+                if (plugload === document.getElementById("ScheduleApplyLaptop")) {
+                    current_resource_id = 2;
+                }
+                if (plugload === document.getElementById("ScheduleApplyMonitor")) {
+                    current_resource_id = 3;
+                }
+                if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
+                    current_resource_id = 4;
+                }
+                if (plugload === document.getElementById("ScheduleApplyFan")) {
+                    current_resource_id = 5;
+                }
+                this.props.events.forEach(function(e) {
+                    if (e.resourceId === current_resource_id) {
+                        var existing_days_to_loop_over = [];
+                        if (e.start.substring(11,19) < "08:00:00") {
+                            if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
+                                existing_days_to_loop_over.push(getDates()[7]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
+                                existing_days_to_loop_over.push(getDates()[0]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
+                                existing_days_to_loop_over.push(getDates()[1]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
+                                existing_days_to_loop_over.push(getDates()[2]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
+                                existing_days_to_loop_over.push(getDates()[3]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
+                                existing_days_to_loop_over.push(getDates()[4]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
+                                existing_days_to_loop_over.push(getDates()[5]);
+                            }
+                        } else {
+                            if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
+                                existing_days_to_loop_over.push(getDates()[0]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
+                                existing_days_to_loop_over.push(getDates()[1]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
+                                existing_days_to_loop_over.push(getDates()[2]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
+                                existing_days_to_loop_over.push(getDates()[3]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
+                                existing_days_to_loop_over.push(getDates()[4]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
+                                existing_days_to_loop_over.push(getDates()[5]);
+                            }
+                            if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
+                                existing_days_to_loop_over.push(getDates()[6]);
+                            }
+                        }
+                        for (var existing_day of existing_days_to_loop_over) {
+                            existing_start_for_this = existing_day + e.start.substring(10,19);
+                            existing_end_for_this = existing_day + e.end.substring(10,19);
+                            if (((new_start_for_this >= existing_start_for_this &&
+                                  new_start_for_this < existing_end_for_this) || (
+                                  new_end_for_this > existing_start_for_this &&
+                                  new_end_for_this <= existing_end_for_this) || (
+                                  existing_start_for_this >= new_start_for_this &&
+                                  existing_start_for_this < new_end_for_this) || (
+                                  existing_end_for_this > new_start_for_this &&
+                                  existing_end_for_this <= new_end_for_this)) && (
+                                  e.id !== processed_event_id)) {
+                                hasConflict = true;
+                                if (!conflictedEvents.includes(e)) {
+                                    conflictedEvents.push(e)
+                                }
+                            }
+                        }
+                    }
+                })
+            }
+        }
+
+        return [hasConflict, conflictedEvents]
     }
 
     isNonWorkingTime = (schedulerData, time) => {
@@ -430,6 +614,9 @@ class Calendar extends Component {
                 viewModel: schedulerData
             });
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
         }
 
         function okButtonClicked() {
@@ -451,134 +638,56 @@ class Calendar extends Component {
                 )
             } else {
                 // Checking conflicts
-                var hasConflict = false;
-                var conflictedEvents = [];
-                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-                var new_days_to_loop_over = [];
-                for (var repeat_day of repeat_option) {
-                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
-                        new_days_to_loop_over.push(getDates()[0])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
-                        new_days_to_loop_over.push(getDates()[1])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
-                        new_days_to_loop_over.push(getDates()[2])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
-                        new_days_to_loop_over.push(getDates()[3])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
-                        new_days_to_loop_over.push(getDates()[4])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
-                        new_days_to_loop_over.push(getDates()[5])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
-                        new_days_to_loop_over.push(getDates()[6])
-                    }
-                }
-
-                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
-                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
-
-                var new_start_for_this = "";
-                var new_end_for_this = "";
-                var existing_start_for_this = "";
-                var existing_end_for_this = "";
-                for (var new_day of new_days_to_loop_over) {
-                    new_start_for_this = new_day + " " + new_start;
-                    new_end_for_this = new_day + " " + new_end;
-                    for (var plugload of plugload_option) {
-                        schedulerData.events.forEach(function(e) {
-                            var current_resource_id = 0
-                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
-                                current_resource_id = 1
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
-                                current_resource_id = 2
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
-                                current_resource_id = 3
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
-                                current_resource_id = 4
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyFan")) {
-                                current_resource_id = 5
-                            }
-                            if (e.resourceId === current_resource_id) {
-                                var existing_days_to_loop_over = [];
-                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
-                                    existing_days_to_loop_over.push(getDates()[0])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
-                                    existing_days_to_loop_over.push(getDates()[1])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
-                                    existing_days_to_loop_over.push(getDates()[2])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
-                                    existing_days_to_loop_over.push(getDates()[3])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
-                                    existing_days_to_loop_over.push(getDates()[4])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
-                                    existing_days_to_loop_over.push(getDates()[5])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
-                                    existing_days_to_loop_over.push(getDates()[6])
-                                }
-
-                                for (var existing_day of existing_days_to_loop_over) {
-                                    existing_start_for_this = existing_day + e.start.substring(10,19);
-                                    existing_end_for_this = existing_day + e.end.substring(10,19);
-                                    if (((new_start_for_this >= existing_start_for_this &&
-                                          new_start_for_this < existing_end_for_this) || (
-                                          new_end_for_this > existing_start_for_this &&
-                                          new_end_for_this <= existing_end_for_this) || (
-                                          existing_start_for_this >= new_start_for_this &&
-                                          existing_start_for_this < new_end_for_this) || (
-                                          existing_end_for_this > new_start_for_this &&
-                                          existing_end_for_this <= new_end_for_this)) && (
-                                          e.id !== event.id)) {
-                                            hasConflict = true;
-                                            if (!conflictedEvents.includes(e)) {
-                                                conflictedEvents.push(e)
-                                            }
-                                          }
-                                }
-                            }
-                        })
-                    }
-                }
+                var [hasConflict, conflictedEvents] = window.calendar.checkConflicts(schedulerData, event)
 
                 if (hasConflict) {
                     var message = "Conflict occurred for the following events:"
                     for (var events of conflictedEvents) {
                         var day = "";
-                        if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
-                            day = day + "Monday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
-                            day = day + "Tuesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
-                            day = day + "Wednesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
-                            day = day + "Thursday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
-                            day = day + "Friday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
-                            day = day + "Saturday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
-                            day = day + "Sunday, "
+                        if (events.start.substring(11,19) < "08:00:00") {
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Sunday, "
+                            }
+                        } else {
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Sunday, "
+                            }
                         }
                         var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
                         message += `<new>- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-2)}`
@@ -605,9 +714,9 @@ class Calendar extends Component {
                     schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
 
                     // Update repeat
-                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
-                                      window.calendar.props.mondayDate.substring(5,7) +
-                                      window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.startDate.substring(0,4) +
+                                      window.calendar.props.startDate.substring(5,7) +
+                                      window.calendar.props.startDate.substring(8,10) + "T000000Z;UNTIL=" +
                                       window.calendar.props.sundayDate.substring(0,4) +
                                       window.calendar.props.sundayDate.substring(5,7) +
                                       window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
@@ -738,11 +847,6 @@ class Calendar extends Component {
                         })
                     }
 
-                    // Update calendar
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-
                     // Update database (Update)
                     window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
                     window.calendar.props.refetchData();
@@ -750,57 +854,23 @@ class Calendar extends Component {
 
                     ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
+                    // Checking for achievements
+                    window.calendar.updateScheduleAchievements()
 
-                    // Update weekly achievement
-                    if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
-                        window.calendar.setState({
-                            weekly_achievements_books: [
-                                {
-                                    ...window.calendar.state.weekly_achievements_books[0],
-                                    schedule_based: 20
-                                }
-                            ]
-                        }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
-                        // If first time clicking, update achievement
-                        if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                            window.calendar.setState({
-                                achievements_books: [
-                                    {
-                                        ...window.calendar.state.achievements_books[0],
-                                        first_schedule: 70
-                                    }
-                                ]
-                            }, function() {window.calendar.handleAchievementsFormSubmit()})
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 90
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                        } else {
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 20
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                        }
+                    // Update calendar
+                    window.calendar.setState({
+                        viewModel: schedulerData
+                    })
 
-                    }
-                    console.log(event);
                     window.calendar.props.refetchData();
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 3000)
                 }
             }
         }
 
          ReactDOM.render(
             <ScheduleControlPopup
+                type=""
                 device_type={"Edit Schedule: " + slotName}
                 event_rrule={event.rrule}
                 event_start={event.start}
@@ -827,7 +897,7 @@ class Calendar extends Component {
             resourceId: slotId,
             bgColor: "#06D6A0",
             showPopover: false,
-            rrule: "FREQ=WEEKLY;DTSTART=" + this.props.mondayDate.substring(0,4) + this.props.mondayDate.substring(5,7) + this.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" + this.props.sundayDate.substring(0,4) + this.props.sundayDate.substring(5,7) + this.props.sundayDate.substring(8,10) + "T235900Z;BYDAY=" + this.props.day.substring(0,2).toUpperCase()
+            rrule: "FREQ=WEEKLY;DTSTART=" + this.props.startDate.substring(0,4) + this.props.startDate.substring(5,7) + this.props.startDate.substring(8,10) + "T000000Z;UNTIL=" + this.props.sundayDate.substring(0,4) + this.props.sundayDate.substring(5,7) + this.props.sundayDate.substring(8,10) + "T235900Z;BYDAY=" + this.props.day.substring(0,2).toUpperCase()
         }
 
         schedulerData.addEvent(newEvent);
@@ -841,6 +911,9 @@ class Calendar extends Component {
             window.calendar.props.refetchData();
 
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
         }
         function deleteButtonClicked() {
             schedulerData.removeEvent(newEvent);
@@ -869,134 +942,56 @@ class Calendar extends Component {
                 )
             } else {
                 // Checking conflicts
-                var hasConflict = false;
-                var conflictedEvents = [];
-                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-                var new_days_to_loop_over = [];
-                for (var repeat_day of repeat_option) {
-                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
-                        new_days_to_loop_over.push(getDates()[0])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
-                        new_days_to_loop_over.push(getDates()[1])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
-                        new_days_to_loop_over.push(getDates()[2])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
-                        new_days_to_loop_over.push(getDates()[3])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
-                        new_days_to_loop_over.push(getDates()[4])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
-                        new_days_to_loop_over.push(getDates()[5])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
-                        new_days_to_loop_over.push(getDates()[6])
-                    }
-                }
-
-                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
-                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
-
-                var new_start_for_this = "";
-                var new_end_for_this = "";
-                var existing_start_for_this = "";
-                var existing_end_for_this = "";
-                for (var new_day of new_days_to_loop_over) {
-                    new_start_for_this = new_day + " " + new_start;
-                    new_end_for_this = new_day + " " + new_end;
-                    for (var plugload of plugload_option) {
-                        schedulerData.events.forEach(function(e) {
-                            var current_resource_id = 0
-                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
-                                current_resource_id = 1
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
-                                current_resource_id = 2
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
-                                current_resource_id = 3
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
-                                current_resource_id = 4
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyFan")) {
-                                current_resource_id = 5
-                            }
-                            if (e.resourceId === current_resource_id) {
-                                var existing_days_to_loop_over = [];
-                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
-                                    existing_days_to_loop_over.push(getDates()[0])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
-                                    existing_days_to_loop_over.push(getDates()[1])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
-                                    existing_days_to_loop_over.push(getDates()[2])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
-                                    existing_days_to_loop_over.push(getDates()[3])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
-                                    existing_days_to_loop_over.push(getDates()[4])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
-                                    existing_days_to_loop_over.push(getDates()[5])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
-                                    existing_days_to_loop_over.push(getDates()[6])
-                                }
-
-                                for (var existing_day of existing_days_to_loop_over) {
-                                    existing_start_for_this = existing_day + e.start.substring(10,19);
-                                    existing_end_for_this = existing_day + e.end.substring(10,19);
-                                    if (((new_start_for_this >= existing_start_for_this &&
-                                          new_start_for_this < existing_end_for_this) || (
-                                          new_end_for_this > existing_start_for_this &&
-                                          new_end_for_this <= existing_end_for_this) || (
-                                          existing_start_for_this >= new_start_for_this &&
-                                          existing_start_for_this < new_end_for_this) || (
-                                          existing_end_for_this > new_start_for_this &&
-                                          existing_end_for_this <= new_end_for_this)) && (
-                                          e.id !== newEvent.id)) {
-                                            hasConflict = true;
-                                            if (!conflictedEvents.includes(e)) {
-                                                conflictedEvents.push(e)
-                                            }
-                                          }
-                                }
-                            }
-                        })
-                    }
-                }
+                var [hasConflict, conflictedEvents] = window.calendar.checkConflicts(schedulerData, newEvent)
 
                 if (hasConflict) {
                     var message = "Conflict occurred for the following events:"
                     for (var events of conflictedEvents) {
                         var day = ""
-                        if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
-                            day = day + "Monday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
-                            day = day + "Tuesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
-                            day = day + "Wednesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
-                            day = day + "Thursday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
-                            day = day + "Friday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
-                            day = day + "Saturday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
-                            day = day + "Sunday, "
+                        if (events.start.substring(11,19) < "08:00:00") {
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Sunday, "
+                            }
+                        } else {
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Sunday, "
+                            }
                         }
                         var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
                         message += `<new>- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-2)}`
@@ -1023,9 +1018,9 @@ class Calendar extends Component {
                     schedulerData.updateEventEnd(newEvent, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
 
                     // Update repeat
-                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
-                                      window.calendar.props.mondayDate.substring(5,7) +
-                                      window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.startDate.substring(0,4) +
+                                      window.calendar.props.startDate.substring(5,7) +
+                                      window.calendar.props.startDate.substring(8,10) + "T000000Z;UNTIL=" +
                                       window.calendar.props.sundayDate.substring(0,4) +
                                       window.calendar.props.sundayDate.substring(5,7) +
                                       window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
@@ -1151,61 +1146,22 @@ class Calendar extends Component {
                         })
                     }
 
-                    // Update calendar
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-
                     // Update database (Add)
                     window.calendar.props.onAddClick(formatForDatabaseAdd(newEvent, window.calendar.props.current_user_id));
                     window.calendar.props.refetchData();
 
                     ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
-                    // Update weekly achievement
-                    if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
-                        window.calendar.setState({
-                            weekly_achievements_books: [
-                                {
-                                    ...window.calendar.state.weekly_achievements_books[0],
-                                    schedule_based: 20
-                                }
-                            ]
-                        }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
+                    // Checking for achievements
+                    window.calendar.updateScheduleAchievements()
 
-                        // If first time clicking, update achievement
-                        if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                            window.calendar.setState({
-                                achievements_books: [
-                                    {
-                                        ...window.calendar.state.achievements_books[0],
-                                        first_schedule: 70
-                                    }
-                                ]
-                            }, function() {window.calendar.handleAchievementsFormSubmit()})
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 90
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                        } else {
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 20
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                        }
-                    }
-                    console.log(newEvent);
+                    // Update calendar
+                    window.calendar.setState({
+                        viewModel: schedulerData
+                    })
+
                     window.calendar.props.refetchData();
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 3000)
                 }
             }
         }
@@ -1213,6 +1169,7 @@ class Calendar extends Component {
 
         ReactDOM.render(
             <ScheduleControlPopup
+                type="new"
                 device_type={"Add Schedule: " + slotName}
                 event_rrule={newEvent.rrule}
                 event_start={newEvent.start}
@@ -1226,7 +1183,6 @@ class Calendar extends Component {
     }
 
     updateEventStart = (schedulerData, event, newStart) => {
-        var old_start = event.start;
         schedulerData.updateEventStart(event, newStart);
         event.title = event.title.substring(0, event.title.length - 22) + " (" + from24to12(moment(newStart).format('HH:mm')) + " - " + from24to12(moment(event.end).format('HH:mm')) + ")";
         this.setState({
@@ -1239,19 +1195,27 @@ class Calendar extends Component {
             window.calendar.props.refetchData();
 
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
+
         }
         function deleteButtonClicked() {
             // Update calendar
             schedulerData.removeEvent(event);
-            window.calendar.setState({
-                viewModel: schedulerData
-            })
 
             // Update database
             window.calendar.props.onDeleteClick(event.database_id);
             window.calendar.props.refetchData();
 
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
+
+            window.calendar.setState({
+                viewModel: schedulerData
+            })
         }
 
         function okButtonClicked() {
@@ -1273,134 +1237,56 @@ class Calendar extends Component {
                 )
             } else {
                 // Checking conflicts
-                var hasConflict = false;
-                var conflictedEvents = [];
-                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-                var new_days_to_loop_over = [];
-                for (var repeat_day of repeat_option) {
-                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
-                        new_days_to_loop_over.push(getDates()[0])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
-                        new_days_to_loop_over.push(getDates()[1])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
-                        new_days_to_loop_over.push(getDates()[2])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
-                        new_days_to_loop_over.push(getDates()[3])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
-                        new_days_to_loop_over.push(getDates()[4])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
-                        new_days_to_loop_over.push(getDates()[5])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
-                        new_days_to_loop_over.push(getDates()[6])
-                    }
-                }
-
-                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
-                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
-
-                var new_start_for_this = "";
-                var new_end_for_this = "";
-                var existing_start_for_this = "";
-                var existing_end_for_this = "";
-                for (var new_day of new_days_to_loop_over) {
-                    new_start_for_this = new_day + " " + new_start;
-                    new_end_for_this = new_day + " " + new_end;
-                    for (var plugload of plugload_option) {
-                        schedulerData.events.forEach(function(e) {
-                            var current_resource_id = 0
-                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
-                                current_resource_id = 1
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
-                                current_resource_id = 2
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
-                                current_resource_id = 3
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
-                                current_resource_id = 4
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyFan")) {
-                                current_resource_id = 5
-                            }
-                            if (e.resourceId === current_resource_id) {
-                                var existing_days_to_loop_over = [];
-                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
-                                    existing_days_to_loop_over.push(getDates()[0])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
-                                    existing_days_to_loop_over.push(getDates()[1])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
-                                    existing_days_to_loop_over.push(getDates()[2])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
-                                    existing_days_to_loop_over.push(getDates()[3])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
-                                    existing_days_to_loop_over.push(getDates()[4])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
-                                    existing_days_to_loop_over.push(getDates()[5])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
-                                    existing_days_to_loop_over.push(getDates()[6])
-                                }
-
-                                for (var existing_day of existing_days_to_loop_over) {
-                                    existing_start_for_this = existing_day + e.start.substring(10,19);
-                                    existing_end_for_this = existing_day + e.end.substring(10,19);
-                                    if (((new_start_for_this >= existing_start_for_this &&
-                                          new_start_for_this < existing_end_for_this) || (
-                                          new_end_for_this > existing_start_for_this &&
-                                          new_end_for_this <= existing_end_for_this) || (
-                                          existing_start_for_this >= new_start_for_this &&
-                                          existing_start_for_this < new_end_for_this) || (
-                                          existing_end_for_this > new_start_for_this &&
-                                          existing_end_for_this <= new_end_for_this)) && (
-                                          e.id !== event.id)) {
-                                            hasConflict = true;
-                                            if (!conflictedEvents.includes(e)) {
-                                                conflictedEvents.push(e)
-                                            }
-                                          }
-                                }
-                            }
-                        })
-                    }
-                }
+                var [hasConflict, conflictedEvents] = window.calendar.checkConflicts(schedulerData, event)
 
                 if (hasConflict) {
                     var message = "Conflict occurred for the following events:"
                     for (var events of conflictedEvents) {
                         var day = ""
-                        if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
-                            day =  day + "Monday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
-                            day = day + "Tuesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
-                            day = day + "Wednesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
-                            day = day + "Thursday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
-                            day = day + "Friday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
-                            day = day + "Saturday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
-                            day = day + "Sunday, "
+                        if (events.start.substring(11,19) < "08:00:00") {
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Sunday, "
+                            }
+                        } else {
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Sunday, "
+                            }
                         }
                         var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
                         message += `<new>- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-2)}`
@@ -1427,9 +1313,9 @@ class Calendar extends Component {
                     schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
 
                     // Update repeat
-                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
-                                      window.calendar.props.mondayDate.substring(5,7) +
-                                      window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.startDate.substring(0,4) +
+                                      window.calendar.props.startDate.substring(5,7) +
+                                      window.calendar.props.startDate.substring(8,10) + "T000000Z;UNTIL=" +
                                       window.calendar.props.sundayDate.substring(0,4) +
                                       window.calendar.props.sundayDate.substring(5,7) +
                                       window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
@@ -1561,10 +1447,6 @@ class Calendar extends Component {
                         })
                     }
 
-                    // Update calendar
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
 
                     // Update database (Update)
                     window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
@@ -1572,51 +1454,16 @@ class Calendar extends Component {
 
                     ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
+                    // Checking for achievements
+                    window.calendar.updateScheduleAchievements()
 
+                    // Update calendar
+                    window.calendar.setState({
+                        viewModel: schedulerData
+                    })
 
-                    // Update weekly achievement
-                    if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
-                        window.calendar.setState({
-                            weekly_achievements_books: [
-                                {
-                                    ...window.calendar.state.weekly_achievements_books[0],
-                                    schedule_based: 20
-                                }
-                            ]
-                        }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
-                        // If first time clicking, update achievement
-                        if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                            window.calendar.setState({
-                                achievements_books: [
-                                    {
-                                        ...window.calendar.state.achievements_books[0],
-                                        first_schedule: 70
-                                    }
-                                ]
-                            }, function() {window.calendar.handleAchievementsFormSubmit()})
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 90
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                        } else {
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 20
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                        }
-                    }
-                    console.log(event);
                     window.calendar.props.refetchData();
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 3000)
                 }
             }
         }
@@ -1624,6 +1471,7 @@ class Calendar extends Component {
         var slotName = schedulerData.getSlotById(event.resourceId).name;
         ReactDOM.render(
             <ScheduleControlPopup
+                type=""
                 device_type={"Edit Schedule: " + slotName}
                 event_rrule={event.rrule}
                 event_start={newStart}
@@ -1637,7 +1485,6 @@ class Calendar extends Component {
     }
 
     updateEventEnd = (schedulerData, event, newEnd) => {
-        var old_end = event.end;
         schedulerData.updateEventEnd(event, newEnd);
         event.title = event.title.substring(0, event.title.length - 22) + " (" + from24to12(moment(event.start).format('HH:mm')) + " - " + from24to12(moment(newEnd).format('HH:mm')) + ")";
         this.setState({
@@ -1650,6 +1497,9 @@ class Calendar extends Component {
             // Update database (Update)
             window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
             window.calendar.props.refetchData();
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
         }
         function deleteButtonClicked() {
             // Update database (Delete)
@@ -1662,6 +1512,9 @@ class Calendar extends Component {
                 viewModel: schedulerData
             })
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
         }
 
         function okButtonClicked() {
@@ -1683,134 +1536,56 @@ class Calendar extends Component {
                 )
             } else {
                 // Checking conflicts
-                var hasConflict = false;
-                var conflictedEvents = [];
-                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-                var new_days_to_loop_over = [];
-                for (var repeat_day of repeat_option) {
-                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
-                        new_days_to_loop_over.push(getDates()[0])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
-                        new_days_to_loop_over.push(getDates()[1])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
-                        new_days_to_loop_over.push(getDates()[2])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
-                        new_days_to_loop_over.push(getDates()[3])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
-                        new_days_to_loop_over.push(getDates()[4])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
-                        new_days_to_loop_over.push(getDates()[5])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
-                        new_days_to_loop_over.push(getDates()[6])
-                    }
-                }
-
-                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
-                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
-
-                var new_start_for_this = "";
-                var new_end_for_this = "";
-                var existing_start_for_this = "";
-                var existing_end_for_this = "";
-                for (var new_day of new_days_to_loop_over) {
-                    new_start_for_this = new_day + " " + new_start;
-                    new_end_for_this = new_day + " " + new_end;
-                    for (var plugload of plugload_option) {
-                        schedulerData.events.forEach(function(e) {
-                            var current_resource_id = 0
-                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
-                                current_resource_id = 1
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
-                                current_resource_id = 2
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
-                                current_resource_id = 3
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
-                                current_resource_id = 4
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyFan")) {
-                                current_resource_id = 5
-                            }
-                            if (e.resourceId === current_resource_id) {
-                                var existing_days_to_loop_over = [];
-                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
-                                    existing_days_to_loop_over.push(getDates()[0])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
-                                    existing_days_to_loop_over.push(getDates()[1])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
-                                    existing_days_to_loop_over.push(getDates()[2])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
-                                    existing_days_to_loop_over.push(getDates()[3])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
-                                    existing_days_to_loop_over.push(getDates()[4])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
-                                    existing_days_to_loop_over.push(getDates()[5])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
-                                    existing_days_to_loop_over.push(getDates()[6])
-                                }
-
-                                for (var existing_day of existing_days_to_loop_over) {
-                                    existing_start_for_this = existing_day + e.start.substring(10,19);
-                                    existing_end_for_this = existing_day + e.end.substring(10,19);
-                                    if (((new_start_for_this >= existing_start_for_this &&
-                                          new_start_for_this < existing_end_for_this) || (
-                                          new_end_for_this > existing_start_for_this &&
-                                          new_end_for_this <= existing_end_for_this) || (
-                                          existing_start_for_this >= new_start_for_this &&
-                                          existing_start_for_this < new_end_for_this) || (
-                                          existing_end_for_this > new_start_for_this &&
-                                          existing_end_for_this <= new_end_for_this)) && (
-                                          e.id !== event.id)) {
-                                            hasConflict = true;
-                                            if (!conflictedEvents.includes(e)) {
-                                                conflictedEvents.push(e)
-                                            }
-                                          }
-                                }
-                            }
-                        })
-                    }
-                }
+                var [hasConflict, conflictedEvents] = window.calendar.checkConflicts(schedulerData, event)
 
                 if (hasConflict) {
                     var message = "Conflict occurred for the following events:"
                     for (var events of conflictedEvents) {
                         var day = ""
-                        if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
-                            day = day + "Monday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
-                            day = day + "Tuesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
-                            day = day + "Wednesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
-                            day = day + "Thursday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
-                            day = day + "Friday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
-                            day = day + "Saturday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
-                            day = day + "Sunday, "
+                        if (events.start.substring(11,19) < "08:00:00") {
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Sunday, "
+                            }
+                        } else {
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Sunday, "
+                            }
                         }
                         var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
                         message += `<new>- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-2)}`
@@ -1837,9 +1612,9 @@ class Calendar extends Component {
                     schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
 
                     // Update repeat
-                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
-                                      window.calendar.props.mondayDate.substring(5,7) +
-                                      window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.startDate.substring(0,4) +
+                                      window.calendar.props.startDate.substring(5,7) +
+                                      window.calendar.props.startDate.substring(8,10) + "T000000Z;UNTIL=" +
                                       window.calendar.props.sundayDate.substring(0,4) +
                                       window.calendar.props.sundayDate.substring(5,7) +
                                       window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
@@ -1970,60 +1745,22 @@ class Calendar extends Component {
                         })
                     }
 
-                    // Update calendar
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-
                     // Update database (Update)
                     window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
                     window.calendar.props.refetchData();
 
                     ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
-                    // Update weekly achievement
-                    if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
-                        window.calendar.setState({
-                            weekly_achievements_books: [
-                                {
-                                    ...window.calendar.state.weekly_achievements_books[0],
-                                    schedule_based: 20
-                                }
-                            ]
-                        }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
-                        // If first time clicking, update achievement
-                        if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                            window.calendar.setState({
-                                achievements_books: [
-                                    {
-                                        ...window.calendar.state.achievements_books[0],
-                                        first_schedule: 70
-                                    }
-                                ]
-                            }, function() {window.calendar.handleAchievementsFormSubmit()})
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 90
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                        } else {
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 20
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                        }
-                    }
-                    console.log(event);
+                    // Checking for achievements
+                    window.calendar.updateScheduleAchievements()
+
+                    // Update calendar
+                    window.calendar.setState({
+                        viewModel: schedulerData
+                    })
+
                     window.calendar.props.refetchData();
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 3000)
                 }
             }
         }
@@ -2032,6 +1769,7 @@ class Calendar extends Component {
         var slotName = schedulerData.getSlotById(event.resourceId).name;
         ReactDOM.render(
             <ScheduleControlPopup
+                type=""
                 device_type={"Edit Schedule: " + slotName}
                 event_rrule={event.rrule}
                 event_start={event.start}
@@ -2045,8 +1783,6 @@ class Calendar extends Component {
     }
 
     moveEvent = (schedulerData, event, slotId, slotName, start, end) => {
-        var old_start = event.start;
-        var old_end = event.end;
         schedulerData.updateEventStart(event, start);
         schedulerData.updateEventEnd(event, end);
         event.title = event.title.substring(0, event.title.length - 22) + " (" + from24to12(moment(start).format('HH:mm')) + " - " + from24to12(moment(end).format('HH:mm')) + ")";
@@ -2060,6 +1796,9 @@ class Calendar extends Component {
             // Update database (Update)
             window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
             window.calendar.props.refetchData();
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
         }
 
         function deleteButtonClicked() {
@@ -2067,12 +1806,16 @@ class Calendar extends Component {
             window.calendar.props.onDeleteClick(event.database_id);
             window.calendar.props.refetchData();
 
+            ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
+
+            // Checking for achievements
+            window.calendar.updateScheduleAchievements()
+
             // Update calendar
             schedulerData.removeEvent(event);
             window.calendar.setState({
                 viewModel: schedulerData
             })
-            ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
         }
 
         function okButtonClicked() {
@@ -2094,134 +1837,56 @@ class Calendar extends Component {
                 )
             } else {
                 // Checking conflicts
-                var hasConflict = false;
-                var conflictedEvents = [];
-                var plugload_option = document.querySelectorAll('input[name="ScheduleApplyOption"]:checked');
-                var repeat_option = document.querySelectorAll('input[name="ScheduleRepeatOption"]:checked');
-                var new_days_to_loop_over = [];
-                for (var repeat_day of repeat_option) {
-                    if (repeat_day === document.getElementById("ScheduleRepeatMonday")) {
-                        new_days_to_loop_over.push(getDates()[0])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatTuesday")) {
-                        new_days_to_loop_over.push(getDates()[1])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatWednesday")) {
-                        new_days_to_loop_over.push(getDates()[2])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatThursday")) {
-                        new_days_to_loop_over.push(getDates()[3])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatFriday")) {
-                        new_days_to_loop_over.push(getDates()[4])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSaturday")) {
-                        new_days_to_loop_over.push(getDates()[5])
-                    }
-                    if (repeat_day === document.getElementById("ScheduleRepeatSunday")) {
-                        new_days_to_loop_over.push(getDates()[6])
-                    }
-                }
-
-                var new_start = from12to24(document.getElementById("StartHour").value + ":" + document.getElementById("StartMinute").value + " " + document.getElementById("StartAMPM").value)
-                var new_end = from12to24(document.getElementById("EndHour").value + ":" + document.getElementById("EndMinute").value + " " + document.getElementById("EndAMPM").value)
-
-                var new_start_for_this = "";
-                var new_end_for_this = "";
-                var existing_start_for_this = "";
-                var existing_end_for_this = "";
-                for (var new_day of new_days_to_loop_over) {
-                    new_start_for_this = new_day + " " + new_start;
-                    new_end_for_this = new_day + " " + new_end;
-                    for (var plugload of plugload_option) {
-                        schedulerData.events.forEach(function(e) {
-                            var current_resource_id = 0
-                            if (plugload === document.getElementById("ScheduleApplyDesktop")) {
-                                current_resource_id = 1
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyLaptop")) {
-                                current_resource_id = 2
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyMonitor")) {
-                                current_resource_id = 3
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyTaskLamp")) {
-                                current_resource_id = 4
-                            }
-                            if (plugload === document.getElementById("ScheduleApplyFan")) {
-                                current_resource_id = 5
-                            }
-                            if (e.resourceId === current_resource_id) {
-                                var existing_days_to_loop_over = [];
-                                if (e.rrule.substring(60, e.rrule.length).includes("MO")) {
-                                    existing_days_to_loop_over.push(getDates()[0])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TU")) {
-                                    existing_days_to_loop_over.push(getDates()[1])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("WE")) {
-                                    existing_days_to_loop_over.push(getDates()[2])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("TH")) {
-                                    existing_days_to_loop_over.push(getDates()[3])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("FR")) {
-                                    existing_days_to_loop_over.push(getDates()[4])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SA")) {
-                                    existing_days_to_loop_over.push(getDates()[5])
-                                }
-                                if (e.rrule.substring(60, e.rrule.length).includes("SU")) {
-                                    existing_days_to_loop_over.push(getDates()[6])
-                                }
-
-                                for (var existing_day of existing_days_to_loop_over) {
-                                    existing_start_for_this = existing_day + e.start.substring(10,19);
-                                    existing_end_for_this = existing_day + e.end.substring(10,19);
-                                    if (((new_start_for_this >= existing_start_for_this &&
-                                          new_start_for_this < existing_end_for_this) || (
-                                          new_end_for_this > existing_start_for_this &&
-                                          new_end_for_this <= existing_end_for_this) || (
-                                          existing_start_for_this >= new_start_for_this &&
-                                          existing_start_for_this < new_end_for_this) || (
-                                          existing_end_for_this > new_start_for_this &&
-                                          existing_end_for_this <= new_end_for_this)) && (
-                                          e.id !== event.id)) {
-                                            hasConflict = true;
-                                            if (!conflictedEvents.includes(e)) {
-                                                conflictedEvents.push(e)
-                                            }
-                                          }
-                                }
-                            }
-                        })
-                    }
-                }
+                var [hasConflict, conflictedEvents] = window.calendar.checkConflicts(schedulerData, event)
 
                 if (hasConflict) {
                     var message = "Conflict occurred for the following events:"
                     for (var events of conflictedEvents) {
                         var day = ""
-                        if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
-                            day = day + "Monday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
-                            day = day + "Tuesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
-                            day = day + "Wednesday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
-                            day = day + "Thursday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
-                            day = day + "Friday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
-                            day = day + "Saturday, "
-                        }
-                        if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
-                            day = day + "Sunday, "
+                        if (events.start.substring(11,19) < "08:00:00") {
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Sunday, "
+                            }
+                        } else {
+                            if (events.rrule.substring(60,events.rrule.length).includes("MO")) {
+                                day = day + "Monday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TU")) {
+                                day = day + "Tuesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("WE")) {
+                                day = day + "Wednesday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("TH")) {
+                                day = day + "Thursday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("FR")) {
+                                day = day + "Friday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SA")) {
+                                day = day + "Saturday, "
+                            }
+                            if (events.rrule.substring(60,events.rrule.length).includes("SU")) {
+                                day = day + "Sunday, "
+                            }
                         }
                         var current_plugload_conflicted = schedulerData.getSlotById(events.resourceId).name
                         message += `<new>- ${events.title} for ${current_plugload_conflicted} on ${day.substring(0,day.length-2)}`
@@ -2248,9 +1913,9 @@ class Calendar extends Component {
                     schedulerData.updateEventEnd(event, window.calendar.props.date + " " + processHourInput("End") + ":" + document.getElementById("EndMinute").value + ":00")
 
                     // Update repeat
-                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.mondayDate.substring(0,4) +
-                                      window.calendar.props.mondayDate.substring(5,7) +
-                                      window.calendar.props.mondayDate.substring(8,10) + "T000000Z;UNTIL=" +
+                    var event_rrule = "FREQ=WEEKLY;DTSTART=" + window.calendar.props.startDate.substring(0,4) +
+                                      window.calendar.props.startDate.substring(5,7) +
+                                      window.calendar.props.startDate.substring(8,10) + "T000000Z;UNTIL=" +
                                       window.calendar.props.sundayDate.substring(0,4) +
                                       window.calendar.props.sundayDate.substring(5,7) +
                                       window.calendar.props.sundayDate.substring(8,10) + "T235900Z;BYDAY="
@@ -2381,60 +2046,22 @@ class Calendar extends Component {
                         })
                     }
 
-                    // Update calendar
-                    window.calendar.setState({
-                        viewModel: schedulerData
-                    })
-
                     // Update database (Update)
                     window.calendar.props.onUpdateClick(formatForDatabaseUpdate(event, window.calendar.props.current_user_id));
                     window.calendar.props.refetchData();
 
                     ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
-                    // Update weekly achievement
-                    if (window.calendar.state.weekly_achievements_books[0].schedule_based === 0) {
-                        window.calendar.setState({
-                            weekly_achievements_books: [
-                                {
-                                    ...window.calendar.state.weekly_achievements_books[0],
-                                    schedule_based: 20
-                                }
-                            ]
-                        }, function() {window.calendar.handleWeeklyAchievementsFormSubmit()})
-                        // If first time clicking, update achievement
-                        if (window.calendar.state.achievements_books[0].first_schedule === 0) {
-                            window.calendar.setState({
-                                achievements_books: [
-                                    {
-                                        ...window.calendar.state.achievements_books[0],
-                                        first_schedule: 70
-                                    }
-                                ]
-                            }, function() {window.calendar.handleAchievementsFormSubmit()})
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 90
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                            window.presencecontrol.setState({key: window.presencecontrol.state.key + 1})
-                        } else {
-                            window.calendar.setState({
-                                points_wallet_books: [
-                                    {
-                                        ...window.calendar.state.points_wallet_books[0],
-                                        points: window.calendar.state.points_wallet_books[0].points + 20
-                                    }
-                                ]
-                            }, function() {window.calendar.handlePointsWalletFormSubmit()})
-                        }
-                    }
-                    console.log(event);
+                    // Checking for achievements
+                    window.calendar.updateScheduleAchievements()
+
+                    // Update calendar
+                    window.calendar.setState({
+                        viewModel: schedulerData
+                    })
+
                     window.calendar.props.refetchData();
-                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 1000)
+                    setTimeout(function() {document.getElementById(window.calendar.props.day + "Calendar").click()}, 3000)
                 }
             }
         }
@@ -2442,6 +2069,7 @@ class Calendar extends Component {
 
         ReactDOM.render(
             <ScheduleControlPopup
+                type=""
                 device_type={"Edit Schedule: " + slotName}
                 event_rrule={event.rrule}
                 event_start={start}

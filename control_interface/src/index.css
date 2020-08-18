@@ -11,9 +11,10 @@
 #informationBoxRemote {
   border: 1px solid black;
   padding: 0px 10px;
-  background-color: white;
+  background: white;
   font-size: 10.5px;
-  z-index: 1000;
+  position: absolute;
+  z-index: 2000;
 }
 
 /** style the information icon **/
@@ -29,10 +30,11 @@
 #informationBoxPresence {
   border: 1px solid black;
   padding: 0px 10px;
-  background-color: white;
+  background: white;
   font-size: 10.5px;
   text-align: left;
-  z-index: 1000;
+  position: absolute;
+  z-index: 2000;
 }
 
 /** style the information icon **/
@@ -48,9 +50,10 @@
 #informationBox {
   border: 1px solid black;
   padding: 0px 10px;
-  background-color: white;
+  background: white;
   font-size: 10.5px;
-  z-index: 1000;
+  position: absolute;
+  z-index: 2000;
 }
 
 
@@ -62,15 +65,30 @@
     padding-left: 36.5px;
 }
 
+#DesktopCancelButton, #MonitorCancelButton, #LaptopCancelButton, #TaskLampCancelButton, #FanCancelButton {
+    border: 1px solid black;
+    color: black;
+}
+
+#DesktopCancelButton:hover, #MonitorCancelButton:hover, #LaptopCancelButton:hover, #TaskLampCancelButton:hover, #FanCancelButton:hover {
+    background: rgba(133, 135, 150, 0.2);
+}
+
 #DesktopOkButton, #MonitorOkButton, #LaptopOkButton, #TaskLampOkButton, #FanOkButton {
-    margin-left: 5px;
+    margin-left: 10%;
     background: #1CC88A;
+    border: 1px solid black;
+    color: black;
+}
+
+#DesktopOkButton:hover, #MonitorOkButton:hover, #LaptopOkButton:hover, #TaskLampOkButton:hover, #FanOkButton:hover {
+    background: rgba(133, 135, 150, 0.2);
 }
 
 #DesktopPopupPresence, #MonitorPopupPresence, #LaptopPopupPresence, #TaskLampPopupPresence, #FanPopupPresence{
   position: absolute;
-  top: 80px;
-  left: 80px;
+  top: 70px;
+  left: 70px;
   z-index: 100;
 }
 
@@ -80,9 +98,15 @@
 }
 
 #DesktopTextOther, #MonitorTextOther, #LaptopTextOther, #TaskLampTextOther, #FanTextOther {
-    width: 35px;
+    width: 60%;
     text-align: center;
     display: inline-block;
+    border: none;
+    border-bottom: 3px solid #4E73DF;
+}
+
+#DesktopTextOther:focus, #MonitorTextOther:focus, #LaptopTextOther:focus, #TaskLampTextOther:focus, #FanTextOther:focus {
+    outline: none;
 }
 
 .confirm_alert_confirm {
@@ -173,7 +197,6 @@
 
 .minutes {
     font-size: 14px;
-    margin-left: 10px;
     display: inline-block;
     color: black;
 }
@@ -230,7 +253,7 @@
 }
 
 .tab button:hover {
-    background: rgba(6, 214, 160, 0.5)
+    background: rgba(6, 214, 160, 0.2)
 }
 
 .toggle-switch {
@@ -323,12 +346,12 @@
 
 .visiblePresence {
   border: 1px solid #707070;
-  box-shadow: 3px 3px 3px 3px #ccc;
   padding: 15px 5px;
   text-align: center;
-  width: 125px;
-  height: 100px;
+  width: 150px;
+  height: 120px;
   margin-left: 10px;
+  background: white;
 }
 
 .whiteRing {
@@ -380,7 +403,8 @@
     margin: 0;
     margin-bottom: 4%;
     font-weight: bold;
-    display: inline-block
+    display: inline-block;
+    color: black;
 }
 
 #schedule_name_input {
@@ -396,6 +420,12 @@
 #schedule_popup_close {
     float:right;
     cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 30px;
+    padding: 0;
+    margin-top: -15px;
+    margin-right: -30px;
 }
 
 #schedule_time_input {
@@ -417,6 +447,12 @@
     width: 80px;
     background: #E74A3B;
     float: right;
+    border: 1px solid black;
+    color: black;
+}
+
+#schedule_popup_delete:hover {
+    background: rgba(133, 135, 150, 0.2);
 }
 
 #schedule_popup_ok {
@@ -424,6 +460,12 @@
     width: 80px;
     margin-left: 10px;
     float: right;
+    border: 1px solid black;
+    color: black;
+}
+
+#schedule_popup_ok:hover {
+    background: rgba(133, 135, 150, 0.2);
 }
 
 .whiteRing {

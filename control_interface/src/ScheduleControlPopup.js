@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './index.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
 
 
 class ScheduleControlPopup extends Component {
@@ -12,32 +12,60 @@ class ScheduleControlPopup extends Component {
             document.getElementById("ScheduleRepeatEveryDay").checked = true;
         }
         if (this.props.event_rrule.substring(66,this.props.event_rrule.length).includes("MO")) {
-            // Automatically select Monday
-            document.getElementById("ScheduleRepeatMonday").checked = true;
+            if (this.props.event_start.substring(this.props.event_start.length-8, this.props.event_start.length) < "08:00:00" && this.props.type !== "new") {
+                document.getElementById("ScheduleRepeatTuesday").checked = true;
+            } else {
+                // Automatically select Monday
+                document.getElementById("ScheduleRepeatMonday").checked = true;
+            }
         }
         if (this.props.event_rrule.substring(66,this.props.event_rrule.length).includes("TU")) {
-            // Automatically select Tuesday
-            document.getElementById("ScheduleRepeatTuesday").checked = true;
+            if (this.props.event_start.substring(this.props.event_start.length-8, this.props.event_start.length) < "08:00:00" && this.props.type !== "new") {
+                document.getElementById("ScheduleRepeatWednesday").checked = true;
+            } else {
+                // Automatically select Tuesday
+                document.getElementById("ScheduleRepeatTuesday").checked = true;
+            }
         }
         if (this.props.event_rrule.substring(66,this.props.event_rrule.length).includes("WE")) {
-            // Automatically select Wednesday
-            document.getElementById("ScheduleRepeatWednesday").checked = true;
+            if (this.props.event_start.substring(this.props.event_start.length-8, this.props.event_start.length) < "08:00:00" && this.props.type !== "new") {
+                document.getElementById("ScheduleRepeatThursday").checked = true;
+            } else {
+                // Automatically select Wednesday
+                document.getElementById("ScheduleRepeatWednesday").checked = true;
+            }
         }
         if (this.props.event_rrule.substring(66,this.props.event_rrule.length).includes("TH")) {
-            // Automatically select Thursday
-            document.getElementById("ScheduleRepeatThursday").checked = true;
+            if (this.props.event_start.substring(this.props.event_start.length-8, this.props.event_start.length) < "08:00:00" && this.props.type !== "new") {
+                document.getElementById("ScheduleRepeatFriday").checked = true;
+            } else {
+                // Automatically select Thursday
+                document.getElementById("ScheduleRepeatThursday").checked = true;
+            }
         }
         if (this.props.event_rrule.substring(66,this.props.event_rrule.length).includes("FR")) {
-            // Automatically select Friday
-            document.getElementById("ScheduleRepeatFriday").checked = true;
+            if (this.props.event_start.substring(this.props.event_start.length-8, this.props.event_start.length) < "08:00:00" && this.props.type !== "new") {
+                document.getElementById("ScheduleRepeatSaturday").checked = true;
+            } else {
+                // Automatically select Friday
+                document.getElementById("ScheduleRepeatFriday").checked = true;
+            }
         }
         if (this.props.event_rrule.substring(66,this.props.event_rrule.length).includes("SA")) {
-            // Automatically select Saturday
-            document.getElementById("ScheduleRepeatSaturday").checked = true;
+            if (this.props.event_start.substring(this.props.event_start.length-8, this.props.event_start.length) < "08:00:00" && this.props.type !== "new") {
+                document.getElementById("ScheduleRepeatSunday").checked = true;
+            } else {
+                // Automatically select Saturday
+                document.getElementById("ScheduleRepeatSaturday").checked = true;
+            }
         }
         if (this.props.event_rrule.substring(66,this.props.event_rrule.length).includes("SU")) {
-            // Automatically select Sunday
-            document.getElementById("ScheduleRepeatSunday").checked = true;
+            if (this.props.event_start.substring(this.props.event_start.length-8, this.props.event_start.length) < "08:00:00" && this.props.type !== "new") {
+                document.getElementById("ScheduleRepeatMonday").checked = true;
+            } else {
+                // Automatically select Sunday
+                document.getElementById("ScheduleRepeatSunday").checked = true;
+            }
         }
 
         // Automatically select plug load
@@ -88,12 +116,12 @@ class ScheduleControlPopup extends Component {
                             <ScheduleControlRepeat />
                         </div>
                         <div id="schedule_apply_input">
-                            <p style={{fontWeight:"bold"}}> Also apply to: </p>
+                            <p style={{fontWeight:"bold", color:"black"}}> Also apply to: </p>
                             <ScheduleControlApply devices={["Desktop", "Monitor", "Laptop", "Fan", "Task Lamp"]} />
                         </div>
                         <br/>
-                        <button id="schedule_popup_ok" onClick={this.props.okButtonClicked}> OK </button>
-                        <button id="schedule_popup_delete" onClick={this.props.deleteButtonClicked}> Delete </button>
+                        <button id="schedule_popup_ok" onClick={this.props.okButtonClicked} className="btn btn-sm"> OK </button>
+                        <button id="schedule_popup_delete" onClick={this.props.deleteButtonClicked} className="btn btn-sm"> Delete </button>
                     </div>
                 </div>
             </>
@@ -160,7 +188,7 @@ class ScheduleControlRepeat extends Component {
     render() {
         return (
             <>
-                <p style={{fontWeight:"bold"}}> Repeat: </p>
+                <p style={{fontWeight:"bold", color:"black"}}> Repeat: </p>
                 <input
                     type="checkbox"
                     id="ScheduleRepeatEveryDay"
@@ -185,7 +213,7 @@ class ScheduleControlRepeat extends Component {
                         }
                     }}
                 />
-                <label htmlFor="ScheduleRepeatEveryDay" style={{marginLeft: "2px"}}> Every Day </label>
+                <label htmlFor="ScheduleRepeatEveryDay" style={{marginLeft: "10px", color:"black"}}> Every Day </label>
                 <br />
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -205,7 +233,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label style={{marginLeft: "2px"}}> Monday </label>
+                    <label style={{marginLeft: "10px", color:"black"}}> Monday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -225,7 +253,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label style={{marginLeft: "2px"}}> Tuesday </label>
+                    <label style={{marginLeft: "10px", color:"black"}}> Tuesday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -245,7 +273,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label style={{marginLeft: "2px"}}> Wednesday </label>
+                    <label style={{marginLeft: "10px", color:"black"}}> Wednesday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -265,7 +293,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label style={{marginLeft: "2px"}}> Thursday </label>
+                    <label style={{marginLeft: "10px", color:"black"}}> Thursday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -285,7 +313,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label style={{marginLeft: "2px"}}> Friday </label>
+                    <label style={{marginLeft: "10px", color:"black"}}> Friday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -305,7 +333,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label style={{marginLeft: "2px"}}> Saturday </label>
+                    <label style={{marginLeft: "10px", color:"black"}}> Saturday </label>
                 </div>
                 <div style={{display:"inline-block", width:"130px"}}>
                     <input
@@ -325,7 +353,7 @@ class ScheduleControlRepeat extends Component {
                             }
                         }}
                     />
-                    <label style={{marginLeft: "2px"}}> Sunday </label>
+                    <label style={{marginLeft: "10px", color:"black"}}> Sunday </label>
                 </div>
             </>
         )
@@ -354,7 +382,7 @@ class ScheduleControlApplyItem extends Component {
                     name="ScheduleApplyOption"
                     id={"ScheduleApply" + this.props.device_type.replace(/\s/g,'')}
                 />
-                <label style={{marginLeft: "2px"}}> {this.props.device_type} </label>
+                <label style={{marginLeft: "10px", color:"black"}}> {this.props.device_type} </label>
             </div>
         )
     }

@@ -116,11 +116,9 @@ def update_bar_chart(n1, n2, int, **kwargs):
 
     def create_trace(discount):
         dff = df.fillna(0)
-        print(dff)
         dff = dff + abs(dff) * discount
-        # dff = df.apply(lambda x: x.min() if pd.isnull(x.min()) else
-        # x[np.argmin(x.abs())], axis=1)
         ser = dff['total']
+        ser.replace(0,0.001,inplace=True)
         pos = ser.loc[ser > 0]
         neg = ser.loc[ser < 0]
 
@@ -167,7 +165,10 @@ def update_bar_chart(n1, n2, int, **kwargs):
                           marker_color='#EF476F',
                           showlegend=True,
                           )
-        return positive, negative, go.Layout(yaxis=dict(range=[min(ser) - 3, max(ser) * 1.4]))
+        layout = go.Layout(yaxis=dict(range=[min(ser) - 3, max(ser) * 1.4]))
+        if sum(dff['total']) == 0.001:
+            return positive, negative,go.Layout(yaxis=dict(range=[-1, 1]))
+        return positive, negative, layout
 
     def create_frame(discount):
         return go.Frame({'data': create_trace(discount)[:2]}, layout=create_trace(discount)[-1])
@@ -179,11 +180,13 @@ def update_bar_chart(n1, n2, int, **kwargs):
     frame3 = create_frame(0.5)
     frame4 = create_frame(0.4)
     frame5 = create_frame(0.3)
-
+    range = [min(series) - 3, max(series) * 1.4]
+    if sum(series) == 0:
+        range = [-1,1]
     fig = go.Figure(data=[positive_trace, negative_trace],
                     layout=go.Layout(
                         go.Layout(
-                            yaxis=dict(range=[min(series) - 3, max(series) * 1.4]),
+                            yaxis=dict(range=range),
                             annotations=[
                                 go.layout.Annotation(
                                     text='<b>Cost Savings Strategies</b>',

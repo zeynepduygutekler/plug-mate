@@ -25,9 +25,14 @@ def plug_mate_app(request):
             points = cursor.fetchone()[0]
 
             # Query for user's real-time consumption on dashboard
-            # cursor.execute("SELECT ROUND(SUM(power)::numeric, 1) FROM power_energy_consumption WHERE date >= now() - interval '1 minute' AND date < now() AND user_id=%s", [request.user.id])
-            cursor.execute("SELECT ROUND(SUM(power)::numeric, 1) FROM power_energy_consumption WHERE date = '2020-08-04' AND time >= '13:58:00' AND time < '13:59:00' AND user_id=%s", [request.user.id])
+            cursor.execute("SELECT ROUND(SUM(power)::numeric, 1) FROM power_energy_consumption "
+                           "WHERE TO_TIMESTAMP(unix_time) >= CURRENT_TIMESTAMP - interval '1 minute' "
+                           "AND TO_TIMESTAMP(unix_time) < CURRENT_TIMESTAMP "
+                           "AND user_id=%s", [request.user.id])
+            # cursor.execute("SELECT ROUND(SUM(power)::numeric, 1) FROM power_energy_consumption WHERE date = '2020-08-04' AND time >= '13:58:00' AND time < '13:59:00' AND user_id=%s", [request.user.id])
             realtime_consumption = cursor.fetchone()[0]
+            if realtime_consumption is None:
+                realtime_consumption = 0.0
 
             # Query for user's cumulative savings from the database
             cursor.execute("SELECT cum_savings FROM achievements_bonus WHERE user_id=%s", [request.user.id])

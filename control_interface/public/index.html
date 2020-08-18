@@ -265,7 +265,9 @@
         }
     }
 
-    window.onresize = function() {
+    window.addEventListener('resize', update_logo_onresize)
+
+    function update_logo_onresize() {
         if (window.innerWidth < 768) {
             document.getElementById("content").style.marginLeft = "6.5rem";
             document.getElementById("footer").style.marginLeft = "6.5rem";
