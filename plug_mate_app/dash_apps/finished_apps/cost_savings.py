@@ -19,7 +19,7 @@ def calculate_cost(power):
 
 
 def currency_format(value):
-    if value > 0:
+    if value >= 0:
         return '${:,.2f}'.format(value)
     else:
         return '-${:,.2f}'.format(abs(value))
@@ -124,6 +124,7 @@ def update_bar_chart(n1, n2, int, **kwargs):
 
         hovertext1 = []
         hovertext2 = []
+
         for date in dff.index:
             # hovertext
             sorted_list = [x for _, x in sorted(zip(dff.loc[date].tolist(), list(dff)), reverse=True)]
@@ -138,10 +139,16 @@ def update_bar_chart(n1, n2, int, **kwargs):
             energy_points_earned = round(dff['total'][date] * 10) if dff['total'][date] > 0 else round(
                 dff['total'][date] * 0.5 * 10)
             string += f'<span style="color:blue"><b>Energy points earned</b>: {energy_points_earned} points</span>'
-            if energy_points_earned > 0:
+            if energy_points_earned >= 0:
                 hovertext1.append(string)
             else:
                 hovertext2.append(string)
+
+        print('\n\n')
+        print(discount)
+        print(hovertext1)
+        print(hovertext2)
+        print('\n\n')
 
         positive = go.Bar(x=pos.index,
                           y=pos,
