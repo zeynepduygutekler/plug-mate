@@ -176,9 +176,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         pie_middletext = 'Today'
 
         # For changing units
-        df3 = df_hour
+        df3 = copy.deepcopy(df_hour)
 
-        df4 = df_hour_pie
+        df4 = copy.deepcopy(df_hour_pie)
         dayActive = False
         weekActive = False
         monthActive = False
@@ -561,9 +561,17 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             y = df3['cost']
             # print(df4)
             values_pie = df4['cost']
+            # fig2.update_xaxes(
+            #     ticktext=["12AM", "", "", "3AM", "", "", "6AM", "", "", "9AM",
+            #               "", "", "12PM", "", "", "3PM", "", "", "6PM", "", "", "9PM", "", ""],
+            #     tickvals=["12:00AM", "01:00AM", "02:00AM", "03:00AM", "04:00AM", "05:00AM",
+            #               "06:00AM", "07:00AM", "08:00AM", "09:00AM", "10:00AM", "11:00AM", "12:00PM",
+            #               "01:00PM", "02:00PM", "03:00PM", "04:00PM", "05:00PM", "06:00PM", "07:00PM", "08:00PM", "09:00PM",
+            #               "10:00PM", "11:00PM"],
+            # )
             fig2.update_xaxes(
-                ticktext=["12AM", "", "", "3AM", "", "", "6AM", "", "", "9AM",
-                          "", "", "12PM", "", "", "3PM", "", "", "6PM", "", "", "9PM", "", ""],
+                ticktext=["12AM", "", "2AM", "", "4AM", "", "6AM", "", "8AM", "",
+                          "10AM", "", "12PM", "", "2PM", "", "4PM", "", "6PM", "", "8PM", "", "10PM", ""],
                 tickvals=["12:00AM", "01:00AM", "02:00AM", "03:00AM", "04:00AM", "05:00AM",
                           "06:00AM", "07:00AM", "08:00AM", "09:00AM", "10:00AM", "11:00AM", "12:00PM",
                           "01:00PM", "02:00PM", "03:00PM", "04:00PM", "05:00PM", "06:00PM", "07:00PM", "08:00PM", "09:00PM",
@@ -609,15 +617,22 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             x = df3['dates_AMPM']  # Actually HOURS_AMPM
             y = df3['power_kWh']
             values_pie = df4['power_kWh']
+            # fig2.update_xaxes(
+            #     ticktext=["12AM", "", "", "3AM", "", "", "6AM", "", "", "9AM",
+            #               "", "", "12PM", "", "", "3PM", "", "", "6PM", "", "", "9PM", "", ""],
+            #     tickvals=["12:00AM", "01:00AM", "02:00AM", "03:00AM", "04:00AM", "05:00AM",
+            #               "06:00AM", "07:00AM", "08:00AM", "09:00AM", "10:00AM", "11:00AM", "12:00PM",
+            #               "01:00PM", "02:00PM", "03:00PM", "04:00PM", "05:00PM", "06:00PM", "07:00PM", "08:00PM", "09:00PM",
+            #               "10:00PM", "11:00PM"],
+            # )
             fig2.update_xaxes(
-                ticktext=["12AM", "", "", "3AM", "", "", "6AM", "", "", "9AM",
-                          "", "", "12PM", "", "", "3PM", "", "", "6PM", "", "", "9PM", "", ""],
+                ticktext=["12AM", "", "2AM", "", "4AM", "", "6AM", "", "8AM", "",
+                          "10AM", "", "12PM", "", "2PM", "", "4PM", "", "6PM", "", "8PM", "", "10PM", ""],
                 tickvals=["12:00AM", "01:00AM", "02:00AM", "03:00AM", "04:00AM", "05:00AM",
                           "06:00AM", "07:00AM", "08:00AM", "09:00AM", "10:00AM", "11:00AM", "12:00PM",
                           "01:00PM", "02:00PM", "03:00PM", "04:00PM", "05:00PM", "06:00PM", "07:00PM", "08:00PM", "09:00PM",
                           "10:00PM", "11:00PM"],
             )
-
         else:
             x = df3['week']
             y = df3['power_kWh']
@@ -637,29 +652,41 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
     # 3. Final Layout Changes
     hovertemplate = (
-        '<b>Total: </b>%{y}<extra></extra>'+'<br><br><b>%{text}</b>')
+        '<extra></extra>'+'<br><br><b>%{text}</b>')
 
     # For the Line
     fig2 = fig2.add_trace(go.Scatter(x=x, y=y,
-                                     hovertemplate='',
+                                     mode='lines',
+
+
+                                     hoverinfo='skip',
                                      line=dict(
                                          color='royalblue',
                                          width=4),
                                      selected=dict(
-                                         marker=dict(size=30)
+                                         marker=dict(size=30),
                                      ),
                                      )
                           )
 
     # For Orange Markers
+    # if units == 'Energy':
+
+    #     y_hover = round(y[i], 4)+'kWh'
+
+    # else:
+    #     y_hover = '$'+ round(y[i], 4)
+
+    # twins[value] = twins[value] + [box] if value in twins else [box]
+
     fig2.add_trace(go.Scatter(
         mode='markers',
         x=x,
         y=y,
 
         hovertemplate=hovertemplate,
-        text=['<span style="color:blue">Click to see the <br>plug load breakdown!</span>'.format(
-            i + 1) for i in range(24)],
+        text=['<span style="font-size:20sp">{}<br></span><span><b>Total: </b>{}<br></span><span style="color:blue">Click to see the <br>plug load breakdown!</span>'.format(
+            x[i], (str(round(y[i], 4))+'kWh' if units == 'Energy' else '$' + str(round(y[i], 4)))) for i in range(len(x.to_list()))],
 
         marker=dict(
             size=14,

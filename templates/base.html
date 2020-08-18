@@ -41,6 +41,15 @@
                 margin-left: 6.5rem;
             }
         }
+
+        #check_your_wallet {
+            color:#4E73DF;
+        }
+
+        #check_your_wallet:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -323,6 +332,10 @@
             var intervalId = setInterval(function() {
                 if (document.getElementById("overview_card_title_three").style.visibility === "hidden") {
                     document.getElementById("overview_card_title_three").style.visibility = "visible";
+
+                    if (count++ === 2) {
+                        clearInterval(intervalId);
+                    }
                 } else {
                     document.getElementById("overview_card_title_three").style.visibility = "hidden";
                 }
