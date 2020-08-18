@@ -1670,8 +1670,9 @@ window.onload = function() {
   }
 }
 
-window.onresize = function() {
+window.addEventListener('resize', update_infobox_on_resize)
 
+function update_infobox_on_resize() {
   let remotecontrolelemRect = remotecontrolelement.getBoundingClientRect();
   let infoiconremoteRect = infoiconremote.getBoundingClientRect();
   let offsetremote = remotecontrolelemRect.right - infoiconremoteRect.right - 10;

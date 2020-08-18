@@ -11,9 +11,10 @@
 #informationBoxRemote {
   border: 1px solid black;
   padding: 0px 10px;
-  background-color: white;
+  background: white;
   font-size: 10.5px;
-  z-index: 1000;
+  position: absolute;
+  z-index: 2000;
 }
 
 /** style the information icon **/
@@ -29,10 +30,11 @@
 #informationBoxPresence {
   border: 1px solid black;
   padding: 0px 10px;
-  background-color: white;
+  background: white;
   font-size: 10.5px;
   text-align: left;
-  z-index: 1000;
+  position: absolute;
+  z-index: 2000;
 }
 
 /** style the information icon **/
@@ -48,9 +50,10 @@
 #informationBox {
   border: 1px solid black;
   padding: 0px 10px;
-  background-color: white;
+  background: white;
   font-size: 10.5px;
-  z-index: 1000;
+  position: absolute;
+  z-index: 2000;
 }
 
 
