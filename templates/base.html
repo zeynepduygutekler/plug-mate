@@ -332,6 +332,10 @@
             var intervalId = setInterval(function() {
                 if (document.getElementById("overview_card_title_three").style.visibility === "hidden") {
                     document.getElementById("overview_card_title_three").style.visibility = "visible";
+
+                    if (count++ === 2) {
+                        clearInterval(intervalId);
+                    }
                 } else {
                     document.getElementById("overview_card_title_three").style.visibility = "hidden";
                 }
