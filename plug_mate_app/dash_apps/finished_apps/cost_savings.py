@@ -144,12 +144,6 @@ def update_bar_chart(n1, n2, int, **kwargs):
             else:
                 hovertext2.append(string)
 
-        print('\n\n')
-        print(discount)
-        print(hovertext1)
-        print(hovertext2)
-        print('\n\n')
-
         positive = go.Bar(x=pos.index,
                           y=pos,
                           text=series,
