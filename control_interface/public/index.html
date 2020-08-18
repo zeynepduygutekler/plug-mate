@@ -123,8 +123,8 @@
                         <div class="col-xl-12">
                             <div class="card shadow h-auto mb-4" id="remote_card">
                                 <div id="remotecontrolrect" class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                                    <h6 class="m-0 font-weight-bold text-primary text-uppercase mb-1">Remote Control</h6>
-                                    <img style="margin-left:10px;height:15px;width:15px;" src="/static/Images/Info.png" alt="icon" id="infoIconRemote">
+                                    <h6 id="remote_card_title" class="m-0 font-weight-bold text-primary text-uppercase mb-1" style="font-size:large">Remote Control</h6>
+                                    <i id="infoIconRemote" class="fa fa-info-circle" style="margin-bottom:8px;margin-left:10px;height:15px;width:15px;color:#4E73DF"></i>
                                     <div id="infoBoxRemote" style="width:1px;height:1px;overflow-x:visible;overflow-y:visible;"></div>
                                 </div>
                                 <div class="card-body">
@@ -138,8 +138,8 @@
                         <div class="col-xl-12">
                             <div class="card shadow h-auto mb-4" id="presence_card">
                                 <div id="presencebasedrect" class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                                    <h6 class="m-0 font-weight-bold text-primary text-uppercase mb-1">Presence-based Control</h6>
-                                    <img style="margin-left:10px;height:15px;width:15px" src="/static/Images/Info.png" alt="icon" id="infoIconPresence">
+                                    <h6 id="presence_card_title" class="m-0 font-weight-bold text-info text-uppercase mb-1" style="font-size:large">Presence-based Control</h6>
+                                    <i id="infoIconPresence" class="fa fa-info-circle" style="margin-bottom:8px;margin-left:10px;height:15px;width:15px;color:#36B9CC"></i>
                                     <div id="infoBoxPresence" style="width:1px;height:1px;overflow-x:visible;overflow-y:visible;"></div>
                                 </div>
                                 <div class="card-body">
@@ -153,8 +153,8 @@
                         <div class="col-xl-12">
                             <div class="card shadow h-auto mb-4" id="schedule_card">
                                 <div id="schedulebasedrect" class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                                    <h6 class="m-0 font-weight-bold text-primary text-uppercase mb-1">Schedule-based Control</h6>
-                                    <img style="margin-left:10px;height:15px;width:15px;" src="/static/Images/Info.png" alt="icon" id="infoIcon">
+                                    <h6 id="schedule_card_title" class="m-0 font-weight-bold text-success text-uppercase mb-1" style="font-size:large">Schedule-based Control</h6>
+                                    <i id="infoIcon" class="fa fa-info-circle" style="margin-bottom:8px;margin-left:10px;height:15px;width:15px;color:#1CC88A"></i>
                                     <div id="infoBox" style="width:1px;height:1px;overflow-x:visible;overflow-y:visible;"></div>
                                 </div>
                                 <div class="card-body">
@@ -269,28 +269,124 @@
 
     function update_logo_onresize() {
         if (window.innerWidth < 768) {
-            document.getElementById("content").style.marginLeft = "6.5rem";
-            document.getElementById("footer").style.marginLeft = "6.5rem";
-            document.getElementById("plug_mate_logo").style.width = "";
-            document.getElementById("plug_mate_logo").src = "";
+            if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
+                document.getElementById("content").style.marginLeft = "6.5rem";
+                document.getElementById("footer").style.marginLeft = "6.5rem";
+                document.getElementById("plug_mate_logo").style.width = "";
+                document.getElementById("plug_mate_logo").src = "";
+                document.getElementById("plug_mate_logo").style.height = "40px";
+                document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+            } else {
+                document.getElementById("content").style.marginLeft = "0rem";
+                document.getElementById("footer").style.marginLeft = "0rem";
+            }
+        } else {
+            if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
+                document.getElementById("content").style.marginLeft = "14rem";
+                document.getElementById("footer").style.marginLeft = "14rem";
+                document.getElementById("plug_mate_logo").style.height = "";
+                document.getElementById("plug_mate_logo").src = "";
+                document.getElementById("plug_mate_logo").style.width = "100%";
+                document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
+            } else {
+                document.getElementById("content").style.marginLeft = "6.5rem";
+                document.getElementById("footer").style.marginLeft = "6.5rem";
+                document.getElementById("plug_mate_logo").style.width = "";
+                document.getElementById("plug_mate_logo").src = "";
+                document.getElementById("plug_mate_logo").style.height = "40px";
+                document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+            }
+        }
+    }
+
+    window.addEventListener('load', update_logo_onload)
+
+    function update_logo_onload() {
+        if (window.innerWidth < 768) {
             document.getElementById("plug_mate_logo").style.height = "40px";
             document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
         } else {
-            document.getElementById("content").style.marginLeft = "14rem";
-            document.getElementById("footer").style.marginLeft = "14rem";
-            document.getElementById("plug_mate_logo").style.height = "";
-            document.getElementById("plug_mate_logo").src = "";
             document.getElementById("plug_mate_logo").style.width = "100%";
             document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
         }
     }
 
-    if (window.innerWidth < 768) {
-        document.getElementById("plug_mate_logo").style.height = "40px";
-        document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
-    } else {
-        document.getElementById("plug_mate_logo").style.width = "100%";
-        document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
+    document.getElementById("sidebar_remote_card").onclick = function() {
+        var id = "remote_card";
+        if (document.getElementById(id).offsetHeight < window.outerHeight) {
+            var offset = (window.outerHeight - document.getElementById(id).offsetHeight) / 2;
+        } else {
+            offset = 0;
+        }
+        var y = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({top: y, behavior: 'smooth'});
+
+        var count = 1;
+        var intervalId = setInterval(function() {
+            if (document.getElementById("remote_card_title").style.visibility === "hidden") {
+                document.getElementById("remote_card_title").style.visibility = "visible";
+                document.getElementById("infoIconRemote").style.visibility = "visible";
+
+                if (count++ === 2) {
+                    clearInterval(intervalId);
+                }
+            } else {
+                document.getElementById("remote_card_title").style.visibility = "hidden";
+                document.getElementById("infoIconRemote").style.visibility = "hidden";
+            }
+        }, 400)
+    }
+
+    document.getElementById("sidebar_presence_card").onclick = function() {
+        var id = "presence_card";
+        if (document.getElementById(id).offsetHeight < window.outerHeight) {
+            var offset = (window.outerHeight - document.getElementById(id).offsetHeight) / 2;
+        } else {
+            offset = 0;
+        }
+        var y = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({top: y, behavior: 'smooth'});
+
+        var count = 1;
+        var intervalId = setInterval(function() {
+            if (document.getElementById("presence_card_title").style.visibility === "hidden") {
+                document.getElementById("presence_card_title").style.visibility = "visible";
+                document.getElementById("infoIconPresence").style.visibility = "visible";
+
+                if (count++ === 2) {
+                    clearInterval(intervalId);
+                }
+            } else {
+                document.getElementById("presence_card_title").style.visibility = "hidden";
+                document.getElementById("infoIconPresence").style.visibility = "hidden";
+            }
+        }, 400)
+    }
+
+    document.getElementById("sidebar_schedule_card").onclick = function() {
+        var id = "schedule_card";
+        if (document.getElementById(id).offsetHeight < window.outerHeight) {
+            var offset = (window.outerHeight - document.getElementById(id).offsetHeight) / 2;
+        } else {
+            offset = 0;
+        }
+        var y = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({top: y, behavior: 'smooth'});
+
+        var count = 1;
+        var intervalId = setInterval(function() {
+            if (document.getElementById("schedule_card_title").style.visibility === "hidden") {
+                document.getElementById("schedule_card_title").style.visibility = "visible";
+                document.getElementById("infoIcon").style.visibility = "visible";
+
+                if (count++ === 2) {
+                    clearInterval(intervalId);
+                }
+            } else {
+                document.getElementById("schedule_card_title").style.visibility = "hidden";
+                document.getElementById("infoIcon").style.visibility = "hidden";
+            }
+        }, 400)
     }
 </script>
 

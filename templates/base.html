@@ -165,31 +165,150 @@
             }
         }
 
-        window.onresize = function () {
+        window.onload = function() {
             if (window.innerWidth < 768) {
-                document.getElementById("content").style.marginLeft = "6.5rem";
-                document.getElementById("footer").style.marginLeft = "6.5rem";
-                document.getElementById("plug_mate_logo").style.width = "";
-                document.getElementById("plug_mate_logo").src = "";
                 document.getElementById("plug_mate_logo").style.height = "40px";
                 document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
             } else {
-                document.getElementById("content").style.marginLeft = "14rem";
-                document.getElementById("footer").style.marginLeft = "14rem";
-                document.getElementById("plug_mate_logo").style.height = "";
-                document.getElementById("plug_mate_logo").src = "";
                 document.getElementById("plug_mate_logo").style.width = "100%";
                 document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
             }
         }
 
-        if (window.innerWidth < 768) {
-            document.getElementById("plug_mate_logo").style.height = "40px";
-            document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
-        } else {
-            document.getElementById("plug_mate_logo").style.width = "100%";
-            document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
+        window.onresize = function () {
+            if (window.innerWidth < 768) {
+                if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
+                    document.getElementById("content").style.marginLeft = "6.5rem";
+                    document.getElementById("footer").style.marginLeft = "6.5rem";
+                    document.getElementById("plug_mate_logo").style.width = "";
+                    document.getElementById("plug_mate_logo").src = "";
+                    document.getElementById("plug_mate_logo").style.height = "40px";
+                    document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+                } else {
+                    document.getElementById("content").style.marginLeft = "0rem";
+                    document.getElementById("footer").style.marginLeft = "0rem";
+                }
+            } else {
+                if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
+                    document.getElementById("content").style.marginLeft = "14rem";
+                    document.getElementById("footer").style.marginLeft = "14rem";
+                    document.getElementById("plug_mate_logo").style.height = "";
+                    document.getElementById("plug_mate_logo").src = "";
+                    document.getElementById("plug_mate_logo").style.width = "100%";
+                    document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
+                } else {
+                    document.getElementById("content").style.marginLeft = "6.5rem";
+                    document.getElementById("footer").style.marginLeft = "6.5rem";
+                    document.getElementById("plug_mate_logo").style.width = "";
+                    document.getElementById("plug_mate_logo").src = "";
+                    document.getElementById("plug_mate_logo").style.height = "40px";
+                    document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+                }
+            }
         }
+
+        document.getElementById("sidebar_historical_card").onclick = function() {
+            var id = "historical_card";
+            if (document.getElementById(id).offsetHeight < window.outerHeight) {
+                var offset = (window.outerHeight - document.getElementById(id).offsetHeight) / 2;
+            } else {
+                offset = 0;
+            }
+            var y = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({top: y, behavior: 'smooth'});
+
+            var count = 1;
+            var intervalId = setInterval(function() {
+                if (document.getElementById("historical_card_title").style.visibility === "hidden") {
+                    document.getElementById("historical_card_title").style.visibility = "visible";
+
+                    if (count++ === 2) {
+                        clearInterval(intervalId);
+                    }
+                } else {
+                    document.getElementById("historical_card_title").style.visibility = "hidden";
+                }
+            }, 400)
+        }
+
+        document.getElementById("sidebar_cost_card").onclick = function() {
+            var id = "cost_card";
+            if (document.getElementById(id).offsetHeight < window.outerHeight) {
+                var offset = (window.outerHeight - document.getElementById(id).offsetHeight) / 2;
+            } else {
+                offset = 0;
+            }
+            var y = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({top: y, behavior: 'smooth'});
+
+            var count = 1;
+            var intervalId = setInterval(function() {
+                if (document.getElementById("cost_card_title").style.visibility === "hidden") {
+                    document.getElementById("cost_card_title").style.visibility = "visible";
+
+                    if (count++ === 2) {
+                        clearInterval(intervalId);
+                    }
+                } else {
+                    document.getElementById("cost_card_title").style.visibility = "hidden";
+                }
+            }, 400)
+        }
+
+        document.getElementById("sidebar_goal_card").onclick = function() {
+            var id = "goal_card";
+            if (document.getElementById(id).offsetHeight < window.outerHeight) {
+                var offset = (window.outerHeight - document.getElementById(id).offsetHeight) / 2;
+            } else {
+                offset = 0;
+            }
+            var y = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({top: y, behavior: 'smooth'});
+
+            var count = 1;
+            var intervalId = setInterval(function() {
+                if (document.getElementById("goal_card_title").style.visibility === "hidden") {
+                    document.getElementById("goal_card_title").style.visibility = "visible";
+
+                    if (count++ === 2) {
+                        clearInterval(intervalId);
+                    }
+                } else {
+                    document.getElementById("goal_card_title").style.visibility = "hidden";
+                }
+            }, 400)
+        }
+
+        document.getElementById("sidebar_overview_card").onclick = function() {
+            var id = "overview_card";
+            if (document.getElementById(id).offsetHeight < window.outerHeight) {
+                var offset = (window.outerHeight - document.getElementById(id).offsetHeight) / 2;
+            } else {
+                offset = 0;
+            }
+            var y = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({top: y, behavior: 'smooth'});
+
+            var count = 1;
+            var intervalId = setInterval(function() {
+                if (document.getElementById("overview_card_title_one").style.visibility === "hidden") {
+                    document.getElementById("overview_card_title_one").style.visibility = "visible";
+                    document.getElementById("overview_card_title_two").style.visibility = "visible";
+                    document.getElementById("overview_card_title_three").style.visibility = "visible";
+                    document.getElementById("overview_card_title_four").style.visibility = "visible";
+
+                    if (count++ === 2) {
+                        clearInterval(intervalId);
+                    }
+                } else {
+                    document.getElementById("overview_card_title_one").style.visibility = "hidden";
+                    document.getElementById("overview_card_title_two").style.visibility = "hidden";
+                    document.getElementById("overview_card_title_three").style.visibility = "hidden";
+                    document.getElementById("overview_card_title_four").style.visibility = "hidden";
+                }
+            }, 400)
+        }
+
     </script>
 
     <!-- Page level plugins -->
