@@ -31,7 +31,7 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-lg font-weight-bold text-primary text-uppercase mb-1" style="font-size: large">
+                        <div id="overview_card_title_one" class="text-lg font-weight-bold text-primary text-uppercase mb-1" style="font-size: large">
                             Real-Time Power Consumption</div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1" style="font-size: large">
+                        <div id="overview_card_title_two" class="text-xs font-weight-bold text-success text-uppercase mb-1" style="font-size: large">
                             Cumulative Savings</div>
                     </div>
                 </div>
@@ -93,14 +93,13 @@
         </div>
     </div>
 
-
     <!-- Incentive Awarded -->
     <div class="col-xl-3 col-md-6 col-sm-12 mb-4" id="reward_card">
         <div class="card border-left-info shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-lg font-weight-bold text-info text-uppercase mb-1" style="font-size: large">
+                        <div id="overview_card_title_three" class="text-lg font-weight-bold text-info text-uppercase mb-1" style="font-size: large">
                             Energy Points Wallet
                         </div>
                     </div>
@@ -133,7 +132,7 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" style="font-size: large">
+                        <div id="overview_card_title_four" class="text-xs font-weight-bold text-warning text-uppercase mb-1" style="font-size: large">
                             Energy Tips</div>
                         <div class="h2 mb-0 font-weight-bold text-gray-800">
                             <div class="{% plotly_class name='tips' %}">
@@ -159,7 +158,7 @@
         <div class="col-13" id="historical_card">
             <div class="card shadow mb-4 anchor">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                    <h6 class="m-0 font-weight-bold text-primary text-uppercase mb-1" style="font-size: large">
+                    <h6 id="historical_card_title" class="m-0 font-weight-bold text-primary text-uppercase mb-1" style="font-size: large">
                         Historical Energy Consumption and Cost</h6>
                 </div>
                 <div class="card-body">
@@ -173,7 +172,7 @@
         <div class="col-13" id="cost_card">
             <div class="card shadow">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                    <h6 class="m-0 font-weight-bold text-success text-uppercase mb-1" style="font-size: large">
+                    <h6 id="cost_card_title" class="m-0 font-weight-bold text-success text-uppercase mb-1" style="font-size: large">
                         Cost Savings of Plug Loads</h6>
                 </div>
                 <div class="card-body">
@@ -189,7 +188,7 @@
         <div class="col-12" id="goal_card" style="height: 100%;padding-right:0;padding-left:0;">
             <div class="card shadow" style="height: 100%;overflow: hidden;">
                 <div class=" card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                    <h6 class="m-0 font-weight-bold text-info text-uppercase mb-1" style="font-size: large">Achievements
+                    <h6 id="goal_card_title" class="m-0 font-weight-bold text-info text-uppercase mb-1" style="font-size: large">Achievements
                     </h6>
                 </div>
                 <div class="card-body">
@@ -218,15 +217,5 @@
     </div>
 
 </div>
-
-<script>
-    var infoiconcostsavings = document.getElementById("infoIconCostSavings");
-    infoiconcostsavings.onmouseover = function () {
-        document.getElementById("informationBoxCostSavings").style.display = inline - block;
-    }
-    infoiconcostsavings.onmouseout = function () {
-        document.getElementById("informationBoxCostSavings").style.display = none;
-    }
-</script>
 
 {% endblock %}
