@@ -123,8 +123,8 @@
                         <div class="col-xl-12">
                             <div class="card shadow h-auto mb-4" id="remote_card">
                                 <div id="remotecontrolrect" class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                                    <h6 id="remote_card_title" class="m-0 font-weight-bold text-primary text-uppercase mb-1">Remote Control</h6>
-                                    <img style="margin-left:10px;height:15px;width:15px;" src="/static/Images/Info.png" alt="icon" id="infoIconRemote">
+                                    <h6 id="remote_card_title" class="m-0 font-weight-bold text-primary text-uppercase mb-1" style="font-size:large">Remote Control</h6>
+                                    <i id="infoIconRemote" class="fa fa-info-circle" style="margin-bottom:8px;margin-left:10px;height:15px;width:15px;color:#4E73DF"></i>
                                     <div id="infoBoxRemote" style="width:1px;height:1px;overflow-x:visible;overflow-y:visible;"></div>
                                 </div>
                                 <div class="card-body">
@@ -138,8 +138,8 @@
                         <div class="col-xl-12">
                             <div class="card shadow h-auto mb-4" id="presence_card">
                                 <div id="presencebasedrect" class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                                    <h6 id="presence_card_title" class="m-0 font-weight-bold text-primary text-uppercase mb-1">Presence-based Control</h6>
-                                    <img style="margin-left:10px;height:15px;width:15px" src="/static/Images/Info.png" alt="icon" id="infoIconPresence">
+                                    <h6 id="presence_card_title" class="m-0 font-weight-bold text-info text-uppercase mb-1" style="font-size:large">Presence-based Control</h6>
+                                    <i id="infoIconPresence" class="fa fa-info-circle" style="margin-bottom:8px;margin-left:10px;height:15px;width:15px;color:#36B9CC"></i>
                                     <div id="infoBoxPresence" style="width:1px;height:1px;overflow-x:visible;overflow-y:visible;"></div>
                                 </div>
                                 <div class="card-body">
@@ -153,8 +153,8 @@
                         <div class="col-xl-12">
                             <div class="card shadow h-auto mb-4" id="schedule_card">
                                 <div id="schedulebasedrect" class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                                    <h6 id="schedule_card_title" class="m-0 font-weight-bold text-primary text-uppercase mb-1">Schedule-based Control</h6>
-                                    <img style="margin-left:10px;height:15px;width:15px;" src="/static/Images/Info.png" alt="icon" id="infoIcon">
+                                    <h6 id="schedule_card_title" class="m-0 font-weight-bold text-success text-uppercase mb-1" style="font-size:large">Schedule-based Control</h6>
+                                    <i id="infoIcon" class="fa fa-info-circle" style="margin-bottom:8px;margin-left:10px;height:15px;width:15px;color:#1CC88A"></i>
                                     <div id="infoBox" style="width:1px;height:1px;overflow-x:visible;overflow-y:visible;"></div>
                                 </div>
                                 <div class="card-body">
@@ -312,6 +312,15 @@
     }
 
     document.getElementById("sidebar_remote_card").onclick = function() {
+        var id = "remote_card";
+        if (document.getElementById(id).offsetHeight < window.outerHeight) {
+            var offset = (window.outerHeight - document.getElementById(id).offsetHeight) / 2;
+        } else {
+            offset = 0;
+        }
+        var y = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({top: y, behavior: 'smooth'});
+
         var count = 1;
         var intervalId = setInterval(function() {
             if (document.getElementById("remote_card_title").style.visibility === "hidden") {
@@ -329,6 +338,15 @@
     }
 
     document.getElementById("sidebar_presence_card").onclick = function() {
+        var id = "presence_card";
+        if (document.getElementById(id).offsetHeight < window.outerHeight) {
+            var offset = (window.outerHeight - document.getElementById(id).offsetHeight) / 2;
+        } else {
+            offset = 0;
+        }
+        var y = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({top: y, behavior: 'smooth'});
+
         var count = 1;
         var intervalId = setInterval(function() {
             if (document.getElementById("presence_card_title").style.visibility === "hidden") {
@@ -346,6 +364,15 @@
     }
 
     document.getElementById("sidebar_schedule_card").onclick = function() {
+        var id = "schedule_card";
+        if (document.getElementById(id).offsetHeight < window.outerHeight) {
+            var offset = (window.outerHeight - document.getElementById(id).offsetHeight) / 2;
+        } else {
+            offset = 0;
+        }
+        var y = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({top: y, behavior: 'smooth'});
+
         var count = 1;
         var intervalId = setInterval(function() {
             if (document.getElementById("schedule_card_title").style.visibility === "hidden") {

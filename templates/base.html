@@ -208,6 +208,15 @@
         }
 
         document.getElementById("sidebar_historical_card").onclick = function() {
+            var id = "historical_card";
+            if (document.getElementById(id).offsetHeight < window.outerHeight) {
+                var offset = (window.outerHeight - document.getElementById(id).offsetHeight) / 2;
+            } else {
+                offset = 0;
+            }
+            var y = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({top: y, behavior: 'smooth'});
+
             var count = 1;
             var intervalId = setInterval(function() {
                 if (document.getElementById("historical_card_title").style.visibility === "hidden") {
@@ -223,6 +232,15 @@
         }
 
         document.getElementById("sidebar_cost_card").onclick = function() {
+            var id = "cost_card";
+            if (document.getElementById(id).offsetHeight < window.outerHeight) {
+                var offset = (window.outerHeight - document.getElementById(id).offsetHeight) / 2;
+            } else {
+                offset = 0;
+            }
+            var y = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({top: y, behavior: 'smooth'});
+
             var count = 1;
             var intervalId = setInterval(function() {
                 if (document.getElementById("cost_card_title").style.visibility === "hidden") {
@@ -238,6 +256,15 @@
         }
 
         document.getElementById("sidebar_goal_card").onclick = function() {
+            var id = "goal_card";
+            if (document.getElementById(id).offsetHeight < window.outerHeight) {
+                var offset = (window.outerHeight - document.getElementById(id).offsetHeight) / 2;
+            } else {
+                offset = 0;
+            }
+            var y = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({top: y, behavior: 'smooth'});
+
             var count = 1;
             var intervalId = setInterval(function() {
                 if (document.getElementById("goal_card_title").style.visibility === "hidden") {
@@ -253,6 +280,15 @@
         }
 
         document.getElementById("sidebar_overview_card").onclick = function() {
+            var id = "overview_card";
+            if (document.getElementById(id).offsetHeight < window.outerHeight) {
+                var offset = (window.outerHeight - document.getElementById(id).offsetHeight) / 2;
+            } else {
+                offset = 0;
+            }
+            var y = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({top: y, behavior: 'smooth'});
+
             var count = 1;
             var intervalId = setInterval(function() {
                 if (document.getElementById("overview_card_title_one").style.visibility === "hidden") {
@@ -269,6 +305,26 @@
                     document.getElementById("overview_card_title_two").style.visibility = "hidden";
                     document.getElementById("overview_card_title_three").style.visibility = "hidden";
                     document.getElementById("overview_card_title_four").style.visibility = "hidden";
+                }
+            }, 400)
+        }
+
+        document.getElementById("check_your_wallet").onclick = function() {
+            var id = "reward_card";
+            if (document.getElementById(id).offsetHeight < window.outerHeight) {
+                var offset = (window.outerHeight - document.getElementById(id).offsetHeight) / 2;
+            } else {
+                offset = 0;
+            }
+            var y = document.getElementById(id).getBoundingClientRect().top + window.pageYOffset - offset;
+            window.scrollTo({top: y, behavior: 'smooth'});
+
+            var count = 1;
+            var intervalId = setInterval(function() {
+                if (document.getElementById("overview_card_title_three").style.visibility === "hidden") {
+                    document.getElementById("overview_card_title_three").style.visibility = "visible";
+                } else {
+                    document.getElementById("overview_card_title_three").style.visibility = "hidden";
                 }
             }, 400)
         }
