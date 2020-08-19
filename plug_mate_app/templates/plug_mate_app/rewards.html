@@ -63,11 +63,15 @@
                         <h1 class="h3 mb-0 text-gray-800 font-weight-bold">Welcome to the Rewards Page</h1>
                     </div>
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">You have {{ points }} points to redeem!</h1>
+                        <h1 class="h3 mb-0 text-gray-800" id="points_value">You have {{ points }} points to redeem!</h1>
                     </div>
 
                     <div class="alert alert-success alert-dismissible fade" role="alert" id="buttonAlert">
                         You have successfully redeemed your reward. Keep up the good work!
+                    </div>
+
+                    <div class="alert alert-danger alert-dismissable fade" role="alert" id="buttonAlert">
+                            You do not have enough points to redeem that award!
                     </div>
 
                     <div class="container">
@@ -85,7 +89,7 @@
                                                 <h5>200 Points</h5>
                                             </div>
                                             <div class="col-6" style="padding-top: 0; text-align: right; padding-right: 1rem">
-                                                <a href="#" class="btn btn-sm btn-primary redeem-button">Redeem!</a>
+                                                <a href="#" id="breadtalk-5" class="btn btn-sm btn-primary redeem-button-200">Redeem!</a>
                                             </div>
                                         </div>
                                     </div>
@@ -104,7 +108,7 @@
                                                 <h5>200 Points</h5>
                                             </div>
                                             <div class="col-6" style="padding-top: 0; text-align: right; padding-right: 1rem">
-                                                <a href="#" class="btn btn-sm btn-primary redeem-button">Redeem!</a>
+                                                <a href="#" id="jolibee-5" class="btn btn-sm btn-primary redeem-button-200">Redeem!</a>
                                             </div>
                                         </div>
                                     </div>
@@ -123,15 +127,15 @@
                                                 <h5>200 Points</h5>
                                             </div>
                                             <div class="col-6" style="padding-top: 0; text-align: right; padding-right: 1rem">
-                                                <a href="#" class="btn btn-sm btn-primary redeem-button">Redeem!</a>
+                                                <a href="#" id="mcdonalds-5" class="btn btn-sm btn-primary redeem-button-200">Redeem!</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- row -->
 
+                        <!-- row -->
                         <div class="row mb-5 cstm-height-card">
                             <div class="col-lg-4 col-sm-12 mb-4">
                                 <div class="card">
@@ -145,7 +149,7 @@
                                                 <h5>250 Points</h5>
                                             </div>
                                             <div class="col-6" style="padding-top: 0; text-align: right; padding-right: 1rem">
-                                                <a href="#" class="btn btn-sm btn-primary redeem-button">Redeem!</a>
+                                                <a href="#" id="starbucks-5" class="btn btn-sm btn-primary redeem-button-250">Redeem!</a>
                                             </div>
                                         </div>
                                     </div>
@@ -164,7 +168,7 @@
                                                 <h5>350 Points</h5>
                                             </div>
                                             <div class="col-6" style="padding-top: 0; text-align: right; padding-right: 1rem">
-                                                <a href="#" class="btn btn-sm btn-primary redeem-button">Redeem!</a>
+                                                <a href="#" id="breadtalk-10" class="btn btn-sm btn-primary redeem-button-350">Redeem!</a>
                                             </div>
                                         </div>
                                     </div>
@@ -183,13 +187,14 @@
                                                 <h5>350 Points</h5>
                                             </div>
                                             <div class="col-6" style="padding-top: 0; text-align: right; padding-right: 1rem">
-                                                <a href="#" class="btn btn-sm btn-primary redeem-button">Redeem!</a>
+                                                <a href="#" id="jolibee-10" class="btn btn-sm btn-primary redeem-button-350">Redeem!</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <!-- row -->
                         <div class="row mb-5 cstm-height-card">
                             <div class="col-lg-4 col-sm-12 mb-4">
@@ -204,7 +209,7 @@
                                                 <h5>350 Points</h5>
                                             </div>
                                             <div class="col-6" style="padding-top: 0; text-align: right; padding-right: 1rem">
-                                                <a href="#" class="btn btn-sm btn-primary redeem-button">Redeem!</a>
+                                                <a href="#" id="mcdonalds-10" class="btn btn-sm btn-primary redeem-button-350">Redeem!</a>
                                             </div>
                                         </div>
                                     </div>
@@ -223,7 +228,7 @@
                                                 <h5>420 Points</h5>
                                             </div>
                                             <div class="col-6" style="padding-top: 0; text-align: right; padding-right: 1rem">
-                                                <a href="#" class="btn btn-sm btn-primary redeem-button">Redeem!</a>
+                                                <a href="#" id="starbucks-10" class="btn btn-sm btn-primary redeem-button-420">Redeem!</a>
                                             </div>
                                         </div>
                                     </div>
@@ -242,7 +247,7 @@
                                                 <h5>650 Points</h5>
                                             </div>
                                             <div class="col-6" style="padding-top: 0; text-align: right; padding-right: 1rem">
-                                                <a href="#" class="btn btn-sm btn-primary redeem-button">Redeem!</a>
+                                                <a href="#" id="breadtalk-20" class="btn btn-sm btn-primary redeem-button-650">Redeem!</a>
                                             </div>
                                         </div>
                                     </div>
@@ -264,7 +269,7 @@
                                                 <h5>650 Points</h5>
                                             </div>
                                             <div class="col-6" style="padding-top: 0; text-align: right; padding-right: 1rem">
-                                                <a href="#" class="btn btn-sm btn-primary redeem-button">Redeem!</a>
+                                                <a href="#" id="jolibee-20" class="btn btn-sm btn-primary redeem-button-650">Redeem!</a>
                                             </div>
                                         </div>
                                     </div>
@@ -283,7 +288,7 @@
                                                 <h5>650 Points</h5>
                                             </div>
                                             <div class="col-6" style="padding-top: 0; text-align: right; padding-right: 1rem">
-                                                <a href="#" class="btn btn-sm btn-primary redeem-button">Redeem!</a>
+                                                <a href="#" id="mcdonalds-20" class="btn btn-sm btn-primary redeem-button-650">Redeem!</a>
                                             </div>
                                         </div>
                                     </div>
@@ -302,7 +307,7 @@
                                                 <h5>800 Points</h5>
                                             </div>
                                             <div class="col-6" style="padding-top: 0; text-align: right; padding-right: 1rem">
-                                                <a href="#" class="btn btn-sm btn-primary redeem-button">Redeem!</a>
+                                                <a href="#" id="starbucks-20" class="btn btn-sm btn-primary redeem-button-800">Redeem!</a>
                                             </div>
                                         </div>
                                     </div>
@@ -439,17 +444,349 @@
             }
         }
     }
-</script>
 
-<!--Script for pop up alert when reward is redeemed.-->
-<script>
-    $(document).ready(function() {
-        $(".alert-success").hide();
-        $(".redeem-button").click(function showAlert() {
+    document.getElementById("breadtalk-5").addEventListener("click", function() {
+        fetch('/control_interface/api/points_wallet/')
+        .then(response => response.json())
+        .then(data => {
+            var current_points = data[0].points;
+            redeem_button_200(current_points);
+
+            if (current_points >= 200) {
+                var user_id = {{user_id}}
+                var new_points = current_points - 200;
+                fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
+                })
+                document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+            }
+        })
+    })
+
+    document.getElementById("jolibee-5").addEventListener("click", function() {
+        fetch('/control_interface/api/points_wallet/')
+        .then(response => response.json())
+        .then(data => {
+            var current_points = data[0].points;
+            redeem_button_200(current_points);
+
+            if (current_points >= 200) {
+                var user_id = {{user_id}}
+                var new_points = current_points - 200;
+                fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
+                })
+                document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+            }
+        })
+    })
+
+    document.getElementById("mcdonalds-5").addEventListener("click", function() {
+        fetch('/control_interface/api/points_wallet/')
+        .then(response => response.json())
+        .then(data => {
+            var current_points = data[0].points;
+            redeem_button_200(current_points);
+
+            if (current_points >= 200) {
+                var user_id = {{user_id}}
+                var new_points = current_points - 200;
+                fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
+                })
+                document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+            }
+        })
+    })
+
+    document.getElementById("starbucks-5").addEventListener("click", function() {
+        fetch('/control_interface/api/points_wallet/')
+        .then(response => response.json())
+        .then(data => {
+            var current_points = data[0].points;
+            redeem_button_250(current_points);
+
+            if (current_points >= 250) {
+                var user_id = {{user_id}}
+                var new_points = current_points - 250;
+                fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
+                })
+                document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+            }
+        })
+    })
+
+    document.getElementById("breadtalk-10").addEventListener("click", function() {
+        fetch('/control_interface/api/points_wallet/')
+        .then(response => response.json())
+        .then(data => {
+            var current_points = data[0].points;
+            redeem_button_350(current_points);
+
+            if (current_points >= 350) {
+                var user_id = {{user_id}}
+                var new_points = current_points - 350;
+                fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
+                })
+                document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+            }
+        })
+    })
+
+    document.getElementById("jolibee-10").addEventListener("click", function() {
+        fetch('/control_interface/api/points_wallet/')
+        .then(response => response.json())
+        .then(data => {
+            var current_points = data[0].points;
+            redeem_button_350(current_points);
+
+            if (current_points >= 350) {
+                var user_id = {{user_id}}
+                var new_points = current_points - 350;
+                fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
+                })
+                document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+            }
+        })
+    })
+
+    document.getElementById("mcdonalds-10").addEventListener("click", function() {
+        fetch('/control_interface/api/points_wallet/')
+        .then(response => response.json())
+        .then(data => {
+            var current_points = data[0].points;
+            redeem_button_350(current_points);
+
+            if (current_points >= 350) {
+                var user_id = {{user_id}}
+                var new_points = current_points - 350;
+                fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
+                })
+                document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+            }
+        })
+    })
+
+    document.getElementById("starbucks-10").addEventListener("click", function() {
+        fetch('/control_interface/api/points_wallet/')
+        .then(response => response.json())
+        .then(data => {
+            var current_points = data[0].points;
+            redeem_button_420(current_points);
+
+            if (current_points >= 420) {
+                var user_id = {{user_id}}
+                var new_points = current_points - 420;
+                fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
+                })
+                document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+            }
+        })
+    })
+
+    document.getElementById("breadtalk-20").addEventListener("click", function() {
+        fetch('/control_interface/api/points_wallet/')
+        .then(response => response.json())
+        .then(data => {
+            var current_points = data[0].points;
+            redeem_button_650(current_points);
+
+            if (current_points >= 650) {
+                var user_id = {{user_id}}
+                var new_points = current_points - 650;
+                fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
+                })
+                document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+            }
+        })
+    })
+
+    document.getElementById("jolibee-20").addEventListener("click", function() {
+        fetch('/control_interface/api/points_wallet/')
+        .then(response => response.json())
+        .then(data => {
+            var current_points = data[0].points;
+            redeem_button_650(current_points);
+
+            if (current_points >= 650) {
+                var user_id = {{user_id}}
+                var new_points = current_points - 650;
+                fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
+                })
+                document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+            }
+        })
+    })
+
+    document.getElementById("mcdonalds-20").addEventListener("click", function() {
+        fetch('/control_interface/api/points_wallet/')
+        .then(response => response.json())
+        .then(data => {
+            var current_points = data[0].points;
+            redeem_button_650(current_points);
+
+            if (current_points >= 650) {
+                var user_id = {{user_id}}
+                var new_points = current_points - 650;
+                fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
+                })
+                document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+            }
+        })
+    })
+
+    document.getElementById("starbucks-20").addEventListener("click", function() {
+        fetch('/control_interface/api/points_wallet/')
+        .then(response => response.json())
+        .then(data => {
+            var current_points = data[0].points;
+            redeem_button_800(current_points);
+
+            if (current_points >= 800) {
+                var user_id = {{user_id}}
+                var new_points = current_points - 800;
+                fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
+                })
+                document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+            }
+        })
+    })
+
+
+
+    <!--Script for pop up alert when reward is redeemed.-->
+    function redeem_button_200(points) {
+        if (points >= 200) {
             $(".alert-success").fadeTo(2000, 500).slideUp(500, function() {
                 $(".alert-success").slideUp(500);
             });
-        });
+        } else {
+            $(".alert-danger").fadeTo(2000, 500).slideUp(500, function() {
+                $(".alert-danger").slideUp(500);
+            });
+        }
+    }
+
+    function redeem_button_250(points) {
+        if (points >= 250) {
+            $(".alert-success").fadeTo(2000, 500).slideUp(500, function() {
+                $(".alert-success").slideUp(500);
+            });
+        } else {
+            $(".alert-danger").fadeTo(2000, 500).slideUp(500, function() {
+                $(".alert-danger").slideUp(500);
+            });
+        }
+    }
+
+    function redeem_button_350(points) {
+        if (points >= 350) {
+            $(".alert-success").fadeTo(2000, 500).slideUp(500, function() {
+                $(".alert-success").slideUp(500);
+            });
+        } else {
+            $(".alert-danger").fadeTo(2000, 500).slideUp(500, function() {
+                $(".alert-danger").slideUp(500);
+            });
+        }
+    }
+
+    function redeem_button_420(points) {
+        if (points >= 420) {
+         $(".alert-success").fadeTo(2000, 500).slideUp(500, function() {
+            $(".alert-success").slideUp(500);
+         });
+        } else {
+            $(".alert-danger").fadeTo(2000, 500).slideUp(500, function() {
+                $(".alert-danger").slideUp(500);
+            });
+        }
+    }
+
+    function redeem_button_650(points) {
+        if (points >= 650) {
+         $(".alert-success").fadeTo(2000, 500).slideUp(500, function() {
+            $(".alert-success").slideUp(500);
+         });
+        } else {
+            $(".alert-danger").fadeTo(2000, 500).slideUp(500, function() {
+                $(".alert-danger").slideUp(500);
+            });
+        }
+    }
+
+    function redeem_button_800(points) {
+        if (points >= 800) {
+         $(".alert-success").fadeTo(2000, 500).slideUp(500, function() {
+            $(".alert-success").slideUp(500);
+         });
+        } else {
+            $(".alert-danger").fadeTo(2000, 500).slideUp(500, function() {
+                $(".alert-danger").slideUp(500);
+            });
+        }
+    }
+
+    $(document).ready(function() {
+        $(".alert-success").hide();
+        $(".alert-danger").hide();
     });
 </script>
 
