@@ -252,7 +252,7 @@ class Calendar extends Component {
                 isNonWorkingTimeFunc: this.isNonWorkingTime
             }
         );
-        schedulerData.setResources([{id:1, name:"Desktop"}, {id:5, name:"Fan"}, {id:2, name:"Laptop"}, {id:3, name:"Monitor"}, {id:4, name:"Task Lamp"}]);
+        schedulerData.setResources(this.props.devices);
         schedulerData.setEvents(this.props.events);
 
         this.state = {

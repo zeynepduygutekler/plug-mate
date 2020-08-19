@@ -89,6 +89,28 @@ class ScheduleControlPopup extends Component {
             // Automatically select Fan
             document.getElementById("ScheduleApplyFan").checked = true;
         }
+
+        // Disable the unowned devices
+        if (!window.remote.state.devices.includes("Desktop")) {
+            document.getElementById("ScheduleApplyDesktop").checked = false;
+            document.getElementById("ScheduleApplyDesktop").disabled = true;
+        }
+        if (!window.remote.state.devices.includes("Monitor")) {
+            document.getElementById("ScheduleApplyMonitor").checked = false;
+            document.getElementById("ScheduleApplyMonitor").disabled = true;
+        }
+        if (!window.remote.state.devices.includes("Laptop")) {
+            document.getElementById("ScheduleApplyLaptop").checked = false;
+            document.getElementById("ScheduleApplyLaptop").disabled = true;
+        }
+        if (!window.remote.state.devices.includes("Task Lamp")) {
+            document.getElementById("ScheduleApplyTaskLamp").checked = false;
+            document.getElementById("ScheduleApplyTaskLamp").disabled = true;
+        }
+        if (!window.remote.state.devices.includes("Fan")) {
+            document.getElementById("ScheduleApplyFan").checked = false;
+            document.getElementById("ScheduleApplyFan").disabled = true;
+        }
     }
 
     exitPopup = (e) => {
