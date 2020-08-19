@@ -36,7 +36,7 @@ def plug_mate_app(request):
 
             # Query for user's cumulative savings from the database
             cursor.execute("SELECT cum_savings FROM achievements_bonus WHERE user_id=%s", [request.user.id])
-            cumulative_savings_kwh = round(cursor.fetchone()[0] / (1000*60), 3)
+            cumulative_savings_kwh = round(cursor.fetchone()[0] / (1000*60), 1)
             cumulative_savings_dollars = '{:,.2f}'.format(cumulative_savings_kwh * 0.201)
             cumulative_savings_trees = round(cumulative_savings_kwh * 0.201 * 0.5)
 
