@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .models import RemoteData, ScheduleData, PresenceData, AchievementsBonus, AchievementsWeekly, PointsWallet
+from .models import RemoteData, ScheduleData, PresenceData, \
+    AchievementsBonus, AchievementsWeekly, PointsWallet, \
+    Notifications
 
 class RemoteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,3 +32,8 @@ class PointsWalletSerializer(serializers.ModelSerializer):
     class Meta:
         model = PointsWallet
         fields = ('id', 'user_id', 'points')
+
+class NotificationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notifications
+        fields = ('id', 'user_id', 'notifications')

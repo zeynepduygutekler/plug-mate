@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db import models
+from django.contrib.postgres.fields import JSONField
 
 class Users(models.Model):
     user_id = models.IntegerField(primary_key=True)
@@ -124,3 +125,9 @@ class AchievementsWeekly(models.Model):
     complete_weekly = models.IntegerField()
     class Meta:
         db_table = 'achievements_weekly'
+
+class Notifications(models.Model):
+    user_id = models.IntegerField()
+    notifications = JSONField()
+    class Meta:
+        db_table = 'notifications'
