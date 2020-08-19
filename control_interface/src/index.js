@@ -17,9 +17,15 @@ function compare(a,b) {
 // Remote Control
 
 class RemoteControlDashboard extends Component {
+    constructor(props) {
+        super(props);
+        window.remote = this;
+    }
+
     state = {
         books: [],
-        key: 1
+        key: 1,
+        devices: []
     }
 
     componentDidMount() {
@@ -32,7 +38,11 @@ class RemoteControlDashboard extends Component {
         .then(response => response.json())
         .then(data => {
             data.sort(compare);
-            this.setState({books: data, key: this.state.key+1})
+            var owned_devices = [];
+            for (var entry of data) {
+                owned_devices.push(entry.device_type)
+            }
+            this.setState({books: data, key: this.state.key+1, devices: owned_devices}, function() {console.log(this.state.devices)})
         })
 
         setTimeout(this.fetchData, 5000)
@@ -472,20 +482,30 @@ ReactDOM.render(<RemoteControlDashboard />, document.getElementById('remote-cont
 
 function Main() {
     // If at least one plug load is ON, master button is automatically toggled to ON.
-    if (document.getElementById("DesktopToggleRemote").checked || document.getElementById("MonitorToggleRemote").checked ||
-        document.getElementById("LaptopToggleRemote").checked || document.getElementById("TaskLampToggleRemote").checked ||
-        document.getElementById("FanToggleRemote").checked) {
-        window.master.setState({checked: true});
-        document.getElementById("master").checked = true;
-    } else {
-        // If all plug loads are OFF, master button is automatically toggled to OFF.
-        if (!document.getElementById("DesktopToggleRemote").checked && !document.getElementById("MonitorToggleRemote").checked &&
-            !document.getElementById("LaptopToggleRemote").checked && !document.getElementById("TaskLampToggleRemote").checked &&
-            !document.getElementById("FanToggleRemote").checked) {
-            window.master.setState({checked: false});
-            document.getElementById("master").checked = false;
+    document.getElementById("master").checked = false;
+    window.master.setState({checked: false}, function() {
+        for (var device of window.remote.state.devices) {
+            if (document.getElementById(device.replace(/\s/g,'') + "ToggleRemote").checked) {
+                window.master.setState({checked: true});
+                document.getElementById("master").checked = true;
+            }
         }
-    }
+    });
+
+//    if (document.getElementById("DesktopToggleRemote").checked || document.getElementById("MonitorToggleRemote").checked ||
+//        document.getElementById("LaptopToggleRemote").checked || document.getElementById("TaskLampToggleRemote").checked ||
+//        document.getElementById("FanToggleRemote").checked) {
+//        window.master.setState({checked: true});
+//        document.getElementById("master").checked = true;
+//    } else {
+//        // If all plug loads are OFF, master button is automatically toggled to OFF.
+//        if (!document.getElementById("DesktopToggleRemote").checked && !document.getElementById("MonitorToggleRemote").checked &&
+//            !document.getElementById("LaptopToggleRemote").checked && !document.getElementById("TaskLampToggleRemote").checked &&
+//            !document.getElementById("FanToggleRemote").checked) {
+//            window.master.setState({checked: false});
+//            document.getElementById("master").checked = false;
+//        }
+//    }
 }
 
 // Presence Based Control
