@@ -250,7 +250,6 @@ class RemoteControlItem extends Component {
 
                         // Animate the bell
                     })
-
                 }
             })
         })
@@ -707,6 +706,35 @@ class PresenceControlItem extends Component {
                         })
                     })
 
+                    // Send notification
+                    fetch('/control_interface/api/notifications/')
+                    .then(response => response.json())
+                    .then(notifications_data => {
+                        var number_of_notifications = notifications_data[0].notifications.notifications.length;
+                        var current_user = notifications_data[0].user_id;
+
+                        // Get the timestamp
+                        var today = new Date();
+                        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                        var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
+                        notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have earned 70 points for using presence-based control for the first time.", type: "success"})
+                        fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(notifications_data[0])
+                        })
+
+                        // Update number on bell
+                        document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 1)
+
+                        // Update notifications in list
+                        document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have earned 70 points for using presence-based control for the first time. </span> </div> </a>`)
+
+                        // Animate the bell
+                    })
                 }
             })
         })
