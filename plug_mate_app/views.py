@@ -36,19 +36,25 @@ def plug_mate_app(request):
 
             # Query for user's cumulative savings from the database
             cursor.execute("SELECT cum_savings FROM achievements_bonus WHERE user_id=%s", [request.user.id])
-            cumulative_savings_kwh = round(cursor.fetchone()[0]/1000,3)
+            cumulative_savings_kwh = round(cursor.fetchone()[0] / 1000, 3)
             cumulative_savings_dollars = '{:,.2f}'.format(cumulative_savings_kwh * 0.201)
             cumulative_savings_trees = round(cumulative_savings_kwh * 0.201 * 0.5)
 
             # Query for user's remaining points to be claimed for the week
-            cursor.execute("SELECT SUM(lower_energy_con + turn_off_leave + turn_off_end + complete_all_daily) FROM achievements_daily WHERE user_id=%s", [request.user.id])
+            cursor.execute(
+                "SELECT SUM(lower_energy_con + turn_off_leave + turn_off_end + complete_all_daily) FROM achievements_daily WHERE user_id=%s",
+                [request.user.id])
             daily_achievements = cursor.fetchone()[0]
-            cursor.execute("SELECT SUM(cost_saving + schedule_based + complete_daily + complete_weekly) FROM achievements_weekly WHERE user_id=%s", [request.user.id])
+            cursor.execute(
+                "SELECT SUM(cost_saving + schedule_based + complete_daily + complete_weekly) FROM achievements_weekly WHERE user_id=%s",
+                [request.user.id])
             weekly_achievements = cursor.fetchone()[0]
 
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        points_table = pd.read_csv(os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_points.csv'))
-        max_weekly_points = sum(points_table[points_table['type'] == 'daily']['points']) * 5 + sum(points_table[points_table['type'] == 'weekly']['points'])
+        points_table = pd.read_csv(
+            os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_points.csv'))
+        max_weekly_points = sum(points_table[points_table['type'] == 'daily']['points']) * 5 + sum(
+            points_table[points_table['type'] == 'weekly']['points'])
         remaining_points = max_weekly_points - daily_achievements - weekly_achievements
         os.environ['TZ'] = 'Asia/Singapore'
 
@@ -93,6 +99,7 @@ def special(request):
     # LOGIN_URL = '/basic_app/user_login/'
     return HttpResponse("You are logged in. Nice!")
 
+
 @login_required
 def user_logout(request):
     # Log out the user.
@@ -102,7 +109,6 @@ def user_logout(request):
 
 
 def user_login(request):
-
     if request.method == 'POST':
         # First get the username and password supplied
         username = request.POST.get('username')
@@ -113,7 +119,7 @@ def user_login(request):
 
         # If we have a user
         if user:
-            #Check it the account is active
+            # Check it the account is active
             if user.is_active:
                 # Log the user in.
                 login(request, user)
@@ -130,12 +136,13 @@ def user_login(request):
             return HttpResponse("Invalid login details supplied.")
 
     else:
-        #Nothing has been provided for username or password.
+        # Nothing has been provided for username or password.
         return render(request, 'plug_mate_app/login.html', {})
 
 
 from .models import PointsWallet, PresenceData, RemoteData, ScheduleData, AchievementsBonus, AchievementsWeekly
-from .serializers import PointsWalletSerializer, PresenceSerializer, RemoteSerializer, ScheduleSerializer, AchievementsBonusSerializer, AchievementsWeeklySerializer
+from .serializers import PointsWalletSerializer, PresenceSerializer, RemoteSerializer, ScheduleSerializer, \
+    AchievementsBonusSerializer, AchievementsWeeklySerializer
 from rest_framework import generics
 
 
@@ -148,12 +155,14 @@ class PresenceDataList(generics.ListCreateAPIView):
         """ This view should return a list of all the presence
         settings for the current authenticated user."""
         user = self.request.user.id
-        return PresenceData.objects.filter(user_id = user)
+        return PresenceData.objects.filter(user_id=user)
+
 
 class PresenceDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = PresenceData.objects.all()
     serializer_class = PresenceSerializer
+
 
 class RemoteDataList(generics.ListCreateAPIView):
     authentication_classes = [authentication.SessionAuthentication]
@@ -163,7 +172,7 @@ class RemoteDataList(generics.ListCreateAPIView):
         """ This view should return a list of all the remote
         settings for the current authenticated user. """
         user = self.request.user.id
-        return RemoteData.objects.filter(user_id = user)
+        return RemoteData.objects.filter(user_id=user)
 
 
 class RemoteDataDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -180,13 +189,14 @@ class ScheduleDataList(generics.ListCreateAPIView):
         """ This view should return a list of all the schedule
         settings for the current authenticated user. """
         user = self.request.user.id
-        return ScheduleData.objects.filter(user_id = user)
+        return ScheduleData.objects.filter(user_id=user)
 
 
 class ScheduleDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = ScheduleData.objects.all()
     serializer_class = ScheduleSerializer
+
 
 class AchievementsBonusDataList(generics.ListCreateAPIView):
     authentication_classes = [authentication.SessionAuthentication]
@@ -196,12 +206,14 @@ class AchievementsBonusDataList(generics.ListCreateAPIView):
         """ This view should return a list of all the bonus
         achievements for the current authenticated user."""
         user = self.request.user.id
-        return AchievementsBonus.objects.filter(user_id = user)
+        return AchievementsBonus.objects.filter(user_id=user)
+
 
 class AchievementsBonusDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = AchievementsBonus.objects.all()
     serializer_class = AchievementsBonusSerializer
+
 
 class AchievementsWeeklyDataList(generics.ListCreateAPIView):
     authentication_classes = [authentication.SessionAuthentication]
@@ -211,12 +223,14 @@ class AchievementsWeeklyDataList(generics.ListCreateAPIView):
         """ This view should return a list of all the weekly
         achievements for the current authenticated user. """
         user = self.request.user.id
-        return AchievementsWeekly.objects.filter(user_id = user)
+        return AchievementsWeekly.objects.filter(user_id=user)
+
 
 class AchievementsWeeklyDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = AchievementsWeekly.objects.all()
     serializer_class = AchievementsWeeklySerializer
+
 
 class PointsWalletDataList(generics.ListCreateAPIView):
     authentication_classes = [authentication.SessionAuthentication]
@@ -226,7 +240,8 @@ class PointsWalletDataList(generics.ListCreateAPIView):
         """ This view should return the points in the energy wallet
         of the current authenticated user. """
         user = self.request.user.id
-        return PointsWallet.objects.filter(user_id = user)
+        return PointsWallet.objects.filter(user_id=user)
+
 
 class PointsWalletDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
