@@ -2,6 +2,9 @@ type,achievement,points,description
 daily,lower_energy_con,15,Clock a lower energy consumption than yesterday
 daily,turn_off_leave,10,Turn off your plug loads when you leave your desk for a long period of time during the day
 daily,turn_off_end,10,Turn off your plug loads during at the end of the day
+daily,daily_presence,5,Activate presence-based control for your devices today
+daily,daily_schedule,5,Use schedule-based control for your devices today
+daily,daily_remote,5,Use remote control while you are away from your desk today
 daily,complete_all_daily,20,Complete all daily achievements
 weekly,cost_saving,25,Clock a higher cost savings than last week
 weekly,schedule_based,20,Set next week's schedule-based controls
