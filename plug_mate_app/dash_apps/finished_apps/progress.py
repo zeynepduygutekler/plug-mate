@@ -12,10 +12,6 @@ from django_plotly_dash import DjangoDash
 from datetime import datetime
 
 
-# image_directory = os.getcwd() + '/trees'
-# static_image_route = '/static/'
-# img_style = {'height': '50%', 'width': '50%'}
-
 def get_achievements(user_id):
     """Reads achievement dataframes from database"""
     reference = pd.read_csv(
@@ -55,19 +51,6 @@ app = DjangoDash('progress',
                  serve_locally=True, add_bootstrap_links=True)
 
 app.layout = html.Div([
-    # dbc.Row([dbc.Col([html.P('6 daily and 5 weekly achievements left to claim. Keep going!',
-    #                          style={'text-align': 'center', 'font-size': '1.3em', 'font-weight': 'bold',
-    #                                 'vertical-align': 'middle', 'display': 'table-cell'}),
-    #                   # html.P('Keep going!',
-    #                   #        style={'text-align': 'center', 'font-size': '1.3em', 'font-weight': 'bold',
-    #                   #               'vertical-align': 'middle'}),
-    #                   html.Br(),
-    #                   html.A("Check your wallet", href='#realtime_card')], width=8,
-    #                  style={'padding-left': '50px', 'text-align': 'center'}),
-    #          dbc.Col(html.Img(src="https://image.flaticon.com/icons/svg/860/860511.svg", style={'height': '6rem'}),
-    #                  style={'margin': 'auto'}, width=4)],
-    #         style={'height': '50%', 'align-items': 'baseline', 'margin': 'auto'}
-    #         ),
 
     dbc.Row([dbc.Col(dbc.Progress(children='9%', id='progress-bar', value=140,
                                   max=1500, style={'height': '40px', 'font-size': '15px'}, striped=True,
@@ -79,13 +62,6 @@ app.layout = html.Div([
                                'line-height': '40px',
                                'height': '40px'}), width=2, style={'padding': 0})
              ], style={'margin': 'auto'}),
-    #
-    # html.Div(id='HELLO', children=
-    # dcc.Tabs(id='tabs', value='daily', style={'width': '20%'}, vertical=False, children=[
-    #     dcc.Tab(label='Daily', value='daily'),
-    #     dcc.Tab(label='Weekly', value='weekly'),
-    #     dcc.Tab(label='Bonus', value='bonus')
-    # ]), ),
     html.Div(id='placeholder'),
 
     html.Div([
@@ -154,17 +130,19 @@ def update_achievements_table(n, **kwargs):
 def update_progress_bar(n, **kwargs):
     with connection.cursor() as cursor:
         cursor.execute(
-            "SELECT SUM(lower_energy_con + turn_off_leave + turn_off_end + complete_all_daily) FROM achievements_daily WHERE user_id=%s",
+            "SELECT SUM(lower_energy_con + turn_off_leave + turn_off_end + "
+            "daily_presence + daily_schedule + daily_remote + complete_all_daily) "
+            "FROM achievements_daily WHERE user_id=%s",
             [kwargs['user'].id])
         daily_achievements = cursor.fetchone()[0]
         cursor.execute(
-            "SELECT SUM(cost_saving + schedule_based + complete_daily + complete_weekly) FROM achievements_weekly WHERE user_id=%s",
+            "SELECT SUM(cost_saving + schedule_based + complete_daily + complete_weekly) "
+            "FROM achievements_weekly WHERE user_id=%s",
             [kwargs['user'].id])
         weekly_achievements = cursor.fetchone()[0]
 
     max_weekly_points = 400
     points = daily_achievements + weekly_achievements
-    # remaining_points = max_weekly_points - points
     percentage = round((points / max_weekly_points) * 100)
 
     if percentage < 10:

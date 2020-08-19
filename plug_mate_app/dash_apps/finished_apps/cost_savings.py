@@ -166,9 +166,10 @@ def update_bar_chart(n1, n2, int, **kwargs):
                           marker_color='#EF476F',
                           showlegend=True,
                           )
-        layout = go.Layout(yaxis=dict(range=[min(ser) - 3, max(ser) * 1.4]))
-        if sum(dff['total']) == 0.001:
-            return positive, negative,go.Layout(yaxis=dict(range=[-1, 1]))
+        if min(ser) > 0:
+            layout = go.Layout(yaxis=dict(range=[0, max(ser) * 1.4]))
+        else:
+            layout = go.Layout(yaxis=dict(range=[min(ser) * 1.4, max(ser) * 1.4]))
         return positive, negative, layout
 
     def create_frame(discount):
@@ -181,9 +182,12 @@ def update_bar_chart(n1, n2, int, **kwargs):
     frame3 = create_frame(0.5)
     frame4 = create_frame(0.4)
     frame5 = create_frame(0.3)
-    range = [min(series) - 3, max(series) * 1.4]
-    if sum(series) == 0:
-        range = [-1,1]
+
+    if min(series) > 0:
+        range = [0, max(series) * 1.4]
+    else:
+        range = [min(series) * 1.4, max(series) * 1.4]
+
     fig = go.Figure(data=[positive_trace, negative_trace],
                     layout=go.Layout(
                         go.Layout(

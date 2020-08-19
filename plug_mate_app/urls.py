@@ -33,6 +33,8 @@ urlpatterns = [
     path('control_interface/api/achievements_weekly/<int:pk>/', views.AchievementsWeeklyDataDetail.as_view()),
     path('control_interface/api/points_wallet/', views.PointsWalletDataList.as_view()),
     path('control_interface/api/points_wallet/<int:pk>/', views.PointsWalletDataDetail.as_view()),
+    path('control_interface/api/notifications/', views.NotificationsDataList.as_view()),
+    path('control_interface/api/notifications/<int:pk>/', views.NotificationsDataDetail.as_view()),
     path('', views.plug_mate_app, name='index'),
     path('profile/', views.user_profile, name='profile'),
     path('user_login/', views.user_login, name='user_login'),

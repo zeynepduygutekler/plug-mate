@@ -42,7 +42,7 @@ class RemoteControlDashboard extends Component {
             for (var entry of data) {
                 owned_devices.push(entry.device_type)
             }
-            this.setState({books: data, key: this.state.key+1, devices: owned_devices}, function() {console.log(this.state.devices)})
+            this.setState({books: data, key: this.state.key+1, devices: owned_devices})
         })
 
         setTimeout(this.fetchData, 5000)
@@ -211,6 +211,7 @@ class RemoteControlItem extends Component {
                     bonus_data[0].first_remote = 60
                     this.handleAchievementsUpdate(bonus_data[0])
 
+                    // Add points to wallet
                     fetch('/control_interface/api/points_wallet/')
                     .then(response => response.json())
                     .then(points_data => {
@@ -218,6 +219,36 @@ class RemoteControlItem extends Component {
                             points_data[0].points = points_data[0].points + 60
                             this.handlePointsWalletUpdate(points_data[0])
                         })
+                    })
+
+                    // Send notification
+                    fetch('/control_interface/api/notifications/')
+                    .then(response => response.json())
+                    .then(notifications_data => {
+                        var number_of_notifications = notifications_data[0].notifications.notifications.length;
+                        var current_user = notifications_data[0].user_id;
+
+                        // Get the timestamp
+                        var today = new Date();
+                        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                        var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
+                        notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have earned 60 points for using the remote control for the first time.", type: "success"})
+                        fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(notifications_data[0])
+                        })
+
+                        // Update number on bell
+                        document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 1)
+
+                        // Update notifications in list
+                        document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have earned 60 points for using the remote control for the first time. </span> </div> </a>`)
+
+                        // Animate the bell
                     })
 
                 }
@@ -491,21 +522,6 @@ function Main() {
             }
         }
     });
-
-//    if (document.getElementById("DesktopToggleRemote").checked || document.getElementById("MonitorToggleRemote").checked ||
-//        document.getElementById("LaptopToggleRemote").checked || document.getElementById("TaskLampToggleRemote").checked ||
-//        document.getElementById("FanToggleRemote").checked) {
-//        window.master.setState({checked: true});
-//        document.getElementById("master").checked = true;
-//    } else {
-//        // If all plug loads are OFF, master button is automatically toggled to OFF.
-//        if (!document.getElementById("DesktopToggleRemote").checked && !document.getElementById("MonitorToggleRemote").checked &&
-//            !document.getElementById("LaptopToggleRemote").checked && !document.getElementById("TaskLampToggleRemote").checked &&
-//            !document.getElementById("FanToggleRemote").checked) {
-//            window.master.setState({checked: false});
-//            document.getElementById("master").checked = false;
-//        }
-//    }
 }
 
 // Presence Based Control
@@ -992,7 +1008,8 @@ class ScheduleControlDashboard extends Component {
         dates: [],
         chosen_day: "",
         books: [],
-        key: 1
+        key: 1,
+        devices: []
     }
 
     componentDidMount() {
@@ -1000,7 +1017,23 @@ class ScheduleControlDashboard extends Component {
         fetch('/control_interface/api/schedule/')
         .then(response => response.json())
         .then(data => {
-            this.setState({books: data})
+            var owned_devices = [];
+            if (window.remote.state.devices.includes("Desktop")) {
+                owned_devices.push({id: 1, name: "Desktop"})
+            }
+            if (window.remote.state.devices.includes("Fan")) {
+                owned_devices.push({id: 5, name: "Fan"})
+            }
+            if (window.remote.state.devices.includes("Laptop")) {
+                owned_devices.push({id: 2, name: "Laptop"})
+            }
+            if (window.remote.state.devices.includes("Monitor")) {
+                owned_devices.push({id: 3, name: "Monitor"})
+            }
+            if (window.remote.state.devices.includes("Task Lamp")) {
+                owned_devices.push({id: 4, name: "Task Lamp"})
+            }
+            this.setState({books: data, devices: owned_devices})
             var events_datas = [];
             for (var input of data) {
                 this.setState({current_user_id: input.user_id})
@@ -1156,7 +1189,23 @@ class ScheduleControlDashboard extends Component {
         fetch('/control_interface/api/schedule/')
         .then(response => response.json())
         .then(data => {
-            this.setState({books: data})
+            var owned_devices = [];
+            if (window.remote.state.devices.includes("Desktop")) {
+                owned_devices.push({id: 1, name: "Desktop"})
+            }
+            if (window.remote.state.devices.includes("Fan")) {
+                owned_devices.push({id: 5, name: "Fan"})
+            }
+            if (window.remote.state.devices.includes("Laptop")) {
+                owned_devices.push({id: 2, name: "Laptop"})
+            }
+            if (window.remote.state.devices.includes("Monitor")) {
+                owned_devices.push({id: 3, name: "Monitor"})
+            }
+            if (window.remote.state.devices.includes("Task Lamp")) {
+                owned_devices.push({id: 4, name: "Task Lamp"})
+            }
+            this.setState({books: data, devices: owned_devices})
             var events_datas = [];
             for (var input of data) {
                 this.setState({current_user_id: input.user_id})
@@ -1369,6 +1418,7 @@ class ScheduleControlDashboard extends Component {
             <Calendar
                 refetchData={this.refetchData}
                 events={this.state.events}
+                devices={this.state.devices}
                 date={this.state.dates[0]}
                 onDeleteClick={this.deleteBook}
                 onAddClick={this.createNewBook}
@@ -1402,6 +1452,7 @@ class ScheduleControlDashboard extends Component {
             <Calendar
                 refetchData={this.refetchData}
                 events={this.state.events}
+                devices={this.state.devices}
                 date={this.state.dates[1]}
                 onDeleteClick={this.deleteBook}
                 onAddClick={this.createNewBook}
@@ -1435,6 +1486,7 @@ class ScheduleControlDashboard extends Component {
             <Calendar
                 refetchData={this.refetchData}
                 events={this.state.events}
+                devices={this.state.devices}
                 date={this.state.dates[2]}
                 onDeleteClick={this.deleteBook}
                 onAddClick={this.createNewBook}
@@ -1468,6 +1520,7 @@ class ScheduleControlDashboard extends Component {
             <Calendar
                 refetchData={this.refetchData}
                 events={this.state.events}
+                devices={this.state.devices}
                 date={this.state.dates[3]}
                 onDeleteClick={this.deleteBook}
                 onAddClick={this.createNewBook}
@@ -1501,6 +1554,7 @@ class ScheduleControlDashboard extends Component {
             <Calendar
                 refetchData={this.refetchData}
                 events={this.state.events}
+                devices={this.state.devices}
                 date={this.state.dates[4]}
                 onDeleteClick={this.deleteBook}
                 onAddClick={this.createNewBook}
@@ -1534,6 +1588,7 @@ class ScheduleControlDashboard extends Component {
             <Calendar
                 refetchData={this.refetchData}
                 events={this.state.events}
+                devices={this.state.devices}
                 date={this.state.dates[5]}
                 onDeleteClick={this.deleteBook}
                 onAddClick={this.createNewBook}
@@ -1567,6 +1622,7 @@ class ScheduleControlDashboard extends Component {
             <Calendar
                 refetchData={this.refetchData}
                 events={this.state.events}
+                devices={this.state.devices}
                 date={this.state.dates[6]}
                 onDeleteClick={this.deleteBook}
                 onAddClick={this.createNewBook}
@@ -1596,6 +1652,7 @@ class ScheduleControlDashboard extends Component {
                     key={this.state.key}
                     refetchData={this.refetchData}
                     events={this.state.events}
+                    devices={this.state.devices}
                     dates={this.state.dates}
                     onDeleteClick={this.deleteBook}
                     onAddClick={this.createNewBook}
@@ -1619,6 +1676,7 @@ class ScheduleControlItem extends Component {
                 <Calendar
                     refetchData={this.props.refetchData}
                     events={this.props.events}
+                    devices={this.props.devices}
                     date={today_date}
                     onDeleteClick={this.props.onDeleteClick}
                     onAddClick={this.props.onAddClick}

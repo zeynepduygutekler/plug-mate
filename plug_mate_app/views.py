@@ -36,14 +36,19 @@ def plug_mate_app(request):
 
             # Query for user's cumulative savings from the database
             cursor.execute("SELECT cum_savings FROM achievements_bonus WHERE user_id=%s", [request.user.id])
-            cumulative_savings_kwh = round(cursor.fetchone()[0]/1000,3)
+            cumulative_savings_kwh = round(cursor.fetchone()[0] / (1000*60), 1)
             cumulative_savings_dollars = '{:,.2f}'.format(cumulative_savings_kwh * 0.201)
             cumulative_savings_trees = round(cumulative_savings_kwh * 0.201 * 0.5)
 
             # Query for user's remaining points to be claimed for the week
-            cursor.execute("SELECT SUM(lower_energy_con + turn_off_leave + turn_off_end + complete_all_daily) FROM achievements_daily WHERE user_id=%s", [request.user.id])
+            cursor.execute("SELECT SUM(lower_energy_con + turn_off_leave + turn_off_end + "
+                           "daily_presence + daily_schedule + daily_remote + complete_all_daily) FROM achievements_daily WHERE user_id=%s",
+                           [request.user.id])
             daily_achievements = cursor.fetchone()[0]
-            cursor.execute("SELECT SUM(cost_saving + schedule_based + complete_daily + complete_weekly) FROM achievements_weekly WHERE user_id=%s", [request.user.id])
+            cursor.execute(
+                "SELECT SUM(cost_saving + schedule_based + complete_daily + complete_weekly) "
+                "FROM achievements_weekly WHERE user_id=%s",
+                [request.user.id])
             weekly_achievements = cursor.fetchone()[0]
 
             # Query for the user's notifications
@@ -65,6 +70,7 @@ def plug_mate_app(request):
             'cumulative_savings_dollars': cumulative_savings_dollars,
             'cumulative_savings_trees': cumulative_savings_trees,
             'remaining_points': remaining_points,
+            'user_id': request.user.id,
             'notifications': notifications['notifications'],
             'num_notifications': len(notifications['notifications'])
         }
@@ -82,6 +88,7 @@ def control_interface(request):
             notifications = cursor.fetchone()[0]
 
         context = {
+            'user_id': request.user.id,
             'notifications': notifications['notifications'],
             'num_notifications': len(notifications['notifications'])
         }
@@ -125,6 +132,7 @@ def user_profile(request):
             rewards = pd.DataFrame(rewards, columns=[desc[0] for desc in cursor.description])['description'].tolist()
 
         context = {
+            'user_id': request.user.id,
             'notifications': notifications['notifications'],
             'num_notifications': len(notifications['notifications']),
             'rewards': rewards,
@@ -182,8 +190,10 @@ def user_login(request):
         return render(request, 'plug_mate_app/login.html', {})
 
 
-from .models import PointsWallet, PresenceData, RemoteData, ScheduleData, AchievementsBonus, AchievementsWeekly
-from .serializers import PointsWalletSerializer, PresenceSerializer, RemoteSerializer, ScheduleSerializer, AchievementsBonusSerializer, AchievementsWeeklySerializer
+from .models import PointsWallet, PresenceData, RemoteData, ScheduleData, \
+    AchievementsBonus, AchievementsWeekly, Notifications
+from .serializers import PointsWalletSerializer, PresenceSerializer, RemoteSerializer, ScheduleSerializer, \
+    AchievementsBonusSerializer, AchievementsWeeklySerializer, NotificationsSerializer
 from rest_framework import generics
 
 
@@ -280,3 +290,18 @@ class PointsWalletDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = PointsWallet.objects.all()
     serializer_class = PointsWalletSerializer
+
+class NotificationsDataList(generics.ListCreateAPIView):
+    authentication_classes = [authentication.SessionAuthentication]
+    serializer_class = NotificationsSerializer
+
+    def get_queryset(self):
+        """ This view should return the notifications for the
+        current authenticated user. """
+        user = self.request.user.id
+        return Notifications.objects.filter(user_id = user)
+
+class NotificationsDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    queryset = Notifications.objects.all()
+    serializer_class = NotificationsSerializer

@@ -2,7 +2,6 @@ import dash
 import dash_html_components as html
 import dash_core_components as dcc
 import dash_bootstrap_components as dbc
-from random import choice
 from django_plotly_dash import DjangoDash
 
 app = DjangoDash('tips',
@@ -68,7 +67,7 @@ def update_carousel(a,b,c):
         'Do you know that our system is able to detect that you have arrived at your desk and switch ON your plug loads accordingly?': '#',
         'Do you know that our system is able to detect that you have left your desk and switch OFF your plug loads accordingly?': '#',
         'Do you know that you can schedule your plug loads to be switched ON and OFF at your desired timings throughout the day using our system?': '#',
-        'You can redeem your energy points for rewards such as food vouchers!': '#',
+        'You can redeem your energy points for rewards such as food vouchers!': 'www.fb.com',
         'For every dollar of cost you\'ve saved, you earn 10 energy points': '',
         'You can earn energy points even quicker just by accomplishing tasks': '#',
     }
@@ -83,5 +82,3 @@ def update_carousel(a,b,c):
     anchor_children = 'Check out this feature here!' if href else ''
     return display_tip, anchor_children, href
 
-# if __name__ == '__main__':
-#     app.run_server(port=8000, host='127.0.0.1', debug=True)
