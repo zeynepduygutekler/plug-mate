@@ -46,7 +46,7 @@
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">
+                <span id="number_of_notifications" class="badge badge-danger badge-counter">
                     {% if user.is_authenticated %}
                         {{ num_notifications }}
                     {% else %}
@@ -55,7 +55,7 @@
                 </span>
             </a>
             <!-- Dropdown - Alerts -->
-            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+            <div id="list_of_alerts" class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
                     Alerts Center
                 </h6>
@@ -86,7 +86,7 @@
                         </div>
                     </a>
                 {% endfor %}
-                <a class="dropdown-item text-center small text-gray-500" href="#">Clear All Notifications</a>
+                <a class="dropdown-item text-center small text-gray-500" id="clear_all_notifications">Clear All Notifications</a>
             </div>
         </li>
 
@@ -130,3 +130,24 @@
 
 </nav>
 <!-- End of Topbar -->
+
+<script>
+    document.getElementById("clear_all_notifications").onclick = function() {
+        var current_user_id = {{user_id}};
+        const empty_notifications = JSON.parse('{"notifications": []}')
+        fetch('/control_interface/api/notifications/' + current_user_id.toString() + '/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, notifications: empty_notifications})
+        })
+        document.getElementById("number_of_notifications").innerHTML = "0";
+
+        var times_to_loop = {{num_notifications}} * 2
+        var i;
+        for (i = 0; i < times_to_loop; i++) {
+            document.getElementById("list_of_alerts").removeChild(document.getElementById("list_of_alerts").childNodes[2]);
+        }
+    }
+</script>

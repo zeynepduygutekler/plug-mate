@@ -65,6 +65,7 @@ def plug_mate_app(request):
             'cumulative_savings_dollars': cumulative_savings_dollars,
             'cumulative_savings_trees': cumulative_savings_trees,
             'remaining_points': remaining_points,
+            'user_id': request.user.id,
             'notifications': notifications['notifications'],
             'num_notifications': len(notifications['notifications'])
         }
@@ -82,6 +83,7 @@ def control_interface(request):
             notifications = cursor.fetchone()[0]
 
         context = {
+            'user_id': request.user.id,
             'notifications': notifications['notifications'],
             'num_notifications': len(notifications['notifications'])
         }
@@ -119,6 +121,7 @@ def user_profile(request):
             notifications = cursor.fetchone()[0]
 
         context = {
+            'user_id': request.user.id,
             'notifications': notifications['notifications'],
             'num_notifications': len(notifications['notifications'])
         }
@@ -175,8 +178,10 @@ def user_login(request):
         return render(request, 'plug_mate_app/login.html', {})
 
 
-from .models import PointsWallet, PresenceData, RemoteData, ScheduleData, AchievementsBonus, AchievementsWeekly
-from .serializers import PointsWalletSerializer, PresenceSerializer, RemoteSerializer, ScheduleSerializer, AchievementsBonusSerializer, AchievementsWeeklySerializer
+from .models import PointsWallet, PresenceData, RemoteData, ScheduleData, \
+    AchievementsBonus, AchievementsWeekly, Notifications
+from .serializers import PointsWalletSerializer, PresenceSerializer, RemoteSerializer, ScheduleSerializer, \
+    AchievementsBonusSerializer, AchievementsWeeklySerializer, NotificationsSerializer
 from rest_framework import generics
 
 
@@ -273,3 +278,18 @@ class PointsWalletDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = PointsWallet.objects.all()
     serializer_class = PointsWalletSerializer
+
+class NotificationsDataList(generics.ListCreateAPIView):
+    authentication_classes = [authentication.SessionAuthentication]
+    serializer_class = NotificationsSerializer
+
+    def get_queryset(self):
+        """ This view should return the notifications for the
+        current authenticated user. """
+        user = self.request.user.id
+        return Notifications.objects.filter(user_id = user)
+
+class NotificationsDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    queryset = Notifications.objects.all()
+    serializer_class = NotificationsSerializer
