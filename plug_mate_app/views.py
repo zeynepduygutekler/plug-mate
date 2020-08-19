@@ -118,9 +118,16 @@ def user_profile(request):
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
             notifications = cursor.fetchone()[0]
 
+            # Query for user's rewards from database
+            cursor.execute("SELECT description FROM user_log WHERE user_id=%s AND "
+                           "type='reward' ORDER BY unix_time DESC", [request.user.id])
+            rewards = cursor.fetchall()
+            rewards = pd.DataFrame(rewards, columns=[desc[0] for desc in cursor.description])['description'].tolist()
+
         context = {
             'notifications': notifications['notifications'],
-            'num_notifications': len(notifications['notifications'])
+            'num_notifications': len(notifications['notifications']),
+            'rewards': rewards,
         }
 
         return render(request, 'plug_mate_app/user_profile.html', context)

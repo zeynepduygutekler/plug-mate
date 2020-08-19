@@ -67,59 +67,41 @@
                     </div>
 
                     <div class="container">
-                        <!-- row -->
-                        <div class="row cstm-height-card">
-                            <div class="col-lg-4 col-sm-12 mb-4">
-                                <div class="card">
-                                    <img src="{% static 'Images/breadtalk.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <h5 class="card-title font-weight-bold">$5 Breadtalk Voucher</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="row">
+                            {% if rewards %}
+                                {% for reward in rewards %}
+                                    <div class="col-lg-4 col-sm-12 mb-4">
+                                        <div class="card">
+                                            {% if 'Breadtalk' in reward %}
+                                                <img src="{% static 'Images/breadtalk.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
 
-                            <div class="col-lg-4 col-sm-12 mb-4">
-                                <div class="card">
-                                    <img src="{% static 'Images/jolibee.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <h5 class="card-title font-weight-bold">$10 Jolibee Voucher</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                            {% elif 'Jolibee' in reward %}
+                                                <img src="{% static 'Images/jolibee.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
 
-                            <div class="col-lg-4 col-sm-12 mb-4">
-                                <div class="card">
-                                    <img src="{% static 'Images/mcdonalds.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <h5 class="card-title font-weight-bold">$10 McDonalds Voucher</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- row -->
+                                            {% elif 'Macdonalds' in reward %}
+                                                <img src="{% static 'Images/mcdonalds.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
 
-                        <div class="row mb-5 cstm-height-card">
-                            <div class="col-lg-4 col-sm-12 mb-4">
-                                <div class="card">
-                                    <img src="{% static 'Images/starbucks.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <h5 class="card-title font-weight-bold">$20 Starbucks Voucher</h5>
+                                            {% else %}
+                                                <img src="{% static 'Images/starbucks.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
+
+                                            {% endif %}
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <h5 class="card-title font-weight-bold">{{ reward }}</h5>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="col-md-12 align-items-center">
+                                    <p class="text-center">No Rewards Redeemed</p>
                                 </div>
-                            </div>
+                            {% endif %}
                         </div>
                     </div>
+                    <!-- /.container-fluid -->
                 </div>
-                <!-- /.container-fluid -->
-
             </div>
             <!-- End of Main Content -->
 
@@ -202,46 +184,46 @@
     }
 
     window.onload = function() {
-            if (window.innerWidth < 768) {
+        if (window.innerWidth < 768) {
+            document.getElementById("plug_mate_logo").style.height = "40px";
+            document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+        } else {
+            document.getElementById("plug_mate_logo").style.width = "100%";
+            document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
+        }
+    }
+
+    window.onresize = function () {
+        if (window.innerWidth < 768) {
+            if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
+                document.getElementById("content").style.marginLeft = "6.5rem";
+                document.getElementById("footer").style.marginLeft = "6.5rem";
+                document.getElementById("plug_mate_logo").style.width = "";
+                document.getElementById("plug_mate_logo").src = "";
                 document.getElementById("plug_mate_logo").style.height = "40px";
                 document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
             } else {
+                document.getElementById("content").style.marginLeft = "0rem";
+                document.getElementById("footer").style.marginLeft = "0rem";
+            }
+        } else {
+            if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
+                document.getElementById("content").style.marginLeft = "14rem";
+                document.getElementById("footer").style.marginLeft = "14rem";
+                document.getElementById("plug_mate_logo").style.height = "";
+                document.getElementById("plug_mate_logo").src = "";
                 document.getElementById("plug_mate_logo").style.width = "100%";
                 document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
-            }
-        }
-
-        window.onresize = function () {
-            if (window.innerWidth < 768) {
-                if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
-                    document.getElementById("content").style.marginLeft = "6.5rem";
-                    document.getElementById("footer").style.marginLeft = "6.5rem";
-                    document.getElementById("plug_mate_logo").style.width = "";
-                    document.getElementById("plug_mate_logo").src = "";
-                    document.getElementById("plug_mate_logo").style.height = "40px";
-                    document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
-                } else {
-                    document.getElementById("content").style.marginLeft = "0rem";
-                    document.getElementById("footer").style.marginLeft = "0rem";
-                }
             } else {
-                if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
-                    document.getElementById("content").style.marginLeft = "14rem";
-                    document.getElementById("footer").style.marginLeft = "14rem";
-                    document.getElementById("plug_mate_logo").style.height = "";
-                    document.getElementById("plug_mate_logo").src = "";
-                    document.getElementById("plug_mate_logo").style.width = "100%";
-                    document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
-                } else {
-                    document.getElementById("content").style.marginLeft = "6.5rem";
-                    document.getElementById("footer").style.marginLeft = "6.5rem";
-                    document.getElementById("plug_mate_logo").style.width = "";
-                    document.getElementById("plug_mate_logo").src = "";
-                    document.getElementById("plug_mate_logo").style.height = "40px";
-                    document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
-                }
+                document.getElementById("content").style.marginLeft = "6.5rem";
+                document.getElementById("footer").style.marginLeft = "6.5rem";
+                document.getElementById("plug_mate_logo").style.width = "";
+                document.getElementById("plug_mate_logo").src = "";
+                document.getElementById("plug_mate_logo").style.height = "40px";
+                document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
             }
         }
+    }
 </script>
 </body>
 
