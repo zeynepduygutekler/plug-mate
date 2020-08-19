@@ -46,6 +46,11 @@ def plug_mate_app(request):
             cursor.execute("SELECT SUM(cost_saving + schedule_based + complete_daily + complete_weekly) FROM achievements_weekly WHERE user_id=%s", [request.user.id])
             weekly_achievements = cursor.fetchone()[0]
 
+            # Query for the user's notifications
+            cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
+            notifications = cursor.fetchone()[0]
+
+
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         points_table = pd.read_csv(os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_points.csv'))
         max_weekly_points = sum(points_table[points_table['type'] == 'daily']['points']) * 5 + sum(points_table[points_table['type'] == 'weekly']['points'])
@@ -60,6 +65,8 @@ def plug_mate_app(request):
             'cumulative_savings_dollars': cumulative_savings_dollars,
             'cumulative_savings_trees': cumulative_savings_trees,
             'remaining_points': remaining_points,
+            'notifications': notifications['notifications'],
+            'num_notifications': len(notifications['notifications'])
         }
 
         return render(request, 'plug_mate_app/index.html', context)
@@ -68,7 +75,20 @@ def plug_mate_app(request):
 
 
 def control_interface(request):
-    return render(request, 'index.html')
+    if request.user.is_authenticated:
+        with connection.cursor() as cursor:
+            # Query for the user's notifications
+            cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
+            notifications = cursor.fetchone()[0]
+
+        context = {
+            'notifications': notifications['notifications'],
+            'num_notifications': len(notifications['notifications'])
+        }
+
+        return render(request, 'index.html', context)
+    else:
+        return render(request, 'plug_mate_app/login.html', {})
 
 
 def rewards(request):
@@ -77,14 +97,33 @@ def rewards(request):
         cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s', [request.user.id])
         points = cursor.fetchone()[0]
 
+        # Query for the user's notifications
+        cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
+        notifications = cursor.fetchone()[0]
+
     context = {
         'points': points,
+        'notifications': notifications['notifications'],
+        'num_notifications': len(notifications['notifications'])
     }
     return render(request, 'plug_mate_app/rewards.html', context)
 
 
 def user_profile(request):
-    return render(request, 'plug_mate_app/user_profile.html')
+    if request.user.is_authenticated:
+        with connection.cursor() as cursor:
+            # Query for the user's notifications
+            cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
+            notifications = cursor.fetchone()[0]
+
+        context = {
+            'notifications': notifications['notifications'],
+            'num_notifications': len(notifications['notifications'])
+        }
+
+        return render(request, 'plug_mate_app/user_profile.html', context)
+    else:
+        return render(request, 'plug_mate_app/login.html', {})
 
 
 @login_required
