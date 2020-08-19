@@ -85,6 +85,7 @@ def rewards(request):
 
     context = {
         'points': points,
+        'user_id': request.user.id
     }
     return render(request, 'plug_mate_app/rewards.html', context)
 
