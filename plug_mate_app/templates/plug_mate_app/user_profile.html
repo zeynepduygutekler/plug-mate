@@ -159,45 +159,7 @@
                 <div class="container-fluid">
 
                     <div class="container">
-                        {#<<<<<<< HEAD#}
-                        {#                        <div class="row">#}
-                        {#                            {% if rewards %}#}
-                        {#                                {% for reward in rewards %}#}
-                        {#                                    <div class="col-lg-4 col-sm-12 mb-4">#}
-                        {#                                        <div class="card">#}
-                        {#                                            {% if 'Breadtalk' in reward %}#}
-                        {#                                                <img src="{% static 'Images/breadtalk.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">#}
-                        {##}
-                        {#                                            {% elif 'Jolibee' in reward %}#}
-                        {#                                                <img src="{% static 'Images/jolibee.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">#}
-                        {##}
-                        {#                                            {% elif 'Macdonalds' in reward %}#}
-                        {#                                                <img src="{% static 'Images/mcdonalds.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">#}
-                        {##}
-                        {#                                            {% else %}#}
-                        {#                                                <img src="{% static 'Images/starbucks.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">#}
-                        {##}
-                        {#                                            {% endif %}#}
-                        {#                                            <div class="card-body">#}
-                        {#                                                <div class="row">#}
-                        {#                                                    <h5 class="card-title font-weight-bold">{{ reward }}</h5>#}
-                        {#                                                </div>#}
-                        {#                                            </div>#}
-                        {#                                        </div>#}
-                        {#                                    </div>#}
-                        {#                                {% endfor %}#}
-                        {#                            {% else %}#}
-                        {#                                <div class="col-md-12 align-items-center">#}
-                        {#                                    <p class="text-center">No Rewards Redeemed</p>#}
-                        {#                                </div>#}
-                        {#                            {% endif %}#}
-                        {#                        </div>#}
-                        {#                    </div>#}
-                        {#                    <!-- /.container-fluid -->#}
-                        {#                </div>#}
-                        {#            </div>#}
-                        {#            <!-- End of Main Content -->#}
-                        {#=======#}
+
                         <!-- row -->
                         <div class="row cstm-height-card">
                             <div class="container emp-profile">
@@ -326,6 +288,38 @@
                                                         </div>
                                                     </div>
                                                     <h4>Rewards redeemed</h4>
+                                                    <div class="row">
+                                                        {% if rewards %}
+                                                            {% for reward in rewards %}
+                                                                <div class="col-lg-4 col-sm-12 mb-4">
+                                                                    <div class="card">
+                                                                        {% if 'Breadtalk' in reward %}
+                                                                            <img src="{% static 'Images/breadtalk.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
+
+                                                                        {% elif 'Jolibee' in reward %}
+                                                                            <img src="{% static 'Images/jolibee.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
+
+                                                                        {% elif 'Macdonalds' in reward %}
+                                                                            <img src="{% static 'Images/mcdonalds.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
+
+                                                                        {% else %}
+                                                                            <img src="{% static 'Images/starbucks.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
+
+                                                                        {% endif %}
+                                                                        <div class="card-body">
+                                                                            <div class="row">
+                                                                                <h5 class="card-title font-weight-bold">{{ reward }}</h5>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <div class="col-md-12 align-items-center">
+                                                                <p class="text-center">No Rewards Redeemed</p>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
                                                 </div>
                                                 <div class="tab-pane fade" id="statistics" role="tabpanel"
                                                      aria-labelledby="profile-tab">
@@ -382,141 +376,144 @@
                                 </form>
                             </div>
                         </div>
-                        <!-- /.container-fluid -->
-
+                        </form>
                     </div>
-                    <!-- End of Main Content -->
-                    {#>>>>>>> 08c543615f429579ab7a73099e95c1a00c1fa9ef#}
-
-                    <!-- Footer -->
-                    {% include 'partials/_footer.html' %}
-                    <!-- End of Footer -->
-
                 </div>
-                <!-- End of Content Wrapper -->
+                <!-- /.container-fluid -->
 
             </div>
-            <!-- End of Page Wrapper -->
+            <!-- End of Main Content -->
+            {#>>>>>>> 08c543615f429579ab7a73099e95c1a00c1fa9ef#}
 
-            <!-- Scroll to Top Button-->
-            <a class="scroll-to-top rounded" href="#page-top">
-                <i class="fas fa-angle-up"></i>
-            </a>
+            <!-- Footer -->
+            {% include 'partials/_footer.html' %}
+            <!-- End of Footer -->
 
-            <!-- Logout Modal-->
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">Select "Logout" below if you are ready to end your current session.
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                            <a class="btn btn-primary" href="{% url 'plug_mate_app:user_login' %}">Logout</a>
-                        </div>
-                    </div>
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="{% url 'plug_mate_app:user_login' %}">Logout</a>
                 </div>
             </div>
         </div>
-
-
-        <!-- Bootstrap core JavaScript-->
-        <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-        <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
-        <!-- Core plugin JavaScript-->
-        <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
-
-        <!-- Custom scripts for all pages-->
-        <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
-        <script>
-            document.getElementById("sidebarToggle").onclick = function() {
-                if (document.getElementsByClassName("sidebar")[0].classList.contains("toggled")) {
-                    document.getElementById("content").style.marginLeft = "6.5rem";
-                    document.getElementById("footer").style.marginLeft = "6.5rem";
-                    document.getElementById("plug_mate_logo").style.width = "";
-                    document.getElementById("plug_mate_logo").src = "";
-                    document.getElementById("plug_mate_logo").style.height = "40px";
-                    document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
-                } else {
-                    document.getElementById("content").style.marginLeft = "14rem";
-                    document.getElementById("footer").style.marginLeft = "14rem";
-                    document.getElementById("plug_mate_logo").style.height = "";
-                    document.getElementById("plug_mate_logo").src = "";
-                    document.getElementById("plug_mate_logo").style.width = "100%";
-                    document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
-                }
-            }
-
-            document.getElementById("sidebarToggleTop").onclick = function() {
-                if (document.getElementsByClassName("sidebar")[0].classList.contains("toggled")) {
-                    document.getElementById("content").style.marginLeft = "0";
-                    document.getElementById("footer").style.marginLeft = "0";
-                } else {
-                    document.getElementById("content").style.marginLeft = "6.5rem";
-                    document.getElementById("footer").style.marginLeft = "6.5rem";
-                    document.getElementById("plug_mate_logo").style.width = "";
-                    document.getElementById("plug_mate_logo").src = "";
-                    document.getElementById("plug_mate_logo").style.height = "40px";
-                    document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
-                }
-            }
-
-            window.onload = function() {
-                if (window.innerWidth < 768) {
-                    document.getElementById("plug_mate_logo").style.height = "40px";
-                    document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
-                } else {
-                    document.getElementById("plug_mate_logo").style.width = "100%";
-                    document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
-                }
-            }
-
-            window.onresize = function () {
-                if (window.innerWidth < 768) {
-                    if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
-                        document.getElementById("content").style.marginLeft = "6.5rem";
-                        document.getElementById("footer").style.marginLeft = "6.5rem";
-                        document.getElementById("plug_mate_logo").style.width = "";
-                        document.getElementById("plug_mate_logo").src = "";
-                        document.getElementById("plug_mate_logo").style.height = "40px";
-                        document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
-                    } else {
-                        document.getElementById("content").style.marginLeft = "0rem";
-                        document.getElementById("footer").style.marginLeft = "0rem";
-                    }
-                } else {
-                    if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
-                        document.getElementById("content").style.marginLeft = "14rem";
-                        document.getElementById("footer").style.marginLeft = "14rem";
-                        document.getElementById("plug_mate_logo").style.height = "";
-                        document.getElementById("plug_mate_logo").src = "";
-                        document.getElementById("plug_mate_logo").style.width = "100%";
-                        document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
-                    } else {
-                        document.getElementById("content").style.marginLeft = "6.5rem";
-                        document.getElementById("footer").style.marginLeft = "6.5rem";
-                        document.getElementById("plug_mate_logo").style.width = "";
-                        document.getElementById("plug_mate_logo").src = "";
-                        document.getElementById("plug_mate_logo").style.height = "40px";
-                        document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
-                    }
-                }
-                {#<<<<<<< HEAD#}
-            }
-        </script>
-        {#=======#}
-        {##}
-        {##}
-        {#        </script>#}
-        {#>>>>>>> 08c543615f429579ab7a73099e95c1a00c1fa9ef#}
     </div>
+</div>
+
+
+<!-- Bootstrap core JavaScript-->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+<script>
+    document.getElementById("sidebarToggle").onclick = function() {
+        if (document.getElementsByClassName("sidebar")[0].classList.contains("toggled")) {
+            document.getElementById("content").style.marginLeft = "6.5rem";
+            document.getElementById("footer").style.marginLeft = "6.5rem";
+            document.getElementById("plug_mate_logo").style.width = "";
+            document.getElementById("plug_mate_logo").src = "";
+            document.getElementById("plug_mate_logo").style.height = "40px";
+            document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+        } else {
+            document.getElementById("content").style.marginLeft = "14rem";
+            document.getElementById("footer").style.marginLeft = "14rem";
+            document.getElementById("plug_mate_logo").style.height = "";
+            document.getElementById("plug_mate_logo").src = "";
+            document.getElementById("plug_mate_logo").style.width = "100%";
+            document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
+        }
+    }
+
+    document.getElementById("sidebarToggleTop").onclick = function() {
+        if (document.getElementsByClassName("sidebar")[0].classList.contains("toggled")) {
+            document.getElementById("content").style.marginLeft = "0";
+            document.getElementById("footer").style.marginLeft = "0";
+        } else {
+            document.getElementById("content").style.marginLeft = "6.5rem";
+            document.getElementById("footer").style.marginLeft = "6.5rem";
+            document.getElementById("plug_mate_logo").style.width = "";
+            document.getElementById("plug_mate_logo").src = "";
+            document.getElementById("plug_mate_logo").style.height = "40px";
+            document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+        }
+    }
+
+    window.onload = function() {
+        if (window.innerWidth < 768) {
+            document.getElementById("plug_mate_logo").style.height = "40px";
+            document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+        } else {
+            document.getElementById("plug_mate_logo").style.width = "100%";
+            document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
+        }
+    }
+
+    window.onresize = function () {
+        if (window.innerWidth < 768) {
+            if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
+                document.getElementById("content").style.marginLeft = "6.5rem";
+                document.getElementById("footer").style.marginLeft = "6.5rem";
+                document.getElementById("plug_mate_logo").style.width = "";
+                document.getElementById("plug_mate_logo").src = "";
+                document.getElementById("plug_mate_logo").style.height = "40px";
+                document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+            } else {
+                document.getElementById("content").style.marginLeft = "0rem";
+                document.getElementById("footer").style.marginLeft = "0rem";
+            }
+        } else {
+            if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
+                document.getElementById("content").style.marginLeft = "14rem";
+                document.getElementById("footer").style.marginLeft = "14rem";
+                document.getElementById("plug_mate_logo").style.height = "";
+                document.getElementById("plug_mate_logo").src = "";
+                document.getElementById("plug_mate_logo").style.width = "100%";
+                document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
+            } else {
+                document.getElementById("content").style.marginLeft = "6.5rem";
+                document.getElementById("footer").style.marginLeft = "6.5rem";
+                document.getElementById("plug_mate_logo").style.width = "";
+                document.getElementById("plug_mate_logo").src = "";
+                document.getElementById("plug_mate_logo").style.height = "40px";
+                document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+            }
+        }
+        {#<<<<<<< HEAD#}
+    }
+</script>
+{#=======#}
+{##}
+{##}
+{#        </script>#}
+{#>>>>>>> 08c543615f429579ab7a73099e95c1a00c1fa9ef#}
+</div>
 </div>
 </body>
 
