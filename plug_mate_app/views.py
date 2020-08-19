@@ -104,8 +104,10 @@ def rewards(request):
     context = {
         'points': points,
         'notifications': notifications['notifications'],
-        'num_notifications': len(notifications['notifications'])
+        'num_notifications': len(notifications['notifications']),
+        'user_id': request.user.id,
     }
+
     return render(request, 'plug_mate_app/rewards.html', context)
 
 
