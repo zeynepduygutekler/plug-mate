@@ -221,6 +221,18 @@ class RemoteControlItem extends Component {
                         })
                     })
 
+                    // Add achievement to user log
+                    var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                    const csrftoken = getCookie('csrftoken');
+                    fetch('/control_interface/api/user_log/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrftoken
+                        },
+                        body: JSON.stringify({user_id: bonus_data[0].user_id, type: "achievement", unix_time: now_unix_time, description: "first_remote"})
+                    })
+
                     // Send notification
                     fetch('/control_interface/api/notifications/')
                     .then(response => response.json())
@@ -228,12 +240,12 @@ class RemoteControlItem extends Component {
                         var number_of_notifications = notifications_data[0].notifications.notifications.length;
                         var current_user = notifications_data[0].user_id;
 
-                        // Get the timestamp
+                        // Update notifications table in database
                         var today = new Date();
                         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                         var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
-                        notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have earned 60 points for using the remote control for the first time.", type: "success"})
+                        notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You've been awarded 60 points for trying out our remote control feature for the first time.", type: "success"})
                         fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                             method: 'PUT',
                             headers: {
@@ -704,6 +716,18 @@ class PresenceControlItem extends Component {
                             points_data[0].points = points_data[0].points + 70
                             this.handlePointsWalletUpdate(points_data[0])
                         })
+                    })
+
+                    // Add achievement to user log
+                    var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                    const csrftoken = getCookie('csrftoken');
+                    fetch('/control_interface/api/user_log/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrftoken
+                        },
+                        body: JSON.stringify({user_id: bonus_data[0].user_id, type: "achievement", unix_time: now_unix_time, description: "first_presence"})
                     })
 
                     // Send notification

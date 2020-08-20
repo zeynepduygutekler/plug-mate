@@ -9,6 +9,21 @@ import ConflictAlert from './ConflictAlert';
 import ScheduleControlPopup from './ScheduleControlPopup';
 import './index.css';
 
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length+1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length+1));
+                break;
+            }
+        }
+    }
+    return cookieValue
+}
+
 function from24to12(hour) {
     var new_hour = Number(hour.substring(0,2));
     var am_or_pm = new_hour >= 12 ? "PM" : "AM";
@@ -360,50 +375,6 @@ class Calendar extends Component {
         this.updatePointsWalletBooks(book);
     }
 
-//    updateScheduleAchievements = () => {
-//        fetch('/control_interface/api/achievements_weekly/')
-//        .then(response => response.json())
-//        .then(weekly_data => {
-//            this.setState({weekly_achievements_books: weekly_data}, function() {
-//                if (weekly_data[0].schedule_based === 0) {
-//                    // Weekly schedule achievement completed
-//                    weekly_data[0].schedule_based = 20;
-//                    this.handleWeeklyAchievementsUpdate(weekly_data[0])
-//
-//                    fetch('/control_interface/api/achievements_bonus/')
-//                    .then(response => response.json())
-//                    .then(bonus_data => {
-//                        this.setState({achievements_books: bonus_data}, function() {
-//                            if (bonus_data[0].first_schedule === 0) {
-//                                // First schedule achievement completed
-//                                bonus_data[0].first_schedule = 70
-//                                this.handleAchievementsUpdate(bonus_data[0])
-//
-//                                fetch('/control_interface/api/points_wallet/')
-//                                .then(response => response.json())
-//                                .then(points_data => {
-//                                    this.setState({points_wallet_books: points_data}, function() {
-//                                        points_data[0].points = points_data[0].points + 90
-//                                        this.handlePointsWalletUpdate(points_data[0])
-//                                    })
-//                                })
-//                            } else {
-//                                fetch('/control_interface/api/points_wallet/')
-//                                .then(response => response.json())
-//                                .then(points_data => {
-//                                    this.setState({points_wallet_books: points_data}, function() {
-//                                        points_data[0].points = points_data[0].points + 20
-//                                        this.handlePointsWalletUpdate(points_data[0])
-//                                    })
-//                                })
-//                            }
-//                        })
-//                    })
-//                }
-//            })
-//        })
-//    }
-
     updateScheduleAchievements = () => {
         fetch('/control_interface/api/achievements_bonus/')
         .then(response => response.json())
@@ -421,6 +392,18 @@ class Calendar extends Component {
                             points_data[0].points = points_data[0].points + 70
                             this.handlePointsWalletUpdate(points_data[0])
                         })
+                    })
+
+                    // Add achievement to user log
+                    var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                    const csrftoken = getCookie('csrftoken');
+                    fetch('/control_interface/api/user_log/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': csrftoken
+                        },
+                        body: JSON.stringify({user_id: bonus_data[0].user_id, type: "achievement", unix_time: now_unix_time, description: "first_schedule"})
                     })
 
                     // Send notification
