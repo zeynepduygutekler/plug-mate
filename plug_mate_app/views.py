@@ -210,9 +210,11 @@ def user_login(request):
 
 
 from .models import PointsWallet, PresenceData, RemoteData, ScheduleData, \
-    AchievementsBonus, AchievementsWeekly, Notifications
+    AchievementsBonus, AchievementsWeekly, AchievementsDaily, \
+    Notifications, UserLog, Presence
 from .serializers import PointsWalletSerializer, PresenceSerializer, RemoteSerializer, ScheduleSerializer, \
-    AchievementsBonusSerializer, AchievementsWeeklySerializer, NotificationsSerializer
+    AchievementsBonusSerializer, AchievementsWeeklySerializer, AchievementsDailySerializer, \
+    NotificationsSerializer, UserLogSerializer, UserPresenceSerializer
 from rest_framework import generics
 
 
@@ -295,6 +297,21 @@ class AchievementsWeeklyDataDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = AchievementsWeekly.objects.all()
     serializer_class = AchievementsWeeklySerializer
 
+class AchievementsDailyDataList(generics.ListCreateAPIView):
+    authentication_classes = [authentication.SessionAuthentication]
+    serializer_class = AchievementsDailySerializer
+
+    def get_queryset(self):
+        """ This view should return a list of all the weekly
+        achievements for the current authenticated user. """
+        user = self.request.user.id
+        return AchievementsDaily.objects.filter(user_id = user)
+
+class AchievementsDailyDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    queryset = AchievementsDaily.objects.all()
+    serializer_class = AchievementsDailySerializer
+
 class PointsWalletDataList(generics.ListCreateAPIView):
     authentication_classes = [authentication.SessionAuthentication]
     serializer_class = PointsWalletSerializer
@@ -324,3 +341,28 @@ class NotificationsDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = Notifications.objects.all()
     serializer_class = NotificationsSerializer
+
+class UserLogDataList(generics.ListCreateAPIView):
+    authentication_classes = [authentication.SessionAuthentication]
+    serializer_class = UserLogSerializer
+
+    def get_queryset(self):
+        """ This view should return the user log for the
+        current authenticated user. """
+        user = self.request.user.id
+        return UserLog.objects.filter(user_id = user)[:1]
+
+class UserLogDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    queryset = UserLog.objects.all()
+    serializer_class = UserLogSerializer
+
+class UserPresenceDataList(generics.ListCreateAPIView):
+    authentication_classes = [authentication.SessionAuthentication]
+    serializer_class = UserPresenceSerializer
+
+    def get_queryset(self):
+        """ This view should return the latest presence of
+        the current authenticated user. """
+        user = self.request.user.id
+        return Presence.objects.filter(user_id = user).order_by('-id')[:1]

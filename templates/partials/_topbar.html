@@ -44,7 +44,7 @@
         <!-- Nav Item - Alerts -->
         <li class="nav-item dropdown no-arrow mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell fa-fw"></i>
+                <i id="bell_icon" class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
                 <span id="number_of_notifications" class="badge badge-danger badge-counter">
                     {% if user.is_authenticated %}
@@ -141,5 +141,12 @@
         for (i = 0; i < times_to_loop; i++) {
             document.getElementById("list_of_alerts").removeChild(document.getElementById("list_of_alerts").childNodes[2]);
         }
+    }
+
+    document.getElementById("bell_icon").addEventListener("click", stopAnimation);
+
+    function stopAnimation() {
+        // Stop animation on bell
+        document.getElementById("bell_icon").style.animationIterationCount = 0;
     }
 </script>
