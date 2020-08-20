@@ -4,662 +4,647 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <title>PLUG-MATE</title>
+    <title>PLUG-MATE</title>
 
-  <!-- Custom fonts for this template-->
-  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-  rel="stylesheet">
-
-
-  <!-- Custom styles for this template-->
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
-
-  <style>
-  @media (min-width: 768px) {
-    #content, #footer {
-      margin-left: 14rem;
-    }
-  }
-  @media (max-width: 768px) {
-    #content, #footer {
-      margin-left: 6.5rem;
-    }
-  }
-
-  #bell_icon {
-    animation: bell 1.5s ease-out;
-    transform-origin: center top;
-    animation-iteration-count: 0;
-  }
-
-  @keyframes bell {
-    0% {transform: rotate(35deg);}
-    12.5% {transform: rotate(-30deg);}
-    25% {transform: rotate(25deg);}
-    37.5% {transform: rotate(-20deg);}
-    50% {transform: rotate(15deg);}
-    62.5% {transform: rotate(-10deg);}
-    75% {transform: rotate(5deg);}
-    100% {transform: rotate(0);}
-  }
-
-  body{
-    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
-  }
-  .emp-profile{
-    padding: 3%;
-    margin-top: 3%;
-    margin-bottom: 3%;
-    border-radius: 0.5rem;
-    background: #fff;
-  }
-  .profile-img{
-    text-align: center;
-  }
-  .profile-img img{
-    width: 70%;
-    height: 100%;
-  }
-  .profile-img .file {
-    position: relative;
-    overflow: hidden;
-    margin-top: -20%;
-    width: 70%;
-    border: none;
-    border-radius: 0;
-    font-size: 15px;
-    background: #212529b8;
-  }
-  .profile-img .file input {
-    position: absolute;
-    opacity: 0;
-    right: 0;
-    top: 0;
-  }
-  .profile-head h5{
-    color: #333;
-  }
-  .profile-head h6{
-    color: #0062cc;
-  }
-  .profile-edit-btn{
-    border: none;
-    border-radius: 1.5rem;
-    width: 70%;
-    padding: 2%;
-    font-weight: 600;
-    color: #6c757d;
-    cursor: pointer;
-  }
-  .proile-rating{
-    font-size: 12px;
-    color: #818182;
-    margin-top: 5%;
-  }
-  .proile-rating span{
-    color: #495057;
-    font-size: 15px;
-    font-weight: 600;
-  }
-  .profile-head .nav-tabs{
-    margin-bottom:5%;
-  }
-  .profile-head .nav-tabs .nav-link{
-    font-weight:600;
-    border: none;
-  }
-  .profile-head .nav-tabs .nav-link.active{
-    border: none;
-    border-bottom:2px solid #0062cc;
-  }
-  .profile-work{
-    padding: 14%;
-    margin-top: -15%;
-  }
-  .profile-work p{
-    font-size: 12px;
-    color: #818182;
-    font-weight: 600;
-    margin-top: 10%;
-  }
-  .profile-work a{
-    text-decoration: none;
-    color: #495057;
-    font-weight: 600;
-    font-size: 14px;
-  }
-  .profile-work ul{
-    list-style: none;
-  }
-  .profile-tab label{
-    font-weight: 600;
-  }
-  .profile-tab p{
-    font-weight: 600;
-    color: #0062cc;
-  }
-  #donut {
-    width: 500px;
-    max-height: 300px;
-    margin: 35px auto;
-  }
-  #line {
-    width: 550px;
-    max-height: 300px;
-    margin: 35px auto;
-  }
-  .hovertext{
-    /* position: relative;
-    width: 500px;
-    height: 200px;
-    float: left;
-    margin-right: 10px; */
-  }
-
-  /* Child Text Container */
-  .hovertext p{
-    position: fixed;
-    top: 80px;
-    padding: 8px 15px;
-    background: black;
-    color: white;
-    opacity: 0; */
-    visibility: hidden;
-    -webkit-transition: visibility 0s, opacity 0.5s linear;
-    transition: visibility 0s, opacity 0.5s linear;
-  }
-
-  Hover on Parent Container
-  .hovertext:hover{
-    cursor: pointer;
-  }
-
-  .hovertext:hover p{
-    padding: 8px 15px;
-    visibility: visible;
-    opacity: 0.7;
-  }
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
 
 
-  </style>
+    <!-- Custom styles for this template-->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+    <style>
+        @media (min-width: 768px) {
+            #content, #footer {
+                margin-left: 14rem;
+            }
+        }
+        @media (max-width: 768px) {
+            #content, #footer {
+                margin-left: 6.5rem;
+            }
+        }
+
+        #bell_icon {
+            animation: bell 1.5s ease-out;
+            transform-origin: center top;
+            animation-iteration-count: 0;
+        }
+
+        @keyframes bell {
+            0% {transform: rotate(35deg);}
+            12.5% {transform: rotate(-30deg);}
+            25% {transform: rotate(25deg);}
+            37.5% {transform: rotate(-20deg);}
+            50% {transform: rotate(15deg);}
+            62.5% {transform: rotate(-10deg);}
+            75% {transform: rotate(5deg);}
+            100% {transform: rotate(0);}
+        }
+
+        body{
+            background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+        }
+        .emp-profile{
+            padding: 3%;
+            margin-top: 3%;
+            margin-bottom: 3%;
+            border-radius: 0.5rem;
+            background: #fff;
+        }
+        .profile-img{
+            text-align: center;
+        }
+        .profile-img img{
+            width: 70%;
+            height: 100%;
+        }
+        .profile-img .file {
+            position: relative;
+            overflow: hidden;
+            margin-top: -20%;
+            width: 70%;
+            border: none;
+            border-radius: 0;
+            font-size: 15px;
+            background: #212529b8;
+        }
+        .profile-img .file input {
+            position: absolute;
+            opacity: 0;
+            right: 0;
+            top: 0;
+        }
+        .profile-head h5{
+            color: #333;
+        }
+        .profile-head h6{
+            color: #0062cc;
+        }
+        .profile-edit-btn{
+            border: none;
+            border-radius: 1.5rem;
+            width: 70%;
+            padding: 2%;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+        }
+        .proile-rating{
+            font-size: 12px;
+            color: #818182;
+            margin-top: 5%;
+        }
+        .proile-rating span{
+            color: #495057;
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .profile-head .nav-tabs{
+            margin-bottom:5%;
+        }
+        .profile-head .nav-tabs .nav-link{
+            font-weight:600;
+            border: none;
+        }
+        .profile-head .nav-tabs .nav-link.active{
+            border: none;
+            border-bottom:2px solid #0062cc;
+        }
+        .profile-work{
+            padding: 14%;
+            margin-top: -15%;
+        }
+        .profile-work p{
+            font-size: 12px;
+            color: #818182;
+            font-weight: 600;
+            margin-top: 10%;
+        }
+        .profile-work a{
+            text-decoration: none;
+            color: #495057;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .profile-work ul{
+            list-style: none;
+        }
+        .profile-tab label{
+            font-weight: 600;
+        }
+        .profile-tab p{
+            font-weight: 600;
+            color: #0062cc;
+        }
+        #donut {
+            width: 500px;
+            max-height: 300px;
+            margin: 35px auto;
+        }
+        #line {
+            width: 550px;
+            max-height: 300px;
+            margin: 35px auto;
+        }
+        .hovertext{
+            /* position: relative;
+            width: 500px;
+            height: 200px;
+            float: left;
+            margin-right: 10px; */
+        }
+
+        /* Child Text Container */
+        .hovertext p{
+            position: fixed;
+            top: 80px;
+            padding: 8px 15px;
+            background: black;
+            color: white;
+            opacity: 0; */
+        visibility: hidden;
+            -webkit-transition: visibility 0s, opacity 0.5s linear;
+            transition: visibility 0s, opacity 0.5s linear;
+        }
+
+        Hover on Parent Container
+        .hovertext:hover{
+            cursor: pointer;
+        }
+
+        .hovertext:hover p{
+            padding: 8px 15px;
+            visibility: visible;
+            opacity: 0.7;
+        }
+
+
+    </style>
 </head>
 <body>
 
-  <div id="page-top">
+<div id="page-top">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-      <!-- Sidebar -->
-      {% include 'partials/_sidebar_rewards.html' %}
-      <!-- End of Sidebar -->
+        <!-- Sidebar -->
+        {% include 'partials/_sidebar_rewards.html' %}
+        <!-- End of Sidebar -->
 
-      <!-- Content Wrapper -->
-      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
 
-        <!-- Main Content -->
-        <div id="content">
+            <!-- Main Content -->
+            <div id="content">
 
-          <!-- Topbar -->
-          {% include 'partials/_topbar.html' %}
-          <!-- End of Topbar -->
+                <!-- Topbar -->
+                {% include 'partials/_topbar.html' %}
+                <!-- End of Topbar -->
 
-          <!-- Begin Page Content -->
-          <div class="container-fluid">
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
 
-            <div class="container">
+                    <div class="container">
 
-              <!-- row -->
-              <div class="row cstm-height-card">
-                <div class="container emp-profile">
-                  <form method="post">
-                    <div class="row">
-                      <div class="col-md-4">
-                        <div class="profile-img">
-                          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog"
-                          alt=""/>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="profile-head">
-                          <div class="container">
-                            <div class="row">
-                              <div class="col">
-                                <h5>
-                                  Raymond Low
-                                </h5>
-                                <h6>
-                                  PhD student, SUTD
-                                </h6>
-                                <p class="proile-rating">PROFILE TYPE : <span>HUSTLER</span></p>
-                              </div>
-                              <div class="col">
-                                <div class="row hovertext">
-                                  <div class="col">
-                                    <img src="https://image.flaticon.com/icons/svg/3286/3286414.svg" style="max-width:100%;max-height:100%">
-                                  </div>
-                                  <div class="col">
-                                    <p>
-                                      Hustlers are always quick to produce work, churning out projects after projects. ‘Office hours’ are a foreign concept to them and they are often hurrying from one meeting to another. They are the worker bees of the company, driving progress and making effective change.
-                                    </p>
-                                  </div>
+                        <!-- row -->
+                        <div class="row cstm-height-card">
+                            <div class="container emp-profile">
+                                <form method="post">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="profile-img">
+                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog"
+                                                     alt=""/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="profile-head">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h5>
+                                                                {{ user.first_name }} {{ user.last_name }}
+                                                            </h5>
+                                                            <h6>
+                                                                {{ user_profile.occupation }}, SUTD
+                                                            </h6>
+                                                            <p class="proile-rating">PROFILE TYPE : <span>{{ user_profile.profile }}</span></p>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="row hovertext">
+                                                                <div class="col">
+                                                                    <img src="https://image.flaticon.com/icons/svg/3286/3286414.svg" style="max-width:100%;max-height:100%">
+                                                                </div>
+                                                                <div class="col">
+                                                                    <p>
+                                                                        Hustlers are always quick to produce work, churning out projects after projects. ‘Office hours’ are a foreign concept to them and they are often hurrying from one meeting to another. They are the worker bees of the company, driving progress and making effective change.
+                                                                    </p>
+                                                                </div>
 
-                                </div>
+                                                            </div>
 
-                              </div>
+                                                        </div>
 
 
+                                                    </div>
+                                                </div>
+                                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" id="home-tab" data-toggle="tab"
+                                                           href="#statistics"
+                                                           role="tab" aria-controls="home"
+                                                           aria-selected="true">Statistics</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" id="achievements-tab" data-toggle="tab"
+                                                           href="#rewards"
+                                                           role="tab" aria-controls="profile" aria-selected="false">Rewards</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" id="stats-tab" data-toggle="tab"
+                                                           href="#achievements"
+                                                           role="tab" aria-controls="profile" aria-selected="false">Achievements</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="profile-work">
+                                                <div class="row">
+                                                        <div class="col-md-5">
+                                                            <label>User ID</label>
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <label>{{ user }}</label>
+                                                        </div>
+                                                    </div>
+                                                <div class="row">
+                                                        <div class="col-md-5">
+                                                            <label>Gender</label>
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <label>{{ user_profile.gender }}</label>
+                                                        </div>
+                                                    </div>
+                                                <div class="row">
+                                                        <div class="col-md-5">
+                                                            <label>Birthday</label>
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <label>{{ user_profile.birthday }}</label>
+                                                        </div>
+                                                    </div>
+                                                <div class="row">
+                                                        <div class="col-md-5">
+                                                            <label>Email</label>
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <label>{{ user_profile.email }}</label>
+                                                        </div>
+                                                    </div>
+                                                <div class="row">
+                                                        <div class="col-md-5">
+                                                            <label>Phone</label>
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <label>{{ user_profile.contact }}</label>
+                                                        </div>
+                                                    </div>
+                                                <div class="row">
+                                                        <div class="col-md-5">
+                                                            <label>Desk Location</label>
+                                                        </div>
+                                                        <div class="col-md-7">
+                                                            <label>{{ user_profile.room }}</label>
+                                                        </div>
+                                                    </div>
+{#                                                <h5>About Plug-mate</h5>#}
+{#                                                <p style="text-align:justify;font-size:0.9rem">#}
+{#                                                    Plug-mate is an automated plug load management system that can help#}
+{#                                                    to reduce your energy consumption using advanced sensing and#}
+{#                                                    control technologies. It allows you to monitor each of your devices’#}
+{#                                                    energy consumption separately and control your operations in#}
+{#                                                    an intuitive manner.#}
+{#                                                </p>#}
+{#                                                <p style="text-align:justify;font-size:0.9rem">#}
+{#                                                    Plug-mate is developed by two PhD student researchers and three Undergraduate students in the#}
+{#                                                    Singapore University of Technology and Design, who have a passion in#}
+{#                                                    reducing energy usages and stopping the effects of climate change.#}
+{#                                                </p>#}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="tab-content achievements-tab" id="myTabContent">
+                                                <div class="tab-pane fade show active" id="statistics" role="tabpanel"
+                                                     aria-labelledby="home-tab">
+                                                    <h5>Who turned off your plug loads</h5>
+                                                    <div id="donut"></div>
+                                                    <h5>Your whereabouts</h5>
+                                                    <div id='line'></div>
+                                                </div>
+
+                                                <div class="tab-pane fade" id="rewards" role="tabpanel"
+                                                     aria-labelledby="profile-tab">
+                                                    <h4>Rewards redeemed</h4>
+                                                    <div class="row">
+                                                        {% if rewards %}
+                                                            {% for reward in rewards %}
+                                                                <div class="col-lg-4 col-sm-12 mb-4">
+                                                                    <div class="card h-100">
+                                                                        {% if 'Breadtalk' in reward %}
+                                                                            <img src="{% static 'Images/breadtalk.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
+
+                                                                        {% elif 'Jolibee' in reward %}
+                                                                            <img src="{% static 'Images/jolibee.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
+
+                                                                        {% elif 'McDonalds' in reward %}
+                                                                            <img src="{% static 'Images/mcdonalds.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
+
+                                                                        {% else %}
+                                                                            <img src="{% static 'Images/starbucks.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
+
+                                                                        {% endif %}
+                                                                        <div class="card-body">
+                                                                            <div class="row">
+                                                                                <h5 class="card-title font-weight-bold">{{ reward }}</h5>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <div class="col-md-12 align-items-center">
+                                                                <p class="text-left">No Rewards Redeemed</p>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane fade" id="achievements" role="tabpanel"
+                                                     aria-labelledby="profile-tab">
+                                                    <h4>Achievements</h4>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label>Experience</label>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <p>Expedddrt</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                          </div>
-                          <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item">
-                              <a class="nav-link active" id="home-tab" data-toggle="tab"
-                              href="#home"
-                              role="tab" aria-controls="home"
-                              aria-selected="true">Profile</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link" id="achievements-tab" data-toggle="tab"
-                              href="#history"
-                              role="tab" aria-controls="profile" aria-selected="false">History</a>
-                            </li>
-                            <li class="nav-item">
-                              <a class="nav-link" id="stats-tab" data-toggle="tab"
-                              href="#statistics"
-                              role="tab" aria-controls="profile" aria-selected="false">Statistics</a>
-                            </li>
-                          </ul>
                         </div>
-                      </div>
-                      <div class="col-md-2">
-                      </div>
+                        </form>
                     </div>
-                    <div class="row">
-                      <div class="col-md-4">
-                        <div class="profile-work">
-                          <h5>About Plug-mate</h5>
-                          <p style="text-align:justify;font-size:0.9rem">
-                            Plug-mate is an automated plug load management system that can help
-                            to reduce your energy consumption using advanced sensing and
-                            control technologies. It allows you to monitor each of your devices’
-                            energy consumption separately and control your operations in
-                            an intuitive manner.
-                          </p>
-                          <p style="text-align:justify;font-size:0.9rem">
-                            Plug-mate is developed by two PhD student researchers and three Undergraduate students in the
-                            Singapore University of Technology and Design, who have a passion in
-                            reducing energy usages and stopping the effects of climate change.
-                          </p>
-                        </div>
-                      </div>
-                      <div class="col-md-8">
-                        <div class="tab-content achievements-tab" id="myTabContent">
-                          <div class="tab-pane fade show active" id="home" role="tabpanel"
-                          aria-labelledby="home-tab">
-                          <div class="row">
-                            <div class="col-md-6">
-                              <label>User ID</label>
-                            </div>
-                            <div class="col-md-6">
-                              <p>{{ user }}</p>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <label>Name</label>
-                            </div>
-                            <div class="col-md-6">
-                              <p>Kshiti Ghelani</p>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <label>Gender</label>
-                            </div>
-                            <div class="col-md-6">
-                              <p>Male</p>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <label>Birthday</label>
-                            </div>
-                            <div class="col-md-6">
-                              <p>20 July</p>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <label>Email</label>
-                            </div>
-                            <div class="col-md-6">
-                              <p>kshitighelani@gmail.com</p>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <label>Phone</label>
-                            </div>
-                            <div class="col-md-6">
-                              <p>9783 6745</p>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <label>Profession</label>
-                            </div>
-                            <div class="col-md-6">
-                              <p>PhD Researcher</p>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <label>Desk Location</label>
-                            </div>
-                            <div class="col-md-6">
-                              <p>3.401-S17</p>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="tab-pane fade" id="history" role="tabpanel"
-                        aria-labelledby="profile-tab">
-                        <h4>Achievements</h4>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <label>Experience</label>
-                          </div>
-                          <div class="col-md-6">
-                            <p>Expedddrt</p>
-                          </div>
-                        </div>
-                        <h4>Rewards redeemed</h4>
-                        <div class="row">
-                          {% if rewards %}
-                          {% for reward in rewards %}
-                          <div class="col-lg-4 col-sm-12 mb-4">
-                            <div class="card h-100">
-                              {% if 'Breadtalk' in reward %}
-                              <img src="{% static 'Images/breadtalk.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
-
-                              {% elif 'Jolibee' in reward %}
-                              <img src="{% static 'Images/jolibee.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
-
-                              {% elif 'McDonalds' in reward %}
-                              <img src="{% static 'Images/mcdonalds.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
-
-                              {% else %}
-                              <img src="{% static 'Images/starbucks.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
-
-                              {% endif %}
-                              <div class="card-body">
-                                <div class="row">
-                                  <h5 class="card-title font-weight-bold">{{ reward }}</h5>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          {% endfor %}
-                          {% else %}
-                          <div class="col-md-12 align-items-center">
-                            <p class="text-left">No Rewards Redeemed</p>
-                          </div>
-                          {% endif %}
-                        </div>
-                      </div>
-                      <div class="tab-pane fade" id="statistics" role="tabpanel"
-                      aria-labelledby="profile-tab">
-                      <h5>Who turned off your plug loads</h5>
-                      <div id="donut"></div>
-                      <h5>Your whereabouts</h5>
-                      <div id='line'></div>
-                    </div>
-                  </div>
                 </div>
-              </div>
-            </form>
-          </div>
+                <!-- /.container-fluid -->
+
+
+                <!-- Footer -->
+                {% include 'partials/_footer.html' %}
+                <!-- End of Footer -->
+
+            </div>
+            <!-- End of Content Wrapper -->
+
         </div>
-      </form>
+        <!-- End of Page Wrapper -->
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="{% url 'plug_mate_app:user_login' %}">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <!-- /.container-fluid -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        var options = {
+            series: [10,15,3,5],
+            labels: ['Remote Control', 'Presence-based Control', 'Schedule-based Control','Manual'],
+            dataLabels: {
+                enabled: true,
+                dropShadow: {
+                    enabled: false
+                }
 
-
-  <!-- Footer -->
-  {% include 'partials/_footer.html' %}
-  <!-- End of Footer -->
-
-</div>
-<!-- End of Content Wrapper -->
-
-</div>
-<!-- End of Page Wrapper -->
-
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-  <i class="fas fa-angle-up"></i>
-</a>
-
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-aria-hidden="true">
-<div class="modal-dialog" role="document">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">×</span>
-      </button>
-    </div>
-    <div class="modal-body">Select "Logout" below if you are ready to end your current session.
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-      <a class="btn btn-primary" href="{% url 'plug_mate_app:user_login' %}">Logout</a>
-    </div>
-  </div>
-</div>
-</div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script>
-var options = {
-  series: [10,15,3,5],
-  labels: ['Remote Control', 'Presence-based Control', 'Schedule-based Control','Manual'],
-  dataLabels: {
-    enabled: true,
-    dropShadow: {
-      enabled: false
-    }
-
-  },
-  chart: {
-    type: 'donut',
-  },
-  responsive: [{
-    breakpoint: 480,
-    options: {
-      chart: {
-        width: 100
-      },
-      legend: {
-        position: 'bottom'
-      }
-    }
-  }],
-  plotOptions: {
-    pie: {
-      donut: {
-        labels: {
-          show: true,
-          name: {
-            show: true,
-          },
-          value: {
-            show: true,
-            formatter: function (val) {
-              return val + ' switches'
+            },
+            chart: {
+                type: 'donut',
+            },
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 100
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }],
+            plotOptions: {
+                pie: {
+                    donut: {
+                        labels: {
+                            show: true,
+                            name: {
+                                show: true,
+                            },
+                            value: {
+                                show: true,
+                                formatter: function (val) {
+                                    return val + ' switches'
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          }
+        };
+
+        var donut = new ApexCharts(document.querySelector("#donut"), options);
+        donut.render();
+
+        var options = {
+            series: [{
+                name: 'Presence',
+                data: [5,12,15,13,15,5,4,12,14,15,9,6]
+            }],
+            chart: {
+                height: 350,
+                type: 'line',
+            },
+            stroke: {
+                width: 7,
+                curve: 'smooth'
+            },
+            xaxis: {
+                type: 'string',
+                categories: ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm','5pm', '6pm', '7pm','8pm'],
+            },
+            title: {
+                text: 'Presence',
+                align: 'left',
+                style: {
+                    fontSize: "16px",
+                    color: '#666'
+                }
+            },
+            markers: {
+                size: 4,
+                colors: ["#FFA41B"],
+                strokeColors: "#fff",
+                strokeWidth: 2,
+                hover: {
+                    size: 7,
+                }
+            },
+            yaxis: {
+                min: 0,
+                max: 20,
+                title: {
+                    text: 'Detection',
+                },
+            }
+        };
+
+        var line = new ApexCharts(document.querySelector("#line"), options);
+        line.render();
+
+    </script>
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+    <script>
+        document.getElementById("sidebarToggle").onclick = function() {
+            if (document.getElementsByClassName("sidebar")[0].classList.contains("toggled")) {
+                document.getElementById("content").style.marginLeft = "6.5rem";
+                document.getElementById("footer").style.marginLeft = "6.5rem";
+                document.getElementById("plug_mate_logo").style.width = "";
+                document.getElementById("plug_mate_logo").src = "";
+                document.getElementById("plug_mate_logo").style.height = "40px";
+                document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+            } else {
+                document.getElementById("content").style.marginLeft = "14rem";
+                document.getElementById("footer").style.marginLeft = "14rem";
+                document.getElementById("plug_mate_logo").style.height = "";
+                document.getElementById("plug_mate_logo").src = "";
+                document.getElementById("plug_mate_logo").style.width = "100%";
+                document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
+            }
         }
-      }
-    }
-  }
-};
 
-var donut = new ApexCharts(document.querySelector("#donut"), options);
-donut.render();
+        document.getElementById("sidebarToggleTop").onclick = function() {
+            if (document.getElementsByClassName("sidebar")[0].classList.contains("toggled")) {
+                document.getElementById("content").style.marginLeft = "0";
+                document.getElementById("footer").style.marginLeft = "0";
+            } else {
+                document.getElementById("content").style.marginLeft = "6.5rem";
+                document.getElementById("footer").style.marginLeft = "6.5rem";
+                document.getElementById("plug_mate_logo").style.width = "";
+                document.getElementById("plug_mate_logo").src = "";
+                document.getElementById("plug_mate_logo").style.height = "40px";
+                document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+            }
+        }
 
-var options = {
-  series: [{
-    name: 'Presence',
-    data: [5,12,15,13,15,5,4,12,14,15,9,6]
-  }],
-  chart: {
-    height: 350,
-    type: 'line',
-  },
-  stroke: {
-    width: 7,
-    curve: 'smooth'
-  },
-  xaxis: {
-    type: 'string',
-    categories: ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm','5pm', '6pm', '7pm','8pm'],
-  },
-  title: {
-    text: 'Presence',
-    align: 'left',
-    style: {
-      fontSize: "16px",
-      color: '#666'
-    }
-  },
-  markers: {
-    size: 4,
-    colors: ["#FFA41B"],
-    strokeColors: "#fff",
-    strokeWidth: 2,
-    hover: {
-      size: 7,
-    }
-  },
-  yaxis: {
-    min: 0,
-    max: 20,
-    title: {
-      text: 'Detection',
-    },
-  }
-};
+        window.onload = function() {
+            if (window.innerWidth < 768) {
+                document.getElementById("plug_mate_logo").style.height = "40px";
+                document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+            } else {
+                document.getElementById("plug_mate_logo").style.width = "100%";
+                document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
+            }
 
-var line = new ApexCharts(document.querySelector("#line"), options);
-line.render();
+            if (Number(document.getElementById("number_of_notifications").innerHTML) !== 0) {
+                // There are unread notifications
+                document.getElementById("bell_icon").style.animationIterationCount = "3";
+            }
+        }
 
-</script>
+        window.onresize = function () {
+            if (window.innerWidth < 768) {
+                if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
+                    document.getElementById("content").style.marginLeft = "6.5rem";
+                    document.getElementById("footer").style.marginLeft = "6.5rem";
+                    document.getElementById("plug_mate_logo").style.width = "";
+                    document.getElementById("plug_mate_logo").src = "";
+                    document.getElementById("plug_mate_logo").style.height = "40px";
+                    document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+                } else {
+                    document.getElementById("content").style.marginLeft = "0rem";
+                    document.getElementById("footer").style.marginLeft = "0rem";
+                }
+            } else {
+                if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
+                    document.getElementById("content").style.marginLeft = "14rem";
+                    document.getElementById("footer").style.marginLeft = "14rem";
+                    document.getElementById("plug_mate_logo").style.height = "";
+                    document.getElementById("plug_mate_logo").src = "";
+                    document.getElementById("plug_mate_logo").style.width = "100%";
+                    document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
+                } else {
+                    document.getElementById("content").style.marginLeft = "6.5rem";
+                    document.getElementById("footer").style.marginLeft = "6.5rem";
+                    document.getElementById("plug_mate_logo").style.width = "";
+                    document.getElementById("plug_mate_logo").src = "";
+                    document.getElementById("plug_mate_logo").style.height = "40px";
+                    document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
+                }
+            }
+        }
 
-
-<!-- Bootstrap core JavaScript-->
-<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="{% static 'js/sb-admin-2.min.js' %}"></script>
-<script>
-document.getElementById("sidebarToggle").onclick = function() {
-  if (document.getElementsByClassName("sidebar")[0].classList.contains("toggled")) {
-    document.getElementById("content").style.marginLeft = "6.5rem";
-    document.getElementById("footer").style.marginLeft = "6.5rem";
-    document.getElementById("plug_mate_logo").style.width = "";
-    document.getElementById("plug_mate_logo").src = "";
-    document.getElementById("plug_mate_logo").style.height = "40px";
-    document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
-  } else {
-    document.getElementById("content").style.marginLeft = "14rem";
-    document.getElementById("footer").style.marginLeft = "14rem";
-    document.getElementById("plug_mate_logo").style.height = "";
-    document.getElementById("plug_mate_logo").src = "";
-    document.getElementById("plug_mate_logo").style.width = "100%";
-    document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
-  }
-}
-
-document.getElementById("sidebarToggleTop").onclick = function() {
-  if (document.getElementsByClassName("sidebar")[0].classList.contains("toggled")) {
-    document.getElementById("content").style.marginLeft = "0";
-    document.getElementById("footer").style.marginLeft = "0";
-  } else {
-    document.getElementById("content").style.marginLeft = "6.5rem";
-    document.getElementById("footer").style.marginLeft = "6.5rem";
-    document.getElementById("plug_mate_logo").style.width = "";
-    document.getElementById("plug_mate_logo").src = "";
-    document.getElementById("plug_mate_logo").style.height = "40px";
-    document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
-  }
-}
-
-window.onload = function() {
-  if (window.innerWidth < 768) {
-    document.getElementById("plug_mate_logo").style.height = "40px";
-    document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
-  } else {
-    document.getElementById("plug_mate_logo").style.width = "100%";
-    document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
-  }
-
-  if (Number(document.getElementById("number_of_notifications").innerHTML) !== 0) {
-    // There are unread notifications
-    document.getElementById("bell_icon").style.animationIterationCount = "3";
-  }
-}
-
-window.onresize = function () {
-  if (window.innerWidth < 768) {
-    if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
-      document.getElementById("content").style.marginLeft = "6.5rem";
-      document.getElementById("footer").style.marginLeft = "6.5rem";
-      document.getElementById("plug_mate_logo").style.width = "";
-      document.getElementById("plug_mate_logo").src = "";
-      document.getElementById("plug_mate_logo").style.height = "40px";
-      document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
-    } else {
-      document.getElementById("content").style.marginLeft = "0rem";
-      document.getElementById("footer").style.marginLeft = "0rem";
-    }
-  } else {
-    if (!document.getElementById("accordionSidebar").classList.contains("toggled")) {
-      document.getElementById("content").style.marginLeft = "14rem";
-      document.getElementById("footer").style.marginLeft = "14rem";
-      document.getElementById("plug_mate_logo").style.height = "";
-      document.getElementById("plug_mate_logo").src = "";
-      document.getElementById("plug_mate_logo").style.width = "100%";
-      document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
-    } else {
-      document.getElementById("content").style.marginLeft = "6.5rem";
-      document.getElementById("footer").style.marginLeft = "6.5rem";
-      document.getElementById("plug_mate_logo").style.width = "";
-      document.getElementById("plug_mate_logo").src = "";
-      document.getElementById("plug_mate_logo").style.height = "40px";
-      document.getElementById("plug_mate_logo").src = "/static/Images/logosmall.png";
-    }
-  }
-}
-
-  </script>
-  </body>
-  </html>
+    </script>
+</body>
+</html>

@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from . import serializers
-from .models import Users, PowerEnergyConsumption, PointsWallet, Meters
+from . models import UserProfileInfo
 from django.db import connection
 from time import localtime, strftime
 import os
