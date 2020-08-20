@@ -261,6 +261,7 @@ class RemoteControlItem extends Component {
                         document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have have been awarded 60 points for trying out our remote control feature for the first time. </span> </div> </a>`)
 
                         // Animate the bell
+                        document.getElementById("bell_icon").style.animationIterationCount = "infinite";
                     })
                 }
             })
@@ -783,6 +784,7 @@ class PresenceControlItem extends Component {
                         document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 70 points for setting your first presence-based setting. </span> </div> </a>`)
 
                         // Animate the bell
+                        document.getElementById("bell_icon").style.animationIterationCount = "infinite";
                     })
                 }
             })
@@ -852,6 +854,7 @@ class PresenceControlItem extends Component {
                                 document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 5 points for activating presence-based control for your devices today. </span> </div> </a>`)
 
                                 // Animate the bell
+                                document.getElementById("bell_icon").style.animationIterationCount = "infinite";
                             })
                         }
                     }
