@@ -159,6 +159,38 @@
     max-height: 300px;
     margin: 35px auto;
   }
+  .hovertext{
+    /* position: relative;
+    width: 500px;
+    height: 200px;
+    float: left;
+    margin-right: 10px; */
+  }
+
+  /* Child Text Container */
+  .hovertext p{
+    position: fixed;
+    top: 80px;
+    padding: 8px 15px;
+    background: black;
+    color: white;
+    opacity: 0; */
+    visibility: hidden;
+    -webkit-transition: visibility 0s, opacity 0.5s linear;
+    transition: visibility 0s, opacity 0.5s linear;
+  }
+
+  Hover on Parent Container
+  .hovertext:hover{
+    cursor: pointer;
+  }
+
+  .hovertext:hover p{
+    padding: 8px 15px;
+    visibility: visible;
+    opacity: 0.7;
+  }
+
 
   </style>
 </head>
@@ -213,7 +245,18 @@
                                 <p class="proile-rating">PROFILE TYPE : <span>HUSTLER</span></p>
                               </div>
                               <div class="col">
-                                <img src="https://image.flaticon.com/icons/svg/3286/3286414.svg" style="max-width:60%;max-height:60%">
+                                <div class="row hovertext">
+                                  <div class="col">
+                                    <img src="https://image.flaticon.com/icons/svg/3286/3286414.svg" style="max-width:100%;max-height:100%">
+                                  </div>
+                                  <div class="col">
+                                    <p>
+                                      Hustlers are always quick to produce work, churning out projects after projects. ‘Office hours’ are a foreign concept to them and they are often hurrying from one meeting to another. They are the worker bees of the company, driving progress and making effective change.
+                                    </p>
+                                  </div>
+
+                                </div>
+
                               </div>
 
 
@@ -240,8 +283,6 @@
                         </div>
                       </div>
                       <div class="col-md-2">
-                        <input type="submit" class="profile-edit-btn" name="btnAddMore"
-                        value="Edit Profile"/>
                       </div>
                     </div>
                     <div class="row">
@@ -256,7 +297,7 @@
                             an intuitive manner.
                           </p>
                           <p style="text-align:justify;font-size:0.9rem">
-                            Plug-mate is developed by two PhD student researchers in the
+                            Plug-mate is developed by two PhD student researchers and three Undergraduate students in the
                             Singapore University of Technology and Design, who have a passion in
                             reducing energy usages and stopping the effects of climate change.
                           </p>
