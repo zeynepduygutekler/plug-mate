@@ -192,10 +192,10 @@ def user_login(request):
 
 from .models import PointsWallet, PresenceData, RemoteData, ScheduleData, \
     AchievementsBonus, AchievementsWeekly, AchievementsDaily, \
-    Notifications, UserLog
+    Notifications, UserLog, Presence
 from .serializers import PointsWalletSerializer, PresenceSerializer, RemoteSerializer, ScheduleSerializer, \
     AchievementsBonusSerializer, AchievementsWeeklySerializer, AchievementsDailySerializer, \
-    NotificationsSerializer, UserLogSerializer
+    NotificationsSerializer, UserLogSerializer, UserPresenceSerializer
 from rest_framework import generics
 
 
@@ -331,9 +331,19 @@ class UserLogDataList(generics.ListCreateAPIView):
         """ This view should return the user log for the
         current authenticated user. """
         user = self.request.user.id
-        return UserLog.objects.filter(user_id = user)
+        return UserLog.objects.filter(user_id = user)[:1]
 
 class UserLogDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = UserLog.objects.all()
     serializer_class = UserLogSerializer
+
+class UserPresenceDataList(generics.ListCreateAPIView):
+    authentication_classes = [authentication.SessionAuthentication]
+    serializer_class = UserPresenceSerializer
+
+    def get_queryset(self):
+        """ This view should return the latest presence of
+        the current authenticated user. """
+        user = self.request.user.id
+        return Presence.objects.filter(user_id = user).order_by('-id')[:1]
