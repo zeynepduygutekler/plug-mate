@@ -191,9 +191,11 @@ def user_login(request):
 
 
 from .models import PointsWallet, PresenceData, RemoteData, ScheduleData, \
-    AchievementsBonus, AchievementsWeekly, Notifications, UserLog
+    AchievementsBonus, AchievementsWeekly, AchievementsDaily, \
+    Notifications, UserLog
 from .serializers import PointsWalletSerializer, PresenceSerializer, RemoteSerializer, ScheduleSerializer, \
-    AchievementsBonusSerializer, AchievementsWeeklySerializer, NotificationsSerializer, UserLogSerializer
+    AchievementsBonusSerializer, AchievementsWeeklySerializer, AchievementsDailySerializer, \
+    NotificationsSerializer, UserLogSerializer
 from rest_framework import generics
 
 
@@ -275,6 +277,21 @@ class AchievementsWeeklyDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = AchievementsWeekly.objects.all()
     serializer_class = AchievementsWeeklySerializer
+
+class AchievementsDailyDataList(generics.ListCreateAPIView):
+    authentication_classes = [authentication.SessionAuthentication]
+    serializer_class = AchievementsDailySerializer
+
+    def get_queryset(self):
+        """ This view should return a list of all the weekly
+        achievements for the current authenticated user. """
+        user = self.request.user.id
+        return AchievementsDaily.objects.filter(user_id = user)
+
+class AchievementsDailyDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    queryset = AchievementsDaily.objects.all()
+    serializer_class = AchievementsDailySerializer
 
 class PointsWalletDataList(generics.ListCreateAPIView):
     authentication_classes = [authentication.SessionAuthentication]

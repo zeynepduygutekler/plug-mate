@@ -245,7 +245,7 @@ class RemoteControlItem extends Component {
                         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                         var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
-                        notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You've been awarded 60 points for trying out our remote control feature for the first time.", type: "success"})
+                        notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 60 points for trying out our remote control feature for the first time.", type: "success"})
                         fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                             method: 'PUT',
                             headers: {
@@ -258,7 +258,7 @@ class RemoteControlItem extends Component {
                         document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 1)
 
                         // Update notifications in list
-                        document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have earned 60 points for using the remote control for the first time. </span> </div> </a>`)
+                        document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have have been awarded 60 points for trying out our remote control feature for the first time. </span> </div> </a>`)
 
                         // Animate the bell
                     })
@@ -646,7 +646,8 @@ class PresenceControlItem extends Component {
         device_type: this.props.device_type,
         presence_setting: this.props.presence_setting,
         achievements_books: [],
-        points_wallet_books: []
+        points_wallet_books: [],
+        daily_achievements_books: []
     }
 
     updateAchievementsBooks = (newBook) => {
@@ -666,6 +667,26 @@ class PresenceControlItem extends Component {
                 }
             });
             this.setState({achievements_books: newBooks})
+        })
+    }
+
+    updateDailyAchievementsBooks = (newBook) => {
+        fetch('/control_interface/api/achievements_daily/' + newBook.id.toString() + '/', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newBook)
+        }).then(response => response.json())
+        .then(newBook => {
+            const newBooks = this.state.daily_achievements_books.map(book => {
+                if (book.id === newBook.id) {
+                    return Object.assign({}, newBook);
+                } else {
+                    return book;
+                }
+            });
+            this.setState({daily_achievements_books: newBooks})
         })
     }
 
@@ -692,6 +713,10 @@ class PresenceControlItem extends Component {
     handleAchievementsUpdate = (book) => {
         book.id = this.props.user_id;
         this.updateAchievementsBooks(book);
+    }
+
+    handleDailyAchievementsUpdate = (book) => {
+        this.updateDailyAchievementsBooks(book);
     }
 
     handlePointsWalletUpdate = (book) => {
@@ -742,7 +767,7 @@ class PresenceControlItem extends Component {
                         const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                         const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                         var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
-                        notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have earned 70 points for using presence-based control for the first time.", type: "success"})
+                        notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 70 points for setting your first presence-based setting.", type: "success"})
                         fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                             method: 'PUT',
                             headers: {
@@ -755,10 +780,81 @@ class PresenceControlItem extends Component {
                         document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 1)
 
                         // Update notifications in list
-                        document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have earned 70 points for using presence-based control for the first time. </span> </div> </a>`)
+                        document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 70 points for setting your first presence-based setting. </span> </div> </a>`)
 
                         // Animate the bell
                     })
+                }
+            })
+        })
+    }
+
+    updateDailyPresenceAchievements = () => {
+        fetch('/control_interface/api/achievements_daily')
+        .then(response => response.json())
+        .then(daily_data => {
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+            this.setState({daily_achievements_books: daily_data}, function() {
+                for (var input of daily_data) {
+                    if (input.week_day === days[(new Date()).getDay()]) {
+                        if (input.daily_presence === 0) {
+                            // Daily presence achievement completed
+                            input.daily_presence = 5;
+                            this.handleDailyAchievementsUpdate(input)
+
+                            // Add points to wallet
+                            fetch('/control_interface/api/points_wallet/')
+                            .then(response => response.json())
+                            .then(points_data => {
+                                this.setState({points_wallet_books: points_data}, function() {
+                                    points_data[0].points = points_data[0].points + 5;
+                                    this.handlePointsWalletUpdate(points_data[0])
+                                })
+                            })
+
+                            // Add achievement to user log
+                            var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                            const csrftoken = getCookie('csrftoken');
+                            fetch('/control_interface/api/user_log/', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': csrftoken
+                                },
+                                body: JSON.stringify({user_id: input.user_id, type: "achievement", unix_time: now_unix_time, description: "daily_presence"})
+                            })
+
+                            // Send notification
+                            fetch('/control_interface/api/notifications/')
+                            .then(response => response.json())
+                            .then(notifications_data => {
+                                var number_of_notifications = notifications_data[0].notifications.notifications.length;
+                                var current_user = notifications_data[0].user_id;
+
+                                // Update notifications table in database
+                                var today = new Date();
+                                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                                const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                                var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
+                                notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for activating presence-based control for your devices today.", type: "success"})
+                                fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(notifications_data[0])
+                                })
+
+                                // Update number on bell
+                                document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 1)
+
+                                // Update notifications in list
+                                document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 5 points for activating presence-based control for your devices today. </span> </div> </a>`)
+
+                                // Animate the bell
+                            })
+                        }
+                    }
                 }
             })
         })
@@ -790,7 +886,8 @@ class PresenceControlItem extends Component {
             this.setState({presence_setting: evt.target.value}, function() {this.handleFormSubmit()})
 
             // Checking for achievements
-            this.updatePresenceAchievements()
+            this.updatePresenceAchievements();
+            this.updateDailyPresenceAchievements();
         }
         if (evt.target.value === "other") {
             // Show popup
@@ -862,7 +959,8 @@ class PresenceControlItem extends Component {
             this.setState({presence_setting: "5"}, function() {this.handleFormSubmit()})
 
             // Checking for achievements
-            this.updatePresenceAchievements()
+            this.updatePresenceAchievements();
+            this.updateDailyPresenceAchievements();
         }
     }
 
@@ -873,6 +971,7 @@ class PresenceControlItem extends Component {
         document.getElementById(this.state.device_type.replace(/\s/g,'') + "Select").value = "5";
         this.setState({presence_setting: 5}, function() {this.handleFormSubmit()})
 
+        this.updateDailyPresenceAchievements();
     }
 
     okButtonClicked = () => {
@@ -886,7 +985,8 @@ class PresenceControlItem extends Component {
         this.handleFormSubmit();
 
         // Checking for achievements
-        this.updatePresenceAchievements()
+        this.updatePresenceAchievements();
+        this.updateDailyPresenceAchievements();
     }
 
     render() {

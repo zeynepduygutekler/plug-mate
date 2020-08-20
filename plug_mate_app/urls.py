@@ -31,6 +31,8 @@ urlpatterns = [
     path('control_interface/api/achievements_bonus/<int:pk>/', views.AchievementsBonusDataDetail.as_view()),
     path('control_interface/api/achievements_weekly/', views.AchievementsWeeklyDataList.as_view()),
     path('control_interface/api/achievements_weekly/<int:pk>/', views.AchievementsWeeklyDataDetail.as_view()),
+    path('control_interface/api/achievements_daily/', views.AchievementsDailyDataList.as_view()),
+    path('control_interface/api/achievements_daily/<int:pk>/', views.AchievementsDailyDataDetail.as_view()),
     path('control_interface/api/points_wallet/', views.PointsWalletDataList.as_view()),
     path('control_interface/api/points_wallet/<int:pk>/', views.PointsWalletDataDetail.as_view()),
     path('control_interface/api/notifications/', views.NotificationsDataList.as_view()),

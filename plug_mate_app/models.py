@@ -126,6 +126,19 @@ class AchievementsWeekly(models.Model):
     class Meta:
         db_table = 'achievements_weekly'
 
+class AchievementsDaily(models.Model):
+    user_id = models.IntegerField()
+    lower_energy_con = models.IntegerField()
+    turn_off_leave = models.IntegerField()
+    turn_off_end = models.IntegerField()
+    daily_remote = models.IntegerField()
+    daily_presence = models.IntegerField()
+    daily_schedule = models.IntegerField()
+    complete_all_daily = models.IntegerField()
+    week_day = models.CharField(max_length=100)
+    class Meta:
+        db_table = 'achievements_daily'
+
 class Notifications(models.Model):
     user_id = models.IntegerField()
     notifications = JSONField()
