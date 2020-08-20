@@ -15,6 +15,7 @@ from django.db import connection
 from time import localtime, strftime
 import os
 import pandas as pd
+import numpy as np
 
 
 def plug_mate_app(request):
@@ -53,8 +54,8 @@ def plug_mate_app(request):
 
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
-            notifications = cursor.fetchone()[0]
-
+            notifications = cursor.fetchone()[0]['notifications']
+            num_notifications = np.sum([1 for notification in notifications if notification['seen'] == 0])
 
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         points_table = pd.read_csv(os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_points.csv'))
@@ -71,8 +72,8 @@ def plug_mate_app(request):
             'cumulative_savings_trees': cumulative_savings_trees,
             'remaining_points': remaining_points,
             'user_id': request.user.id,
-            'notifications': notifications['notifications'],
-            'num_notifications': len(notifications['notifications'])
+            'notifications': notifications,
+            'num_notifications': num_notifications,
         }
 
         return render(request, 'plug_mate_app/index.html', context)
@@ -85,12 +86,13 @@ def control_interface(request):
         with connection.cursor() as cursor:
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
-            notifications = cursor.fetchone()[0]
+            notifications = cursor.fetchone()[0]['notifications']
+            num_notifications = np.sum([1 for notification in notifications if notification['seen'] == 0])
 
         context = {
             'user_id': request.user.id,
-            'notifications': notifications['notifications'],
-            'num_notifications': len(notifications['notifications'])
+            'notifications': notifications,
+            'num_notifications': num_notifications
         }
 
         return render(request, 'index.html', context)
@@ -99,23 +101,27 @@ def control_interface(request):
 
 
 def rewards(request):
-    with connection.cursor() as cursor:
-        # Query for user's energy points from the database
-        cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s', [request.user.id])
-        points = cursor.fetchone()[0]
+    if request.user.is_authenticated:
+        with connection.cursor() as cursor:
+            # Query for user's energy points from the database
+            cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s', [request.user.id])
+            points = cursor.fetchone()[0]
 
-        # Query for the user's notifications
-        cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
-        notifications = cursor.fetchone()[0]
+            # Query for the user's notifications
+            cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
+            notifications = cursor.fetchone()[0]['notifications']
+            num_notifications = np.sum([1 for notification in notifications if notification['seen'] == 0])
 
-    context = {
-        'points': points,
-        'notifications': notifications['notifications'],
-        'num_notifications': len(notifications['notifications']),
-        'user_id': request.user.id,
-    }
+        context = {
+            'points': points,
+            'notifications': notifications,
+            'num_notifications': num_notifications,
+            'user_id': request.user.id,
+        }
 
-    return render(request, 'plug_mate_app/rewards.html', context)
+        return render(request, 'plug_mate_app/rewards.html', context)
+    else:
+        return render(request, 'plug_mate_app/login.html', {})
 
 
 def user_profile(request):
@@ -123,7 +129,8 @@ def user_profile(request):
         with connection.cursor() as cursor:
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
-            notifications = cursor.fetchone()[0]
+            notifications = cursor.fetchone()[0]['notifications']
+            num_notifications = np.sum([1 for notification in notifications if notification['seen'] == 0])
 
             # Query for user's rewards from database
             cursor.execute("SELECT description FROM user_log WHERE user_id=%s AND "
@@ -141,12 +148,11 @@ def user_profile(request):
                             'gender': result[6],
                             'birthday': result[7].strftime("%d %B"),
                             'profile': result[8]}
-            print(user_profile)
 
         context = {
             'user_id': request.user.id,
-            'notifications': notifications['notifications'],
-            'num_notifications': len(notifications['notifications']),
+            'notifications': notifications,
+            'num_notifications': num_notifications,
             'rewards': rewards,
             'user_profile': user_profile,
         }

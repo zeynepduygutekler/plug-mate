@@ -7,7 +7,6 @@ from plug_mate_app.dash_apps.finished_apps import cost_savings
 from plug_mate_app.dash_apps.finished_apps import progress
 from plug_mate_app.dash_apps.finished_apps import historical_consumption
 from plug_mate_app.dash_apps.finished_apps import tips
-from plug_mate_app.dash_apps.finished_apps import trees_saved
 
 
 router = routers.DefaultRouter()
