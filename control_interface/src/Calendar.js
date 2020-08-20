@@ -400,142 +400,294 @@ class Calendar extends Component {
         this.updatePointsWalletBooks(book);
     }
 
-    updateScheduleAchievements = () => {
-        fetch('/control_interface/api/achievements_bonus/')
-        .then(response => response.json())
-        .then(bonus_data => {
-            this.setState({achievements_books: bonus_data}, function() {
-                if (bonus_data[0].first_schedule === 0) {
-                    // First schedule achievement completed
-                    bonus_data[0].first_schedule = 70
-                    this.handleAchievementsUpdate(bonus_data[0])
 
-                    fetch('/control_interface/api/points_wallet/')
-                    .then(response => response.json())
-                    .then(points_data => {
-                        this.setState({points_wallet_books: points_data}, function() {
-                            points_data[0].points = points_data[0].points + 70
-                            this.handlePointsWalletUpdate(points_data[0])
-                        })
-                    })
+    updateScheduleAchievements = (type) => {
+        if (type === "add") {
+            // Check for daily and bonus achievements
+            fetch('/control_interface/api/achievements_daily/')
+            .then(response => response.json())
+            .then(daily_data => {
+                const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                this.setState({daily_achievements_books: daily_data}, function() {
+                    for (var input of daily_data) {
+                        if (input.week_day === days[(new Date()).getDay()]) {
+                            if (input.daily_schedule === 0) {
+                                // Daily schedule achievement completed
+                                input.daily_schedule = 5;
+                                this.handleDailyAchievementsUpdate(input);
 
-                    // Add achievement to user log
-                    var now_unix_time = Math.round((new Date()).getTime() / 1000);
-                    const csrftoken = getCookie('csrftoken');
-                    fetch('/control_interface/api/user_log/', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': csrftoken
-                        },
-                        body: JSON.stringify({user_id: bonus_data[0].user_id, type: "achievement", unix_time: now_unix_time, description: "first_schedule"})
-                    })
+                                // Check for bonus achievements
+                                fetch('/control_interface/api/achievements_bonus/')
+                                .then(response => response.json())
+                                .then(bonus_data => {
+                                    this.setState({achievements_books: bonus_data}, function() {
+                                        if (bonus_data[0].first_schedule === 0) {
+                                            // First schedule achievement completed
+                                            bonus_data[0].first_schedule = 70;
+                                            this.handleAchievementsUpdate(bonus_data[0]);
 
-                    // Send notification
-                    fetch('/control_interface/api/notifications/')
-                    .then(response => response.json())
-                    .then(notifications_data => {
-                        var number_of_notifications = notifications_data[0].notifications.notifications.length;
-                        var current_user = notifications_data[0].user_id;
+                                            // Update points on database (75)
+                                            fetch('/control_interface/api/points_wallet/')
+                                            .then(response => response.json())
+                                            .then(points_data => {
+                                                this.setState({points_wallet_books: points_data}, function() {
+                                                    points_data[0].points = points_data[0].points + 75;
+                                                    this.handlePointsWalletUpdate(points_data[0]);
+                                                })
+                                            })
 
-                        // Get the timestamp
-                        var today = new Date();
-                        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-                        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                        var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
-                        notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have earned 70 points for using schedule-based control for the first time.", type: "success"})
-                        fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(notifications_data[0])
-                        })
+                                            // Add achievement to user log
+                                            var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                                            const csrftoken = getCookie('csrftoken');
+                                            // Bonus achievement
+                                            fetch('/control_interface/api/user_log/', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRFToken': csrftoken
+                                                },
+                                                body: JSON.stringify({user_id: bonus_data[0].user_id, type: "achievement", unix_time: now_unix_time, description: "first_schedule"})
+                                            })
+                                            // Daily achievement
+                                            fetch('/control_interface/api/user_log/', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRFToken': csrftoken
+                                                },
+                                                body: JSON.stringify({user_id: bonus_data[0].user_id, type: "achievement", unix_time: now_unix_time, description: "daily_schedule"})
+                                            })
 
-                        // Update number on bell
-                        document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 1)
+                                            // Send notification
+                                            fetch('/control_interface/api/notifications/')
+                                            .then(response => response.json())
+                                            .then(notifications_data => {
+                                                var number_of_notifications = notifications_data[0].notifications.notifications.length;
+                                                var current_user = notifications_data[0].user_id;
 
-                        // Update notifications in list
-                        document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have earned 70 points for using schedule-based control for the first time. </span> </div> </a>`)
+                                                // Get the timestamp
+                                                var today = new Date();
+                                                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                                                const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                                                var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
+                                                // Bonus achievement
+                                                notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 70 points for setting your first schedule-based setting.", type: "success"})
+                                                // Daily achievement
+                                                notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for using schedule-based control for your devices today.", type: "success"})
+                                                fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
+                                                    method: 'PUT',
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify(notifications_data[0])
+                                                })
 
-                        // Animate the bell
-                        document.getElementById("bell_icon").style.animationIterationCount = "infinite";
-                    })
-                }
-            })
-        })
-    }
+                                                // Update number on bell
+                                                document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 1);
 
-    updateDailyScheduleAchievements = () => {
-        fetch('/control_interface/api/achievements_daily')
-        .then(response => response.json())
-        .then(daily_data => {
-            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            this.setState({daily_achievements_books: daily_data}, function() {
-                for (var input of daily_data) {
-                    if (input.week_day === days[(new Date()).getDay()]) {
-                        if (input.daily_schedule === 0) {
-                            // Daily schedule achievement completed
-                            input.daily_schedule = 5;
-                            this.handleDailyAchievementsUpdate(input);
+                                                // Update notifications in list
+                                                // Bonus achievement
+                                                document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 70 points for setting your first schedule-based setting. </span> </div> </a>`)
+                                                // Daily achievement
+                                                document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 5 points for using schedule-based control for your devices today. </span> </div> </a>`)
+                                            })
+                                        } else {
+                                            // First schedule achievement previously completed
 
-                            // Add points to wallet
-                            fetch('/control_interface/api/points_wallet/')
-                            .then(response => response.json())
-                            .then(points_data => {
-                                this.setState({points_wallet_books: points_data}, function() {
-                                    points_data[0].points = points_data[0].points + 5;
-                                    this.handlePointsWalletUpdate(points_data[0]);
+                                            // Update points on database (5)
+                                            fetch('/control_interface/api/points_wallet/')
+                                            .then(response => response.json())
+                                            .then(points_data => {
+                                                this.setState({points_wallet_books: points_data}, function() {
+                                                    points_data[0].points = points_data[0].points + 5;
+                                                    this.handlePointsWalletUpdate(points_data[0]);
+                                                })
+                                            })
+
+                                            // Add achievement to user log
+                                            var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                                            const csrftoken = getCookie('csrftoken');
+                                            // Daily achievement
+                                            fetch('/control_interface/api/user_log/', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRFToken': csrftoken
+                                                },
+                                                body: JSON.stringify({user_id: bonus_data[0].user_id, type: "achievement", unix_time: now_unix_time, description: "daily_schedule"})
+                                            })
+
+                                            // Send notification
+                                            fetch('/control_interface/api/notifications/')
+                                            .then(response => response.json())
+                                            .then(notifications_data => {
+                                                var number_of_notifications = notifications_data[0].notifications.notifications.length;
+                                                var current_user = notifications_data[0].user_id;
+
+                                                // Get the timestamp
+                                                var today = new Date();
+                                                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                                                const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                                                var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
+                                                // Daily achievement
+                                                notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for using schedule-based control for your devices today.", type: "success"})
+                                                fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
+                                                    method: 'PUT',
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify(notifications_data[0])
+                                                })
+
+                                                // Update number on bell
+                                                document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 1);
+
+                                                // Update notifications in list
+                                                document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 5 points for using schedule-based control for your devices today. </span> </div> </a>`)
+                                            })
+                                        }
+                                    })
                                 })
-                            })
+                            } else {
+                                // Daily schedule achievement previously completed
 
-                            // Add achievement to user log
-                            var now_unix_time = Math.round((new Date()).getTime() / 1000);
-                            const csrftoken = getCookie('csrftoken');
-                            fetch('/control_interface/api/user_log/', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRFToken': csrftoken
-                                },
-                                body: JSON.stringify({user_id: input.user_id, type: "achievement", unix_time: now_unix_time, description: "daily_schedule"})
-                            })
+                                // Check for bonus achievement
+                                fetch('/control_interface/api/achievements_bonus/')
+                                .then(response => response.json())
+                                .then(bonus_data => {
+                                    this.setState({achievements_books: bonus_data}, function() {
+                                        if (bonus_data[0].first_schedule === 0) {
+                                            // First schedule achievement completed
+                                            bonus_data[0].first_schedule = 70;
+                                            this.handleAchievementsUpdate(bonus_data[0]);
 
-                            // Send notification
-                            fetch('/control_interface/api/notifications/')
-                            .then(response => response.json())
-                            .then(notifications_data => {
-                                var number_of_notifications = notifications_data[0].notifications.notifications.length;
-                                var current_user = notifications_data[0].user_id;
+                                            // Update points on database (70)
+                                            fetch('/control_interface/api/points_wallet/')
+                                            .then(response => response.json())
+                                            .then(points_data => {
+                                                this.setState({points_wallet_books: points_data}, function() {
+                                                    points_data[0].points = points_data[0].points + 70;
+                                                    this.handlePointsWalletUpdate(points_data[0]);
+                                                })
+                                            })
 
-                                // Update notifications table in database
-                                var today = new Date();
-                                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-                                const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                                var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
-                                notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for using schedule-based control for your devices today."});
-                                fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
-                                    method: 'PUT',
-                                    headers: {
-                                        'Content-Type': 'application/json'
-                                    },
-                                    body: JSON.stringify(notifications_data[0])
+                                            // Add achievement to user log
+                                            var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                                            const csrftoken = getCookie('csrftoken');
+                                            // Bonus achievement
+                                            fetch('/control_interface/api/user_log/', {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                    'X-CSRFToken': csrftoken
+                                                },
+                                                body: JSON.stringify({user_id: bonus_data[0].user_id, type: "achievement", unix_time: now_unix_time, description: "first_schedule"})
+                                            })
+
+                                            // Send notification
+                                            fetch('/control_interface/api/notifications/')
+                                            .then(response => response.json())
+                                            .then(notifications_data => {
+                                                var number_of_notifications = notifications_data[0].notifications.notifications.length;
+                                                var current_user = notifications_data[0].user_id;
+
+                                                // Get the timestamp
+                                                var today = new Date();
+                                                const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                                                const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                                                var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
+                                                // Bonus achievement
+                                                notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 70 points for setting your first schedule-based setting.", type: "success"})
+                                                fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
+                                                    method: 'PUT',
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify(notifications_data[0])
+                                                })
+
+                                                // Update number on bell
+                                                document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 1);
+
+                                                // Update notifications in list
+                                                // Bonus achievement
+                                                document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 70 points for setting your first schedule-based setting. </span> </div> </a>`)
+                                            })
+                                        }
+                                    })
                                 })
-
-                                // Update number on bell
-                                document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 1);
-
-                                // Update notifications in list
-                                document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 5 points for using schedule-based control for your devices today. </span> </div> </a>`)
-
-                                // Animate the bell
-                                document.getElementById("bell_icon").style.animationIterationCount = "infinite";
-                            })
+                            }
                         }
                     }
-                }
+                })
             })
-        })
+        } else {
+            // Check for bonus achievement
+            fetch('/control_interface/api/achievements_bonus/')
+            .then(response => response.json())
+            .then(bonus_data => {
+                this.setState({achievements_books: bonus_data}, function() {
+                    if (bonus_data[0].first_schedule === 0) {
+                        // First schedule achievement completed
+                        bonus_data[0].first_schedule = 70;
+                        this.handleAchievementsUpdate(bonus_data[0]);
+
+                        // Update points on database (70)
+                        fetch('/control_interface/api/points_wallet/')
+                        .then(response => response.json())
+                        .then(points_data => {
+                            this.setState({points_wallet_books: points_data}, function() {
+                                points_data[0].points = points_data[0].points + 70;
+                                this.handlePointsWalletUpdate(points_data[0]);
+                            })
+                        })
+
+                        // Add achievement to user log
+                        var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                        const csrftoken = getCookie('csrftoken');
+                        // Bonus achievement
+                        fetch('/control_interface/api/user_log/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': csrftoken
+                            },
+                            body: JSON.stringify({user_id: bonus_data[0].user_id, type: "achievement", unix_time: now_unix_time, description: "first_schedule"})
+                        })
+
+                        // Send notification
+                        fetch('/control_interface/api/notifications/')
+                        .then(response => response.json())
+                        .then(notifications_data => {
+                            var number_of_notifications = notifications_data[0].notifications.notifications.length;
+                            var current_user = notifications_data[0].user_id;
+
+                            // Get the timestamp
+                            var today = new Date();
+                            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+                            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                            var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
+                            // Bonus achievement
+                            notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 70 points for setting your first schedule-based setting.", type: "success"})
+                            fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(notifications_data[0])
+                            })
+
+                            // Update number on bell
+                            document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 1);
+
+                            // Update notifications in list
+                            // Bonus achievement
+                            document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 70 points for setting your first schedule-based setting. </span> </div> </a>`)
+                        })
+                    }
+                })
+            })
+        }
     }
 
     checkConflicts = (schedulerData, event) => {
@@ -727,7 +879,7 @@ class Calendar extends Component {
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
             // Checking for achievements
-            window.calendar.updateScheduleAchievements()
+            window.calendar.updateScheduleAchievements("delete")
         }
 
         function okButtonClicked() {
@@ -966,8 +1118,7 @@ class Calendar extends Component {
                     ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
                     // Checking for achievements
-                    window.calendar.updateScheduleAchievements()
-                    window.calendar.updateDailyScheduleAchievements()
+                    window.calendar.updateScheduleAchievements("update")
 
                     // Update calendar
                     window.calendar.setState({
@@ -1025,7 +1176,7 @@ class Calendar extends Component {
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
             // Checking for achievements
-            window.calendar.updateScheduleAchievements()
+            window.calendar.updateScheduleAchievements("add")
         }
         function deleteButtonClicked() {
             schedulerData.removeEvent(newEvent);
@@ -1265,8 +1416,7 @@ class Calendar extends Component {
                     ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
                     // Checking for achievements
-                    window.calendar.updateScheduleAchievements()
-                    window.calendar.updateDailyScheduleAchievements()
+                    window.calendar.updateScheduleAchievements("add")
 
                     // Update calendar
                     window.calendar.setState({
@@ -1310,7 +1460,7 @@ class Calendar extends Component {
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
             // Checking for achievements
-            window.calendar.updateScheduleAchievements()
+            window.calendar.updateScheduleAchievements("update")
 
         }
         function deleteButtonClicked() {
@@ -1324,7 +1474,7 @@ class Calendar extends Component {
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
             // Checking for achievements
-            window.calendar.updateScheduleAchievements()
+            window.calendar.updateScheduleAchievements("delete")
 
             window.calendar.setState({
                 viewModel: schedulerData
@@ -1568,8 +1718,7 @@ class Calendar extends Component {
                     ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
                     // Checking for achievements
-                    window.calendar.updateScheduleAchievements()
-                    window.calendar.updateDailyScheduleAchievements()
+                    window.calendar.updateScheduleAchievements("update")
 
                     // Update calendar
                     window.calendar.setState({
@@ -1613,7 +1762,7 @@ class Calendar extends Component {
             window.calendar.props.refetchData();
 
             // Checking for achievements
-            window.calendar.updateScheduleAchievements()
+            window.calendar.updateScheduleAchievements("update")
         }
         function deleteButtonClicked() {
             // Update database (Delete)
@@ -1628,7 +1777,7 @@ class Calendar extends Component {
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
             // Checking for achievements
-            window.calendar.updateScheduleAchievements()
+            window.calendar.updateScheduleAchievements("delete")
         }
 
         function okButtonClicked() {
@@ -1866,8 +2015,7 @@ class Calendar extends Component {
                     ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
                     // Checking for achievements
-                    window.calendar.updateScheduleAchievements()
-                    window.calendar.updateDailyScheduleAchievements()
+                    window.calendar.updateScheduleAchievements("update")
 
                     // Update calendar
                     window.calendar.setState({
@@ -1913,7 +2061,7 @@ class Calendar extends Component {
             window.calendar.props.refetchData();
 
             // Checking for achievements
-            window.calendar.updateScheduleAchievements()
+            window.calendar.updateScheduleAchievements("update")
         }
 
         function deleteButtonClicked() {
@@ -1924,7 +2072,7 @@ class Calendar extends Component {
             ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
             // Checking for achievements
-            window.calendar.updateScheduleAchievements()
+            window.calendar.updateScheduleAchievements("delete")
 
             // Update calendar
             schedulerData.removeEvent(event);
@@ -2168,8 +2316,7 @@ class Calendar extends Component {
                     ReactDOM.unmountComponentAtNode(document.getElementById("popup-container-schedule"));
 
                     // Checking for achievements
-                    window.calendar.updateScheduleAchievements()
-                    window.calendar.updateDailyScheduleAchievements()
+                    window.calendar.updateScheduleAchievements("update")
 
                     // Update calendar
                     window.calendar.setState({
