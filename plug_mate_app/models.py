@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+from datetime import datetime
+
 
 class Users(models.Model):
     user_id = models.IntegerField(primary_key=True)
@@ -22,7 +24,15 @@ class UserProfileInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
 
     # Add any additional attributes you want
-    # user_id_field = models.ForeignKey(Users, on_delete=models.DO_NOTHING, related_name='user_id_profile')
+    # user_id_field = models.ForeignKey(Users, on_delete=models.DO_NOTHING, related_name='user_id_profile', default=0)
+    contact_number = models.IntegerField(default=12345678)
+    email = models.CharField(max_length=255, default='john@gmail.com')
+    desk_location = models.CharField(max_length=100, default='Building 3 Level 4')
+    occupation = models.CharField(max_length=100, default='To be filled in')
+    gender = models.CharField(max_length=100, default='To be filled in')
+    birthday = models.DateField(default=datetime.now)
+    occupancy_profile = models.CharField(max_length=100, default='To be filled in')
+    profile_pic = models.ImageField(upload_to='media/', default='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png')
 
     def __str__(self):
         # Built-in attribute of django.contrib.auth.models.User !
