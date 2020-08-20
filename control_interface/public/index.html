@@ -92,6 +92,7 @@
         #bell_icon {
             animation: bell 1.5s ease-out;
             transform-origin: center top;
+            animation-iteration-count: 0;
         }
 
         @keyframes bell {
@@ -325,6 +326,11 @@
             document.getElementById("plug_mate_logo").style.width = "100%";
             document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
         }
+
+        if (Number(document.getElementById("number_of_notifications").innerHTML) !== 0) {
+            // There are unread notifications
+            document.getElementById("bell_icon").style.animationIterationCount = "3";
+        }
     }
 
     document.getElementById("sidebar_remote_card").onclick = function() {
@@ -404,8 +410,6 @@
             }
         }, 400)
     }
-
-    console.log({{user_id}})
 </script>
 
 <!-- Page level plugins -->

@@ -148,5 +148,26 @@
     function stopAnimation() {
         // Stop animation on bell
         document.getElementById("bell_icon").style.animationIterationCount = 0;
+
+        // Mark as seen
+        fetch('/control_interface/api/notifications/')
+        .then(response => response.json())
+        .then(data => {
+            var current_user = data[0].user_id;
+            for (var input of data[0].notifications.notifications) {
+                input.seen = 1;
+            }
+            console.log(data[0])
+            fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data[0])
+            })
+        })
+
+        // Update number on bell
+        document.getElementById("number_of_notifications").innerHTML = 0;
     }
 </script>

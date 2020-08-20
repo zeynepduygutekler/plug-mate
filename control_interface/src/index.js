@@ -276,7 +276,7 @@ class RemoteControlItem extends Component {
                                 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                                 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                 var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
-                                notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 60 points for trying out our remote control feature for the first time.", type: "success"})
+                                notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 60 points for trying out our remote control feature for the first time.", type: "success", seen: 0})
                                 fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                                     method: 'PUT',
                                     headers: {
@@ -286,13 +286,10 @@ class RemoteControlItem extends Component {
                                 })
 
                                 // Update number on bell
-                                document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 1)
+                                document.getElementById("number_of_notifications").innerHTML = (Number(document.getElementById("number_of_notifications").innerHTML) + 1)
 
                                 // Update notifications in list
                                 document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have have been awarded 60 points for trying out our remote control feature for the first time. </span> </div> </a>`)
-
-                                // Animate the bell
-                                document.getElementById("bell_icon").style.animationIterationCount = "infinite";
                             })
                         }
                     })
@@ -366,9 +363,9 @@ class RemoteControlItem extends Component {
                                                     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                                     var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
                                                     // Bonus achievement
-                                                    notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 60 points for trying out our remote control feature for the first time.", type: "success"});
+                                                    notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 60 points for trying out our remote control feature for the first time.", type: "success", seen: 0});
                                                     // Daily achievement
-                                                    notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for using remote control while you are away from your desk today.", type: "success"});
+                                                    notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for using remote control while you are away from your desk today.", type: "success", seen: 0});
                                                     fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                                                         method: 'PUT',
                                                         headers: {
@@ -378,16 +375,13 @@ class RemoteControlItem extends Component {
                                                     })
 
                                                     // Update number on bell
-                                                    document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 2);
+                                                    document.getElementById("number_of_notifications").innerHTML = (Number(document.getElementById("number_of_notifications").innerHTML) + 2);
 
                                                     // Update notifications in list
                                                     // Bonus achievement
                                                     document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 60 points for trying out our remote control feature for the first time. </span> </div> </a>`);
                                                     // Daily achievement
                                                     document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 5 points for using remote control while you are away from your desk today. </span> </div> </a>`);
-
-                                                    // Animate the bell
-                                                    document.getElementById("bell_icon").style.animationIterationCount = "infinite";
                                                 })
                                             } else {
                                                 // First remote achievement previously completed
@@ -426,7 +420,7 @@ class RemoteControlItem extends Component {
                                                     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                                                     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                                     var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
-                                                    notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for using remote control while you are away from your desk today.", type: "success"});
+                                                    notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for using remote control while you are away from your desk today.", type: "success", seen: 0});
                                                     fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                                                         method: 'PUT',
                                                         headers: {
@@ -436,13 +430,10 @@ class RemoteControlItem extends Component {
                                                     })
 
                                                     // Update number on bell
-                                                    document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 1)
+                                                    document.getElementById("number_of_notifications").innerHTML = (Number(document.getElementById("number_of_notifications").innerHTML) + 1)
 
                                                     // Update notifications in list
                                                     document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 5 points for using remote control while you are away from your desk today. </span> </div> </a>`)
-
-                                                    // Animate the bell
-                                                    document.getElementById("bell_icon").style.animationIterationCount = "infinite";
                                                 })
                                             }
                                         })
@@ -982,9 +973,9 @@ class PresenceControlItem extends Component {
                                             const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                             var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
                                             // Bonus achievement
-                                            notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 70 points for setting your first presence-based setting.", type: "success"});
+                                            notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 70 points for setting your first presence-based setting.", type: "success", seen: 0});
                                             // Daily achievement
-                                            notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for activating presence-based control for your devices today.", type: "success"});
+                                            notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for activating presence-based control for your devices today.", type: "success", seen: 0});
                                             fetch ('/control_interface/api/notifications/' + current_user.toString() + '/', {
                                                 method: 'PUT',
                                                 headers: {
@@ -994,16 +985,13 @@ class PresenceControlItem extends Component {
                                             })
 
                                             // Update number on bell
-                                            document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 2);
+                                            document.getElementById("number_of_notifications").innerHTML = (Number(document.getElementById("number_of_notifications").innerHTML) + 2);
 
                                             // Update notifications in list
                                             // Bonus achievement
                                             document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 70 points for setting your first presence-based setting. </span> </div> </a>`);
                                             // Daily achievement
                                             document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 5 points for activating presence-based control for your devices today. </span> </div> </a>`);
-
-                                            // Animate the bell
-                                            document.getElementById("bell_icon").style.animationIterationCount = "infinite";
                                         })
                                     } else {
                                         // First presence achievement previously completed
@@ -1041,7 +1029,7 @@ class PresenceControlItem extends Component {
                                             const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                                             const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                             var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
-                                            notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for activating presence-based control for your devices today.", type: "success"});
+                                            notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for activating presence-based control for your devices today.", type: "success", seen: 0});
                                             fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                                                 method: 'PUT',
                                                 headers: {
@@ -1051,13 +1039,10 @@ class PresenceControlItem extends Component {
                                             })
 
                                             // Update number on bell
-                                            document.getElementById("number_of_notifications").innerHTML = (number_of_notifications + 1)
+                                            document.getElementById("number_of_notifications").innerHTML = (Number(document.getElementById("number_of_notifications").innerHTML) + 1)
 
                                             // Update notifications in list
                                             document.getElementsByClassName("dropdown-list")[0].childNodes[1].insertAdjacentHTML('afterend', `<a class="dropdown-item d-flex align-items-center" href="#"> <div class="mr-3"> <div class="icon-circle bg-success"> <i class="fas fa-trophy text-white"> </i> </div> </div> <div> <div class="small text-gray-500"> ${new_timestamp} </div> <span class="font-weight-bold"> You have been awarded 5 points for activating presence-based control for your devices today. </span> </div> </a>`);
-
-                                            // Animate the bell
-                                            document.getElementById("bell_icon").style.animationIterationCount = "infinite";
                                         })
                                     }
                                 })
