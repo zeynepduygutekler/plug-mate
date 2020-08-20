@@ -131,11 +131,24 @@ def user_profile(request):
             rewards = cursor.fetchall()
             rewards = pd.DataFrame(rewards, columns=[desc[0] for desc in cursor.description])['description'].tolist()
 
+            # Query for user profile information
+            cursor.execute("SELECT * FROM plug_mate_app_userprofileinfo WHERE user_id=%s", [request.user.id])
+            result = cursor.fetchone()
+            user_profile = {'contact': result[2],
+                            'email': result[3],
+                            'room': result[4],
+                            'occupation': result[5],
+                            'gender': result[6],
+                            'birthday': result[7].strftime("%d %B"),
+                            'profile': result[8]}
+            print(user_profile)
+
         context = {
             'user_id': request.user.id,
             'notifications': notifications['notifications'],
             'num_notifications': len(notifications['notifications']),
             'rewards': rewards,
+            'user_profile': user_profile,
         }
 
         return render(request, 'plug_mate_app/user_profile.html', context)
