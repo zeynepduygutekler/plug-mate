@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import RemoteData, ScheduleData, PresenceData, \
     AchievementsBonus, AchievementsWeekly, AchievementsDaily, PointsWallet, \
-    Notifications, UserLog
+    Notifications, UserLog, Presence
 
 class RemoteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -46,3 +46,8 @@ class UserLogSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserLog
         fields = ('id', 'user_id', 'type', 'unix_time', 'description')
+
+class UserPresenceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Presence
+        fields = ('id', 'date', 'time', 'unix_time', 'user_id', 'rssi', 'presence')
