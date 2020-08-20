@@ -445,6 +445,21 @@
         }
     }
 
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length+1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length+1));
+                    break;
+                }
+            }
+        }
+        return cookieValue
+    }
+
     document.getElementById("breadtalk-5").addEventListener("click", function() {
         fetch('/control_interface/api/points_wallet/')
         .then(response => response.json())
@@ -455,6 +470,8 @@
             if (current_points >= 200) {
                 var user_id = {{user_id}}
                 var new_points = current_points - 200;
+
+                // Update number of points on database
                 fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
                     method: 'PUT',
                     headers: {
@@ -462,7 +479,21 @@
                     },
                     body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
                 })
-                document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+
+                // Change the number of points shown on the page
+                document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`;
+
+                // Add reward to user log
+                var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                const csrftoken = getCookie('csrftoken');
+                fetch('/control_interface/api/user_log/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({user_id: {{user_id}}, type: "reward", unix_time: now_unix_time, description: "$5 Breadtalk Voucher"})
+                })
             }
         })
     })
@@ -477,6 +508,8 @@
             if (current_points >= 200) {
                 var user_id = {{user_id}}
                 var new_points = current_points - 200;
+
+                // Update number of points on database
                 fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
                     method: 'PUT',
                     headers: {
@@ -484,7 +517,21 @@
                     },
                     body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
                 })
+
+                // Change the number of points shown on the page
                 document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+
+                // Add reward to user log
+                var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                const csrftoken = getCookie('csrftoken');
+                fetch('/control_interface/api/user_log/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({user_id: {{user_id}}, type: "reward", unix_time: now_unix_time, description: "$5 Jolibee Voucher"})
+                })
             }
         })
     })
@@ -499,6 +546,8 @@
             if (current_points >= 200) {
                 var user_id = {{user_id}}
                 var new_points = current_points - 200;
+
+                // Update number of points on database
                 fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
                     method: 'PUT',
                     headers: {
@@ -506,7 +555,21 @@
                     },
                     body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
                 })
+
+                // Change the number of points shown on the page
                 document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+
+                // Add reward to user log
+                var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                const csrftoken = getCookie('csrftoken');
+                fetch('/control_interface/api/user_log/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({user_id: {{user_id}}, type: "reward", unix_time: now_unix_time, description: "$5 McDonalds Voucher"})
+                })
             }
         })
     })
@@ -521,6 +584,8 @@
             if (current_points >= 250) {
                 var user_id = {{user_id}}
                 var new_points = current_points - 250;
+
+                // Update number of points on database
                 fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
                     method: 'PUT',
                     headers: {
@@ -528,7 +593,21 @@
                     },
                     body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
                 })
+
+                // Change the number of points shown on the page
                 document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+
+                // Add reward to user log
+                var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                const csrftoken = getCookie('csrftoken');
+                fetch('/control_interface/api/user_log/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({user_id: {{user_id}}, type: "reward", unix_time: now_unix_time, description: "$5 Starbucks Voucher"})
+                })
             }
         })
     })
@@ -543,6 +622,8 @@
             if (current_points >= 350) {
                 var user_id = {{user_id}}
                 var new_points = current_points - 350;
+
+                // Update number of points on database
                 fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
                     method: 'PUT',
                     headers: {
@@ -550,7 +631,21 @@
                     },
                     body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
                 })
+
+                // Change the number of points shown on the page
                 document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+
+                // Add reward to user log
+                var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                const csrftoken = getCookie('csrftoken');
+                fetch('/control_interface/api/user_log/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({user_id: {{user_id}}, type: "reward", unix_time: now_unix_time, description: "$10 Breadtalk Voucher"})
+                })
             }
         })
     })
@@ -565,6 +660,8 @@
             if (current_points >= 350) {
                 var user_id = {{user_id}}
                 var new_points = current_points - 350;
+
+                // Update number of points on database
                 fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
                     method: 'PUT',
                     headers: {
@@ -572,7 +669,21 @@
                     },
                     body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
                 })
+
+                // Change the number of points shown on the page
                 document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+
+                // Add reward to user log
+                var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                const csrftoken = getCookie('csrftoken');
+                fetch('/control_interface/api/user_log/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({user_id: {{user_id}}, type: "reward", unix_time: now_unix_time, description: "$10 Jolibee Voucher"})
+                })
             }
         })
     })
@@ -587,6 +698,8 @@
             if (current_points >= 350) {
                 var user_id = {{user_id}}
                 var new_points = current_points - 350;
+
+                // Update number of points on database
                 fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
                     method: 'PUT',
                     headers: {
@@ -594,7 +707,21 @@
                     },
                     body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
                 })
+
+                // Change the number of points shown on the page
                 document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+
+                // Add reward to user log
+                var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                const csrftoken = getCookie('csrftoken');
+                fetch('/control_interface/api/user_log/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({user_id: {{user_id}}, type: "reward", unix_time: now_unix_time, description: "$10 McDonalds Voucher"})
+                })
             }
         })
     })
@@ -609,6 +736,8 @@
             if (current_points >= 420) {
                 var user_id = {{user_id}}
                 var new_points = current_points - 420;
+
+                // Update number of points on database
                 fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
                     method: 'PUT',
                     headers: {
@@ -616,7 +745,21 @@
                     },
                     body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
                 })
+
+                // Change the number of points shown on the page
                 document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+
+                // Add reward to user log
+                var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                const csrftoken = getCookie('csrftoken');
+                fetch('/control_interface/api/user_log/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({user_id: {{user_id}}, type: "reward", unix_time: now_unix_time, description: "$10 Starbucks Voucher"})
+                })
             }
         })
     })
@@ -631,6 +774,8 @@
             if (current_points >= 650) {
                 var user_id = {{user_id}}
                 var new_points = current_points - 650;
+
+                // Update number of points on database
                 fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
                     method: 'PUT',
                     headers: {
@@ -638,7 +783,21 @@
                     },
                     body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
                 })
+
+                // Change the number of points shown on the page
                 document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+
+                // Add reward to user log
+                var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                const csrftoken = getCookie('csrftoken');
+                fetch('/control_interface/api/user_log/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({user_id: {{user_id}}, type: "reward", unix_time: now_unix_time, description: "$20 Breadtalk Voucher"})
+                })
             }
         })
     })
@@ -653,6 +812,8 @@
             if (current_points >= 650) {
                 var user_id = {{user_id}}
                 var new_points = current_points - 650;
+
+                // Update number of points on database
                 fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
                     method: 'PUT',
                     headers: {
@@ -660,7 +821,21 @@
                     },
                     body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
                 })
+
+                // Change the number of points shown on the page
                 document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+
+                // Add reward to user log
+                var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                const csrftoken = getCookie('csrftoken');
+                fetch('/control_interface/api/user_log/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({user_id: {{user_id}}, type: "reward", unix_time: now_unix_time, description: "$20 Jolibee Voucher"})
+                })
             }
         })
     })
@@ -675,6 +850,8 @@
             if (current_points >= 650) {
                 var user_id = {{user_id}}
                 var new_points = current_points - 650;
+
+                // Update number of points on database
                 fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
                     method: 'PUT',
                     headers: {
@@ -682,7 +859,21 @@
                     },
                     body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
                 })
+
+                // Change the number of points shown on the page
                 document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+
+                // Add reward to user log
+                var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                const csrftoken = getCookie('csrftoken');
+                fetch('/control_interface/api/user_log/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({user_id: {{user_id}}, type: "reward", unix_time: now_unix_time, description: "$20 McDonalds Voucher"})
+                })
             }
         })
     })
@@ -697,6 +888,8 @@
             if (current_points >= 800) {
                 var user_id = {{user_id}}
                 var new_points = current_points - 800;
+
+                // Update number of points on database
                 fetch('/control_interface/api/points_wallet/' + user_id.toString() + '/', {
                     method: 'PUT',
                     headers: {
@@ -704,7 +897,21 @@
                     },
                     body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, points: new_points})
                 })
+
+                // Change the number of points shown on the page
                 document.getElementById("points_value").innerHTML = `You have ${new_points} points to redeem!`
+
+                // Add reward to user log
+                var now_unix_time = Math.round((new Date()).getTime() / 1000);
+                const csrftoken = getCookie('csrftoken');
+                fetch('/control_interface/api/user_log/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({user_id: {{user_id}}, type: "reward", unix_time: now_unix_time, description: "$20 Starbucks Voucher"})
+                })
             }
         })
     })

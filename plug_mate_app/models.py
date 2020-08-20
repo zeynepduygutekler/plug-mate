@@ -131,3 +131,11 @@ class Notifications(models.Model):
     notifications = JSONField()
     class Meta:
         db_table = 'notifications'
+
+class UserLog(models.Model):
+    user_id = models.IntegerField()
+    type = models.CharField(max_length=100)
+    unix_time = models.BigIntegerField()
+    description = models.CharField(max_length=100)
+    class Meta:
+        db_table = 'user_log'

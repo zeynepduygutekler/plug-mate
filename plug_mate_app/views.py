@@ -191,9 +191,9 @@ def user_login(request):
 
 
 from .models import PointsWallet, PresenceData, RemoteData, ScheduleData, \
-    AchievementsBonus, AchievementsWeekly, Notifications
+    AchievementsBonus, AchievementsWeekly, Notifications, UserLog
 from .serializers import PointsWalletSerializer, PresenceSerializer, RemoteSerializer, ScheduleSerializer, \
-    AchievementsBonusSerializer, AchievementsWeeklySerializer, NotificationsSerializer
+    AchievementsBonusSerializer, AchievementsWeeklySerializer, NotificationsSerializer, UserLogSerializer
 from rest_framework import generics
 
 
@@ -305,3 +305,18 @@ class NotificationsDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = Notifications.objects.all()
     serializer_class = NotificationsSerializer
+
+class UserLogDataList(generics.ListCreateAPIView):
+    authentication_classes = [authentication.SessionAuthentication]
+    serializer_class = UserLogSerializer
+
+    def get_queryset(self):
+        """ This view should return the user log for the
+        current authenticated user. """
+        user = self.request.user.id
+        return UserLog.objects.filter(user_id = user)
+
+class UserLogDataDetail(generics.RetrieveUpdateDestroyAPIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    queryset = UserLog.objects.all()
+    serializer_class = UserLogSerializer
