@@ -131,9 +131,10 @@ def update_bar_chart(n1, n2, int, **kwargs):
             sorted_list.remove('total')
             string = ''
             for plug_load in sorted_list:
-                # e.g. <b>Desktop</b>: $3.24<br>
-                string = string + '<b>' + plug_load.capitalize() + '</b>' + ': ' + currency_format(
-                    dff[plug_load][date]) + '<br>'
+                if dff[plug_load][date] != 0:
+                    # e.g. <b>Desktop</b>: $3.24<br>
+                    string = string + '<b>' + plug_load.capitalize() + '</b>' + ': ' + currency_format(
+                        dff[plug_load][date]) + '<br>'
             string = string + '<b>' + 'Total' + '</b>' + ': ' + currency_format(
                 dff['total'][date]) + '<br>'
             energy_points_earned = round(dff['total'][date] * 10) if dff['total'][date] > 0 else round(
