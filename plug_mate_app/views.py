@@ -148,6 +148,18 @@ def user_profile(request):
                             'gender': result[6],
                             'birthday': result[7].strftime("%d %B"),
                             'profile': result[8]}
+            if user_profile['profile'] == 'Hustler':
+                user_profile['profile_desc'] = """Hustlers are always quick to produce work, churning out projects after projects. ‘Office hours’ are a foreign concept to them and they are often hurrying from one meeting to another. They are the worker bees of the company, driving progress and making effective change."""
+                user_profile['profile_img'] = 'https://image.flaticon.com/icons/svg/3286/3286414.svg'
+            elif user_profile['profile'] == 'Office Guardian':
+                user_profile['profile_desc'] = """Office guardians are the consistent worker bees in the office. You will always see them punctual to the office and their schedules are usually fixed a month in advance. They are the ones whom you can depend on if you need help."""
+                user_profile['profile_img'] = 'https://image.flaticon.com/icons/svg/3315/3315549.svg'
+            elif user_profile['profile'] == 'Vagabond':
+                user_profile['profile_desc'] = """Vagabonds are like roamers of the office. They don’t like to be confined in one spot, but embrace the variability of their work space. They are always flexible in their whereabouts, adapting quickly. """
+                user_profile['profile_img'] = 'https://image.flaticon.com/icons/svg/2127/2127682.svg'
+            else:
+                user_profile['profile_desc'] = """We're still getting to know you"""
+                user_profile['profile_img'] = 'https://image.flaticon.com/icons/svg/2807/2807684.svg'
 
         context = {
             'user_id': request.user.id,
