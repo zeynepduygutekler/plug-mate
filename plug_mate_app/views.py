@@ -145,7 +145,7 @@ def user_profile(request):
             cursor.execute("SELECT * FROM user_log WHERE user_id=%s AND "
                            "type='achievement' ORDER BY unix_time DESC", [request.user.id])
             achievements = cursor.fetchall()
-            achievements = pd.DataFrame(rewards, columns=[desc[0] for desc in cursor.description])
+            achievements = pd.DataFrame(achievements, columns=[desc[0] for desc in cursor.description])
             achievements = pd.read_csv('plug_mate_app/info_log.csv')
             achievements['date'] = achievements['unix_time'].apply(
                 lambda x: datetime.utcfromtimestamp(int(x)).strftime('%d %b %Y'))
