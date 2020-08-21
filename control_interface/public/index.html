@@ -250,6 +250,11 @@
 <!-- Custom scripts for all pages-->
 <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
 <script>
+    if (Number(document.getElementById("number_of_notifications").innerHTML) !== 0) {
+        // There are unread notifications
+        document.getElementById("bell_icon").style.animationIterationCount = "3";
+    }
+
     document.getElementById("sidebarToggle").onclick = function() {
         if (document.getElementsByClassName("sidebar")[0].classList.contains("toggled")) {
             document.getElementById("content").style.marginLeft = "6.5rem";
@@ -325,11 +330,6 @@
         } else {
             document.getElementById("plug_mate_logo").style.width = "100%";
             document.getElementById("plug_mate_logo").src = "/static/Logo(white).png";
-        }
-
-        if (Number(document.getElementById("number_of_notifications").innerHTML) !== 0) {
-            // There are unread notifications
-            document.getElementById("bell_icon").style.animationIterationCount = "3";
         }
     }
 
