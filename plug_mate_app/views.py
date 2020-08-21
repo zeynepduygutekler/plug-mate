@@ -16,6 +16,7 @@ from time import localtime, strftime
 import os
 import pandas as pd
 import numpy as np
+from datetime import datetime
 
 
 def plug_mate_app(request):
@@ -140,8 +141,19 @@ def user_profile(request):
             rewards = cursor.fetchall()
             rewards = pd.DataFrame(rewards, columns=[desc[0] for desc in cursor.description])['description'].tolist()
 
+            # Query for user's achievement history from database
+            cursor.execute("SELECT * FROM user_log WHERE user_id=%s AND "
+                           "type='achievement' ORDER BY unix_time DESC", [request.user.id])
+            achievements = cursor.fetchall()
+            achievements = pd.DataFrame(rewards, columns=[desc[0] for desc in cursor.description])
+            achievements = pd.read_csv('plug_mate_app/info_log.csv')
+            achievements['date'] = achievements['unix_time'].apply(
+                lambda x: datetime.utcfromtimestamp(int(x)).strftime('%d %b %Y'))
+            achievements = achievements[['date', 'description']]
+            achievements = [dict(date=x[0], achievement=x[1]) for x in achievements.values]
+
             # Query for user's occupancy information from database
-            occupancy_info = pd.read_csv('plug_mate_app/occupancy_profile.csv') # change once table is up
+            occupancy_info = pd.read_csv('plug_mate_app/occupancy_profile.csv')  # change once table is up
             # cursor.execute("SELECT * FROM occupancy_profile WHERE user_id=%s", [request.user.id])
             # rewards = cursor.fetchall()
             # rewards = pd.DataFrame(rewards, columns=[desc[0] for desc in cursor.description]).tolist()
@@ -183,6 +195,7 @@ def user_profile(request):
             'rewards': rewards,
             'user_profile': user_profile,
             'occupancy_info': occupancy_info,
+            'achievements':achievements,
         }
 
         return render(request, 'plug_mate_app/user_profile.html', context)

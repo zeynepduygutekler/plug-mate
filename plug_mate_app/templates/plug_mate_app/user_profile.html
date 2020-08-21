@@ -193,6 +193,7 @@
         }
 
 
+
     </style>
 </head>
 <body>
@@ -243,12 +244,14 @@
                                                             <h6>
                                                                 {{ user_profile.occupation }}, SUTD
                                                             </h6>
-                                                            <p class="proile-rating">PROFILE TYPE : <span>{{ user_profile.profile }}</span></p>
+                                                            <p class="proile-rating">PROFILE TYPE : <span>{{ user_profile.profile }}</span>
+                                                            </p>
                                                         </div>
                                                         <div class="col">
                                                             <div class="row hovertext">
                                                                 <div class="col">
-                                                                    <img src= {{ user_profile.profile_img }} style="max-width:100%;max-height:100%">
+                                                                    <img src={{ user_profile.profile_img }}
+                                                                         style="max-width:100%;max-height:100%">
                                                                 </div>
                                                                 <div class="col">
                                                                     <p>
@@ -288,66 +291,53 @@
                                         <div class="col-md-4">
                                             <div class="profile-work">
                                                 <div class="row">
-                                                        <div class="col-md-5">
-                                                            <label>User ID</label>
-                                                        </div>
-                                                        <div class="col-md-7">
-                                                            <label>{{ user }}</label>
-                                                        </div>
+                                                    <div class="col-md-5">
+                                                        <label>User ID</label>
                                                     </div>
+                                                    <div class="col-md-7">
+                                                        <label>{{ user }}</label>
+                                                    </div>
+                                                </div>
                                                 <div class="row">
-                                                        <div class="col-md-5">
-                                                            <label>Gender</label>
-                                                        </div>
-                                                        <div class="col-md-7">
-                                                            <label>{{ user_profile.gender }}</label>
-                                                        </div>
+                                                    <div class="col-md-5">
+                                                        <label>Gender</label>
                                                     </div>
+                                                    <div class="col-md-7">
+                                                        <label>{{ user_profile.gender }}</label>
+                                                    </div>
+                                                </div>
                                                 <div class="row">
-                                                        <div class="col-md-5">
-                                                            <label>Birthday</label>
-                                                        </div>
-                                                        <div class="col-md-7">
-                                                            <label>{{ user_profile.birthday }}</label>
-                                                        </div>
+                                                    <div class="col-md-5">
+                                                        <label>Birthday</label>
                                                     </div>
+                                                    <div class="col-md-7">
+                                                        <label>{{ user_profile.birthday }}</label>
+                                                    </div>
+                                                </div>
                                                 <div class="row">
-                                                        <div class="col-md-5">
-                                                            <label>Email</label>
-                                                        </div>
-                                                        <div class="col-md-7">
-                                                            <label>{{ user_profile.email }}</label>
-                                                        </div>
+                                                    <div class="col-md-5">
+                                                        <label>Email</label>
                                                     </div>
+                                                    <div class="col-md-7">
+                                                        <label>{{ user_profile.email }}</label>
+                                                    </div>
+                                                </div>
                                                 <div class="row">
-                                                        <div class="col-md-5">
-                                                            <label>Phone</label>
-                                                        </div>
-                                                        <div class="col-md-7">
-                                                            <label>{{ user_profile.contact }}</label>
-                                                        </div>
+                                                    <div class="col-md-5">
+                                                        <label>Phone</label>
                                                     </div>
+                                                    <div class="col-md-7">
+                                                        <label>{{ user_profile.contact }}</label>
+                                                    </div>
+                                                </div>
                                                 <div class="row">
-                                                        <div class="col-md-5">
-                                                            <label>Desk Location</label>
-                                                        </div>
-                                                        <div class="col-md-7">
-                                                            <label>{{ user_profile.room }}</label>
-                                                        </div>
+                                                    <div class="col-md-5">
+                                                        <label>Desk Location</label>
                                                     </div>
-{#                                                <h5>About Plug-mate</h5>#}
-{#                                                <p style="text-align:justify;font-size:0.9rem">#}
-{#                                                    Plug-mate is an automated plug load management system that can help#}
-{#                                                    to reduce your energy consumption using advanced sensing and#}
-{#                                                    control technologies. It allows you to monitor each of your devices’#}
-{#                                                    energy consumption separately and control your operations in#}
-{#                                                    an intuitive manner.#}
-{#                                                </p>#}
-{#                                                <p style="text-align:justify;font-size:0.9rem">#}
-{#                                                    Plug-mate is developed by two PhD student researchers and three Undergraduate students in the#}
-{#                                                    Singapore University of Technology and Design, who have a passion in#}
-{#                                                    reducing energy usages and stopping the effects of climate change.#}
-{#                                                </p>#}
+                                                    <div class="col-md-7">
+                                                        <label>{{ user_profile.room }}</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-8">
@@ -365,101 +355,122 @@
                                                     <h4>Rewards redeemed</h4>
                                                     <div class="row">
                                                         {% if rewards %}
-                                                            {% for reward in rewards %}
-                                                                <div class="col-lg-4 col-sm-12 mb-4">
-                                                                    <div class="card h-100">
-                                                                        {% if 'Breadtalk' in reward %}
-                                                                            <img src="{% static 'Images/breadtalk.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                                                        {% for reward in rewards %}
+                                                        <div class="col-lg-4 col-sm-12 mb-4">
+                                                            <div class="card h-100">
+                                                                {% if 'Breadtalk' in reward %}
+                                                                <img src="{% static 'Images/breadtalk.png' %}"
+                                                                     class="card-img-top"
+                                                                     style="height: 200px; object-fit: cover;">
 
-                                                                        {% elif 'Jolibee' in reward %}
-                                                                            <img src="{% static 'Images/jolibee.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                                                                {% elif 'Jolibee' in reward %}
+                                                                <img src="{% static 'Images/jolibee.png' %}"
+                                                                     class="card-img-top"
+                                                                     style="height: 200px; object-fit: cover;">
 
-                                                                        {% elif 'McDonalds' in reward %}
-                                                                            <img src="{% static 'Images/mcdonalds.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                                                                {% elif 'McDonalds' in reward %}
+                                                                <img src="{% static 'Images/mcdonalds.png' %}"
+                                                                     class="card-img-top"
+                                                                     style="height: 200px; object-fit: cover;">
 
-                                                                        {% else %}
-                                                                            <img src="{% static 'Images/starbucks.png' %}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                                                                {% else %}
+                                                                <img src="{% static 'Images/starbucks.png' %}"
+                                                                     class="card-img-top"
+                                                                     style="height: 200px; object-fit: cover;">
 
-                                                                        {% endif %}
-                                                                        <div class="card-body">
-                                                                            <div class="row">
-                                                                                <h5 class="card-title font-weight-bold">{{ reward }}</h5>
-                                                                            </div>
-                                                                        </div>
+                                                                {% endif %}
+                                                                <div class="card-body">
+                                                                    <div class="row">
+                                                                        <h5 class="card-title font-weight-bold">{{
+                                                                            reward }}</h5>
                                                                     </div>
                                                                 </div>
-                                                            {% endfor %}
-                                                        {% else %}
-                                                            <div class="col-md-12 align-items-center">
-                                                                <p class="text-left">No Rewards Redeemed</p>
                                                             </div>
+                                                        </div>
+                                                        {% endfor %}
+                                                        {% else %}
+                                                        <div class="col-md-12 align-items-center">
+                                                            <p class="text-left">No Rewards Redeemed</p>
+                                                        </div>
                                                         {% endif %}
                                                     </div>
                                                 </div>
 
                                                 <div class="tab-pane fade" id="achievements" role="tabpanel"
                                                      aria-labelledby="profile-tab">
-                                                    <h4>Achievements</h4>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <label>Experience</label>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <p>Expedddrt</p>
-                                                        </div>
+                                                    <h4>Achievement log</h4>
+                                                    {% if achievements %}
+                                                    <table style="width:100%">
+                                                        <tr>
+                                                            <th>Achievement</th>
+                                                            <th>Date</th>
+                                                        </tr>
+                                                        {% for achievement in achievements %}
+                                                        <tr>
+                                                            <td>{{ achievement.achievement }}</td>
+                                                            <td>{{ achievement.date}}</td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </table>
+                                                    {% else %}
+                                                    <div class="col-md-12 align-items-center">
+                                                        <p class="text-left">No Achievement yet</p>
                                                     </div>
-                                                </div>
+                                                    {% endif %}
 
+                                                </div>
                                             </div>
+
                                         </div>
                                     </div>
-                                </form>
                             </div>
+                            </form>
                         </div>
-                        </form>
                     </div>
+                    </form>
                 </div>
-                <!-- /.container-fluid -->
-
-
-                <!-- Footer -->
-                {% include 'partials/_footer.html' %}
-                <!-- End of Footer -->
-
             </div>
-            <!-- End of Content Wrapper -->
+            <!-- /.container-fluid -->
+
+
+            <!-- Footer -->
+            {% include 'partials/_footer.html' %}
+            <!-- End of Footer -->
 
         </div>
-        <!-- End of Page Wrapper -->
+        <!-- End of Content Wrapper -->
 
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
+    </div>
+    <!-- End of Page Wrapper -->
 
-        <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="{% url 'plug_mate_app:user_login' %}">Logout</a>
-                    </div>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="{% url 'plug_mate_app:user_login' %}">Logout</a>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
         var options = {
             series: [10,15,3],
             labels: ['Remote Control', 'Presence-based Control', 'Schedule-based Control'],
@@ -553,19 +564,20 @@
         var line = new ApexCharts(document.querySelector("#line"), options);
         line.render();
 
-    </script>
+
+</script>
 
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- Bootstrap core JavaScript-->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+<!-- Core plugin JavaScript-->
+<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
-    <script>
+<!-- Custom scripts for all pages-->
+<script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+<script>
         document.getElementById("sidebarToggle").onclick = function() {
             if (document.getElementsByClassName("sidebar")[0].classList.contains("toggled")) {
                 document.getElementById("content").style.marginLeft = "6.5rem";
@@ -645,6 +657,7 @@
             }
         }
 
-    </script>
+
+</script>
 </body>
 </html>
