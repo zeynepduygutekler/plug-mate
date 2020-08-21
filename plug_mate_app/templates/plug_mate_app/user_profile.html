@@ -356,33 +356,33 @@
                                                     <div class="row">
                                                         {% if rewards %}
                                                         {% for reward in rewards %}
-                                                        <div class="col-lg-4 col-sm-12 mb-4">
+                                                        <div class="col-lg-3 col-sm-6 mb-3">
                                                             <div class="card h-100">
                                                                 {% if 'Breadtalk' in reward %}
                                                                 <img src="{% static 'Images/breadtalk.png' %}"
                                                                      class="card-img-top"
-                                                                     style="height: 200px; object-fit: cover;">
+                                                                     style="object-fit: cover;">
 
                                                                 {% elif 'Jolibee' in reward %}
                                                                 <img src="{% static 'Images/jolibee.png' %}"
                                                                      class="card-img-top"
-                                                                     style="height: 200px; object-fit: cover;">
+                                                                     style="object-fit: cover;">
 
                                                                 {% elif 'McDonalds' in reward %}
                                                                 <img src="{% static 'Images/mcdonalds.png' %}"
                                                                      class="card-img-top"
-                                                                     style="height: 200px; object-fit: cover;">
+                                                                     style="object-fit: cover;">
 
                                                                 {% else %}
                                                                 <img src="{% static 'Images/starbucks.png' %}"
                                                                      class="card-img-top"
-                                                                     style="height: 200px; object-fit: cover;">
+                                                                     style="object-fit: cover;">
 
                                                                 {% endif %}
                                                                 <div class="card-body">
                                                                     <div class="row">
-                                                                        <h5 class="card-title font-weight-bold">{{
-                                                                            reward }}</h5>
+                                                                        <h5 class="card-title font-weight-bold text-center">
+                                                                            {{ reward }}</h5>
                                                                     </div>
                                                                 </div>
                                                             </div>

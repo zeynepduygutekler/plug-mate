@@ -141,6 +141,9 @@ def user_profile(request):
             rewards = cursor.fetchall()
             rewards = pd.DataFrame(rewards, columns=[desc[0] for desc in cursor.description])['description'].tolist()
 
+            # for reward in rewards:
+            #     print(reward)
+
             # Query for user's achievement history from database
             cursor.execute("SELECT * FROM user_log WHERE user_id=%s AND "
                            "type='achievement' ORDER BY unix_time DESC", [request.user.id])
