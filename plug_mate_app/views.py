@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from . import serializers
-from . models import UserProfileInfo
+from .models import UserProfileInfo
 from django.db import connection
 from time import localtime, strftime
 import os
@@ -37,7 +37,7 @@ def plug_mate_app(request):
 
             # Query for user's cumulative savings from the database
             cursor.execute("SELECT cum_savings FROM achievements_bonus WHERE user_id=%s", [request.user.id])
-            cumulative_savings_kwh = round(cursor.fetchone()[0] / (1000*60), 1)
+            cumulative_savings_kwh = round(cursor.fetchone()[0] / (1000 * 60), 1)
             cumulative_savings_dollars = '{:,.2f}'.format(cumulative_savings_kwh * 0.201)
             cumulative_savings_trees = round(cumulative_savings_kwh * 0.201 * 0.5)
 
@@ -58,8 +58,10 @@ def plug_mate_app(request):
             num_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
 
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        points_table = pd.read_csv(os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_points.csv'))
-        max_weekly_points = sum(points_table[points_table['type'] == 'daily']['points']) * 5 + sum(points_table[points_table['type'] == 'weekly']['points'])
+        points_table = pd.read_csv(
+            os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/tables_csv/achievements_points.csv'))
+        max_weekly_points = sum(points_table[points_table['type'] == 'daily']['points']) * 5 + sum(
+            points_table[points_table['type'] == 'weekly']['points'])
         remaining_points = max_weekly_points - daily_achievements - weekly_achievements
         os.environ['TZ'] = 'Asia/Singapore'
 
@@ -138,6 +140,15 @@ def user_profile(request):
             rewards = cursor.fetchall()
             rewards = pd.DataFrame(rewards, columns=[desc[0] for desc in cursor.description])['description'].tolist()
 
+            # Query for user's occupancy information from database
+            occupancy_info = pd.read_csv('plug_mate_app/occupancy_profile.csv') # change once table is up
+            # cursor.execute("SELECT * FROM occupancy_profile WHERE user_id=%s", [request.user.id])
+            # rewards = cursor.fetchall()
+            # rewards = pd.DataFrame(rewards, columns=[desc[0] for desc in cursor.description]).tolist()
+            occupancy_info = occupancy_info.iloc[0].to_list()[9:-2]
+
+
+
             # Query for user profile information
             cursor.execute("SELECT * FROM plug_mate_app_userprofileinfo WHERE user_id=%s", [request.user.id])
             result = cursor.fetchone()
@@ -148,14 +159,18 @@ def user_profile(request):
                             'gender': result[6],
                             'birthday': result[7].strftime("%d %B"),
                             'profile': result[8]}
+            # Map profile description and img to profile type
             if user_profile['profile'] == 'Hustler':
-                user_profile['profile_desc'] = """Hustlers are always quick to produce work, churning out projects after projects. ‘Office hours’ are a foreign concept to them and they are often hurrying from one meeting to another. They are the worker bees of the company, driving progress and making effective change."""
+                user_profile[
+                    'profile_desc'] = """Hustlers are always quick to produce work, churning out projects after projects. ‘Office hours’ are a foreign concept to them and they are often hurrying from one meeting to another. They are the worker bees of the company, driving progress and making effective change."""
                 user_profile['profile_img'] = 'https://image.flaticon.com/icons/svg/3286/3286414.svg'
             elif user_profile['profile'] == 'Office Guardian':
-                user_profile['profile_desc'] = """Office guardians are the consistent worker bees in the office. You will always see them punctual to the office and their schedules are usually fixed a month in advance. They are the ones whom you can depend on if you need help."""
+                user_profile[
+                    'profile_desc'] = """Office guardians are the consistent worker bees in the office. You will always see them punctual to the office and their schedules are usually fixed a month in advance. They are the ones whom you can depend on if you need help."""
                 user_profile['profile_img'] = 'https://image.flaticon.com/icons/svg/3315/3315549.svg'
             elif user_profile['profile'] == 'Vagabond':
-                user_profile['profile_desc'] = """Vagabonds are like roamers of the office. They don’t like to be confined in one spot, but embrace the variability of their work space. They are always flexible in their whereabouts, adapting quickly. """
+                user_profile[
+                    'profile_desc'] = """Vagabonds are like roamers of the office. They don’t like to be confined in one spot, but embrace the variability of their work space. They are always flexible in their whereabouts, adapting quickly. """
                 user_profile['profile_img'] = 'https://image.flaticon.com/icons/svg/2127/2127682.svg'
             else:
                 user_profile['profile_desc'] = """We're still getting to know you"""
@@ -167,6 +182,7 @@ def user_profile(request):
             'num_notifications': num_notifications,
             'rewards': rewards,
             'user_profile': user_profile,
+            'occupancy_info': occupancy_info,
         }
 
         return render(request, 'plug_mate_app/user_profile.html', context)
@@ -180,6 +196,7 @@ def special(request):
     # LOGIN_URL = '/basic_app/user_login/'
     return HttpResponse("You are logged in. Nice!")
 
+
 @login_required
 def user_logout(request):
     # Log out the user.
@@ -189,7 +206,6 @@ def user_logout(request):
 
 
 def user_login(request):
-
     if request.method == 'POST':
         # First get the username and password supplied
         username = request.POST.get('username')
@@ -200,7 +216,7 @@ def user_login(request):
 
         # If we have a user
         if user:
-            #Check it the account is active
+            # Check it the account is active
             if user.is_active:
                 # Log the user in.
                 login(request, user)
@@ -217,7 +233,7 @@ def user_login(request):
             return HttpResponse("Invalid login details supplied.")
 
     else:
-        #Nothing has been provided for username or password.
+        # Nothing has been provided for username or password.
         return render(request, 'plug_mate_app/login.html', {})
 
 
@@ -239,12 +255,14 @@ class PresenceDataList(generics.ListCreateAPIView):
         """ This view should return a list of all the presence
         settings for the current authenticated user."""
         user = self.request.user.id
-        return PresenceData.objects.filter(user_id = user)
+        return PresenceData.objects.filter(user_id=user)
+
 
 class PresenceDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = PresenceData.objects.all()
     serializer_class = PresenceSerializer
+
 
 class RemoteDataList(generics.ListCreateAPIView):
     authentication_classes = [authentication.SessionAuthentication]
@@ -254,7 +272,7 @@ class RemoteDataList(generics.ListCreateAPIView):
         """ This view should return a list of all the remote
         settings for the current authenticated user. """
         user = self.request.user.id
-        return RemoteData.objects.filter(user_id = user)
+        return RemoteData.objects.filter(user_id=user)
 
 
 class RemoteDataDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -271,13 +289,14 @@ class ScheduleDataList(generics.ListCreateAPIView):
         """ This view should return a list of all the schedule
         settings for the current authenticated user. """
         user = self.request.user.id
-        return ScheduleData.objects.filter(user_id = user)
+        return ScheduleData.objects.filter(user_id=user)
 
 
 class ScheduleDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = ScheduleData.objects.all()
     serializer_class = ScheduleSerializer
+
 
 class AchievementsBonusDataList(generics.ListCreateAPIView):
     authentication_classes = [authentication.SessionAuthentication]
@@ -287,12 +306,14 @@ class AchievementsBonusDataList(generics.ListCreateAPIView):
         """ This view should return a list of all the bonus
         achievements for the current authenticated user."""
         user = self.request.user.id
-        return AchievementsBonus.objects.filter(user_id = user)
+        return AchievementsBonus.objects.filter(user_id=user)
+
 
 class AchievementsBonusDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = AchievementsBonus.objects.all()
     serializer_class = AchievementsBonusSerializer
+
 
 class AchievementsWeeklyDataList(generics.ListCreateAPIView):
     authentication_classes = [authentication.SessionAuthentication]
@@ -302,12 +323,14 @@ class AchievementsWeeklyDataList(generics.ListCreateAPIView):
         """ This view should return a list of all the weekly
         achievements for the current authenticated user. """
         user = self.request.user.id
-        return AchievementsWeekly.objects.filter(user_id = user)
+        return AchievementsWeekly.objects.filter(user_id=user)
+
 
 class AchievementsWeeklyDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = AchievementsWeekly.objects.all()
     serializer_class = AchievementsWeeklySerializer
+
 
 class AchievementsDailyDataList(generics.ListCreateAPIView):
     authentication_classes = [authentication.SessionAuthentication]
@@ -317,12 +340,14 @@ class AchievementsDailyDataList(generics.ListCreateAPIView):
         """ This view should return a list of all the weekly
         achievements for the current authenticated user. """
         user = self.request.user.id
-        return AchievementsDaily.objects.filter(user_id = user)
+        return AchievementsDaily.objects.filter(user_id=user)
+
 
 class AchievementsDailyDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = AchievementsDaily.objects.all()
     serializer_class = AchievementsDailySerializer
+
 
 class PointsWalletDataList(generics.ListCreateAPIView):
     authentication_classes = [authentication.SessionAuthentication]
@@ -332,12 +357,14 @@ class PointsWalletDataList(generics.ListCreateAPIView):
         """ This view should return the points in the energy wallet
         of the current authenticated user. """
         user = self.request.user.id
-        return PointsWallet.objects.filter(user_id = user)
+        return PointsWallet.objects.filter(user_id=user)
+
 
 class PointsWalletDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = PointsWallet.objects.all()
     serializer_class = PointsWalletSerializer
+
 
 class NotificationsDataList(generics.ListCreateAPIView):
     authentication_classes = [authentication.SessionAuthentication]
@@ -347,12 +374,14 @@ class NotificationsDataList(generics.ListCreateAPIView):
         """ This view should return the notifications for the
         current authenticated user. """
         user = self.request.user.id
-        return Notifications.objects.filter(user_id = user)
+        return Notifications.objects.filter(user_id=user)
+
 
 class NotificationsDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = Notifications.objects.all()
     serializer_class = NotificationsSerializer
+
 
 class UserLogDataList(generics.ListCreateAPIView):
     authentication_classes = [authentication.SessionAuthentication]
@@ -362,12 +391,14 @@ class UserLogDataList(generics.ListCreateAPIView):
         """ This view should return the user log for the
         current authenticated user. """
         user = self.request.user.id
-        return UserLog.objects.filter(user_id = user)[:1]
+        return UserLog.objects.filter(user_id=user)[:1]
+
 
 class UserLogDataDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [authentication.TokenAuthentication]
     queryset = UserLog.objects.all()
     serializer_class = UserLogSerializer
+
 
 class UserPresenceDataList(generics.ListCreateAPIView):
     authentication_classes = [authentication.SessionAuthentication]
@@ -377,4 +408,4 @@ class UserPresenceDataList(generics.ListCreateAPIView):
         """ This view should return the latest presence of
         the current authenticated user. """
         user = self.request.user.id
-        return Presence.objects.filter(user_id = user).order_by('-id')[:1]
+        return Presence.objects.filter(user_id=user).order_by('-id')[:1]
