@@ -147,7 +147,10 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
     # F) Search for the most recent changed ID to know if hour day week or Month
     # checks the list of id that recently triggered a callback in dash.callback_context.triggered list
-    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    try:
+        changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+    except:
+        changed_id = 'week'
 
     # Get user id
     user_id = kwargs['user'].id
