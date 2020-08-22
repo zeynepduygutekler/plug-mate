@@ -56,7 +56,7 @@ def plug_mate_app(request):
 
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
-            notifications = json.loads(cursor.fetchone()[0])['notifications']
+            notifications = cursor.fetchone()[0]['notifications']
             num_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
 
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -90,7 +90,7 @@ def control_interface(request):
         with connection.cursor() as cursor:
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
-            notifications = json.loads(cursor.fetchone()[0])['notifications']
+            notifications = cursor.fetchone()[0]['notifications']
             num_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
 
         context = {
@@ -113,7 +113,7 @@ def rewards(request):
 
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
-            notifications = json.loads(cursor.fetchone()[0])['notifications']
+            notifications = cursor.fetchone()[0]['notifications']
             num_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
 
         context = {
@@ -133,7 +133,7 @@ def user_profile(request):
         with connection.cursor() as cursor:
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
-            notifications = json.loads(cursor.fetchone()[0])['notifications']
+            notifications = cursor.fetchone()[0]['notifications']
             num_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
 
             # Query for user's rewards from database
@@ -143,11 +143,10 @@ def user_profile(request):
             rewards = pd.DataFrame(rewards, columns=[desc[0] for desc in cursor.description])['description'].tolist()
 
             # Query for user's achievement history from database
-            cursor.execute("SELECT * FROM user_log WHERE user_id=%s AND "
+            cursor.execute("SELECT unix_time, description FROM user_log WHERE user_id=%s AND "
                            "type='achievement' ORDER BY unix_time DESC", [request.user.id])
             achievements = cursor.fetchall()
             achievements = pd.DataFrame(achievements, columns=[desc[0] for desc in cursor.description])
-            achievements = pd.read_csv('plug_mate_app/info_log.csv')
             achievements['date'] = achievements['unix_time'].apply(
                 lambda x: datetime.utcfromtimestamp(int(x)).strftime('%d %b %Y'))
             achievements = achievements[['date', 'description']]
@@ -159,8 +158,6 @@ def user_profile(request):
             # rewards = cursor.fetchall()
             # rewards = pd.DataFrame(rewards, columns=[desc[0] for desc in cursor.description]).tolist()
             occupancy_info = occupancy_info.iloc[0].to_list()[9:-2]
-
-
 
             # Query for user profile information
             cursor.execute("SELECT * FROM plug_mate_app_userprofileinfo WHERE user_id=%s", [request.user.id])
@@ -196,7 +193,7 @@ def user_profile(request):
             'rewards': rewards,
             'user_profile': user_profile,
             'occupancy_info': occupancy_info,
-            'achievements':achievements,
+            'achievements': achievements,
         }
 
         return render(request, 'plug_mate_app/user_profile.html', context)
@@ -209,7 +206,7 @@ def about_us(request):
         with connection.cursor() as cursor:
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
-            notifications = json.loads(cursor.fetchone()[0])['notifications']
+            notifications = cursor.fetchone()[0]['notifications']
             num_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
 
         context = {
