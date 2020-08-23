@@ -158,17 +158,17 @@
         fetch('/control_interface/api/notifications/')
         .then(response => response.json())
         .then(data => {
-            var current_user = data[0].user_id;
-            for (var input of data[0].notifications.notifications) {
-                input.seen = 1;
+            var notifications_data = JSON.parse(data[0].notifications).notifications;
+            for (var input of notifications_data) {
+                input.seen = 1
             }
-            console.log(data[0])
+            var current_user = data[0].user_id;
             fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data[0])
+                body: JSON.stringify({id: data[0].user_id, user_id: data[0].user_id, notifications: {notifications: notifications_data}})
             })
         })
 
