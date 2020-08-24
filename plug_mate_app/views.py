@@ -154,10 +154,11 @@ def user_profile(request):
 
             # Query for user's occupancy information from database
             occupancy_info = pd.read_csv('plug_mate_app/occupancy_profile.csv')  # change once table is up
+            occupancy_info = occupancy_info.loc[occupancy_info.user_id == request.user.id]
             # cursor.execute("SELECT * FROM occupancy_profile WHERE user_id=%s", [request.user.id])
-            # rewards = cursor.fetchall()
-            # rewards = pd.DataFrame(rewards, columns=[desc[0] for desc in cursor.description]).tolist()
-            occupancy_info = occupancy_info.iloc[0].to_list()[9:-2]
+            # occupancy_info = cursor.fetchall()
+            # occupancy_info = pd.DataFrame(rewards, columns=[desc[0] for desc in cursor.description]).tolist()
+            occupancy_info = occupancy_info['occupancy_probability'][9:-2].to_list()
 
             # Query for user profile information
             cursor.execute("SELECT * FROM plug_mate_app_userprofileinfo WHERE user_id=%s", [request.user.id])
