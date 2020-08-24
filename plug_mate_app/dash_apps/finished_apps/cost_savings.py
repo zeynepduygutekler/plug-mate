@@ -140,7 +140,7 @@ def update_bar_chart(n1, n2, int, **kwargs):
             energy_points_earned = round(dff['total'][date] * 10) if dff['total'][date] > 0 else round(
                 dff['total'][date] * 0.5 * 10)
             string += f'<span style="color:blue"><b>Energy points earned</b>: {energy_points_earned} points</span>'
-            if energy_points_earned >= 0:
+            if dff['total'][date] >= 0:
                 hovertext1.append(string)
             else:
                 hovertext2.append(string)
