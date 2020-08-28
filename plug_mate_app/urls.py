@@ -40,6 +40,7 @@ urlpatterns = [
     path('control_interface/api/user_log/<int:pk>/', views.UserLogDataDetail.as_view()),
     path('control_interface/api/user_presence/', views.UserPresenceDataList.as_view()),
     path('', views.plug_mate_app, name='index'),
+    path('manager_page/', views.manager_page, name='manager_page'),
     path('profile/', views.user_profile, name='profile'),
     path('user_login/', views.user_login, name='user_login'),
     path('control_interface/', views.control_interface, name='control_interface'),

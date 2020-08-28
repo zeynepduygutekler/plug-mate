@@ -84,6 +84,23 @@ def plug_mate_app(request):
     else:
         return render(request, 'plug_mate_app/login.html', {})
 
+def manager_page(request):
+    if request.user.is_authenticated:
+        with connection.cursor() as cursor:
+            # Query for the user's notifications
+            cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
+            notifications = json.loads(cursor.fetchone()[0])['notifications']
+            num_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
+
+        context = {
+            'user_id': request.user.id,
+            'notifications': notifications,
+            'num_notifications': num_notifications
+        }
+
+        return render(request, 'plug_mate_app/manager_page.html', context)
+    else:
+        return render(request, 'plug_mate_app/login.html', {})
 
 def control_interface(request):
     if request.user.is_authenticated:

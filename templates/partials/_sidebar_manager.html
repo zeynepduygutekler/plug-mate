@@ -1,0 +1,439 @@
+{% load static %}
+
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" style="height:100vh;position:fixed;">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'plug_mate_app:manager_page' %}">
+        <div class="sidebar-brand-icon">
+            <img id="plug_mate_logo" src="">
+        </div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <div style="overflow-y:auto;">
+        <!-- Nav Item - All Levels -->
+        <li class="nav-item active">
+            <a class="nav-link" onclick="chooseBuilding()" id="all_levels">
+                <span style="font-size:0.8rem;" class="hoverable"> ALL LEVELS </span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Level 1 -->
+        <li class="nav-item active">
+            <a class="nav-link" onclick="chooseLevel('one')" id="level_one">
+                <span style="font-size:0.8rem" class="hoverable"> LEVEL 1 </span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Level 2 -->
+        <li class="nav-item active">
+            <a class="nav-link" onclick="chooseLevel('two')" id="level_two">
+                <span style="font-size: 0.8rem" class="hoverable"> LEVEL 2 </span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Level 3 -->
+        <li class="nav-item active">
+            <a class="nav-link" onclick="chooseLevel('three')" id="level_three">
+                <span style="font-size: 0.8rem" class="hoverable"> LEVEL 3 </span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Level 4 -->
+        <li class="nav-item active">
+            <a class="nav-link" onclick="chooseLevel('four')" id="level_four">
+                <span style="font-size: 0.8rem" class="hoverable"> LEVEL 4 </span>
+            </a>
+        </li>
+
+        <!-- Level 4 Rooms -->
+        <li class="nav-item level_four_room">
+            <a class="nav-link" onclick="chooseLevelFourRoom('buckminster_fuller_collaboration_space')" id="buckminster_fuller_collaboration_space">
+                <i class="far fa-registered"></i>
+                <span class="hoverable"> Buckminster Fuller Collaboration Space (3.401) </span>
+            </a>
+        </li>
+
+        <li class="nav-item level_four_room">
+            <a class="nav-link" onclick="chooseLevelFourRoom('da_vinci_room')" id="da_vinci_room">
+                <i class="far fa-registered"></i>
+                <span class="hoverable"> Da Vinci Room (3.401-1) </span>
+            </a>
+        </li>
+
+        <li class="nav-item level_four_room">
+            <a class="nav-link" onclick="chooseLevelFourRoom('archimedes_room')" id="archimedes_room">
+                <i class="far fa-registered"></i>
+                <span class="hoverable"> Archimedes Room (3.401-2) </span>
+            </a>
+        </li>
+
+        <li class="nav-item level_four_room">
+            <a class="nav-link" onclick="chooseLevelFourRoom('private_offices_one')" id="private_offices_one">
+                <i class="far fa-registered"></i>
+                <span class="hoverable"> Private Offices 1 (3.401-3) </span>
+            </a>
+        </li>
+
+        <li class="nav-item level_four_room">
+            <a class="nav-link" onclick="chooseLevelFourRoom('feynman_room')" id="feynman_room">
+                <i class="far fa-registered"></i>
+                <span class="hoverable"> Feynman Room (3.401-12) </span>
+            </a>
+        </li>
+
+        <li class="nav-item level_four_room">
+            <a class="nav-link" onclick="chooseLevelFourRoom('thomas_edison_room')" id="thomas_edison_room">
+                <i class="far fa-registered"></i>
+                <span class="hoverable"> Thomas Edison Room (3.402) </span>
+            </a>
+        </li>
+
+        <li class="nav-item level_four_room">
+            <a class="nav-link" onclick="chooseLevelFourRoom('private_offices_two')" id="private_offices_two">
+                <i class="far fa-registered"></i>
+                <span class="hoverable"> Private Offices 2 (3.403) </span>
+            </a>
+        </li>
+
+        <li class="nav-item level_four_room">
+            <a class="nav-link" onclick="chooseLevelFourRoom('babbage_room')" id="babbage_room">
+                <i class="far fa-registered"></i>
+                <span class="hoverable"> Babbage Room (3.406) </span>
+            </a>
+        </li>
+
+        <li class="nav-item level_four_room">
+            <a class="nav-link" onclick="chooseLevelFourRoom('materials_design_lab')" id="materials_design_lab">
+                <i class="far fa-registered"></i>
+                <span class="hoverable"> Materials Design Lab (3.409) </span>
+            </a>
+        </li>
+
+        <li class="nav-item level_four_room">
+            <a class="nav-link" onclick="chooseLevelFourRoom('electrical_device_characterization_lab')" id="electrical_device_characterization_lab">
+                <i class="far fa-registered"></i>
+                <span class="hoverable"> Electrical Device Characterization Lab (3.411) </span>
+            </a>
+        </li>
+
+        <li class="nav-item level_four_room">
+            <a class="nav-link" onclick="chooseLevelFourRoom('optics_design_lab')" id="optics_design_lab">
+                <i class="far fa-registered"></i>
+                <span class="hoverable"> Optics Design Lab (3.412) </span>
+            </a>
+        </li>
+
+        <li class="nav-item level_four_room">
+            <a class="nav-link" onclick="chooseLevelFourRoom('magnetic_and_mechanical_materials_characterization_lab')" id="magnetic_and_mechanical_materials_characterization_lab">
+                <i class="far fa-registered"></i>
+                <span class="hoverable"> Magnetic & Mechanical Materials Characterization Lab (3.413) </span>
+            </a>
+        </li>
+
+        <li class="nav-item level_four_room">
+            <a class="nav-link" onclick="chooseLevelFourRoom('thin_film_characterization_lab')" id="thin_film_characterization_lab">
+                <i class="far fa-registered"></i>
+                <span class="hoverable"> Thin Film Characterization Lab (3.410) </span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Level 5 -->
+        <li class="nav-item active">
+            <a class="nav-link" onclick="chooseLevel('five')" id="level_five">
+                <span style="font-size: 0.8rem" class="hoverable"> LEVEL 5 </span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Level 6 -->
+        <li class="nav-item active">
+            <a class="nav-link" onclick="chooseLevel('six')" id="level_six">
+                <span style="font-size: 0.8rem" class="hoverable"> LEVEL 6 </span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Level 7 -->
+        <li class="nav-item active">
+            <a class="nav-link" onclick="chooseLevel('seven')" id="level_seven">
+                <span style="font-size: 0.8rem" class="hoverable"> LEVEL 7 </span>
+            </a>
+        </li>
+    </div>
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+</ul>
+<!-- End of Sidebar -->
+
+<script>
+    window.addEventListener("load", first_load);
+    function first_load() {
+        document.getElementById("all_levels").click();
+    }
+
+    function chooseBuilding() {
+        document.getElementById("all_levels").style.color = "#CCC";
+        document.getElementById("level_one").style.color = "#FFFFFF";
+        document.getElementById("level_two").style.color = "#FFFFFF";
+        document.getElementById("level_three").style.color = "#FFFFFF";
+        document.getElementById("level_four").style.color = "#FFFFFF";
+        document.getElementById("level_five").style.color = "#FFFFFF";
+        document.getElementById("level_six").style.color = "#FFFFFF";
+        document.getElementById("level_seven").style.color = "#FFFFFF";
+
+        document.getElementById("page_title").innerHTML = "Building";
+
+        for (var i = 0; i < document.getElementsByClassName("level_four_room").length; i++) {
+            document.getElementsByClassName("level_four_room")[i].style.display = "none";
+        }
+    }
+
+    function chooseLevel(floor) {
+        document.getElementById("all_levels").style.color = "#FFFFFF";
+        const floors = ['one', 'two', 'three', 'four', 'five', 'six', 'seven'];
+        for (var input of floors) {
+            if (input === floor) {
+                document.getElementById("level_" + floor).style.color = "#CCC";
+            } else {
+                document.getElementById("level_" + input).style.color = "#FFFFFF";
+            }
+        }
+
+        document.getElementById("page_title").innerHTML = "Level " + (floors.indexOf(floor) + 1);
+
+        if (floor === "four") {
+            for (var i = 0; i < document.getElementsByClassName("level_four_room").length; i++) {
+                document.getElementsByClassName("level_four_room")[i].style.display = "block";
+            }
+        } else {
+            for (var i = 0; i < document.getElementsByClassName("level_four_room").length; i++) {
+                document.getElementsByClassName("level_four_room")[i].style.display = "none";
+            }
+        }
+    }
+
+    function chooseLevelFourRoom(room) {
+        document.getElementById("all_levels").style.color = "#FFFFFF";
+        document.getElementById("level_one").style.color = "#FFFFFF";
+        document.getElementById("level_two").style.color = "#FFFFFF";
+        document.getElementById("level_three").style.color = "#FFFFFF";
+        document.getElementById("level_four").style.color = "#FFFFFF";
+        document.getElementById("level_five").style.color = "#FFFFFF";
+        document.getElementById("level_six").style.color = "#FFFFFF";
+        document.getElementById("level_seven").style.color = "#FFFFFF";
+
+        if (room === "buckminster_fuller_collaboration_space") {
+            document.getElementById("buckminster_fuller_collaboration_space").style.color = "#CCC";
+            document.getElementById("da_vinci_room").style.color = "#FFFFFF";
+            document.getElementById("archimedes_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_one").style.color = "#FFFFFF";
+            document.getElementById("feynman_room").style.color = "#FFFFFF";
+            document.getElementById("thomas_edison_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_two").style.color = "#FFFFFF";
+            document.getElementById("babbage_room").style.color = "#FFFFFF";
+            document.getElementById("materials_design_lab").style.color = "#FFFFFF";
+            document.getElementById("thin_film_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("electrical_device_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("optics_design_lab").style.color = "#FFFFFF";
+            document.getElementById("magnetic_and_mechanical_materials_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("page_title").innerHTML = "Buckminster Fuller Collaboration Space (3.401)"
+        }
+        if (room === "da_vinci_room") {
+            document.getElementById("buckminster_fuller_collaboration_space").style.color = "#FFFFFF";
+            document.getElementById("da_vinci_room").style.color = "#CCC";
+            document.getElementById("archimedes_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_one").style.color = "#FFFFFF";
+            document.getElementById("feynman_room").style.color = "#FFFFFF";
+            document.getElementById("thomas_edison_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_two").style.color = "#FFFFFF";
+            document.getElementById("babbage_room").style.color = "#FFFFFF";
+            document.getElementById("materials_design_lab").style.color = "#FFFFFF";
+            document.getElementById("thin_film_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("electrical_device_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("optics_design_lab").style.color = "#FFFFFF";
+            document.getElementById("magnetic_and_mechanical_materials_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("page_title").innerHTML = "Da Vinci Room (3.401-1)";
+        }
+        if (room === "archimedes_room") {
+            document.getElementById("buckminster_fuller_collaboration_space").style.color = "#FFFFFF";
+            document.getElementById("da_vinci_room").style.color = "#FFFFFF";
+            document.getElementById("archimedes_room").style.color = "#CCC";
+            document.getElementById("private_offices_one").style.color = "#FFFFFF";
+            document.getElementById("feynman_room").style.color = "#FFFFFF";
+            document.getElementById("thomas_edison_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_two").style.color = "#FFFFFF";
+            document.getElementById("babbage_room").style.color = "#FFFFFF";
+            document.getElementById("materials_design_lab").style.color = "#FFFFFF";
+            document.getElementById("thin_film_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("electrical_device_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("optics_design_lab").style.color = "#FFFFFF";
+            document.getElementById("magnetic_and_mechanical_materials_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("page_title").innerHTML = "Archimedes Room (3.401-2)";
+        }
+        if (room === "private_offices_one") {
+            document.getElementById("buckminster_fuller_collaboration_space").style.color = "#FFFFFF";
+            document.getElementById("da_vinci_room").style.color = "#FFFFFF";
+            document.getElementById("archimedes_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_one").style.color = "#CCC";
+            document.getElementById("feynman_room").style.color = "#FFFFFF";
+            document.getElementById("thomas_edison_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_two").style.color = "#FFFFFF";
+            document.getElementById("babbage_room").style.color = "#FFFFFF";
+            document.getElementById("materials_design_lab").style.color = "#FFFFFF";
+            document.getElementById("thin_film_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("electrical_device_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("optics_design_lab").style.color = "#FFFFFF";
+            document.getElementById("magnetic_and_mechanical_materials_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("page_title").innerHTML = "Private Offices 1 (3.401-3)";
+        }
+        if (room === "feynman_room") {
+            document.getElementById("buckminster_fuller_collaboration_space").style.color = "#FFFFFF";
+            document.getElementById("da_vinci_room").style.color = "#FFFFFF";
+            document.getElementById("archimedes_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_one").style.color = "#FFFFFF";
+            document.getElementById("feynman_room").style.color = "#CCC";
+            document.getElementById("thomas_edison_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_two").style.color = "#FFFFFF";
+            document.getElementById("babbage_room").style.color = "#FFFFFF";
+            document.getElementById("materials_design_lab").style.color = "#FFFFFF";
+            document.getElementById("thin_film_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("electrical_device_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("optics_design_lab").style.color = "#FFFFFF";
+            document.getElementById("magnetic_and_mechanical_materials_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("page_title").innerHTML = "Feynman Room (3.401-12)";
+        }
+        if (room === "thomas_edison_room") {
+            document.getElementById("buckminster_fuller_collaboration_space").style.color = "#FFFFFF";
+            document.getElementById("da_vinci_room").style.color = "#FFFFFF";
+            document.getElementById("archimedes_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_one").style.color = "#FFFFFF";
+            document.getElementById("feynman_room").style.color = "#FFFFFF";
+            document.getElementById("thomas_edison_room").style.color = "#CCC";
+            document.getElementById("private_offices_two").style.color = "#FFFFFF";
+            document.getElementById("babbage_room").style.color = "#FFFFFF";
+            document.getElementById("materials_design_lab").style.color = "#FFFFFF";
+            document.getElementById("thin_film_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("electrical_device_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("optics_design_lab").style.color = "#FFFFFF";
+            document.getElementById("magnetic_and_mechanical_materials_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("page_title").innerHTML = "Thomas Edison Room (3.402)";
+        }
+        if (room === "private_offices_two") {
+            document.getElementById("buckminster_fuller_collaboration_space").style.color = "#FFFFFF";
+            document.getElementById("da_vinci_room").style.color = "#FFFFFF";
+            document.getElementById("archimedes_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_one").style.color = "#FFFFFF";
+            document.getElementById("feynman_room").style.color = "#FFFFFF";
+            document.getElementById("thomas_edison_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_two").style.color = "#CCC";
+            document.getElementById("babbage_room").style.color = "#FFFFFF";
+            document.getElementById("materials_design_lab").style.color = "#FFFFFF";
+            document.getElementById("thin_film_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("electrical_device_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("optics_design_lab").style.color = "#FFFFFF";
+            document.getElementById("magnetic_and_mechanical_materials_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("page_title").innerHTML = "Private Offices 2 (3.403)";
+        }
+        if (room === "babbage_room") {
+            document.getElementById("buckminster_fuller_collaboration_space").style.color = "#FFFFFF";
+            document.getElementById("da_vinci_room").style.color = "#FFFFFF";
+            document.getElementById("archimedes_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_one").style.color = "#FFFFFF";
+            document.getElementById("feynman_room").style.color = "#FFFFFF";
+            document.getElementById("thomas_edison_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_two").style.color = "#FFFFFF";
+            document.getElementById("babbage_room").style.color = "#CCC";
+            document.getElementById("materials_design_lab").style.color = "#FFFFFF";
+            document.getElementById("thin_film_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("electrical_device_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("optics_design_lab").style.color = "#FFFFFF";
+            document.getElementById("magnetic_and_mechanical_materials_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("page_title").innerHTML = "Babbage Room (3.406)";
+        }
+        if (room === "materials_design_lab") {
+            document.getElementById("buckminster_fuller_collaboration_space").style.color = "#FFFFFF";
+            document.getElementById("da_vinci_room").style.color = "#FFFFFF";
+            document.getElementById("archimedes_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_one").style.color = "#FFFFFF";
+            document.getElementById("feynman_room").style.color = "#FFFFFF";
+            document.getElementById("thomas_edison_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_two").style.color = "#FFFFFF";
+            document.getElementById("babbage_room").style.color = "#FFFFFF";
+            document.getElementById("materials_design_lab").style.color = "#CCC";
+            document.getElementById("thin_film_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("electrical_device_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("optics_design_lab").style.color = "#FFFFFF";
+            document.getElementById("magnetic_and_mechanical_materials_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("page_title").innerHTML = "Materials Design Lab (3.409)";
+        }
+        if (room === "thin_film_characterization_lab") {
+            document.getElementById("buckminster_fuller_collaboration_space").style.color = "#FFFFFF";
+            document.getElementById("da_vinci_room").style.color = "#FFFFFF";
+            document.getElementById("archimedes_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_one").style.color = "#FFFFFF";
+            document.getElementById("feynman_room").style.color = "#FFFFFF";
+            document.getElementById("thomas_edison_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_two").style.color = "#FFFFFF";
+            document.getElementById("babbage_room").style.color = "#FFFFFF";
+            document.getElementById("materials_design_lab").style.color = "#FFFFFF";
+            document.getElementById("thin_film_characterization_lab").style.color = "#CCC";
+            document.getElementById("electrical_device_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("optics_design_lab").style.color = "#FFFFFF";
+            document.getElementById("magnetic_and_mechanical_materials_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("page_title").innerHTML = "Thin Film Characterization Lab (3.410)";
+        }
+        if (room === "electrical_device_characterization_lab") {
+            document.getElementById("buckminster_fuller_collaboration_space").style.color = "#FFFFFF";
+            document.getElementById("da_vinci_room").style.color = "#FFFFFF";
+            document.getElementById("archimedes_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_one").style.color = "#FFFFFF";
+            document.getElementById("feynman_room").style.color = "#FFFFFF";
+            document.getElementById("thomas_edison_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_two").style.color = "#FFFFFF";
+            document.getElementById("babbage_room").style.color = "#FFFFFF";
+            document.getElementById("materials_design_lab").style.color = "#FFFFFF";
+            document.getElementById("thin_film_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("electrical_device_characterization_lab").style.color = "#CCC";
+            document.getElementById("optics_design_lab").style.color = "#FFFFFF";
+            document.getElementById("magnetic_and_mechanical_materials_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("page_title").innerHTML = "Electrical Device Characterization Lab (3.411)";
+        }
+        if (room === "optics_design_lab") {
+            document.getElementById("buckminster_fuller_collaboration_space").style.color = "#FFFFFF";
+            document.getElementById("da_vinci_room").style.color = "#FFFFFF";
+            document.getElementById("archimedes_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_one").style.color = "#FFFFFF";
+            document.getElementById("feynman_room").style.color = "#FFFFFF";
+            document.getElementById("thomas_edison_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_two").style.color = "#FFFFFF";
+            document.getElementById("babbage_room").style.color = "#FFFFFF";
+            document.getElementById("materials_design_lab").style.color = "#FFFFFF";
+            document.getElementById("thin_film_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("electrical_device_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("optics_design_lab").style.color = "#CCC";
+            document.getElementById("magnetic_and_mechanical_materials_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("page_title").innerHTML = "Optics Design Lab (3.412)";
+        }
+        if (room === "magnetic_and_mechanical_materials_characterization_lab") {
+            document.getElementById("buckminster_fuller_collaboration_space").style.color = "#FFFFFF";
+            document.getElementById("da_vinci_room").style.color = "#FFFFFF";
+            document.getElementById("archimedes_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_one").style.color = "#FFFFFF";
+            document.getElementById("feynman_room").style.color = "#FFFFFF";
+            document.getElementById("thomas_edison_room").style.color = "#FFFFFF";
+            document.getElementById("private_offices_two").style.color = "#FFFFFF";
+            document.getElementById("babbage_room").style.color = "#FFFFFF";
+            document.getElementById("materials_design_lab").style.color = "#FFFFFF";
+            document.getElementById("thin_film_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("electrical_device_characterization_lab").style.color = "#FFFFFF";
+            document.getElementById("optics_design_lab").style.color = "#FFFFFF";
+            document.getElementById("magnetic_and_mechanical_materials_characterization_lab").style.color = "#CCC";
+            document.getElementById("page_title").innerHTML = "Magnetic & Mechanical Materials Characterization Lab (3.413)";
+        }
+    }
+</script>
