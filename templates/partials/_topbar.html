@@ -162,13 +162,13 @@
             for (var input of notifications_data) {
                 input.seen = 1
             }
-            var current_user = data[0].user_id;
+            var current_user = data[0].id;
             fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({id: data[0].user_id, user_id: data[0].user_id, notifications: {notifications: notifications_data}})
+                body: JSON.stringify({id: data[0].id, user_id: data[0].user_id, notifications: {notifications: notifications_data}})
             })
         })
 
