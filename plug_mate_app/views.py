@@ -23,6 +23,13 @@ import json
 def plug_mate_app(request):
     if request.user.is_authenticated and request.user.id == 6:
         manager_page(request)
+        context = {
+            'notifications': [],
+            'unseen_notifications': 0,
+            'user_id': request.user.id
+        }
+
+        return render(request, 'plug_mate_app/manager_page.html', context)
 
     elif request.user.is_authenticated:
         with connection.cursor() as cursor:
@@ -93,18 +100,18 @@ def plug_mate_app(request):
 
 
 def manager_page(request):
-    with connection.cursor() as cursor:
-        # Query for the user's notifications
-        cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
-        notifications = json.loads(cursor.fetchone()[0])['notifications']
-        if len(notifications) == 0:
-            unseen_notifications = 0
-        else:
-            unseen_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
+    # with connection.cursor() as cursor:
+    #     # Query for the user's notifications
+    #     cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
+    #     notifications = json.loads(cursor.fetchone()[0])['notifications']
+    #     if len(notifications) == 0:
+    #         unseen_notifications = 0
+    #     else:
+    #         unseen_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
 
     context = {
-        'notifications': notifications,
-        'unseen_notifications': unseen_notifications,
+        'notifications': [],
+        'unseen_notifications': 0,
         'user_id': request.user.id
     }
 
