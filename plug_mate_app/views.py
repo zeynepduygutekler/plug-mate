@@ -21,7 +21,10 @@ import json
 
 
 def plug_mate_app(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated and request.user.id == 6:
+        manager_page(request)
+
+    elif request.user.is_authenticated:
         with connection.cursor() as cursor:
             # Query for user's energy points from the database
             cursor.execute('SELECT points FROM points_wallet WHERE user_id=%s', [request.user.id])
@@ -57,7 +60,10 @@ def plug_mate_app(request):
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
             notifications = json.loads(cursor.fetchone()[0])['notifications']
-            num_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
+            if len(notifications) == 0:
+                unseen_notifications = 0
+            else:
+                unseen_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
 
         BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         points_table = pd.read_csv(
@@ -77,30 +83,32 @@ def plug_mate_app(request):
             'remaining_points': remaining_points,
             'user_id': request.user.id,
             'notifications': notifications,
-            'num_notifications': num_notifications,
+            'unseen_notifications': unseen_notifications,
         }
 
         return render(request, 'plug_mate_app/index.html', context)
+
     else:
         return render(request, 'plug_mate_app/login.html', {})
+
 
 def manager_page(request):
-    if request.user.is_authenticated:
-        with connection.cursor() as cursor:
-            # Query for the user's notifications
-            cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
-            notifications = json.loads(cursor.fetchone()[0])['notifications']
-            num_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
+    with connection.cursor() as cursor:
+        # Query for the user's notifications
+        cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
+        notifications = json.loads(cursor.fetchone()[0])['notifications']
+        if len(notifications) == 0:
+            unseen_notifications = 0
+        else:
+            unseen_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
 
-        context = {
-            'user_id': request.user.id,
-            'notifications': notifications,
-            'num_notifications': num_notifications
-        }
+    context = {
+        'notifications': notifications,
+        'unseen_notifications': unseen_notifications,
+    }
 
-        return render(request, 'plug_mate_app/manager_page.html', context)
-    else:
-        return render(request, 'plug_mate_app/login.html', {})
+    return render(request, 'plug_mate_app/manager_page.html', context)
+
 
 def control_interface(request):
     if request.user.is_authenticated:
