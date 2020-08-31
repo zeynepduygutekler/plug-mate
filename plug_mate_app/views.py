@@ -105,6 +105,7 @@ def manager_page(request):
     context = {
         'notifications': notifications,
         'unseen_notifications': unseen_notifications,
+        'user_id': request.user.id
     }
 
     return render(request, 'plug_mate_app/manager_page.html', context)

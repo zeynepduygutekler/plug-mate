@@ -218,6 +218,18 @@
         for (var i = 0; i < document.getElementsByClassName("level_four_room").length; i++) {
             document.getElementsByClassName("level_four_room")[i].style.display = "none";
         }
+
+        for (var j = 0; j < document.getElementsByClassName("building_view").length; j++) {
+            document.getElementsByClassName("building_view")[j].style.display = "inline-block";
+        }
+
+        for (var k = 0; k < document.getElementsByClassName("floor_view").length; k++) {
+            document.getElementsByClassName("floor_view")[k].style.display = "none";
+        }
+
+        for (var l = 0; l < document.getElementsByClassName("room_view").length; l++) {
+            document.getElementsByClassName("room_view")[l].style.display = "none";
+        }
     }
 
     function chooseLevel(floor) {
@@ -233,23 +245,40 @@
 
         document.getElementById("page_title").innerHTML = "Level " + (floors.indexOf(floor) + 1);
 
+        for (var j = 0; j < document.getElementsByClassName("building_view").length; j++) {
+            document.getElementsByClassName("building_view")[j].style.display = "none";
+        }
+        for (var k = 0; k < document.getElementsByClassName("floor_view").length; k++) {
+            document.getElementsByClassName("floor_view")[k].style.display = "inline-block";
+        }
+
+        for (var l = 0; l < document.getElementsByClassName("room_view").length; l++) {
+            document.getElementsByClassName("room_view")[l].style.display = "none";
+        }
+
         if (floor === "four") {
-            for (var i = 0; i < document.getElementsByClassName("level_four_room").length; i++) {
-                document.getElementsByClassName("level_four_room")[i].style.display = "block";
+            if (document.getElementsByClassName("level_four_room")[0].style.display === "none") {
+                for (var i = 0; i < document.getElementsByClassName("level_four_room").length; i++) {
+                    document.getElementsByClassName("level_four_room")[i].style.display = "block";
+                }
+                document.getElementById("buckminster_fuller_collaboration_space").style.color = "#FFFFFF";
+                document.getElementById("da_vinci_room").style.color = "#FFFFFF";
+                document.getElementById("archimedes_room").style.color = "#FFFFFF";
+                document.getElementById("private_offices_one").style.color = "#FFFFFF";
+                document.getElementById("feynman_room").style.color = "#FFFFFF";
+                document.getElementById("thomas_edison_room").style.color = "#FFFFFF";
+                document.getElementById("private_offices_two").style.color = "#FFFFFF";
+                document.getElementById("babbage_room").style.color = "#FFFFFF";
+                document.getElementById("materials_design_lab").style.color = "#FFFFFF";
+                document.getElementById("thin_film_characterization_lab").style.color = "#FFFFFF";
+                document.getElementById("electrical_device_characterization_lab").style.color = "#FFFFFF";
+                document.getElementById("optics_design_lab").style.color = "#FFFFFF";
+                document.getElementById("magnetic_and_mechanical_materials_characterization_lab").style.color = "#FFFFFF";
+            } else {
+                for (var i = 0; i < document.getElementsByClassName("level_four_room").length; i++) {
+                    document.getElementsByClassName("level_four_room")[i].style.display = "none";
+                }
             }
-            document.getElementById("buckminster_fuller_collaboration_space").style.color = "#FFFFFF";
-            document.getElementById("da_vinci_room").style.color = "#FFFFFF";
-            document.getElementById("archimedes_room").style.color = "#FFFFFF";
-            document.getElementById("private_offices_one").style.color = "#FFFFFF";
-            document.getElementById("feynman_room").style.color = "#FFFFFF";
-            document.getElementById("thomas_edison_room").style.color = "#FFFFFF";
-            document.getElementById("private_offices_two").style.color = "#FFFFFF";
-            document.getElementById("babbage_room").style.color = "#FFFFFF";
-            document.getElementById("materials_design_lab").style.color = "#FFFFFF";
-            document.getElementById("thin_film_characterization_lab").style.color = "#FFFFFF";
-            document.getElementById("electrical_device_characterization_lab").style.color = "#FFFFFF";
-            document.getElementById("optics_design_lab").style.color = "#FFFFFF";
-            document.getElementById("magnetic_and_mechanical_materials_characterization_lab").style.color = "#FFFFFF";
         } else {
             for (var i = 0; i < document.getElementsByClassName("level_four_room").length; i++) {
                 document.getElementsByClassName("level_four_room")[i].style.display = "none";
@@ -266,6 +295,17 @@
         document.getElementById("level_five").style.color = "#FFFFFF";
         document.getElementById("level_six").style.color = "#FFFFFF";
         document.getElementById("level_seven").style.color = "#FFFFFF";
+
+        for (var j = 0; j < document.getElementsByClassName("building_view").length; j++) {
+            document.getElementsByClassName("building_view")[j].style.display = "none";
+        }
+        for (var k = 0; k < document.getElementsByClassName("floor_view").length; k++) {
+            document.getElementsByClassName("floor_view")[k].style.display = "none";
+        }
+
+        for (var l = 0; l < document.getElementsByClassName("room_view").length; l++) {
+            document.getElementsByClassName("room_view")[l].style.display = "inline-block";
+        }
 
         if (room === "buckminster_fuller_collaboration_space") {
             document.getElementById("buckminster_fuller_collaboration_space").style.color = "#CCC";
