@@ -124,12 +124,15 @@ def control_interface(request):
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
             notifications = json.loads(cursor.fetchone()[0])['notifications']
-            num_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
+            if len(notifications) == 0:
+                unseen_notifications = 0
+            else:
+                unseen_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
 
         context = {
             'user_id': request.user.id,
             'notifications': notifications,
-            'num_notifications': num_notifications
+            'unseen_notifications': unseen_notifications
         }
 
         return render(request, 'index.html', context)
@@ -147,12 +150,15 @@ def rewards(request):
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
             notifications = json.loads(cursor.fetchone()[0])['notifications']
-            num_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
+            if len(notifications) == 0:
+                unseen_notifications = 0
+            else:
+                unseen_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
 
         context = {
             'points': points,
             'notifications': notifications,
-            'num_notifications': num_notifications,
+            'unseen_notifications': unseen_notifications,
             'user_id': request.user.id,
         }
 
@@ -167,7 +173,10 @@ def user_profile(request):
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
             notifications = json.loads(cursor.fetchone()[0])['notifications']
-            num_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
+            if len(notifications) == 0:
+                unseen_notifications = 0
+            else:
+                unseen_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
 
             # Query for user's rewards from database
             cursor.execute("SELECT description FROM user_log WHERE user_id=%s AND "
@@ -223,7 +232,7 @@ def user_profile(request):
         context = {
             'user_id': request.user.id,
             'notifications': notifications,
-            'num_notifications': num_notifications,
+            'unseen_notifications': unseen_notifications,
             'rewards': rewards,
             'user_profile': user_profile,
             'occupancy_info': occupancy_info,
@@ -241,12 +250,15 @@ def about_us(request):
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
             notifications = json.loads(cursor.fetchone()[0])['notifications']
-            num_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
+            if len(notifications) == 0:
+                unseen_notifications = 0
+            else:
+                unseen_notifications = int(np.sum([1 for notification in notifications if notification['seen'] == 0]))
 
         context = {
             'user_id': request.user.id,
             'notifications': notifications,
-            'num_notifications': num_notifications
+            'unseen_notifications': unseen_notifications
         }
 
         return render(request, 'plug_mate_app/about_us.html', context)
