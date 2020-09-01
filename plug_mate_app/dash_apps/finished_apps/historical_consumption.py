@@ -57,8 +57,7 @@ app.layout = \
                     dbc.Row([
 
 
-                        dbc.Button('Today', id='hour', n_clicks=0,
-                                   n_clicks_timestamp=0, color="primary", className="mr-1"),
+
                         dbc.Button('Days', id='day', n_clicks=0, n_clicks_timestamp=0,
                                    color="primary",
                                    className="mr-1"),
@@ -66,6 +65,8 @@ app.layout = \
                                    color="primary", className="mr-1", active=True),
                         dbc.Button('Months', id='month', n_clicks=0, n_clicks_timestamp=0,
                                    color="primary", className="mr-1"),
+                        dbc.Button('Year', id='hour', n_clicks=0,
+                                   n_clicks_timestamp=0, color="primary", className="mr-1"),
 
                         html.Div([
 
