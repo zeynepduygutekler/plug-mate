@@ -195,12 +195,10 @@ def user_profile(request):
             achievements = [dict(date=x[0], achievement=x[1]) for x in achievements.values]
 
             # Query for user's occupancy information from database
-            occupancy_info = pd.read_csv('plug_mate_app/occupancy_profile.csv')  # change once table is up
-            occupancy_info = occupancy_info.loc[occupancy_info.user_id == request.user.id]
-            # cursor.execute("SELECT * FROM occupancy_profile WHERE user_id=%s", [request.user.id])
-            # occupancy_info = cursor.fetchall()
-            # occupancy_info = pd.DataFrame(rewards, columns=[desc[0] for desc in cursor.description]).tolist()
-            occupancy_info = occupancy_info['occupancy_probability'][9:-2].to_list()
+            cursor.execute("SELECT * FROM occupancy_profile WHERE user_id=%s ORDER BY id", [request.user.id])
+            occupancy_info = cursor.fetchall()
+            occupancy_info = pd.DataFrame(occupancy_info, columns=[desc[0] for desc in cursor.description])
+            occupancy_info = occupancy_info['occupancy_prob'][6:].to_list()
 
             # Query for user profile information
             cursor.execute("SELECT * FROM plug_mate_app_userprofileinfo WHERE user_id=%s", [request.user.id])
