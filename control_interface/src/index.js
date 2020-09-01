@@ -268,21 +268,22 @@ class RemoteControlItem extends Component {
                             fetch('/control_interface/api/notifications/')
                             .then(response => response.json())
                             .then(notifications_data => {
-                                var number_of_notifications = notifications_data[0].notifications.notifications.length;
-                                var current_user = notifications_data[0].user_id;
+                                var number_of_notifications = JSON.parse(notifications_data[0].notifications).notifications.length;
+                                var current_user = notifications_data[0].id;
 
                                 // Update notifications table in database
                                 var today = new Date();
                                 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                                 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                 var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
-                                notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 60 points for trying out our remote control feature for the first time.", type: "success", seen: 0})
+                                var list_of_notifications = JSON.parse(notifications_data[0].notifications)
+                                list_of_notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 60 points for trying out our remote control feature for the first time.", type: "success", seen: 0})
                                 fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                                     method: 'PUT',
                                     headers: {
                                         'Content-Type': 'application/json'
                                     },
-                                    body: JSON.stringify(notifications_data[0])
+                                    body: JSON.stringify({id: notifications_data[0].id, user_id: notifications_data[0].user_id, notifications: {notifications: list_of_notifications}})
                                 })
 
                                 // Update number on bell
@@ -354,24 +355,25 @@ class RemoteControlItem extends Component {
                                                 fetch('/control_interface/api/notifications/')
                                                 .then(response => response.json())
                                                 .then(notifications_data => {
-                                                    var number_of_notifications = notifications_data[0].notifications.notifications.length;
-                                                    var current_user = notifications_data[0].user_id;
+                                                    var number_of_notifications = JSON.parse(notifications_data[0].notifications).notifications.length;
+                                                    var current_user = notifications_data[0].id;
 
                                                     // Update notifications table in database
                                                     var today = new Date();
                                                     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                                                     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                                     var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
+                                                    var list_of_notifications = JSON.parse(notifications_data[0].notifications)
                                                     // Bonus achievement
-                                                    notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 60 points for trying out our remote control feature for the first time.", type: "success", seen: 0});
+                                                    list_of_notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 60 points for trying out our remote control feature for the first time.", type: "success", seen: 0})
                                                     // Daily achievement
-                                                    notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for using remote control while you are away from your desk today.", type: "success", seen: 0});
+                                                    list_of_notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for using remote control while you are away from your desk today.", type: "success", seen: 0});
                                                     fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                                                         method: 'PUT',
                                                         headers: {
                                                             'Content-Type': 'application/json'
                                                         },
-                                                        body: JSON.stringify(notifications_data[0])
+                                                        body: JSON.stringify({id: notifications_data[0].id, user_id: notifications_data[0].user_id, notifications: list_of_notifications})
                                                     })
 
                                                     // Update number on bell
@@ -412,21 +414,22 @@ class RemoteControlItem extends Component {
                                                 fetch('/control_interface/api/notifications/')
                                                 .then(response => response.json())
                                                 .then(notifications_data => {
-                                                    var number_of_notifications = notifications_data[0].notifications.notifications.length;
-                                                    var current_user = notifications_data[0].user_id;
+                                                    var number_of_notifications = JSON.parse(notifications_data[0].notifications).notifications.length;
+                                                    var current_user = notifications_data[0].id;
 
                                                     // Update notifications table in database
                                                     var today = new Date();
                                                     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                                                     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                                     var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
-                                                    notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for using remote control while you are away from your desk today.", type: "success", seen: 0});
+                                                    var list_of_notifications = JSON.parse(notifications_data[0].notifications)
+                                                    list_of_notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for using remote control while you are away from your desk today.", type: "success", seen: 0});
                                                     fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                                                         method: 'PUT',
                                                         headers: {
                                                             'Content-Type': 'application/json'
                                                         },
-                                                        body: JSON.stringify(notifications_data[0])
+                                                        body: JSON.stringify({id: notifications_data[0].id, user_id: notifications_data[0].user_id, notifications: {notifications: list_of_notifications}})
                                                     })
 
                                                     // Update number on bell
@@ -964,24 +967,25 @@ class PresenceControlItem extends Component {
                                         fetch('/control_interface/api/notifications/')
                                         .then(response => response.json())
                                         .then(notifications_data => {
-                                            var number_of_notifications = notifications_data[0].notifications.notifications.length;
-                                            var current_user = notifications_data[0].user_id;
+                                            var number_of_notifications = JSON.parse(notifications_data[0].notifications).notifications.length;
+                                            var current_user = notifications_data[0].id;
 
                                             // Update notifications table in database
                                             var today = new Date();
                                             const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                                             const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                             var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
+                                            var list_of_notifications = JSON.parse(notifications_data[0].notifications)
                                             // Bonus achievement
-                                            notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 70 points for setting your first presence-based setting.", type: "success", seen: 0});
+                                            list_of_notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 70 points for setting your first presence-based setting.", type: "success", seen: 0});
                                             // Daily achievement
-                                            notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for activating presence-based control for your devices today.", type: "success", seen: 0});
+                                            list_of_notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for activating presence-based control for your devices today.", type: "success", seen: 0});
                                             fetch ('/control_interface/api/notifications/' + current_user.toString() + '/', {
                                                 method: 'PUT',
                                                 headers: {
                                                     'Content-Type': 'application/json'
                                                 },
-                                                body: JSON.stringify(notifications_data[0])
+                                                body: JSON.stringify({id: notifications_data[0].id, user_id: notifications_data[0].user_id, notifications: {notifications: list_of_notifications}})
                                             })
 
                                             // Update number on bell
@@ -1021,21 +1025,22 @@ class PresenceControlItem extends Component {
                                         fetch('/control_interface/api/notifications/')
                                         .then(response => response.json())
                                         .then(notifications_data => {
-                                            var number_of_notifications = notifications_data[0].notifications.notifications.length;
-                                            var current_user = notifications_data[0].user_id;
+                                            var number_of_notifications = JSON.parse(notifications_data[0].notifications).notifications.length;
+                                            var current_user = notifications_data[0].id;
 
                                             // Update notifications table in database
                                             var today = new Date();
                                             const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                                             const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                             var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
-                                            notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for activating presence-based control for your devices today.", type: "success", seen: 0});
+                                            var list_of_notifications = JSON.parse(notifications_data[0].notifications)
+                                            list_of_notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for activating presence-based control for your devices today.", type: "success", seen: 0});
                                             fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                                                 method: 'PUT',
                                                 headers: {
                                                     'Content-Type': 'application/json'
                                                 },
-                                                body: JSON.stringify(notifications_data[0])
+                                                body: JSON.stringify({id: notifications_data[0].id, user_id: notifications_data[0].user_id, notifications: {notifications: list_of_notifications}})
                                             })
 
                                             // Update number on bell
