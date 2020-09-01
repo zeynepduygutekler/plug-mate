@@ -230,6 +230,7 @@
         for (var l = 0; l < document.getElementsByClassName("room_view").length; l++) {
             document.getElementsByClassName("room_view")[l].style.display = "none";
         }
+        imageMapResize();
     }
 
     function chooseLevel(floor) {
@@ -255,6 +256,7 @@
         for (var l = 0; l < document.getElementsByClassName("room_view").length; l++) {
             document.getElementsByClassName("room_view")[l].style.display = "none";
         }
+        imageMapResize();
 
         if (floor === "four") {
             if (document.getElementsByClassName("level_four_room")[0].style.display === "none") {
@@ -306,6 +308,7 @@
         for (var l = 0; l < document.getElementsByClassName("room_view").length; l++) {
             document.getElementsByClassName("room_view")[l].style.display = "inline-block";
         }
+        imageMapResize();
 
         if (room === "buckminster_fuller_collaboration_space") {
             for (var i = 0; i < document.getElementsByClassName("level_four_room").length; i++) {
