@@ -48,7 +48,7 @@
                 <!-- Counter - Alerts -->
                 <span id="number_of_notifications" class="badge badge-danger badge-counter">
                     {% if user.is_authenticated %}
-                        {{ num_notifications }}
+                        {{ unseen_notifications }}
                     {% else %}
                         0
                     {% endif %}
@@ -57,7 +57,7 @@
             <!-- Dropdown - Alerts -->
             <div id="list_of_alerts" class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
-                    Alerts Center
+                    Notifications
                 </h6>
 
                 {% for notification in notifications %}
@@ -106,16 +106,19 @@
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="{% url 'plug_mate_app:profile' %}">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profile
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{% url 'plug_mate_app:rewards' %}">
-                    <i class="fas fa-gift fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Rewards Store
-                </a>
-                <div class="dropdown-divider"></div>
+                {% if user.id != 6 %}
+                    <a class="dropdown-item" href="{% url 'plug_mate_app:profile' %}">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Profile
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'plug_mate_app:rewards' %}">
+                        <i class="fas fa-gift fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Rewards Store
+                    </a>
+                    <div class="dropdown-divider"></div>
+                {% endif %}
+
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Logout
@@ -141,7 +144,7 @@
         })
         document.getElementById("number_of_notifications").innerHTML = "0";
 
-        var times_to_loop = {{num_notifications}} * 2
+        var times_to_loop = {{unseen_notifications}} * 2
         var i;
         for (i = 0; i < times_to_loop; i++) {
             document.getElementById("list_of_alerts").removeChild(document.getElementById("list_of_alerts").childNodes[2]);
@@ -156,21 +159,21 @@
 
         // Mark as seen
         fetch('/control_interface/api/notifications/')
-        .then(response => response.json())
-        .then(data => {
-            var notifications_data = JSON.parse(data[0].notifications).notifications;
-            for (var input of notifications_data) {
-                input.seen = 1
-            }
-            var current_user = data[0].id;
-            fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({id: data[0].id, user_id: data[0].user_id, notifications: {notifications: notifications_data}})
+            .then(response => response.json())
+            .then(data => {
+                var notifications_data = JSON.parse(data[0].notifications).notifications;
+                for (var input of notifications_data) {
+                    input.seen = 1
+                }
+                var current_user = data[0].id;
+                fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: data[0].id, user_id: data[0].user_id, notifications: {notifications: notifications_data}})
+                })
             })
-        })
 
         // Update number on bell
         document.getElementById("number_of_notifications").innerHTML = 0;

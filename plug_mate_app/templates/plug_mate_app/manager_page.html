@@ -54,6 +54,14 @@
         .hoverable:hover {
             cursor: pointer;
         }
+
+        .devices_box {
+            border: 1px solid black;
+            width: 250px;
+            height: 100px;
+            display: inline-block;
+            margin: 10px;
+        }
     </style>
 </head>
 <body>
@@ -93,7 +101,176 @@
                                             </h6>
                                         </div>
                                         <div class="card-body">
-                                            <p> Content Should be Here </p>
+                                            <!-- Building View -->
+                                            <div class="building_view" style="display:inline-block;">
+                                                <img src="/static/Images/building_layout.png" usemap="#building-layout-map">
+
+                                                <map name="building-layout-map">
+                                                    <area class="hoverable" coords="7,88,137,55" shape="rect" onclick="chooseLevel('six')">
+                                                    <area class="hoverable" coords="8,117,137,149" shape="rect" onclick="chooseLevel('four')">
+                                                    <area class="hoverable" coords="7,194,137,226" shape="rect" onclick="chooseLevel('two')">
+                                                    <area class="hoverable" coords="370,82,501,113" shape="rect" onclick="chooseLevel('seven')">
+                                                    <area class="hoverable" coords="370,128,501,161" shape="rect" onclick="chooseLevel('five')">
+                                                    <area class="hoverable" coords="370,177,500,210" shape="rect" onclick="chooseLevel('three')">
+                                                    <area class="hoverable" coords="370,233,500,265" shape="rect" onclick="chooseLevel('one')">
+                                                </map>
+                                                <div style="width:30%;height:fit-content;display:inline-block;position: absolute;right:10px;">
+                                                    <div style="width:100%; height:80px;border:1px solid black;margin-bottom:30px">
+                                                        <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
+                                                            <img src="https://pluspng.com/img-png/raspberry-png-black-and-white-this-icon-represents-raspberry-pi-it-is-an-oval-shape-with-tiny-raised-circles-all-png-50-px-1600.png" style="height:20px;margin-bottom:3px;">
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> Presence Detectors </p>
+                                                        </div>
+                                                        <br>
+                                                        <div style="text-align:center;">
+                                                            <div style="border-radius:50%;background:#E74A3B;height:20px;width:20px;display:inline-block;margin-bottom:-4px;"> </div>
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> 67 / 68 </p>
+                                                        </div>
+                                                    </div>
+                                                    <div style="width:100%;height:80px;border:1px solid black;margin-bottom:30px">
+                                                        <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
+                                                            <img src="https://image.flaticon.com/icons/svg/167/167096.svg" style="height:20px;transform:rotate(20deg);margin-top:-5px;">
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> Smart Plugs </p>
+                                                        </div>
+                                                        <br>
+                                                        <div style="text-align:center;">
+                                                            <div style="border-radius:50%;background:#E74A3B;height:20px;width:20px;display:inline-block;margin-bottom:-4px;"> </div>
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> 203 / 204 </p>
+                                                        </div>
+                                                    </div>
+                                                    <div style="width:100%;height:80px;border:1px solid black;">
+                                                        <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
+                                                            <img src="https://image.flaticon.com/icons/svg/159/159469.svg" style="height:15px;margin-bottom:3px;">
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> Malfunctioning Devices </p>
+                                                        </div>
+                                                        <br>
+                                                        <div style="text-align:center;">
+                                                            <div style="border-radius:50%;background:#E74A3B;height:20px;width:20px;display:inline-block;margin-bottom:-4px;"> </div>
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> 2 </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Floor View -->
+                                            <div class="floor_view" style="display:none;">
+                                                <img src="/static/Images/floor_layout.png" usemap="#floor-layout-map">
+
+                                                <map name="floor-layout-map">
+                                                    <area class="hoverable" coords="4,71,116,109" shape="rect" onclick="chooseLevelFourRoom('magnetic_and_mechanical_materials_characterization_lab')">
+                                                    <area class="hoverable" coords="4,133,116,170" shape="rect" onclick="chooseLevelFourRoom('optics_design_lab')">
+                                                    <area class="hoverable" coords="31,183,143,217" shape="rect" onclick="chooseLevelFourRoom('materials_design_lab')">
+                                                    <area class="hoverable" coords="163,286,275,319" shape="rect" onclick="chooseLevelFourRoom('babbage_room')">
+                                                    <area class="hoverable" coords="386,283,498,317" shape="rect" onclick="chooseLevelFourRoom('private_offices_two')">
+                                                    <area class="hoverable" coords="396,240,508,271" shape="rect" onclick="chooseLevelFourRoom('thomas_edison_room')">
+                                                    <area class="hoverable" coords="232,197,344,237" shape="rect" onclick="chooseLevelFourRoom('thin_film_characterization_lab')">
+                                                    <area class="hoverable" coords="347,168,459,200" shape="rect" onclick="chooseLevelFourRoom('feynman_room')">
+                                                    <area class="hoverable" coords="395,124,507,155" shape="rect" onclick="chooseLevelFourRoom('private_offices_one')">
+                                                    <area class="hoverable" coords="363,69,476,109" shape="rect" onclick="chooseLevelFourRoom('buckminster_fuller_collaboration_space')">
+                                                    <area class="hoverable" coords="388,20,499,53" shape="rect" onclick="chooseLevelFourRoom('archimedes_room')">
+                                                    <area class="hoverable" coords="207,81,317,120" shape="rect" onclick="chooseLevelFourRoom('da_vinci_room')">
+                                                    <area class="hoverable" coords="175,18,285,52" shape="rect" onclick="chooseLevelFourRoom('electrical_device_characterization_lab')">
+                                                </map>
+                                                <div style="width:30%;height:fit-content;display:inline-block;position: absolute;right:10px;">
+                                                    <div style="width:100%; height:80px;border:1px solid black;margin-bottom:30px">
+                                                        <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
+                                                            <img src="https://pluspng.com/img-png/raspberry-png-black-and-white-this-icon-represents-raspberry-pi-it-is-an-oval-shape-with-tiny-raised-circles-all-png-50-px-1600.png" style="height:20px;margin-bottom:3px;">
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> Presence Detectors </p>
+                                                        </div>
+                                                        <br>
+                                                        <div style="text-align:center;">
+                                                            <div style="border-radius:50%;background:#1CC88A;height:20px;width:20px;display:inline-block;margin-bottom:-4px;"> </div>
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> 13 / 13 </p>
+                                                        </div>
+                                                    </div>
+                                                    <div style="width:100%;height:80px;border:1px solid black;margin-bottom:30px">
+                                                        <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
+                                                            <img src="https://image.flaticon.com/icons/svg/167/167096.svg" style="height:20px;transform:rotate(20deg);margin-top:-5px;">
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> Smart Plugs </p>
+                                                        </div>
+                                                        <br>
+                                                        <div style="text-align:center;">
+                                                            <div style="border-radius:50%;background:#E74A3B;height:20px;width:20px;display:inline-block;margin-bottom:-4px;"> </div>
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> 38 / 39 </p>
+                                                        </div>
+                                                    </div>
+                                                    <div style="width:100%;height:80px;border:1px solid black;">
+                                                        <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
+                                                            <img src="https://image.flaticon.com/icons/svg/159/159469.svg" style="height:15px;margin-bottom:3px;">
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> Malfunctioning Devices </p>
+                                                        </div>
+                                                        <br>
+                                                        <div style="text-align:center;">
+                                                            <div style="border-radius:50%;background:#E74A3B;height:20px;width:20px;display:inline-block;margin-bottom:-4px;"> </div>
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> 1 </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Room View -->
+                                            <div class="room_view" style="display:none;height:300px;">
+                                                <img src="/static/Images/room_layout.png"usemap="#room-layout-map">
+
+                                                <map name="room-layout-map">
+                                                    <area class="hoverable" coords="119,28,135,28,150,56,134,55" shape="poly" onmouseover="hoverOnDesk(1)" onmouseout="clearDeskHover()">
+                                                    <area class="hoverable" coords="191,55,222,55,230,68,198,68" shape="poly" onmouseover="hoverOnDesk(2)" onmouseout="clearDeskHover()">
+                                                    <area class="hoverable" coords="256,42,288,43,280,55,264,56" shape="poly" onmouseover="hoverOnDesk(3)" onmouseout="clearDeskHover()">
+                                                    <area class="hoverable" coords="234,105,263,105,257,119,227,119" shape="poly" onmouseover="hoverOnDesk(4)" onmouseout="clearDeskHover()">
+                                                    <area class="hoverable" coords="112,105,103,118,89,92,103,92" shape="poly" onmouseover="hoverOnDesk(5)" onmouseout="clearDeskHover()">
+                                                </map>
+
+                                                <div id="room_layout_hoverbox" style="width:300px;height:fit-content;padding-bottom:10px;position:absolute;bottom:100px;right:40%;border:1px solid black;text-align:center;color:black;font-weight:bold;padding-top:10px;display:none;">
+                                                    <p id="room_layout_hoverbox_user"> User 1 </p>
+                                                    <div id="room_layout_hoverbox_presence_div" style="display:inline-block;padding:10px;padding-bottom:0px;">
+                                                        <img src="https://pluspng.com/img-png/raspberry-png-black-and-white-this-icon-represents-raspberry-pi-it-is-an-oval-shape-with-tiny-raised-circles-all-png-50-px-1600.png" style="height:20px;">
+                                                        <p id="room_layout_hoverbox_presence" style="display:inline-block;"> 1 / 1 </p>
+                                                    </div>
+                                                    <div id="room_layout_hoverbox_plug_div" style="display:inline-block;margin-left:20px;padding:10px;padding-bottom:0px;">
+                                                        <img src="https://image.flaticon.com/icons/svg/167/167096.svg" style="height:20px;transform:rotate(20deg)">
+                                                        <p id="room_layout_hoverbox_plug" style="display:inline-block;"> 3 / 3 </p>
+                                                    </div>
+                                                    <div id="room_layout_hoverbox_malfunction_div" style="display:inline-block;margin-left:20px;padding:10px;padding-bottom:0px;">
+                                                        <img src="https://image.flaticon.com/icons/svg/159/159469.svg" style="height:20px;">
+                                                        <p id="room_layout_hoverbox_malfunction" style="display:inline-block;"> 0 </p>
+                                                    </div>
+                                                </div>
+
+                                                <div style="width:30%;height:fit-content;display:inline-block;position: absolute;right:10px;">
+                                                <div style="width:100%; height:80px;border:1px solid black;margin-bottom:30px;background:white;">
+                                                    <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
+                                                        <img src="https://pluspng.com/img-png/raspberry-png-black-and-white-this-icon-represents-raspberry-pi-it-is-an-oval-shape-with-tiny-raised-circles-all-png-50-px-1600.png" style="height:20px;margin-bottom:3px;">
+                                                        <p style="display:inline-block;color:black;font-weight:bold;"> Presence Detectors </p>
+                                                    </div>
+                                                    <br>
+                                                    <div style="text-align:center;">
+                                                        <div style="border-radius:50%;background:#1CC88A;height:20px;width:20px;display:inline-block;margin-bottom:-4px;"> </div>
+                                                        <p style="display:inline-block;color:black;font-weight:bold;"> 5 / 5 </p>
+                                                    </div>
+                                                </div>
+                                                <div style="width:100%;height:80px;border:1px solid black;margin-bottom:30px">
+                                                    <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
+                                                        <img src="https://image.flaticon.com/icons/svg/167/167096.svg" style="height:20px;transform:rotate(20deg);margin-top:-5px;">
+                                                        <p style="display:inline-block;color:black;font-weight:bold;"> Smart Plugs </p>
+                                                    </div>
+                                                    <br>
+                                                    <div style="text-align:center;">
+                                                        <div style="border-radius:50%;background:#E74A3B;height:20px;width:20px;display:inline-block;margin-bottom:-4px;"> </div>
+                                                        <p style="display:inline-block;color:black;font-weight:bold;"> 14 / 15 </p>
+                                                    </div>
+                                                </div>
+                                                <div style="width:100%;height:80px;border:1px solid black;">
+                                                    <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
+                                                        <img src="https://image.flaticon.com/icons/svg/159/159469.svg" style="height:15px;margin-bottom:3px;">
+                                                        <p style="display:inline-block;color:black;font-weight:bold;"> Malfunctioning Devices </p>
+                                                    </div>
+                                                    <br>
+                                                    <div style="text-align:center;">
+                                                        <div style="border-radius:50%;background:#E74A3B;height:20px;width:20px;display:inline-block;margin-bottom:-4px;"> </div>
+                                                        <p style="display:inline-block;color:black;font-weight:bold;"> 1 </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -110,8 +287,246 @@
                                                 Devices
                                             </h6>
                                         </div>
-                                        <div class="card-body">
-                                            <p> Content Should be Here </p>
+                                        <div class="card-body" style="text-align:center;">
+                                            <!-- Building View -->
+                                            <div class="devices_box building_view" style="text-align:left;">
+                                                <img src="/static/Images/Desktop ON.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 20 / 34 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 1200 W </p>
+                                                </div>
+                                            </div>
+                                            <div class="devices_box building_view" style="text-align:left;">
+                                                <img src="/static/Images/Monitor ON.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 5 / 34 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 300 W </p>
+                                                </div>
+                                            </div>
+                                            <div class="devices_box building_view" style="text-align:left;">
+                                                <img src="/static/Images/Laptop ON.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 10 / 34 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 600 W </p>
+                                                </div>
+                                            </div>
+                                            <div class="devices_box building_view" style="text-align:left;">
+                                                <img src="/static/Images/Fan ON.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 0 / 34 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 0 W </p>
+                                                </div>
+                                            </div>
+                                            <div class="devices_box building_view" style="text-align:left;">
+                                                <img src="/static/Images/Task Lamp ON.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 2 / 34 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 130 W </p>
+                                                </div>
+                                            </div>
+                                            <div class="devices_box building_view" style="text-align:left;">
+                                                <img src="/static/Images/Other.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 2 / 34 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 130 W </p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Floor View -->
+                                            <div class="devices_box floor_view" style="text-align:left;display:none">
+                                                <img src="/static/Images/Desktop ON.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 7 / 7 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 250 W </p>
+                                                </div>
+                                            </div>
+                                            <div class="devices_box floor_view" style="text-align:left;display:none;">
+                                                <img src="/static/Images/Monitor ON.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 1 / 7 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 111 W </p>
+                                                </div>
+                                            </div>
+                                            <div class="devices_box floor_view" style="text-align:left;display:none;">
+                                                <img src="/static/Images/Laptop ON.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 1 / 7 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 80 W </p>
+                                                </div>
+                                            </div>
+                                            <div class="devices_box floor_view" style="text-align:left;display:none;">
+                                                <img src="/static/Images/Fan ON.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 0 / 6 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 0 W </p>
+                                                </div>
+                                            </div>
+                                            <div class="devices_box floor_view" style="text-align:left;display:none;">
+                                                <img src="/static/Images/Task Lamp ON.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 1 / 6 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 60 W </p>
+                                                </div>
+                                            </div>
+                                            <div class="devices_box floor_view" style="text-align:left;display:none;">
+                                                <img src="/static/Images/Other.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 1 / 6 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 60 W </p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Room View -->
+                                            <div class="devices_box room_view" style="text-align:left;display:none;">
+                                                <img src="/static/Images/Desktop ON.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 1 / 3 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 35 W </p>
+                                                </div>
+                                            </div>
+                                            <div class="devices_box room_view" style="text-align:left;display:none;">
+                                                <img src="/static/Images/Monitor ON.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 1 / 3 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 111 W </p>
+                                                </div>
+                                            </div>
+                                            <div class="devices_box room_view" style="text-align:left;display:none;">
+                                                <img src="/static/Images/Laptop ON.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 1 / 3 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 80 W </p>
+                                                </div>
+                                            </div>
+                                            <div class="devices_box room_view" style="text-align:left;display:none;">
+                                                <img src="/static/Images/Fan ON.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 0 / 2 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 0 W </p>
+                                                </div>
+                                            </div>
+                                            <div class="devices_box room_view" style="text-align:left;display:none;">
+                                                <img src="/static/Images/Task Lamp ON.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 1 / 2 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 60 W </p>
+                                                </div>
+                                            </div>
+                                            <div class="devices_box room_view" style="text-align:left;display:none;">
+                                                <img src="/static/Images/Other.png" style="height:60%;margin-left:5%;margin-top:-25%;">
+                                                <div style="height:100%;width:10%;display:inline-block;margin-left:10%;">
+                                                    <img src="/static/Images/turn-off.png" style="height:20%;margin-left:1%;margin-top:-200%;">
+                                                    <img src="https://image.flaticon.com/icons/svg/2983/2983973.svg" style="height:20%;margin-left:1%;margin-top:-10%;">
+                                                </div>
+                                                <div style="height:100%;width:45%;display:inline-block;margin-top:3%;font-weight:bold;">
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> ON / TOTAL </p>
+                                                    <p style="display:inline-block;padding:0;margin:0;color:black;"> 1 / 2 </p>
+                                                    <br>
+                                                    <p style="display:inline-block;padding:0;margin-top:10%;color:black;"> 60 W </p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -165,7 +580,128 @@
                                             </h6>
                                         </div>
                                         <div class="card-body">
-                                            <p> Content Should be Here </p>
+                                            <!-- Building View -->
+                                            <div class="building_view" style="display:inline-block;">
+                                                <img src="/static/Images/building_occupancy.png" style="height:300px;margin-left:50px;">
+                                                <div style="width:30%;height:fit-content;display:inline-block;position: absolute;right:70px;">
+                                                    <div style="width:100%;border:1px solid black;margin-bottom:30px;height:45px;">
+                                                        <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> Currently Present: 15 </p>
+                                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1024px-User_font_awesome.svg.png" style="height:20px;margin-bottom:6px;">
+                                                        </div>
+                                                    </div>
+                                                    <div style="width:100%;border:1px solid black;height:225px;overflow-y:auto;text-align:center;padding-top:5%;">
+                                                        <div style="width:fit-content;color:black;font-weight:bold;display:inline-block;height:fit-content;">
+                                                            <p> Building 3 - Level 1 </p>
+                                                            <p> Building 3 - Level 2 </p>
+                                                            <p> Building 3 - Level 3 </p>
+                                                            <p> Building 3 - Level 4 </p>
+                                                            <p> Building 3 - Level 5 </p>
+                                                            <p> Building 3 - Level 6 </p>
+                                                            <p> Building 3 - Level 7 </p>
+                                                        </div>
+                                                        <div style="width:fit-content;color:black;font-weight:bold;display:inline-block;height:fit-content;margin-left:10%;text-align:left;">
+                                                            <p> 0 / 5 </p>
+                                                            <p> 2 / 12 </p>
+                                                            <p> 4 / 10 </p>
+                                                            <p> 5 / 13 </p>
+                                                            <p> 4 / 10 </p>
+                                                            <p> 0 / 8 </p>
+                                                            <p> 0 / 10 </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Floor View -->
+                                            <div class="floor_view" style="display:none;">
+                                                <img src="/static/Images/floor_occupancy.png" style="height:300px;margin-left:50px;">
+                                                <div style="width:30%;height:fit-content;display:inline-block;position: absolute;right:70px;">
+                                                    <div style="width:100%;border:1px solid black;margin-bottom:30px;height:45px;">
+                                                        <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> Currently Present: 15 </p>
+                                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1024px-User_font_awesome.svg.png" style="height:20px;margin-bottom:6px;">
+                                                        </div>
+                                                    </div>
+                                                    <div style="width:100%;border:1px solid black;height:225px;overflow-y:auto;text-align:center;padding-top:5%;">
+                                                        <div style="width:fit-content;color:black;font-weight:bold;display:inline-block;height:fit-content;">
+                                                            <p> Buckminster Fuller Collaboration Space (3.401) </p>
+                                                            <p> Da Vinci Room (3.401-1) </p>
+                                                            <p> Archimedes Room (3.401-2) </p>
+                                                            <p> Private Offices 1 (3.401-3) </p>
+                                                            <p> Feynman Room (3.401-12) </p>
+                                                            <p> Thomas Edison Room (3.402) </p>
+                                                            <p> Private Offices 2 (3.403) </p>
+                                                            <p> Babbage Room (3.406) </p>
+                                                            <p> Materials Design Lab (3.409) </p>
+                                                            <p> Thin Film Characterization Lab (3.410) </p>
+                                                            <p> Electrical Device Characterization Lab (3.411) </p>
+                                                            <p> Optics Design Lab (3.412) </p>
+                                                            <p> Magnetic & Mechanical Materials Characterization Lab (3.413) </p>
+                                                        </div>
+                                                        <div style="width:fit-content;color:black;font-weight:bold;display:inline-block;height:fit-content;margin-left:10%;text-align:left;">
+                                                            <p> 1 / 5 </p>
+                                                            <p> 1 / 2 </p>
+                                                            <p> 2 / 2 </p>
+                                                            <p> 1 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Room View -->
+                                            <div class="room_view" style="display:none;">
+                                                <img src="/static/Images/floor_occupancy.png" style="height:300px;margin-left:20%;">
+                                                <div style="width:30%;height:fit-content;display:inline-block;position:absolute;right:10%;top:20%;">
+                                                    <div style="width:100%;border:1px solid black;margin-bottom:30px;height:45px;">
+                                                        <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> Currently Present: 15 </p>
+                                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1024px-User_font_awesome.svg.png" style="height:20px;margin-bottom:6px;">
+                                                        </div>
+                                                    </div>
+                                                    <div style="width:100%;border:1px solid black;height:225px;overflow-y:auto;text-align:center;padding-top:5%;">
+                                                        <div style="width:fit-content;color:black;font-weight:bold;display:inline-block;height:fit-content;">
+                                                            <p> Buckminster Fuller Collaboration Space (3.401) </p>
+                                                            <p> Da Vinci Room (3.401-1) </p>
+                                                            <p> Archimedes Room (3.401-2) </p>
+                                                            <p> Private Offices 1 (3.401-3) </p>
+                                                            <p> Feynman Room (3.401-12) </p>
+                                                            <p> Thomas Edison Room (3.402) </p>
+                                                            <p> Private Offices 2 (3.403) </p>
+                                                            <p> Babbage Room (3.406) </p>
+                                                            <p> Materials Design Lab (3.409) </p>
+                                                            <p> Thin Film Characterization Lab (3.410) </p>
+                                                            <p> Electrical Device Characterization Lab (3.411) </p>
+                                                            <p> Optics Design Lab (3.412) </p>
+                                                            <p> Magnetic & Mechanical Materials Characterization Lab (3.413) </p>
+                                                        </div>
+                                                        <div style="width:fit-content;color:black;font-weight:bold;display:inline-block;height:fit-content;margin-left:10%;text-align:left;">
+                                                            <p> 1 / 5 </p>
+                                                            <p> 1 / 2 </p>
+                                                            <p> 2 / 2 </p>
+                                                            <p> 1 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                            <p> 0 / 2 </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -329,6 +865,33 @@
         }
     }
 
+</script>
+
+<!-- Scripts for image maps -->
+<script>
+    function hoverOnDesk(userid) {
+        document.getElementById("room_layout_hoverbox").style.display = "inline-block";
+        document.getElementById("room_layout_hoverbox_user").innerHTML = `User ${userid}`
+        if (userid === 1) {
+            document.getElementById("room_layout_hoverbox_presence").innerHTML = "1 / 1";
+            document.getElementById("room_layout_hoverbox_presence_div").style.background = "#1CC88A";
+            document.getElementById("room_layout_hoverbox_plug").innerHTML = "2 / 3";
+            document.getElementById("room_layout_hoverbox_plug_div").style.background = "#E74A3B";
+            document.getElementById("room_layout_hoverbox_malfunction").innerHTML = "1";
+            document.getElementById("room_layout_hoverbox_malfunction_div").style.background = "#E74A3B";
+        } else {
+            document.getElementById("room_layout_hoverbox_presence").innerHTML = "1 / 1";
+            document.getElementById("room_layout_hoverbox_presence_div").style.background = "#1CC88A";
+            document.getElementById("room_layout_hoverbox_plug").innerHTML = "3 / 3";
+            document.getElementById("room_layout_hoverbox_plug_div").style.background = "#1CC88A";
+            document.getElementById("room_layout_hoverbox_malfunction").innerHTML = "0";
+            document.getElementById("room_layout_hoverbox_malfunction_div").style.background = "#1CC88A";
+        }
+    }
+
+    function clearDeskHover() {
+        document.getElementById("room_layout_hoverbox").style.display = "none";
+    }
 </script>
 
 </body>
