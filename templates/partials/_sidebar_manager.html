@@ -13,7 +13,7 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <div style="overflow-y:auto;overflow-x:hidden;">
+    <div id="manager-sidebar" style="overflow-y:auto;overflow-x:hidden;">
         <!-- Nav Item - All Levels -->
         <li class="nav-item active">
             <a class="nav-link" onclick="chooseBuilding()" id="all_levels">
@@ -230,6 +230,7 @@
         for (var l = 0; l < document.getElementsByClassName("room_view").length; l++) {
             document.getElementsByClassName("room_view")[l].style.display = "none";
         }
+        imageMapResize();
     }
 
     function chooseLevel(floor) {
@@ -255,6 +256,7 @@
         for (var l = 0; l < document.getElementsByClassName("room_view").length; l++) {
             document.getElementsByClassName("room_view")[l].style.display = "none";
         }
+        imageMapResize();
 
         if (floor === "four") {
             if (document.getElementsByClassName("level_four_room")[0].style.display === "none") {
@@ -306,6 +308,7 @@
         for (var l = 0; l < document.getElementsByClassName("room_view").length; l++) {
             document.getElementsByClassName("room_view")[l].style.display = "inline-block";
         }
+        imageMapResize();
 
         if (room === "buckminster_fuller_collaboration_space") {
             for (var i = 0; i < document.getElementsByClassName("level_four_room").length; i++) {

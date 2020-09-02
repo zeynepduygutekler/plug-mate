@@ -462,24 +462,25 @@ class Calendar extends Component {
                                             fetch('/control_interface/api/notifications/')
                                             .then(response => response.json())
                                             .then(notifications_data => {
-                                                var number_of_notifications = notifications_data[0].notifications.notifications.length;
-                                                var current_user = notifications_data[0].user_id;
+                                                var number_of_notifications = JSON.parse(notifications_data[0].notifications).notifications.length;
+                                                var current_user = notifications_data[0].id;
 
                                                 // Get the timestamp
                                                 var today = new Date();
                                                 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                                                 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                                 var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
+                                                var list_of_notifications = JSON.parse(notifications_data[0].notifications)
                                                 // Bonus achievement
-                                                notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 70 points for setting your first schedule-based setting.", type: "success", seen: 0})
+                                                list_of_notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 70 points for setting your first schedule-based setting.", type: "success", seen: 0})
                                                 // Daily achievement
-                                                notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for using schedule-based control for your devices today.", type: "success", seen: 0})
+                                                list_of_notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for using schedule-based control for your devices today.", type: "success", seen: 0})
                                                 fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                                                     method: 'PUT',
                                                     headers: {
                                                         'Content-Type': 'application/json'
                                                     },
-                                                    body: JSON.stringify(notifications_data[0])
+                                                    body: JSON.stringify({id: notifications_data[0].id, user_id: notifications_data[0].user_id, notifications: {notifications: list_of_notifications}})
                                                 })
 
                                                 // Update number on bell
@@ -521,22 +522,23 @@ class Calendar extends Component {
                                             fetch('/control_interface/api/notifications/')
                                             .then(response => response.json())
                                             .then(notifications_data => {
-                                                var number_of_notifications = notifications_data[0].notifications.notifications.length;
-                                                var current_user = notifications_data[0].user_id;
+                                                var number_of_notifications = JSON.parse(notifications_data[0].notifications).notifications.length;
+                                                var current_user = notifications_data[0].id;
 
                                                 // Get the timestamp
                                                 var today = new Date();
                                                 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                                                 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                                 var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
+                                                var list_of_notifications = JSON.parse(notifications_data[0].notifications)
                                                 // Daily achievement
-                                                notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for using schedule-based control for your devices today.", type: "success", seen: 0})
+                                                list_of_notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 5 points for using schedule-based control for your devices today.", type: "success", seen: 0})
                                                 fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                                                     method: 'PUT',
                                                     headers: {
                                                         'Content-Type': 'application/json'
                                                     },
-                                                    body: JSON.stringify(notifications_data[0])
+                                                    body: JSON.stringify({id: notifications_data[0].id, user_id: notifications_data[0].user_id, notifications: {notifications: list_of_notifications}})
                                                 })
 
                                                 // Update number on bell
@@ -588,22 +590,23 @@ class Calendar extends Component {
                                             fetch('/control_interface/api/notifications/')
                                             .then(response => response.json())
                                             .then(notifications_data => {
-                                                var number_of_notifications = notifications_data[0].notifications.notifications.length;
-                                                var current_user = notifications_data[0].user_id;
+                                                var number_of_notifications = JSON.parse(notifications_data[0].notifications).notifications.length;
+                                                var current_user = notifications_data[0].id;
 
                                                 // Get the timestamp
                                                 var today = new Date();
                                                 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                                                 const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                                                 var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
+                                                var list_of_notifications = JSON.parse(notifications_data[0].notifications)
                                                 // Bonus achievement
-                                                notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 70 points for setting your first schedule-based setting.", type: "success", seen: 0})
+                                                list_of_notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 70 points for setting your first schedule-based setting.", type: "success", seen: 0})
                                                 fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                                                     method: 'PUT',
                                                     headers: {
                                                         'Content-Type': 'application/json'
                                                     },
-                                                    body: JSON.stringify(notifications_data[0])
+                                                    body: JSON.stringify({id: notifications_data[0].id, user_id: notifications_data[0].user_id, notifications: {notifications: list_of_notifications}})
                                                 })
 
                                                 // Update number on bell
@@ -659,22 +662,23 @@ class Calendar extends Component {
                         fetch('/control_interface/api/notifications/')
                         .then(response => response.json())
                         .then(notifications_data => {
-                            var number_of_notifications = notifications_data[0].notifications.notifications.length;
-                            var current_user = notifications_data[0].user_id;
+                            var number_of_notifications = JSON.parse(notifications_data[0].notifications).notifications.length;
+                            var current_user = notifications_data[0].id;
 
                             // Get the timestamp
                             var today = new Date();
                             const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
                             const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
                             var new_timestamp = today.getDate() + " " + months[today.getMonth()] + " " + today.getUTCFullYear() + ", " + days[today.getDay()];
+                            var list_of_notifications = JSON.parse(notifications_data[0].notifications)
                             // Bonus achievement
-                            notifications_data[0].notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 70 points for setting your first schedule-based setting.", type: "success", seen: 0})
+                            list_of_notifications.notifications.push({timestamp: new_timestamp, message: "You have been awarded 70 points for setting your first schedule-based setting.", type: "success", seen: 0})
                             fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
                                 method: 'PUT',
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },
-                                body: JSON.stringify(notifications_data[0])
+                                body: JSON.stringify({id: notifications_data[0].id, user_id: notifications_data[0].user_id, notifications: {notifications: list_of_notifications}})
                             })
 
                             // Update number on bell

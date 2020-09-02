@@ -133,22 +133,28 @@
 
 <script>
     document.getElementById("clear_all_notifications").onclick = function() {
-        var current_user_id = {{user_id}};
-        const empty_notifications = JSON.parse('{"notifications": []}')
-        fetch('/control_interface/api/notifications/' + current_user_id.toString() + '/', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({id: {{user_id}}, user_id: {{user_id}}, notifications: empty_notifications})
-        })
-        document.getElementById("number_of_notifications").innerHTML = "0";
+        fetch('/control_interface/api/notifications/')
+        .then(response => response.json())
+        .then(notifications_data => {
+            var num_notifications = JSON.parse(notifications_data[0].notifications).notifications.length;
+            var current_user = notifications_data[0].id;
 
-        var times_to_loop = {{unseen_notifications}} * 2
-        var i;
-        for (i = 0; i < times_to_loop; i++) {
-            document.getElementById("list_of_alerts").removeChild(document.getElementById("list_of_alerts").childNodes[2]);
-        }
+            const empty_notifications = JSON.parse('{"notifications": []}')
+            fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: current_user, user_id: {{user_id}}, notifications: empty_notifications})
+            })
+            document.getElementById("number_of_notifications").innerHTML = "0";
+
+            var times_to_loop = num_notifications * 2
+            var i;
+            for (i = 0; i < times_to_loop; i++) {
+                document.getElementById("list_of_alerts").removeChild(document.getElementById("list_of_alerts").childNodes[2]);
+            }
+        })
     }
 
     document.getElementById("bell_icon").addEventListener("click", stopAnimation);
