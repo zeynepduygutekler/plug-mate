@@ -36,7 +36,7 @@
 
         /* Layout Card */
         @media (max-width: 2000px) {
-            #building-layout-img, #floor-layout-img {
+            #building-layout-img, #floor-layout-img, #room-layout-img {
                 width: 100%;
                 margin: auto;
                 display: block;
@@ -127,7 +127,7 @@
                                                     </div>
                                                     <div style="width:250px;height:80px;border:1px solid black;margin-bottom:4px;display:inline-block;">
                                                         <div style="text-align:center;margin-top:10px;margin-bottom:-5px;">
-                                                            <img src="https://image.flaticon.com/icons/svg/167/167096.svg" style="height:20px;margin-bottom:3px;">
+                                                            <img src="https://image.flaticon.com/icons/svg/167/167096.svg" style="height:20px;margin-bottom:3px;transform:rotate(30deg);">
                                                             <p style="display:inline-block;color:black;font-weight:bold;"> Smart Plugs </p>
                                                         </div>
                                                         <div style="text-align:center;">
@@ -177,7 +177,7 @@
                                                     </div>
                                                     <div style="width:250px;height:80px;border:1px solid black;margin-bottom:4px;display:inline-block;">
                                                         <div style="text-align:center;margin-top:10px;margin-bottom:-5px;">
-                                                            <img src="https://image.flaticon.com/icons/svg/167/167096.svg" style="height:20px;margin-bottom:3px;">
+                                                            <img src="https://image.flaticon.com/icons/svg/167/167096.svg" style="height:20px;margin-bottom:3px;transform:rotate(30deg);">
                                                             <p style="display:inline-block;color:black;font-weight:bold;"> Smart Plugs </p>
                                                         </div>
                                                         <div style="text-align:center;">
@@ -218,68 +218,55 @@
                                             </div>
 
                                             <!-- Room View -->
-                                            <div class="room_view" style="display:none;height:300px;">
-                                                <img src="/static/Images/room_layout.png"usemap="#room-layout-map" style="width:80%;">
+                                            <div class="room_view" style="display:none;width:100%;">
+                                                <!-- Overview Numbers -->
+                                                <div style="width:100%;height:fit-content;display:inline-block;text-align:center;">
+                                                    <div style="width:250px;height:80px;border:1px solid black;margin-bottom:4px;display:inline-block;">
+                                                        <div style="text-align:center;margin-top:10px;margin-bottom:-5px;">
+                                                            <img src="https://pluspng.com/img-png/raspberry-png-black-and-white-this-icon-represents-raspberry-pi-it-is-an-oval-shape-with-tiny-raised-circles-all-png-50-px-1600.png" style="height:20px;margin-bottom:3px;">
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> Presence Detectors </p>
+                                                        </div>
+                                                        <div style="text-align:center;">
+                                                            <div style="border-radius:50%;background:#1CC88A;height:20px;width:20px;display:inline-block;margin-bottom:-4px;"></div>
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> 5 / 5 </p>
+                                                        </div>
+                                                    </div>
+                                                    <div style="width:250px;height:80px;border:1px solid black;margin-bottom:4px;display:inline-block;">
+                                                        <div style="text-align:center;margin-top:10px;margin-bottom:-5px;">
+                                                            <img src="https://image.flaticon.com/icons/svg/167/167096.svg" style="height:20px;margin-bottom:3px;transform:rotate(30deg);">
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> Smart Plugs </p>
+                                                        </div>
+                                                        <div style="text-align:center;">
+                                                            <div style="border-radius:50%;background:#E74A3B;height:20px;width:20px;display:inline-block;margin-bottom:-4px;"></div>
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> 14 / 15 </p>
+                                                        </div>
+                                                    </div>
+                                                    <div style="width:250px;height:80px;border:1px solid black;margin-bottom:30px;display:inline-block;">
+                                                        <div style="text-align:center;margin-top:10px;margin-bottom:-5px;">
+                                                            <img src="https://image.flaticon.com/icons/svg/159/159469.svg" style="height:20px;margin-bottom:3px;">
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> Malfunctioning Devices </p>
+                                                        </div>
+                                                        <div style="text-align:center;">
+                                                            <div style="border-radius:50%;background:#E74A3B;height:20px;width:20px;display:inline-block;margin-bottom:-4px;"></div>
+                                                            <p style="display:inline-block;color:black;font-weight:bold;"> 1 </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="width:100%;height:fit-content;display:block;text-align:center;">
+                                                    <div style="width:fit-content;height:fit-content;display:inline-block;text-align:center;">
+                                                        <!-- Image Map -->
+                                                        <img id="room-layout-img" src="/static/Images/room_layout.png" usemap="#room-layout-map" style="display:inline-block;">
 
-                                                <map name="room-layout-map">
-                                                    <area class="hoverable" coords="119,28,135,28,150,56,134,55" shape="poly" onmouseover="hoverOnDesk(1)" onmouseout="clearDeskHover()">
-                                                    <area class="hoverable" coords="191,55,222,55,230,68,198,68" shape="poly" onmouseover="hoverOnDesk(2)" onmouseout="clearDeskHover()">
-                                                    <area class="hoverable" coords="256,42,288,43,280,55,264,56" shape="poly" onmouseover="hoverOnDesk(3)" onmouseout="clearDeskHover()">
-                                                    <area class="hoverable" coords="234,105,263,105,257,119,227,119" shape="poly" onmouseover="hoverOnDesk(4)" onmouseout="clearDeskHover()">
-                                                    <area class="hoverable" coords="112,105,103,118,89,92,103,92" shape="poly" onmouseover="hoverOnDesk(5)" onmouseout="clearDeskHover()">
-                                                </map>
+                                                        <map name="room-layout-map">
+                                                            <area coords="226,180,254,179,282,228,254,229,243,210,236,213,229,209,229,199,235,194" shape="poly" onmouseover="hoverOnDesk(1)" onmouseout="clearDeskHover()">
+                                                            <area coords="360,229,414,228,431,251,411,252,412,260,405,265,394,260,394,252,371,251" shape="poly" onmouseover="hoverOnDesk(2)" onmouseout="clearDeskHover()">
+                                                            <area coords="481,204,497,229,522,228,540,206,518,203,515,194,506,192,501,199,501,205" shape="poly" onmouseover="hoverOnDesk(3)" onmouseout="clearDeskHover()">
+                                                            <area coords="426,347,438,322,493,322,478,347,462,347,462,354,455,359,445,353,445,349" shape="poly" onmouseover="hoverOnDesk(4)" onmouseout="clearDeskHover()">
+                                                            <area coords="171,299,198,297,213,321,197,345,188,328,180,331,172,325,174,316,180,313" shape="poly" onmouseover="hoverOnDesk(5)" onmouseout="clearDeskHover()">
+                                                        </map>
 
-                                                <div id="room_layout_hoverbox" style="width:300px;height:fit-content;padding-bottom:10px;position:absolute;bottom:100px;right:40%;border:1px solid black;text-align:center;color:black;font-weight:bold;padding-top:10px;display:none;">
-                                                    <p id="room_layout_hoverbox_user"> User 1 </p>
-                                                    <div id="room_layout_hoverbox_presence_div" style="display:inline-block;padding:10px;padding-bottom:0px;">
-                                                        <img src="https://pluspng.com/img-png/raspberry-png-black-and-white-this-icon-represents-raspberry-pi-it-is-an-oval-shape-with-tiny-raised-circles-all-png-50-px-1600.png" style="height:20px;">
-                                                        <p id="room_layout_hoverbox_presence" style="display:inline-block;"> 1 / 1 </p>
-                                                    </div>
-                                                    <div id="room_layout_hoverbox_plug_div" style="display:inline-block;margin-left:20px;padding:10px;padding-bottom:0px;">
-                                                        <img src="https://image.flaticon.com/icons/svg/167/167096.svg" style="height:20px;transform:rotate(20deg)">
-                                                        <p id="room_layout_hoverbox_plug" style="display:inline-block;"> 3 / 3 </p>
-                                                    </div>
-                                                    <div id="room_layout_hoverbox_malfunction_div" style="display:inline-block;margin-left:20px;padding:10px;padding-bottom:0px;">
-                                                        <img src="https://image.flaticon.com/icons/svg/159/159469.svg" style="height:20px;">
-                                                        <p id="room_layout_hoverbox_malfunction" style="display:inline-block;"> 0 </p>
                                                     </div>
                                                 </div>
-
-                                                <div style="width:30%;height:fit-content;display:inline-block;position: absolute;right:10px;">
-                                                <div style="width:100%; height:80px;border:1px solid black;margin-bottom:30px;background:white;">
-                                                    <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
-                                                        <img src="https://pluspng.com/img-png/raspberry-png-black-and-white-this-icon-represents-raspberry-pi-it-is-an-oval-shape-with-tiny-raised-circles-all-png-50-px-1600.png" style="height:20px;margin-bottom:3px;">
-                                                        <p style="display:inline-block;color:black;font-weight:bold;"> Presence Detectors </p>
-                                                    </div>
-                                                    <br>
-                                                    <div style="text-align:center;">
-                                                        <div style="border-radius:50%;background:#1CC88A;height:20px;width:20px;display:inline-block;margin-bottom:-4px;"> </div>
-                                                        <p style="display:inline-block;color:black;font-weight:bold;"> 5 / 5 </p>
-                                                    </div>
-                                                </div>
-                                                <div style="width:100%;height:80px;border:1px solid black;margin-bottom:30px">
-                                                    <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
-                                                        <img src="https://image.flaticon.com/icons/svg/167/167096.svg" style="height:20px;transform:rotate(20deg);margin-top:-5px;">
-                                                        <p style="display:inline-block;color:black;font-weight:bold;"> Smart Plugs </p>
-                                                    </div>
-                                                    <br>
-                                                    <div style="text-align:center;">
-                                                        <div style="border-radius:50%;background:#E74A3B;height:20px;width:20px;display:inline-block;margin-bottom:-4px;"> </div>
-                                                        <p style="display:inline-block;color:black;font-weight:bold;"> 14 / 15 </p>
-                                                    </div>
-                                                </div>
-                                                <div style="width:100%;height:80px;border:1px solid black;">
-                                                    <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
-                                                        <img src="https://image.flaticon.com/icons/svg/159/159469.svg" style="height:15px;margin-bottom:3px;">
-                                                        <p style="display:inline-block;color:black;font-weight:bold;"> Malfunctioning Devices </p>
-                                                    </div>
-                                                    <br>
-                                                    <div style="text-align:center;">
-                                                        <div style="border-radius:50%;background:#E74A3B;height:20px;width:20px;display:inline-block;margin-bottom:-4px;"> </div>
-                                                        <p style="display:inline-block;color:black;font-weight:bold;"> 1 </p>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             </div>
                                         </div>
                                     </div>
@@ -1076,27 +1063,11 @@
 <!-- Scripts for image maps -->
 <script>
     function hoverOnDesk(userid) {
-        document.getElementById("room_layout_hoverbox").style.display = "inline-block";
-        document.getElementById("room_layout_hoverbox_user").innerHTML = `User ${userid}`
-        if (userid === 1) {
-            document.getElementById("room_layout_hoverbox_presence").innerHTML = "1 / 1";
-            document.getElementById("room_layout_hoverbox_presence_div").style.background = "#1CC88A";
-            document.getElementById("room_layout_hoverbox_plug").innerHTML = "2 / 3";
-            document.getElementById("room_layout_hoverbox_plug_div").style.background = "#E74A3B";
-            document.getElementById("room_layout_hoverbox_malfunction").innerHTML = "1";
-            document.getElementById("room_layout_hoverbox_malfunction_div").style.background = "#E74A3B";
-        } else {
-            document.getElementById("room_layout_hoverbox_presence").innerHTML = "1 / 1";
-            document.getElementById("room_layout_hoverbox_presence_div").style.background = "#1CC88A";
-            document.getElementById("room_layout_hoverbox_plug").innerHTML = "3 / 3";
-            document.getElementById("room_layout_hoverbox_plug_div").style.background = "#1CC88A";
-            document.getElementById("room_layout_hoverbox_malfunction").innerHTML = "0";
-            document.getElementById("room_layout_hoverbox_malfunction_div").style.background = "#1CC88A";
-        }
+        document.getElementById("room-layout-img").src = "/static/Images/room_layout_" + userid + ".png";
     }
 
     function clearDeskHover() {
-        document.getElementById("room_layout_hoverbox").style.display = "none";
+        document.getElementById("room-layout-img").src = "/static/Images/room_layout.png";
     }
 </script>
 
