@@ -35,12 +35,85 @@
         }
 
         /* Layout Card */
-        @media (max-width: 2000px) {
+        @media (max-width: 1105px) {
             #building-layout-img, #floor-layout-img, #room-layout-img {
                 width: 100%;
                 margin: auto;
                 display: block;
                 max-width: 600px;
+            }
+            #building-layout-overview, #floor-layout-overview, #room-layout-overview {
+                width: 100%;
+                height: fit-content;
+                display: inline-block;
+                text-align: center;
+            }
+        }
+        @media (min-width: 1105px) {
+            #building-layout-img, #floor-layout-img {
+                width: 60%;
+                max-width: 600px;
+                display: inline-block;
+            }
+            #room-layout-img {
+                width: 60%;
+                max-width: 700px;
+                display: inline-block;
+            }
+            #building-layout-overview, #floor-layout-overview, #room-layout-overview {
+                width: 250px;
+                height: fit-content;
+                display: inline-block;
+                float: right;
+                margin-top: 3%;
+            }
+        }
+
+        /* Occupancy Card */
+        @media (max-width: 1265px) {
+            #building-occupancy-line-div, #floor-occupancy-line-div, #room-occupancy-line-div {
+                width: 100%;
+                display: inline-block;
+                position: relative;
+                text-align: center;
+            }
+            #building-occupancy-breakdown-content, #floor-occupancy-breakdown-content, #room-occupancy-breakdown-content {
+                height: 250px;
+            }
+            #building-occupancy-breakdown-content-container, #floor-occupancy-breakdown-content-container, #room-occupancy-breakdown-content-container {
+                margin-top: -10px;
+            }
+        }
+
+        @media (min-width: 1265px) {
+            #building-occupancy, #floor-occupancy, #room-occupancy {
+                width: 95%;
+                text-align: center;
+                height: 450px;
+
+            }
+            #building-occupancy-line-div, #floor-occupancy-line-div, #room-occupancy-line-div {
+                width: 550px;
+                display: inline-block;
+                position: relative;
+                top: -150px;
+            }
+            #building-occupancy-line, #floor-occupancy-line, #room-occupancy-line {
+                width: 100%;
+                display: inline-block;
+            }
+            #building-occupancy-breakdown-div, #floor-occupancy-breakdown-div, #room-occupancy-breakdown-div {
+                width: 300px;
+                display: inline-block;
+                margin-left: 10px;
+                background: white;
+                float: none;
+            }
+            #building-occupancy-breakdown-content, #floor-occupancy-breakdown-content, #room-occupancy-breakdown-content {
+                height: 340px;
+            }
+            #building-occupancy-breakdown-content-container, #floor-occupancy-breakdown-content-container, #room-occupancy-breakdown-content-container {
+                margin-top: 25px;
             }
         }
 
@@ -71,7 +144,19 @@
             height: 100px;
             display: inline-block;
             margin: 10px;
+            border-radius: 5px;
         }
+
+        /* Hide scrollbar */
+        #manager-sidebar::-webkit-scrollbar {
+            display: none;
+        }
+
+        #manager-sidebar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
     </style>
 </head>
 <body>
@@ -96,9 +181,9 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800 font-weight-bold" id="page_title">Building</h1>
-                        </div>
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800 font-weight-bold" id="page_title">Building</h1>
+                    </div>
 
                         <!-- Layout -->
                         <div class="row">
@@ -113,8 +198,9 @@
                                         <div class="card-body">
                                             <!-- Building View -->
                                             <div class="building_view" style="width:100%;">
+                                                <div style="width:90%;text-align:center;display:block;margin-left:auto;margin-right:auto;">
                                                 <!-- Overview Numbers -->
-                                                <div style="width:100%;height:fit-content;display:inline-block;text-align:center;">
+                                                <div id="building-layout-overview">
                                                     <div style="width:250px;height:80px;border:1px solid black;margin-bottom:4px;display:inline-block;">
                                                         <div style="text-align:center;margin-top:10px;margin-bottom:-5px;">
                                                             <img src="https://pluspng.com/img-png/raspberry-png-black-and-white-this-icon-represents-raspberry-pi-it-is-an-oval-shape-with-tiny-raised-circles-all-png-50-px-1600.png" style="height:20px;margin-bottom:3px;">
@@ -158,13 +244,15 @@
                                                     <area class="hoverable" onclick="chooseLevel('six')" coords="15,101,262,165" shape="rect">
                                                     <area class="hoverable" onclick="chooseLevel('seven')" coords="694,151,939,215" shape="rect">
                                                 </map>
+                                                </div>
                                             </div>
 
 
                                             <!-- Floor View -->
                                             <div class="floor_view" style="display:none;width:100%;">
+                                                <div style="width:90%;text-align:center;display:block;margin-left:auto;margin-right:auto;">
                                                 <!-- Overview Numbers -->
-                                                <div style="width:100%;height:fit-content;display:inline-block;text-align:center;">
+                                                <div id="floor-layout-overview">
                                                     <div style="width:250px;height:80px;border:1px solid black;margin-bottom:4px;display:inline-block;">
                                                         <div style="text-align:center;margin-top:10px;margin-bottom:-5px;">
                                                             <img src="https://pluspng.com/img-png/raspberry-png-black-and-white-this-icon-represents-raspberry-pi-it-is-an-oval-shape-with-tiny-raised-circles-all-png-50-px-1600.png" style="height:20px;margin-bottom:3px;">
@@ -198,7 +286,7 @@
                                                 </div>
 
                                                 <!-- Image Map -->
-                                                <img id="floor-layout-img" src="/static/Images/floor_layout.png" usemap="#floor-layout-map" style="width:80%;">
+                                                <img id="floor-layout-img" src="/static/Images/floor_layout.png" usemap="#floor-layout-map">
 
                                                 <map name="floor-layout-map">
                                                     <area class="hoverable" onclick="chooseLevelFourRoom('buckminster_fuller_collaboration_space')" coords="671,173,871,245" shape="rect">
@@ -215,12 +303,14 @@
                                                     <area class="hoverable" onclick="chooseLevelFourRoom('optics_design_lab')" coords="35,285,233,350" shape="rect">
                                                     <area class="hoverable" onclick="chooseLevelFourRoom('magnetic_and_mechanical_materials_characterization_lab')" coords="35,173,233,245" shape="rect">
                                                 </map>
+                                                </div>
                                             </div>
 
                                             <!-- Room View -->
                                             <div class="room_view" style="display:none;width:100%;">
+                                                <div style="width:90%;text-align:center;display:block;margin-left:auto;margin-right:auto;">
                                                 <!-- Overview Numbers -->
-                                                <div style="width:100%;height:fit-content;display:inline-block;text-align:center;">
+                                                <div id="room-layout-overview">
                                                     <div style="width:250px;height:80px;border:1px solid black;margin-bottom:4px;display:inline-block;">
                                                         <div style="text-align:center;margin-top:10px;margin-bottom:-5px;">
                                                             <img src="https://pluspng.com/img-png/raspberry-png-black-and-white-this-icon-represents-raspberry-pi-it-is-an-oval-shape-with-tiny-raised-circles-all-png-50-px-1600.png" style="height:20px;margin-bottom:3px;">
@@ -252,20 +342,16 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div style="width:100%;height:fit-content;display:block;text-align:center;">
-                                                    <div style="width:fit-content;height:fit-content;display:inline-block;text-align:center;">
-                                                        <!-- Image Map -->
-                                                        <img id="room-layout-img" src="/static/Images/room_layout.png" usemap="#room-layout-map" style="display:inline-block;">
+                                                <!-- Image Map -->
+                                                <img id="room-layout-img" src="/static/Images/room_layout.png" usemap="#room-layout-map">
 
-                                                        <map name="room-layout-map">
-                                                            <area coords="226,180,254,179,282,228,254,229,243,210,236,213,229,209,229,199,235,194" shape="poly" onmouseover="hoverOnDesk(1)" onmouseout="clearDeskHover()">
-                                                            <area coords="360,229,414,228,431,251,411,252,412,260,405,265,394,260,394,252,371,251" shape="poly" onmouseover="hoverOnDesk(2)" onmouseout="clearDeskHover()">
-                                                            <area coords="481,204,497,229,522,228,540,206,518,203,515,194,506,192,501,199,501,205" shape="poly" onmouseover="hoverOnDesk(3)" onmouseout="clearDeskHover()">
-                                                            <area coords="426,347,438,322,493,322,478,347,462,347,462,354,455,359,445,353,445,349" shape="poly" onmouseover="hoverOnDesk(4)" onmouseout="clearDeskHover()">
-                                                            <area coords="171,299,198,297,213,321,197,345,188,328,180,331,172,325,174,316,180,313" shape="poly" onmouseover="hoverOnDesk(5)" onmouseout="clearDeskHover()">
-                                                        </map>
-
-                                                    </div>
+                                                <map name="room-layout-map">
+                                                    <area coords="226,180,254,179,282,228,254,229,243,210,236,213,229,209,229,199,235,194" shape="poly" onmouseover="hoverOnDesk(1)" onmouseout="clearDeskHover()">
+                                                    <area coords="360,229,414,228,431,251,411,252,412,260,405,265,394,260,394,252,371,251" shape="poly" onmouseover="hoverOnDesk(2)" onmouseout="clearDeskHover()">
+                                                    <area coords="481,204,497,229,522,228,540,206,518,203,515,194,506,192,501,199,501,205" shape="poly" onmouseover="hoverOnDesk(3)" onmouseout="clearDeskHover()">
+                                                    <area coords="426,347,438,322,493,322,478,347,462,347,462,354,455,359,445,353,445,349" shape="poly" onmouseover="hoverOnDesk(4)" onmouseout="clearDeskHover()">
+                                                    <area coords="171,299,198,297,213,321,197,345,188,328,180,331,172,325,174,316,180,313" shape="poly" onmouseover="hoverOnDesk(5)" onmouseout="clearDeskHover()">
+                                                </map>
                                                 </div>
                                             </div>
                                         </div>
@@ -578,71 +664,73 @@
                                         </div>
                                         <div class="card-body">
                                             <!-- Building View -->
-                                            <div class="building_view" style="display:inline-block;">
-                                                <img src="/static/Images/building_occupancy.png" style="height:300px;margin-left:50px;">
-                                                <div style="width:30%;height:fit-content;display:inline-block;position: absolute;right:70px;">
-                                                    <div style="width:100%;border:1px solid black;margin-bottom:30px;height:45px;">
-                                                        <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
-                                                            <p style="display:inline-block;color:black;font-weight:bold;"> Currently Present: 15 </p>
-                                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1024px-User_font_awesome.svg.png" style="height:20px;margin-bottom:6px;">
-                                                        </div>
+                                            <div class="building_view" style="display:inline-block;width:100%;">
+                                                <div id="building-occupancy">
+                                                    <div style="text-align:center;">
+                                                        <p style="display:inline-block;color:black;font-weight:bold;"> Currently Present: 15 </p>
+                                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1024px-User_font_awesome.svg.png" style="height:20px;margin-bottom:6px;">
                                                     </div>
-                                                    <div style="width:100%;border:1px solid black;height:225px;overflow-y:auto;text-align:center;padding-top:5%;">
-                                                        <div class="container" style="color:black;font-weight:bold;">
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Building 3 - Level 1 </p>
+                                                    <div id="building-occupancy-line-div">
+                                                        <div id="building-occupancy-line" style="width:90%;display:inline-block;"></div>
+                                                    </div>
+                                                    <div id="building-occupancy-breakdown-div">
+                                                        <div id="building-occupancy-breakdown-content" style="width:100%;border:1px solid black;overflow-y:auto;text-align:center;padding-top:5%;">
+                                                            <div id="building-occupancy-breakdown-content-container" class="container" style="color:black;font-weight:bold;">
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Building 3 - Level 1 </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 5 </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 5 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Building 3 - Level 2 </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 2 / 12 </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Building 3 - Level 2 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Building 3 - Level 3 </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 4 / 10 </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 2 / 12 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Building 3 - Level 4 </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 5 / 13 </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Building 3 - Level 3 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Building 3 - Level 5 </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 4 / 10 </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 4 / 10 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Building 3 - Level 6 </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 8 </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Building 3 - Level 4 </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 5 / 13 </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Building 3 - Level 5 </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 4 / 10 </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Building 3 - Level 6 </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 8 </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Building 3 - Level 7 </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 10 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Building 3 - Level 7 </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 10 </p>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -651,119 +739,121 @@
                                             </div>
 
                                             <!-- Floor View -->
-                                            <div class="floor_view" style="display:none;">
-                                                <img src="/static/Images/floor_occupancy.png" style="height:300px;margin-left:50px;">
-                                                <div style="width:30%;height:fit-content;display:inline-block;position: absolute;right:70px;">
-                                                    <div style="width:100%;border:1px solid black;margin-bottom:30px;height:45px;">
-                                                        <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
-                                                            <p style="display:inline-block;color:black;font-weight:bold;"> Currently Present: 15 </p>
-                                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1024px-User_font_awesome.svg.png" style="height:20px;margin-bottom:6px;">
-                                                        </div>
+                                            <div class="floor_view" style="display:none;width:100%;">
+                                                <div id="floor-occupancy">
+                                                    <div style="text-align:center;">
+                                                        <p style="display:inline-block;color:black;font-weight:bold;"> Currently Present: 5 </p>
+                                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1024px-User_font_awesome.svg.png" style="height:20px;margin-bottom:6px;">
                                                     </div>
-                                                    <div style="width:100%;border:1px solid black;height:225px;overflow-y:auto;text-align:center;padding-top:5%;">
-                                                        <div class="container" style="color:black;font-weight:bold;">
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Buckminster Fuller Collaboration Space (3.401) </p>
+                                                    <div id="floor-occupancy-line-div">
+                                                        <div id="floor-occupancy-line" style="width:90%;display:inline-block;"></div>
+                                                    </div>
+                                                    <div id="floor-occupancy-breakdown-div">
+                                                        <div id="floor-occupancy-breakdown-content" style="width:100%;border:1px solid black;overflow-y:auto;text-align:center;padding-top:5%;">
+                                                            <div id="floor-occupancy-breakdown-content-container" class="container" style="color:black;font-weight:bold;">
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Buckminster Fuller Collaboration Space (3.401) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 1 / 5 </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 1 / 5 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Da Vinci Room (3.401-1) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 1 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Da Vinci Room (3.401-1) </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Archimedes Room (3.401-2) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 2 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 1 / 2 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Private Offices 1 (3.401-3) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 1 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Archimedes Room (3.401-2) </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Feynman Room (3.401-12) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 2 / 2 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Thomas Edison Room (3.402) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Private Offices 1 (3.401-3) </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Private Offices 2 (3.403) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 1 / 2 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Babbage Room (3.406) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Feynman Room (3.401-12) </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Materials Design Lab (3.409) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Thin Film Characterization Lab (3.410) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Thomas Edison Room (3.402) </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Electrical Device Characterization Lab (3.411) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Optics Design Lab (3.412) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Private Offices 2 (3.403) </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Babbage Room (3.406) </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Materials Design Lab (3.409) </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Thin Film Characterization Lab (3.410) </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Electrical Device Characterization Lab (3.411) </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Optics Design Lab (3.412) </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Magnetic & Mechanical Materials Characterization Lab (3.413) </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Magnetic & Mechanical Materials Characterization Lab (3.413) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -772,119 +862,121 @@
                                             </div>
 
                                             <!-- Room View -->
-                                            <div class="room_view" style="display:none;">
-                                                <img src="/static/Images/floor_occupancy.png" style="height:300px;margin-left:20%;">
-                                                <div style="width:30%;height:fit-content;display:inline-block;position:absolute;right:10%;top:20%;">
-                                                    <div style="width:100%;border:1px solid black;margin-bottom:30px;height:45px;">
-                                                        <div style="text-align:center;margin-top:10px;margin-bottom:-30px;">
-                                                            <p style="display:inline-block;color:black;font-weight:bold;"> Currently Present: 15 </p>
-                                                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1024px-User_font_awesome.svg.png" style="height:20px;margin-bottom:6px;">
-                                                        </div>
+                                            <div class="room_view" style="display:none;width:100%;">
+                                                <div id="room-occupancy">
+                                                    <div style="text-align:center;">
+                                                        <p style="display:inline-block;color:black;font-weight:bold;"> Currently Present: 5 </p>
+                                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/User_font_awesome.svg/1024px-User_font_awesome.svg.png" style="height:20px;margin-bottom:6px;">
                                                     </div>
-                                                    <div style="width:100%;border:1px solid black;height:225px;overflow-y:auto;text-align:center;padding-top:5%;">
-                                                        <div class="container" style="color:black;font-weight:bold;">
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Buckminster Fuller Collaboration Space (3.401) </p>
+                                                    <div id="room-occupancy-line-div">
+                                                        <div id="room-occupancy-line" style="width:90%;display:inline-block;"></div>
+                                                    </div>
+                                                    <div id="room-occupancy-breakdown-div">
+                                                        <div id="room-occupancy-breakdown-content" style="width:100%;border:1px solid black;overflow-y:auto;text-align:center;padding-top:5%;">
+                                                            <div id="room-occupancy-breakdown-content-container" class="container" style="color:black;font-weight:bold;">
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Buckminster Fuller Collaboration Space (3.401) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 1 / 5 </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 1 / 5 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Da Vinci Room (3.401-1) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 1 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Da Vinci Room (3.401-1) </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Archimedes Room (3.401-2) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 2 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 1 / 2 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Private Offices 1 (3.401-3) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 1 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Archimedes Room (3.401-2) </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Feynman Room (3.401-12) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 2 / 2 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Thomas Edison Room (3.402) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Private Offices 1 (3.401-3) </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Private Offices 2 (3.403) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 1 / 2 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Babbage Room (3.406) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Feynman Room (3.401-12) </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Materials Design Lab (3.409) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Thin Film Characterization Lab (3.410) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Thomas Edison Room (3.402) </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Electrical Device Characterization Lab (3.411) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Optics Design Lab (3.412) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Private Offices 2 (3.403) </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Babbage Room (3.406) </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Materials Design Lab (3.409) </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Thin Film Characterization Lab (3.410) </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Electrical Device Characterization Lab (3.411) </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Optics Design Lab (3.412) </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-sm-8">
-                                                                    <p> Magnetic & Mechanical Materials Characterization Lab (3.413) </p>
-                                                                </div>
-                                                                <div class="col-sm-4">
-                                                                    <p> 0 / 2 </p>
+                                                                <div class="row">
+                                                                    <div class="col-sm-8">
+                                                                        <p> Magnetic & Mechanical Materials Characterization Lab (3.413) </p>
+                                                                    </div>
+                                                                    <div class="col-sm-4">
+                                                                        <p> 0 / 2 </p>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -896,7 +988,6 @@
                                 </div>
                             </div>
                         </div>
-
                 </div>
                 <!-- /.container-fluid -->
 
@@ -1074,162 +1165,304 @@
 <!-- Image Map Resizer -->
 <script>
     ;(function() {
-  'use strict'
+      'use strict'
 
-  function scaleImageMap() {
-    function resizeMap() {
-      function resizeAreaTag(cachedAreaCoords, idx) {
-        function scale(coord) {
-          var dimension = 1 === (isWidth = 1 - isWidth) ? 'width' : 'height'
-          return (
-            padding[dimension] +
-            Math.floor(Number(coord) * scalingFactor[dimension])
-          )
+      function scaleImageMap() {
+        function resizeMap() {
+          function resizeAreaTag(cachedAreaCoords, idx) {
+            function scale(coord) {
+              var dimension = 1 === (isWidth = 1 - isWidth) ? 'width' : 'height'
+              return (
+                padding[dimension] +
+                Math.floor(Number(coord) * scalingFactor[dimension])
+              )
+            }
+
+            var isWidth = 0
+            areas[idx].coords = cachedAreaCoords
+              .split(',')
+              .map(scale)
+              .join(',')
+          }
+
+          var scalingFactor = {
+            width: image.width / image.naturalWidth,
+            height: image.height / image.naturalHeight,
+          }
+
+          var padding = {
+            width: parseInt(
+              window.getComputedStyle(image, null).getPropertyValue('padding-left'),
+              10
+            ),
+            height: parseInt(
+              window.getComputedStyle(image, null).getPropertyValue('padding-top'),
+              10
+            ),
+          }
+
+          cachedAreaCoordsArray.forEach(resizeAreaTag)
         }
 
-        var isWidth = 0
-        areas[idx].coords = cachedAreaCoords
-          .split(',')
-          .map(scale)
-          .join(',')
+        function getCoords(e) {
+          //Normalize coord-string to csv format without any space chars
+          return e.coords.replace(/ *, */g, ',').replace(/ +/g, ',')
+        }
+
+        function debounce() {
+          clearTimeout(timer)
+          timer = setTimeout(resizeMap, 250)
+        }
+
+        function start() {
+          if (
+            image.width !== image.naturalWidth ||
+            image.height !== image.naturalHeight
+          ) {
+            resizeMap()
+          }
+        }
+
+        function addEventListeners() {
+          image.addEventListener('load', resizeMap, false) //Detect late image loads in IE11
+          window.addEventListener('focus', resizeMap, false) //Cope with window being resized whilst on another tab
+          window.addEventListener('resize', debounce, false)
+          window.addEventListener('readystatechange', resizeMap, false)
+          document.addEventListener('fullscreenchange', resizeMap, false)
+        }
+
+        function beenHere() {
+          return 'function' === typeof map._resize
+        }
+
+        function getImg(name) {
+          return document.querySelector('img[usemap="' + name + '"]')
+        }
+
+        function setup() {
+          areas = map.getElementsByTagName('area')
+          cachedAreaCoordsArray = Array.prototype.map.call(areas, getCoords)
+          image = getImg('#' + map.name) || getImg(map.name)
+          map._resize = resizeMap //Bind resize method to HTML map element
+        }
+
+        var /*jshint validthis:true */
+          map = this,
+          areas = null,
+          cachedAreaCoordsArray = null,
+          image = null,
+          timer = null
+
+        if (!beenHere()) {
+          setup()
+          addEventListeners()
+          start()
+        } else {
+          map._resize() //Already setup, so just resize map
+        }
       }
 
-      var scalingFactor = {
-        width: image.width / image.naturalWidth,
-        height: image.height / image.naturalHeight,
+      function factory() {
+        function chkMap(element) {
+          if (!element.tagName) {
+            throw new TypeError('Object is not a valid DOM element')
+          } else if ('MAP' !== element.tagName.toUpperCase()) {
+            throw new TypeError(
+              'Expected <MAP> tag, found <' + element.tagName + '>.'
+            )
+          }
+        }
+
+        function init(element) {
+          if (element) {
+            chkMap(element)
+            scaleImageMap.call(element)
+            maps.push(element)
+          }
+        }
+
+        var maps
+
+        return function imageMapResizeF(target) {
+          maps = [] // Only return maps from this call
+
+          switch (typeof target) {
+            case 'undefined':
+            case 'string':
+              Array.prototype.forEach.call(
+                document.querySelectorAll(target || 'map'),
+                init
+              )
+              break
+            case 'object':
+              init(target)
+              break
+            default:
+              throw new TypeError('Unexpected data type (' + typeof target + ').')
+          }
+
+          return maps
+        }
       }
 
-      var padding = {
-        width: parseInt(
-          window.getComputedStyle(image, null).getPropertyValue('padding-left'),
-          10
-        ),
-        height: parseInt(
-          window.getComputedStyle(image, null).getPropertyValue('padding-top'),
-          10
-        ),
+      if (typeof define === 'function' && define.amd) {
+        define([], factory)
+      } else if (typeof module === 'object' && typeof module.exports === 'object') {
+        module.exports = factory() //Node for browserfy
+      } else {
+        window.imageMapResize = factory()
       }
 
-      cachedAreaCoordsArray.forEach(resizeAreaTag)
-    }
-
-    function getCoords(e) {
-      //Normalize coord-string to csv format without any space chars
-      return e.coords.replace(/ *, */g, ',').replace(/ +/g, ',')
-    }
-
-    function debounce() {
-      clearTimeout(timer)
-      timer = setTimeout(resizeMap, 250)
-    }
-
-    function start() {
-      if (
-        image.width !== image.naturalWidth ||
-        image.height !== image.naturalHeight
-      ) {
-        resizeMap()
+      if ('jQuery' in window) {
+        window.jQuery.fn.imageMapResize = function $imageMapResizeF() {
+          return this.filter('map')
+            .each(scaleImageMap)
+            .end()
+        }
       }
-    }
+    })()
+</script>
 
-    function addEventListeners() {
-      image.addEventListener('load', resizeMap, false) //Detect late image loads in IE11
-      window.addEventListener('focus', resizeMap, false) //Cope with window being resized whilst on another tab
-      window.addEventListener('resize', debounce, false)
-      window.addEventListener('readystatechange', resizeMap, false)
-      document.addEventListener('fullscreenchange', resizeMap, false)
-    }
+<!-- Occupancy Card Chart -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    var options = {
+            series: [{
+                name: 'Number of Occupants',
+                data: [13, 24, 35, 37, 34, 23, 12, 15, 23, 34, 31, 28, 13, 18, 15]
+            }],
+            chart: {
+                height: 350,
+                type: 'line',
+            },
+            stroke: {
+                width: 7,
+                curve: 'smooth'
+            },
+            xaxis: {
+                type: 'string',
+                categories: ['7am','8am','9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm','5pm', '6pm', '7pm','8pm','9pm'],
+            },
+            title: {
+                text: 'Daily Presence',
+                align: 'left',
+                style: {
+                    fontSize: "16px",
+                    color: '#666'
+                }
+            },
+            markers: {
+                size: 4,
+                colors: ["#FFA41B"],
+                strokeColors: "#fff",
+                strokeWidth: 2,
+                hover: {
+                    size: 7,
+                }
+            },
+            yaxis: {
+                min: 0,
+                max: 40,
+                title: {
+                    text: 'Number of Occupants',
+                },
+            }
+        };
 
-    function beenHere() {
-      return 'function' === typeof map._resize
-    }
+        var line = new ApexCharts(document.querySelector("#building-occupancy-line"), options);
+        line.render();
 
-    function getImg(name) {
-      return document.querySelector('img[usemap="' + name + '"]')
-    }
+    var options = {
+            series: [{
+                name: 'Number of Occupants',
+                data: [3, 14, 25, 28, 24, 13, 2, 5, 13, 24, 19, 17, 3, 8, 5]
+            }],
+            chart: {
+                height: 350,
+                type: 'line',
+            },
+            stroke: {
+                width: 7,
+                curve: 'smooth'
+            },
+            xaxis: {
+                type: 'string',
+                categories: ['7am','8am','9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm','5pm', '6pm', '7pm','8pm','9pm'],
+            },
+            title: {
+                text: 'Daily Presence',
+                align: 'left',
+                style: {
+                    fontSize: "16px",
+                    color: '#666'
+                }
+            },
+            markers: {
+                size: 4,
+                colors: ["#FFA41B"],
+                strokeColors: "#fff",
+                strokeWidth: 2,
+                hover: {
+                    size: 7,
+                }
+            },
+            yaxis: {
+                min: 0,
+                max: 40,
+                title: {
+                    text: 'Number of Occupants',
+                },
+            }
+        };
 
-    function setup() {
-      areas = map.getElementsByTagName('area')
-      cachedAreaCoordsArray = Array.prototype.map.call(areas, getCoords)
-      image = getImg('#' + map.name) || getImg(map.name)
-      map._resize = resizeMap //Bind resize method to HTML map element
-    }
+        var line = new ApexCharts(document.querySelector("#floor-occupancy-line"), options);
+        line.render();
 
-    var /*jshint validthis:true */
-      map = this,
-      areas = null,
-      cachedAreaCoordsArray = null,
-      image = null,
-      timer = null
+    var options = {
+            series: [{
+                name: 'Number of Occupants',
+                data: [3, 14, 25, 28, 24, 13, 2, 5, 13, 24, 19, 17, 3, 8, 5]
+            }],
+            chart: {
+                height: 350,
+                type: 'line',
+            },
+            stroke: {
+                width: 7,
+                curve: 'smooth'
+            },
+            xaxis: {
+                type: 'string',
+                categories: ['7am','8am','9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm','5pm', '6pm', '7pm','8pm','9pm'],
+            },
+            title: {
+                text: 'Daily Presence',
+                align: 'left',
+                style: {
+                    fontSize: "16px",
+                    color: '#666'
+                }
+            },
+            markers: {
+                size: 4,
+                colors: ["#FFA41B"],
+                strokeColors: "#fff",
+                strokeWidth: 2,
+                hover: {
+                    size: 7,
+                }
+            },
+            yaxis: {
+                min: 0,
+                max: 40,
+                title: {
+                    text: 'Number of Occupants',
+                },
+            }
+        };
 
-    if (!beenHere()) {
-      setup()
-      addEventListeners()
-      start()
-    } else {
-      map._resize() //Already setup, so just resize map
-    }
-  }
-
-  function factory() {
-    function chkMap(element) {
-      if (!element.tagName) {
-        throw new TypeError('Object is not a valid DOM element')
-      } else if ('MAP' !== element.tagName.toUpperCase()) {
-        throw new TypeError(
-          'Expected <MAP> tag, found <' + element.tagName + '>.'
-        )
-      }
-    }
-
-    function init(element) {
-      if (element) {
-        chkMap(element)
-        scaleImageMap.call(element)
-        maps.push(element)
-      }
-    }
-
-    var maps
-
-    return function imageMapResizeF(target) {
-      maps = [] // Only return maps from this call
-
-      switch (typeof target) {
-        case 'undefined':
-        case 'string':
-          Array.prototype.forEach.call(
-            document.querySelectorAll(target || 'map'),
-            init
-          )
-          break
-        case 'object':
-          init(target)
-          break
-        default:
-          throw new TypeError('Unexpected data type (' + typeof target + ').')
-      }
-
-      return maps
-    }
-  }
-
-  if (typeof define === 'function' && define.amd) {
-    define([], factory)
-  } else if (typeof module === 'object' && typeof module.exports === 'object') {
-    module.exports = factory() //Node for browserfy
-  } else {
-    window.imageMapResize = factory()
-  }
-
-  if ('jQuery' in window) {
-    window.jQuery.fn.imageMapResize = function $imageMapResizeF() {
-      return this.filter('map')
-        .each(scaleImageMap)
-        .end()
-    }
-  }
-})()
+        var line = new ApexCharts(document.querySelector("#room-occupancy-line"), options);
+        line.render();
 </script>
 
 </body>
