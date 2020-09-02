@@ -1,4 +1,5 @@
 {% load static %}
+{% load plotly_dash %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -645,7 +646,9 @@
                                             </h6>
                                         </div>
                                         <div class="card-body">
-                                            <p> Content Should be Here </p>
+                                            <div class="{% plotly_class name='cost_savings_manager' %}">
+                                                 {% plotly_app name='cost_savings_manager' ratio=0.79 %}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
