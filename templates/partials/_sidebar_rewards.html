@@ -10,27 +10,33 @@
         </div>
     </a>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider my-0">
+    {% if user.is_authenticated %}
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
 
-    <!-- Nav Item - Dashboard -->
-    <li class="nav-item active">
-        <a class="nav-link " href="{% url 'plug_mate_app:index' %}">
-            {#          <i class="fas fa-fw fa-tachometer-alt"></i>#}
-            <span style="font-size: 0.8rem">ENERGY DASHBOARD</span></a>
-    </li>
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+            <a class="nav-link " href="{% url 'plug_mate_app:index' %}">
+                {#          <i class="fas fa-fw fa-tachometer-alt"></i>#}
+                <span style="font-size: 0.8rem">ENERGY DASHBOARD</span></a>
+        </li>
 
-    <!-- Divider -->
-    <hr class="sidebar-divider">
+        <!-- Divider -->
+        <hr class="sidebar-divider">
 
-    <!-- Nav Item - Control Interface -->
-    <li class="nav-item active">
-        <a class="nav-link  dashboard" href="{% url 'plug_mate_app:control_interface' %}">
-            {#          <i class="fas fa-fw fa-tachometer-alt"></i>#}
-            <span style="font-size: 0.8rem">CONTROL INTERFACE</span></a>
-    </li>
-    <!-- Divider -->
-    <hr class="sidebar-divider">
+        <!-- Nav Item - Control Interface -->
+        <li class="nav-item active">
+            <a class="nav-link  dashboard" href="{% url 'plug_mate_app:control_interface' %}">
+                {#          <i class="fas fa-fw fa-tachometer-alt"></i>#}
+                <span style="font-size: 0.8rem">CONTROL INTERFACE</span></a>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+    {% else %}
+
+    {% endif %}
+
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">

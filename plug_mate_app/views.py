@@ -266,7 +266,12 @@ def about_us(request):
 
         return render(request, 'plug_mate_app/about_us.html', context)
     else:
-        return render(request, 'plug_mate_app/login.html', {})
+        context = {
+            'user_id': request.user.id,
+            'notifications': [],
+            'unseen_notifications': 0
+        }
+        return render(request, 'plug_mate_app/about_us.html', context)
 
 
 @login_required
