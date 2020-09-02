@@ -1,6 +1,4 @@
 {% load static %}
-{% block content %}
-    {% load plotly_dash %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -52,9 +50,14 @@
             }
         }
         @media (min-width: 1105px) {
-            #building-layout-img, #floor-layout-img, #room-layout-img {
+            #building-layout-img, #floor-layout-img {
                 width: 60%;
                 max-width: 600px;
+                display: inline-block;
+            }
+            #room-layout-img {
+                width: 60%;
+                max-width: 700px;
                 display: inline-block;
             }
             #building-layout-overview, #floor-layout-overview, #room-layout-overview {
@@ -624,9 +627,7 @@
                                             </h6>
                                         </div>
                                         <div class="card-body">
-                                            <div class="{% plotly_class name='historical_consumption' %}" style="height:100%;">
-                                                {% plotly_app name='historical_consumption' ratio=0.55 %}
-                                            </div>
+                                            <p> Content Should be Here </p>
                                         </div>
                                     </div>
                                 </div>
@@ -644,9 +645,7 @@
                                             </h6>
                                         </div>
                                         <div class="card-body">
-                                            <div class="{% plotly_class name='cost_savings' %}">
-                                                {% plotly_app name='cost_savings' ratio=0.79 %}
-                                            </div>
+                                            <p> Content Should be Here </p>
                                         </div>
                                     </div>
                                 </div>
@@ -1469,5 +1468,3 @@
 </body>
 
 </html>
-
-{% endblock %}
