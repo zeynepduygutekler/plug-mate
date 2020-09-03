@@ -716,7 +716,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         x=x,
         line=dict(width=0.5, color='rgb(255, 193, 7)'),
         fill='tozeroy',
-        text=['<span style="font-size:20sp">{}<br></span><span><b>Average: </b>{}<br></span><span style="color:blue"></span>'.format(
+        text=['<span style="font-size:20sp">{}<br></span><span><b>Historical Average: </b>{}<br></span><span style="color:blue"></span>'.format(
             "", (str(round(average_value[i], 4))+'kWh' if units == 'Energy' else '$' + str(round(average_value[i], 4))))for i in range(len(x.to_list()))],
         hovertemplate=hovertemplate_average,
 
