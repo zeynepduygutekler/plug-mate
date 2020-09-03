@@ -185,8 +185,7 @@ PLOTLY_COMPONENTS = [
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 STATICFILES_LOCATION = 'static'
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-# STATIC_ROOT = os.path.join(BASE_DIR, '/static/') # For Zaidy's PC
+STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'control_interface/build/'),
     os.path.join(BASE_DIR, 'control_interface/build/static/'),
@@ -195,6 +194,8 @@ STATICFILES_DIRS = [
     # os.path.join(BASE_DIR, 'static'), # For Zaidy's PC
 
     os.path.join(BASE_DIR, 'media/media/'),
+    os.path.join(BASE_DIR, 'static'),
+
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 

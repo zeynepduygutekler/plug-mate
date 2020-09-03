@@ -55,7 +55,7 @@
                 </span>
             </a>
             <!-- Dropdown - Alerts -->
-            <div id="list_of_alerts" class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+            <div id="list_of_alerts" class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown" style="height:60vh;overflow-y:auto;">
                 <h6 class="dropdown-header">
                     Notifications
                 </h6>
@@ -99,14 +99,20 @@
                     {% if user.is_authenticated %}
                         {{ user }}
                     {% else %}
-                        User
+                        Guest
                     {% endif %}
                 </span>
-                <img class="img-profile rounded-circle" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" width="60" height="60">
+                <img class="img-profile rounded-circle" src="https://pbs.twimg.com/profile_images/534109016503246848/A2_hpdPP_400x400.jpeg" width="60" height="60">
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                {% if user.id != 6 %}
+                {% if not user.is_authenticated %}
+                    <a class="dropdown-item" href={% url 'plug_mate_app:user_login' %}>
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Login
+                    </a>
+
+                {% elif user.id != 6 %}
                     <a class="dropdown-item" href="{% url 'plug_mate_app:profile' %}">
                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                         Profile
@@ -117,12 +123,16 @@
                         Rewards Store
                     </a>
                     <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Logout
+                    </a>
+                {% else %}
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Logout
+                    </a>
                 {% endif %}
-
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Logout
-                </a>
             </div>
         </li>
 
@@ -134,27 +144,27 @@
 <script>
     document.getElementById("clear_all_notifications").onclick = function() {
         fetch('/control_interface/api/notifications/')
-        .then(response => response.json())
-        .then(notifications_data => {
-            var num_notifications = JSON.parse(notifications_data[0].notifications).notifications.length;
-            var current_user = notifications_data[0].id;
+            .then(response => response.json())
+            .then(notifications_data => {
+                var num_notifications = JSON.parse(notifications_data[0].notifications).notifications.length;
+                var current_user = notifications_data[0].id;
 
-            const empty_notifications = JSON.parse('{"notifications": []}')
-            fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({id: current_user, user_id: {{user_id}}, notifications: empty_notifications})
+                const empty_notifications = JSON.parse('{"notifications": []}')
+                fetch('/control_interface/api/notifications/' + current_user.toString() + '/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id: current_user, user_id: {{user_id}}, notifications: empty_notifications})
+                })
+                document.getElementById("number_of_notifications").innerHTML = "0";
+
+                var times_to_loop = num_notifications * 2
+                var i;
+                for (i = 0; i < times_to_loop; i++) {
+                    document.getElementById("list_of_alerts").removeChild(document.getElementById("list_of_alerts").childNodes[2]);
+                }
             })
-            document.getElementById("number_of_notifications").innerHTML = "0";
-
-            var times_to_loop = num_notifications * 2
-            var i;
-            for (i = 0; i < times_to_loop; i++) {
-                document.getElementById("list_of_alerts").removeChild(document.getElementById("list_of_alerts").childNodes[2]);
-            }
-        })
     }
 
     document.getElementById("bell_icon").addEventListener("click", stopAnimation);

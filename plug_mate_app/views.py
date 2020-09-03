@@ -67,6 +67,7 @@ def plug_mate_app(request):
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
             notifications = json.loads(cursor.fetchone()[0])['notifications']
+            notifications.reverse()
             if len(notifications) == 0:
                 unseen_notifications = 0
             else:
@@ -124,6 +125,7 @@ def control_interface(request):
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
             notifications = json.loads(cursor.fetchone()[0])['notifications']
+            notifications.reverse()
             if len(notifications) == 0:
                 unseen_notifications = 0
             else:
@@ -150,6 +152,7 @@ def rewards(request):
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
             notifications = json.loads(cursor.fetchone()[0])['notifications']
+            notifications.reverse()
             if len(notifications) == 0:
                 unseen_notifications = 0
             else:
@@ -173,6 +176,7 @@ def user_profile(request):
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
             notifications = json.loads(cursor.fetchone()[0])['notifications']
+            notifications.reverse()
             if len(notifications) == 0:
                 unseen_notifications = 0
             else:
@@ -248,6 +252,7 @@ def about_us(request):
             # Query for the user's notifications
             cursor.execute("SELECT notifications FROM notifications WHERE user_id=%s", [request.user.id])
             notifications = json.loads(cursor.fetchone()[0])['notifications']
+            notifications.reverse()
             if len(notifications) == 0:
                 unseen_notifications = 0
             else:
@@ -261,7 +266,12 @@ def about_us(request):
 
         return render(request, 'plug_mate_app/about_us.html', context)
     else:
-        return render(request, 'plug_mate_app/login.html', {})
+        context = {
+            'user_id': request.user.id,
+            'notifications': [],
+            'unseen_notifications': 0
+        }
+        return render(request, 'plug_mate_app/about_us.html', context)
 
 
 @login_required
