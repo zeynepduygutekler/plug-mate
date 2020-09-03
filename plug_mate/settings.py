@@ -96,16 +96,6 @@ WSGI_APPLICATION = 'plug_mate.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'plug_mate_dev_db',
-#         'USER': 'raymondlow',
-#         'PASSWORD': 'password123',
-#         'HOST': 'localhost',
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -191,11 +181,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'control_interface/build/static/'),
     os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/'),
     os.path.join(BASE_DIR, 'plug_mate_app/static/'),
-    # os.path.join(BASE_DIR, 'static'), # For Zaidy's PC
-
     os.path.join(BASE_DIR, 'media/media/'),
     os.path.join(BASE_DIR, 'static'),
-
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 

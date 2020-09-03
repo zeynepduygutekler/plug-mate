@@ -22,7 +22,8 @@ import copy
 
 pio.templates.default = "simple_white"
 # path = "C:\\Users\\zaidy\\Documents\\GitHub\\zeynepduygutekler\\plug-mate\\plug_mate_app\\dash_apps\\finished_apps"
-path = 'plug_mate_app/dash_apps/finished_apps'
+# path = 'plug_mate_app/dash_apps/finished_apps'
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def dayClickDataPiechart(df_day_bytype):
@@ -54,12 +55,7 @@ app.layout = \
         ),
         html.Div([
             dbc.Col([
-
-
                     dbc.Row([
-
-
-
                         dbc.Button('Days', id='day', n_clicks=0, n_clicks_timestamp=0,
                                    color="primary",
                                    className="mr-1"),
@@ -71,15 +67,10 @@ app.layout = \
                                    n_clicks_timestamp=0, color="primary", className="mr-1"),
 
                         html.Div([
-
                             daq.BooleanSwitch(id='btntoggle_units', on=False, color='#e6e6e6')],
-
                             style={'width': 'fit-content'}
                         ),
-
-
                     ], style={'justify-content': 'center'}),
-
 
                     dbc.Row([
                         dbc.Col([
@@ -163,14 +154,14 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
     # Import Average Values
     average_df = pd.read_csv(
-        ("{}/manager_csv/AverageDailyWeeklyMonthlyYearly.csv").format(path))
+        ("{}/finished_apps/manager_csv/AverageDailyWeeklyMonthlyYearly.csv").format(BASE_DIR))
 
     if 'year' in changed_id:
 
         df_year = pd.read_csv(
-            ("{}/manager_csv/manager_df_year.csv").format(path))
+            ("{}/finished_apps/manager_csv/manager_df_year.csv").format(BASE_DIR))
         df_year_pie = pd.read_csv(
-            ("{}/manager_csv/manager_df_year_pie.csv").format(path))
+            ("{}/finished_apps/manager_csv/manager_df_year_pie.csv").format(BASE_DIR))
 
         # Pie Chart values
         values_pie = df_year_pie['power_kWh']
@@ -189,8 +180,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             average_df['type'] == 'yearly')]['avg_energy']
         average_cost = average_df.loc[(
             average_df['type'] == 'yearly')]['avg_cost']
-        # print(average_kWh.iat[0])
-        # print(average_cost.iat[0])
 
         average_kWh = average_kWh.reset_index(drop=True)
         average_cost = average_cost.reset_index(drop=True)
@@ -331,7 +320,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             # df_year_bytype
 
             df_year_pie = pd.read_csv(
-                ("{}/manager_csv/manager_df_year_pie.csv").format(path))
+                ("{}/finished_apps/manager_csv/manager_df_year_pie.csv").format(BASE_DIR))
             df_year_bytype = copy.deepcopy(df_year_pie)
 
             x_value = clickData['points'][0]['x']
@@ -599,10 +588,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             values_pie = df4['cost']
 
         elif yearbtn > monthbtn and yearbtn > weekbtn and yearbtn > daybtn:
-            # print(df3)
             x = df3['year']
             y = df3['cost']
-            # print(df4)
             values_pie = df4['cost']
 
         else:
@@ -710,7 +697,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     ))
 
     '''Added in Average Baseline'''
-    print(average_value)
     fig2.add_trace(go.Scatter(
         mode='lines',
         y=average_value,
@@ -789,6 +775,4 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         )
     )
     # 4. Return all graphs
-    # print("DONE SHOWING GRAPHS <======", str(dt.datetime.now()))
-
     return fig2, piechart, ("Aggregated {}".format(units), html.Br(), "{}".format(pie_middletext)), ("{} Breakdown".format(units), html.Br(), "{}".format(pie_middletext)), dayActive, weekActive,    monthActive,   yearActive
