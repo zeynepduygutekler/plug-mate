@@ -150,7 +150,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         changed_id = 'week'
 
     # Get user id
-    user_id = kwargs['user'].id
+    user_id = 1
 
     # Import Average Values
     average_df = pd.read_csv(
