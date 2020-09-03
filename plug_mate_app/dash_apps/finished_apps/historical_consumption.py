@@ -21,6 +21,7 @@ import copy
 
 
 pio.templates.default = "simple_white"
+path = "C:\\Users\\zaidy\\Documents\\GitHub\\zeynepduygutekler\\plug-mate\\plug_mate_app\\dash_apps\\finished_apps"
 
 
 def dayClickDataPiechart(df_day_bytype):
@@ -57,8 +58,9 @@ app.layout = \
                     dbc.Row([
 
 
-                        dbc.Button('Today', id='hour', n_clicks=0,
+                        dbc.Button('Hours', id='hour', n_clicks=0,
                                    n_clicks_timestamp=0, color="primary", className="mr-1"),
+
                         dbc.Button('Days', id='day', n_clicks=0, n_clicks_timestamp=0,
                                    color="primary",
                                    className="mr-1"),
@@ -84,7 +86,7 @@ app.layout = \
                                     style={'margin-left': '5%'}),
                             html.Div(dbc.Spinner(color="primary", id="loadingLine",
                                                  children=[
-                                                     dcc.Graph(id='line-chart', config={'displayModeBar': False}, clear_on_unhover=True, style={'width': '100vh', 'height': '60vh'})],
+                                                     dcc.Graph(id='line-chart', config={'displayModeBar': False}, clear_on_unhover=True, style={'width': '100vh', 'height': '70vh'})],
                                                  spinner_style={"width": "3rem", "height": "3rem"}))
 
                         ], style={'text-align': 'center', 'padding': '0'}, width=7),
@@ -144,6 +146,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     global values_pie, pie_middletext
     global dayActive, weekActive, monthActive, hourActive
     global df_hour_bytype, df_month_bytype, df_day_bytype, df_week_bytype
+    global path
+    global average_cost
+    global average_kWh
 
     # F) Search for the most recent changed ID to know if hour day week or Month
     # checks the list of id that recently triggered a callback in dash.callback_context.triggered list
@@ -155,7 +160,12 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     # Get user id
     user_id = kwargs['user'].id
 
+    # Import Average Values
+    average_df = pd.read_csv(
+        ("{}\\manager_csv\\AverageDailyWeeklyMonthlyYearly.csv").format(path))
+
     if 'hour' in changed_id:
+
         # df_hour
         with connection.cursor() as cursor:
             cursor.execute(
@@ -164,7 +174,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         df_hour = pd.DataFrame(results, columns=['user_id', 'date', 'hours', 'power', 'month',
                                                  'time', 'year', 'power_kWh', 'cost', 'dates_AMPM'])
         df_hour.drop(columns=['user_id'], inplace=True)
-
         # df_hour_pie
         with connection.cursor() as cursor:
             cursor.execute(
@@ -173,6 +182,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         df_hour_pie = pd.DataFrame(results, columns=['user_id', 'date', 'hours', 'device_type',
                                                      'power', 'month', 'time', 'year', 'power_kWh', 'cost', 'date_AMPM'])
         df_hour_pie.drop(columns=['user_id'], inplace=True)
+        # df_hour.to_csv(('df_hour_line_{}.csv').format(user_id))
 
         # Pie Chart values
         values_pie = df_hour_pie['power_kWh']
@@ -186,6 +196,21 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         weekActive = False
         monthActive = False
         hourActive = True
+
+        df_year = pd.read_csv(
+            ("{}\\manager_csv\\manager_df_year.csv").format(path))
+        df_year_pie = pd.read_csv(
+            ("{}\\manager_csv\\manager_df_year_pie.csv").format(path))
+
+        average_kWh = average_df.loc[(
+            average_df['type'] == 'yearly')]['avg_energy']
+        average_cost = average_df.loc[(
+            average_df['type'] == 'yearly')]['avg_cost']
+        # print(average_kWh.iat[0])
+        # print(average_cost.iat[0])
+
+        average_kWh = average_kWh.reset_index(drop=True)
+        average_cost = average_cost.reset_index(drop=True)
 
     elif 'day' in changed_id:
 
@@ -219,6 +244,13 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         weekActive = False
         monthActive = False
         hourActive = False
+        average_kWh = average_df.loc[(
+            average_df['type'] == 'daily')]['avg_energy']
+        average_cost = average_df.loc[(
+            average_df['type'] == 'daily')]['avg_cost']
+
+        average_kWh = average_kWh.reset_index(drop=True)
+        average_cost = average_cost.reset_index(drop=True)
 
     elif 'week' in changed_id:
         # df_week_pie
@@ -256,7 +288,13 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         weekActive = True
         monthActive = False
         hourActive = False
+        average_kWh = average_df.loc[(
+            average_df['type'] == 'weekly')]['avg_energy']
+        average_cost = average_df.loc[(
+            average_df['type'] == 'weekly')]['avg_cost']
 
+        average_kWh = average_kWh.reset_index(drop=True)
+        average_cost = average_cost.reset_index(drop=True)
     elif 'month' in changed_id:
 
         # df_month
@@ -288,32 +326,41 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         weekActive = False
         monthActive = True
         hourActive = False
+        average_kWh = average_df.loc[(
+            average_df['type'] == 'monthly')]['avg_energy']
+        average_cost = average_df.loc[(
+            average_df['type'] == 'monthly')]['avg_cost']
 
+        average_kWh = average_kWh.reset_index(drop=True)
+        average_cost = average_cost.reset_index(drop=True)
     elif 'line-chart' in changed_id:
         if hourbtn > monthbtn and hourbtn > weekbtn and hourbtn > daybtn:
 
-            # df_hour_pie
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT * FROM historical_today_pie WHERE user_id=%s", [user_id])
-                results = cursor.fetchall()
-            df_hour_pie = pd.DataFrame(results, columns=['user_id', 'date', 'hours', 'device_type',
-                                                         'power', 'month', 'time', 'year', 'power_kWh', 'cost', 'date_AMPM'])
-            df_hour_pie.drop(columns=['user_id'], inplace=True)
+            # # df_hour_pie
+            # with connection.cursor() as cursor:
+            #     cursor.execute(
+            #         "SELECT * FROM historical_today_pie WHERE user_id=%s", [user_id])
+            #     results = cursor.fetchall()
+            # df_hour_pie = pd.DataFrame(results, columns=['user_id', 'date', 'hours', 'device_type',
+            #                                              'power', 'month', 'time', 'year', 'power_kWh', 'cost', 'date_AMPM'])
+            # df_hour_pie.drop(columns=['user_id'], inplace=True)
 
-            # df_hour_bytype
-            df_hour_bytype = copy.deepcopy(df_hour_pie)
+            # df_year_bytype
+
+            df_year_pie = pd.read_csv(
+                ("{}\\manager_csv\\manager_df_year_pie.csv").format(path))
+            df_year_bytype = copy.deepcopy(df_year_pie)
+
             x_value = clickData['points'][0]['x']
-            xvalue_tohours = dt.datetime.strptime(
-                x_value, '%I:%M%p').strftime('%H')
 
             # Get last 24 hours only
-            df_to_process = df_hour_bytype
-            mask = (df_to_process['hours'] == xvalue_tohours)
+            df_to_process = df_year_bytype
+            mask = (df_to_process['year'] == x_value)
 
             # Delete these row indexes from dataFrame
             df_to_process = df_to_process.loc[mask]
             df_to_process.reset_index(drop=True, inplace=True)
+
             df4 = df_to_process
             pie_middletext = x_value
 
@@ -452,8 +499,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
             else:
                 values_pie = df4['power_kWh']
-    # G) This ELSE will run on First Load of Page
 
+    # G) This ELSE will run on First Load of Page
     else:
         if 'btntoggle_units.on' in changed_id:
             pass
@@ -495,6 +542,13 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             weekActive = True
             monthActive = False
             hourActive = False
+            average_kWh = average_df.loc[(
+                average_df['type'] == 'weekly')]['avg_energy']
+            average_cost = average_df.loc[(
+                average_df['type'] == 'weekly')]['avg_cost']
+
+            average_kWh = average_kWh.reset_index(drop=True)
+            average_cost = average_cost.reset_index(drop=True)
 
 
 # H) After global variables initialised, generate graphs
@@ -540,7 +594,10 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     # 2. Toggle False = kWh, True = $
 
     if btnkwhdollars == False:
-        units = 'Cost'
+        # units = 'Cost'
+        units = '$'
+        average_value = average_cost
+
         fig2 = go.Figure()
 
         if monthbtn > weekbtn and monthbtn > daybtn and monthbtn > hourbtn:
@@ -564,14 +621,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             y = df3['cost']
             # print(df4)
             values_pie = df4['cost']
-            # fig2.update_xaxes(
-            #     ticktext=["12AM", "", "", "3AM", "", "", "6AM", "", "", "9AM",
-            #               "", "", "12PM", "", "", "3PM", "", "", "6PM", "", "", "9PM", "", ""],
-            #     tickvals=["12:00AM", "01:00AM", "02:00AM", "03:00AM", "04:00AM", "05:00AM",
-            #               "06:00AM", "07:00AM", "08:00AM", "09:00AM", "10:00AM", "11:00AM", "12:00PM",
-            #               "01:00PM", "02:00PM", "03:00PM", "04:00PM", "05:00PM", "06:00PM", "07:00PM", "08:00PM", "09:00PM",
-            #               "10:00PM", "11:00PM"],
-            # )
             fig2.update_xaxes(
                 ticktext=["12AM", "", "2AM", "", "4AM", "", "6AM", "", "8AM", "",
                           "10AM", "", "12PM", "", "2PM", "", "4PM", "", "6PM", "", "8PM", "", "10PM", ""],
@@ -598,7 +647,10 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
         # End of $
     else:
-        units = 'Energy'
+        units = 'kWh'
+        # units = 'Energy'
+        average_value = average_kWh
+
         fig2 = go.Figure()
 
         if monthbtn > weekbtn and monthbtn > daybtn and monthbtn > hourbtn:
@@ -620,14 +672,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             x = df3['dates_AMPM']  # Actually HOURS_AMPM
             y = df3['power_kWh']
             values_pie = df4['power_kWh']
-            # fig2.update_xaxes(
-            #     ticktext=["12AM", "", "", "3AM", "", "", "6AM", "", "", "9AM",
-            #               "", "", "12PM", "", "", "3PM", "", "", "6PM", "", "", "9PM", "", ""],
-            #     tickvals=["12:00AM", "01:00AM", "02:00AM", "03:00AM", "04:00AM", "05:00AM",
-            #               "06:00AM", "07:00AM", "08:00AM", "09:00AM", "10:00AM", "11:00AM", "12:00PM",
-            #               "01:00PM", "02:00PM", "03:00PM", "04:00PM", "05:00PM", "06:00PM", "07:00PM", "08:00PM", "09:00PM",
-            #               "10:00PM", "11:00PM"],
-            # )
             fig2.update_xaxes(
                 ticktext=["12AM", "", "2AM", "", "4AM", "", "6AM", "", "8AM", "",
                           "10AM", "", "12PM", "", "2PM", "", "4PM", "", "6PM", "", "8PM", "", "10PM", ""],
@@ -656,6 +700,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     # 3. Final Layout Changes
     hovertemplate = (
         '<extra></extra>'+'<br><br><b>%{text}</b>')
+    hovertemplate_average = (
+        '<extra></extra>'+'<br><br><b>%{text}</b>')
 
     # For the Line
     fig2 = fig2.add_trace(go.Scatter(x=x, y=y,
@@ -664,7 +710,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
                                      hoverinfo='skip',
                                      line=dict(
-                                         color='royalblue',
+                                          color='royalblue',
                                          width=4),
                                      selected=dict(
                                          marker=dict(size=30),
@@ -673,15 +719,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                           )
 
     # For Orange Markers
-    # if units == 'Energy':
-
-    #     y_hover = round(y[i], 4)+'kWh'
-
-    # else:
-    #     y_hover = '$'+ round(y[i], 4)
-
-    # twins[value] = twins[value] + [box] if value in twins else [box]
-
     fig2.add_trace(go.Scatter(
         mode='markers',
         x=x,
@@ -689,8 +726,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
         hovertemplate=hovertemplate,
         text=['<span style="font-size:20sp">{}<br></span><span><b>Total: </b>{}<br></span><span style="color:blue">Click to see the <br>plug load breakdown!</span>'.format(
-            x[i], (str(round(y[i], 4))+'kWh' if units == 'Energy' else '$' + str(round(y[i], 4)))) for i in range(len(x.to_list()))],
+            x[i], (str(round(y[i], 4))+'kWh' if units == 'Energy' else '$' + str(round(y[i], 4)) if units == '$' else 'NO VALUE')) for i in range(len(x.to_list()))],
 
+        hoverlabel=dict(bgcolor="white"),
         marker=dict(
             size=14,
 
@@ -702,22 +740,19 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         showlegend=False,
     ))
 
-    # For Hover Box and Remove Legends
-    fig2.update_layout(
-        xaxis_title="",
-        yaxis_title="",
-        yaxis=dict(showgrid=True, zeroline=False),
-        hoverlabel=dict(bgcolor="white"),
-        showlegend=False,
+    '''Added in Average Baseline'''
+    # print(average_value)
+    fig2.add_trace(go.Scatter(
+        mode='lines',
+        y=average_value,
+        x=x,
+        line=dict(width=0.5, color='rgb(255, 193, 7)'),
+        fill='tozeroy',
+        text=['<span style="font-size:20sp">{}<br></span><span><b>Historical Average: </b>{}<br></span><span style="color:blue"></span>'.format(
+            "", (str(round(average_value[i], 4))+'kWh' if units == 'Energy' and len(average_value) > 1 else '$' + str(round(average_value[i], 4))if units == '$' and len(average_value) > 1 else 'NO VALUE'))for i in range(len(x.to_list()))],
+        hovertemplate=hovertemplate_average,
 
-        font=dict(
-            family='"Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans -serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-            size=12,
-            color="black"
-
-        ),
-
-
+    )
     )
 
     piechart.update_layout(
@@ -764,6 +799,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         margin=dict(l=0, r=0, t=0, b=0, pad=0),
         # height=230,
         # width=350,
+        showlegend=False,
+        hovermode='x'
+
 
     )
     piechart.update_layout(

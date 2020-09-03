@@ -191,6 +191,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'control_interface/build/static/'),
     os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/'),
     os.path.join(BASE_DIR, 'plug_mate_app/static/'),
+    # os.path.join(BASE_DIR, 'static'), # For Zaidy's PC
+
     os.path.join(BASE_DIR, 'media/media/'),
     os.path.join(BASE_DIR, 'static'),
 

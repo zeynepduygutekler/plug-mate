@@ -1,6 +1,8 @@
 body {
   margin: 0;
-  font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -10,20 +12,17 @@ body {
 }
 
 .div {
-  height:100%;
-
+  height: 100%;
 }
 
 /* This is for slider when FALSE */
 .js-plotly-plot .plotly .cursor-crosshair {
-  cursor: pointer!important;
+  cursor: pointer !important;
 }
-
-
 
 .igrnnx {
   display: block;
-  width: 35px!important;
+  width: 35px !important;
   height: 35px !important;
   transform: translateX(0px);
   background: rgb(0, 123, 255) !important;
@@ -37,7 +36,6 @@ body {
   border-color: rgb(211, 211, 211);
   border-image: initial;
 }
-
 
 /* This is for button when True */
 .dlqMgb {
@@ -57,7 +55,6 @@ body {
   border-image: initial;
 }
 
-
 .cmSQpo {
   align-items: center;
   height: auto;
@@ -70,8 +67,6 @@ body {
   padding: 2.25px;
   border-radius: 45px;
   background: rgb(230, 230, 230);
-
-
 }
 
 .imatVS {
@@ -101,39 +96,36 @@ body {
 .dlqMgb::before {
   content: "kWh";
   color: white;
+  font-size: 15px;
 }
 
 .cmSQpo::after {
   content: "kWh";
   margin-left: auto;
   margin-right: 4%;
+  font-size: 15px;
 }
 
-
-
-.slicetext{
-  color: white!important;
+.slicetext {
+  color: white !important;
   font-weight: bold;
-  fill: white!important;
-
+  fill: white !important;
 }
 
-.btn-primary{
+.btn-primary {
   border: #007bff;
   background-color: #007bff;
-    border-color: #007bff;
-    border: #007bff;
-    height:35px;
-    width:80px;
-
+  border-color: #007bff;
+  border: #007bff;
+  height: 35px;
+  width: 80px;
 }
 
-.btn-primary:hover{
+.btn-primary:hover {
   background-color: blue;
   color: white;
   border: 1px solid #007bff;
   border-color: #007bff;
-
 }
 
 /* .btn-primary:hover{
@@ -150,7 +142,9 @@ body {
   border-color: #007bff;
 } */
 
-.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show > .btn-primary.dropdown-toggle {
   color: white;
   background-color: #0060c7;
   border-color: #007bff;
