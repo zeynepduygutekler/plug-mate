@@ -150,7 +150,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         changed_id = 'week'
 
     # Get user id
-    user_id = kwargs['user'].id
+    # user_id = kwargs['user'].id
+    user_id = 1
 
     # Import Average Values
     average_df = pd.read_csv(
@@ -188,13 +189,28 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     elif 'day' in changed_id:
 
         # df_day
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT * FROM historical_days_line WHERE user_id=%s", [user_id])
-            results = cursor.fetchall()
-        df_day = pd.DataFrame(results, columns=['user_id', 'date', 'power', 'month', 'time',
-                                                'year', 'power_kWh', 'cost', 'date_withoutYear'])
-        df_day.drop(columns=['user_id'], inplace=True)
+        # with connection.cursor() as cursor:
+        #     cursor.execute(
+        #         "SELECT * FROM historical_days_line WHERE user_id=%s", [user_id])
+        #     results = cursor.fetchall()
+        # df_day = pd.DataFrame(results, columns=['user_id', 'date', 'power', 'month', 'time',
+        #                                         'year', 'power_kWh', 'cost', 'date_withoutYear'])
+        # df_day.drop(columns=['user_id'], inplace=True)
+
+        # Aggregate data
+        df_day = pd.read_csv(
+            ("{}/finished_apps/manager_csv/manager_7m_daily.csv").format(BASE_DIR))
+
+        # sum power when combining rows.
+        df_day = df_day.tail(7)
+
+        aggregation_functions = {'power_kWh': 'sum',
+                                 'cost': 'sum', 'date_withoutYear': 'first'}
+        df_day = df_day.groupby(
+            ['date'], as_index=False).aggregate(aggregation_functions)
+        df_day["date"] = pd.to_datetime(df_day["date"])
+
+        df_day.reset_index(drop=True, inplace=True)
 
         # df_day_pie
         with connection.cursor() as cursor:
@@ -239,13 +255,24 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         df_week_bytype = copy.deepcopy(df_week_pie)
 
         # df_week_line
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT * FROM historical_weeks_line WHERE user_id=%s", [user_id])
-            results = cursor.fetchall()
-        df_week_line = pd.DataFrame(results, columns=['user_id', 'week', 'power', 'month',
-                                                      'time', 'year', 'power_kWh', 'cost', 'date'])
-        df_week_line.drop(columns=['user_id'], inplace=True)
+        # with connection.cursor() as cursor:
+        #     cursor.execute(
+        #         "SELECT * FROM historical_weeks_line WHERE user_id=%s", [user_id])
+        #     results = cursor.fetchall()
+        # df_week_line = pd.DataFrame(results, columns=['user_id', 'week', 'power', 'month',
+        #                                               'time', 'year', 'power_kWh', 'cost', 'date'])
+        # df_week_line.drop(columns=['user_id'], inplace=True)
+        df_week_line = pd.read_csv(
+            ("{}/finished_apps/manager_csv/manager_7m_weekly.csv").format(BASE_DIR))
+
+        # sum power when combining rows.
+        df_week_line = df_week_line.tail(4)
+
+        aggregation_functions = {'power_kWh': 'sum',
+                                 'cost': 'sum'}
+        df_week_line = df_week_line.groupby(
+            ['date'], as_index=False).aggregate(aggregation_functions)
+        df_week_line.reset_index(drop=True, inplace=True)
 
         df_to_sort = df_week_line
         df_to_sort['date'] = pd.to_datetime(df_to_sort.date)
@@ -271,13 +298,25 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     elif 'month' in changed_id:
 
         # df_month
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT * FROM historical_months_line WHERE user_id=%s", [user_id])
-            results = cursor.fetchall()
-        df_month = pd.DataFrame(results, columns=['user_id', 'month', 'year', 'power', 'time',
-                                                  'power_kWh', 'unix_time', 'cost'])
-        df_month.drop(columns=['user_id'], inplace=True)
+        # with connection.cursor() as cursor:
+        #     cursor.execute(
+        #         "SELECT * FROM historical_months_line WHERE user_id=%s", [user_id])
+        #     results = cursor.fetchall()
+        # df_month = pd.DataFrame(results, columns=['user_id', 'month', 'year', 'power', 'time',
+        #                                           'power_kWh', 'unix_time', 'cost'])
+        # df_month.drop(columns=['user_id'], inplace=True)
+        df_month = pd.read_csv(
+            ("{}/finished_apps/manager_csv/manager_1y_monthly.csv").format(BASE_DIR))
+
+        # sum power when combining rows.
+        df_month = df_month.tail(6)
+
+        aggregation_functions = {'power_kWh': 'sum', 'date': 'first',
+                                 'cost': 'sum'}
+        df_month = df_month.groupby(
+            ['month', 'year'], as_index=False).aggregate(aggregation_functions)
+        df_month = df_month.sort_values(by="date")
+        df_month.reset_index(drop=True, inplace=True)
 
         # df_month_pie
         with connection.cursor() as cursor:
@@ -424,6 +463,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             df_day_bytype = dayClickDataPiechart(df_day_bytype)
 
             x_value = clickData['points'][0]['x']
+
+            print(x_value)
             # Get last 24 hours only
             # x_value_withoutzero = dt.datetime.strptime(
             #     x_value, '%d/%m').strftime('%d/%#m')  # - doesnt work for windows.
@@ -493,13 +534,24 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             df_week_bytype = copy.deepcopy(df_week_pie)
 
             # df_week_line
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT * FROM historical_weeks_line WHERE user_id=%s", [user_id])
-                results = cursor.fetchall()
-            df_week_line = pd.DataFrame(results, columns=['user_id', 'week', 'power', 'month',
-                                                          'time', 'year', 'power_kWh', 'cost', 'date'])
-            df_week_line.drop(columns=['user_id'], inplace=True)
+            df_week_line = pd.read_csv(
+                ("{}/finished_apps/manager_csv/manager_7m_weekly.csv").format(BASE_DIR))
+
+            # sum power when combining rows.
+            df_week_line = df_week_line.tail(4)
+
+            aggregation_functions = {'power_kWh': 'sum',
+                                     'cost': 'sum'}
+            df_week_line = df_week_line.groupby(
+                ['date'], as_index=False).aggregate(aggregation_functions)
+            df_week_line.reset_index(drop=True, inplace=True)
+            # with connection.cursor() as cursor:
+            #     cursor.execute(
+            #         "SELECT * FROM historical_weeks_line WHERE user_id=%s", [user_id])
+            #     results = cursor.fetchall()
+            # df_week_line = pd.DataFrame(results, columns=['user_id', 'week', 'power', 'month',
+            #                                               'time', 'year', 'power_kWh', 'cost', 'date'])
+            # df_week_line.drop(columns=['user_id'], inplace=True)
 
             df_to_sort = df_week_line
             df_to_sort['date'] = pd.to_datetime(df_to_sort.date)
@@ -515,6 +567,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             weekActive = True
             monthActive = False
             yearActive = False
+
             average_kWh = average_df.loc[(
                 average_df['type'] == 'weekly')]['avg_energy']
             average_cost = average_df.loc[(
@@ -522,7 +575,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
             average_kWh = average_kWh.reset_index(drop=True)
             average_cost = average_cost.reset_index(drop=True)
-
+            print("AVERAGE COST WEEKLY GENERATED")
 
 # H) After global variables initialised, generate graphs
     # 1. Generate Graphs
@@ -579,7 +632,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             values_pie = df4['cost']
 
         elif weekbtn > monthbtn and weekbtn > daybtn and weekbtn > yearbtn:
-            x = df3['week']
+            x = df3['date'].dt.strftime('%b %d')  # df3['week']
             y = df3['cost']
             values_pie = df4['cost']
 
@@ -589,12 +642,12 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             values_pie = df4['cost']
 
         elif yearbtn > monthbtn and yearbtn > weekbtn and yearbtn > daybtn:
-            x = df3['year']
+            x = df3['year'].astype(str)
             y = df3['cost']
             values_pie = df4['cost']
 
         else:
-            x = df3['week']
+            x = df3['date'].dt.strftime('%b %d')  # df3['week']
             y = df3['cost']
             values_pie = df4['cost']
 
@@ -623,7 +676,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             values_pie = df4['power_kWh']
 
         elif weekbtn > monthbtn and weekbtn > daybtn and weekbtn > yearbtn:
-            x = df3['week']
+            x = df3['date'].dt.strftime('%b %d')
             y = df3['power_kWh']
             values_pie = df4['power_kWh']
 
@@ -633,12 +686,12 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             values_pie = df4['power_kWh']
 
         elif yearbtn > monthbtn and yearbtn > weekbtn and yearbtn > daybtn:
-            x = df3['year']  # Actually HOURS_AMPM
+            x = df3['year'].astype(str)  # Actually HOURS_AMPM
             y = df3['power_kWh']
             values_pie = df4['power_kWh']
 
         else:
-            x = df3['week']
+            x = df3['date'].dt.strftime('%b %d')
             y = df3['power_kWh']
             values_pie = df4['power_kWh']
 
@@ -660,6 +713,19 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     hovertemplate_average = (
         '<extra></extra>'+'<br><br><b>%{text}</b>')
 
+    '''Added in Average Baseline'''
+    fig2.add_trace(go.Scatter(
+        mode='lines',
+        y=average_value,
+        x=x,
+        line=dict(width=0.5, color='#feff67'),
+        fill='tozeroy',
+        text=['<span style="font-size:20sp">{}<br></span><span><b>Historical Average: </b>{}<br></span><span style="color:blue"></span>'.format(
+            "", (str(round(average_value[i], 4))+'kWh' if units == 'Energy' and len(average_value) > 1 else '$' + str(round(average_value[i], 4)) if units == '$' and len(average_value) > 1 else 'NO VALUE'))for i in range(len(x.to_list()))],
+        hovertemplate=hovertemplate_average,
+
+    )
+    )
     # For the Line
     fig2 = fig2.add_trace(go.Scatter(x=x, y=y,
                                      mode='lines',
@@ -675,20 +741,38 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
                                      )
                           )
 
+    # Create condition for Red or Green Marker
+    def SetColor(y, average_value):
+        pointsColorList = []
+        for i, j in zip(y, average_value):
+            if i > j:
+                color = "#FF0000"
+                pointsColorList.append(color)
+
+            elif i == j:
+                color = "yellow"
+                pointsColorList.append(color)
+
+            else:
+                color = "#54ff00"
+                pointsColorList.append(color)
+
+        return pointsColorList
+    pointsColorList = SetColor(y, average_value)
+
     # For Orange Markers
     fig2.add_trace(go.Scatter(
         mode='markers',
         x=x,
         y=y,
-
         hovertemplate=hovertemplate,
         text=['<span style="font-size:20sp">{}<br></span><span><b>Total: </b>{}<br></span><span style="color:blue">Click to see the <br>plug load breakdown!</span>'.format(
-            x[i], (str(round(y[i], 4))+'kWh' if units == 'Energy' else '$' + str(round(y[i], 4)) if units == '$' else 'NO VALUE')) for i in range(len(x.to_list()))],
+            x[i], (str(round(y[i], 4))+'kWh' if units == 'Energy' and len(y) > 1 else '$' + str(round(y[i], 4)) if units == '$' and len(y) > 1 else 'NO VALUE')) for i in range(len(x.to_list()))],
 
         hoverlabel=dict(bgcolor="white"),
         marker=dict(
+            color=pointsColorList,
             size=14,
-
             # For black circle around markers
             line=dict(
                 width=2
@@ -696,20 +780,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         ),
         showlegend=False,
     ))
-
-    '''Added in Average Baseline'''
-    fig2.add_trace(go.Scatter(
-        mode='lines',
-        y=average_value,
-        x=x,
-        line=dict(width=0.5, color='rgb(255, 193, 7)'),
-        fill='tozeroy',
-        text=['<span style="font-size:20sp">{}<br></span><span><b>Historical Average: </b>{}<br></span><span style="color:blue"></span>'.format(
-            "", (str(round(average_value[i], 4))+'kWh' if units == 'Energy' else '$' + str(round(average_value[i], 4)) if units == '$' else 'NO VALUE'))for i in range(len(x.to_list()))],
-        hovertemplate=hovertemplate_average,
-
-    )
-    )
 
     piechart.update_layout(
         margin=dict(l=0, r=0, t=0, b=5, pad=0),
@@ -738,7 +808,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
         )
 
-
     )
     piechart.update_traces(
         sort=False,
@@ -748,7 +817,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
     fig2.update_xaxes(showspikes=True, spikecolor="black",
                       spikesnap="hovered data", tickangle=0,
-                      spikethickness=2,)
+                      spikethickness=2,
+                      tickvals=x,
+                      )
     fig2.update_layout(
         spikedistance=1000,
         hoverdistance=100,
@@ -775,5 +846,6 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
         )
     )
+
     # 4. Return all graphs
     return fig2, piechart, ("Aggregated {}".format(units), html.Br(), "{}".format(pie_middletext)), ("{} Breakdown".format(units), html.Br(), "{}".format(pie_middletext)), dayActive, weekActive,    monthActive,   yearActive
