@@ -21,8 +21,8 @@ import copy
 
 
 pio.templates.default = "simple_white"
-path = "C:\\Users\\zaidy\\Documents\\GitHub\\zeynepduygutekler\\plug-mate\\plug_mate_app\\dash_apps\\finished_apps"
-
+# path = "C:\\Users\\zaidy\\Documents\\GitHub\\zeynepduygutekler\\plug-mate\\plug_mate_app\\dash_apps\\finished_apps"
+path = 'plug_mate_app/dash_apps/finished_apps'
 
 def dayClickDataPiechart(df_day_bytype):
     # Aggregate df_day_bytype separating type of device
@@ -162,7 +162,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
     # Import Average Values
     average_df = pd.read_csv(
-        ("{}\\manager_csv\\AverageDailyWeeklyMonthlyYearly.csv").format(path))
+        ("{}/manager_csv/AverageDailyWeeklyMonthlyYearly.csv").format(path))
 
     if 'hour' in changed_id:
 
