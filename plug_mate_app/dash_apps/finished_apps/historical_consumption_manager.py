@@ -150,12 +150,13 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         changed_id = 'week'
 
     # Get user id
-    user_id = kwargs['user'].id
+    user_id = 1
 
     # Import Average Values
     average_df = pd.read_csv(
         ("{}/finished_apps/manager_csv/AverageDailyWeeklyMonthlyYearly.csv").format(BASE_DIR))
 
+    # print(average_df)
     if 'year' in changed_id:
 
         df_year = pd.read_csv(
@@ -682,7 +683,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
         hovertemplate=hovertemplate,
         text=['<span style="font-size:20sp">{}<br></span><span><b>Total: </b>{}<br></span><span style="color:blue">Click to see the <br>plug load breakdown!</span>'.format(
-            x[i], (str(round(y[i], 4))+'kWh' if units == 'Energy' else '$' + str(round(y[i], 4)))) for i in range(len(x.to_list()))],
+            x[i], (str(round(y[i], 4))+'kWh' if units == 'Energy' else '$' + str(round(y[i], 4)) if units == '$' else 'NO VALUE')) for i in range(len(x.to_list()))],
 
         hoverlabel=dict(bgcolor="white"),
         marker=dict(
@@ -704,7 +705,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         line=dict(width=0.5, color='rgb(255, 193, 7)'),
         fill='tozeroy',
         text=['<span style="font-size:20sp">{}<br></span><span><b>Historical Average: </b>{}<br></span><span style="color:blue"></span>'.format(
-            "", (str(round(average_value[i], 4))+'kWh' if units == 'Energy' else '$' + str(round(average_value[i], 4))))for i in range(len(x.to_list()))],
+            "", (str(round(average_value[i], 4))+'kWh' if units == 'Energy' else '$' + str(round(average_value[i], 4)) if units == '$' else 'NO VALUE'))for i in range(len(x.to_list()))],
         hovertemplate=hovertemplate_average,
 
     )
