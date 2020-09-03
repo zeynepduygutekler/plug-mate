@@ -39,7 +39,7 @@ def dayClickDataPiechart(df_day_bytype):
 
 
 # B) Dash App initialisation
-app = DjangoDash('historical_consumption',
+app = DjangoDash('historical_consumption_manager',
                  external_stylesheets=[
                      "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"],
                  add_bootstrap_links=True)

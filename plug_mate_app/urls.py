@@ -8,6 +8,7 @@ from plug_mate_app.dash_apps.finished_apps import progress
 from plug_mate_app.dash_apps.finished_apps import historical_consumption
 from plug_mate_app.dash_apps.finished_apps import tips
 from plug_mate_app.dash_apps.finished_apps import cost_savings_manager
+from plug_mate_app.dash_apps.finished_apps import historical_consumption_manager
 
 router = routers.DefaultRouter()
 # router.register('remote', RemoteViewSet, 'remote')
