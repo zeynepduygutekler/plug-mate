@@ -186,11 +186,14 @@ PLOTLY_COMPONENTS = [
 STATICFILES_LOCATION = 'static'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, '/static/') # For Zaidy's PC
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'control_interface/build/'),
     os.path.join(BASE_DIR, 'control_interface/build/static/'),
     os.path.join(BASE_DIR, 'plug_mate_app/dash_apps/finished_apps/'),
     os.path.join(BASE_DIR, 'plug_mate_app/static/'),
+    # os.path.join(BASE_DIR, 'static'), # For Zaidy's PC
+
     os.path.join(BASE_DIR, 'media/media/'),
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
