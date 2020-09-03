@@ -24,6 +24,7 @@ pio.templates.default = "simple_white"
 # path = "C:\\Users\\zaidy\\Documents\\GitHub\\zeynepduygutekler\\plug-mate\\plug_mate_app\\dash_apps\\finished_apps"
 path = 'plug_mate_app/dash_apps/finished_apps'
 
+
 def dayClickDataPiechart(df_day_bytype):
     # Aggregate df_day_bytype separating type of device
     # '''Insert SQL Code'''
@@ -198,9 +199,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         hourActive = True
 
         df_year = pd.read_csv(
-            ("{}\\manager_csv\\manager_df_year.csv").format(path))
+            ("{}/manager_csv/manager_df_year.csv").format(path))
         df_year_pie = pd.read_csv(
-            ("{}\\manager_csv\\manager_df_year_pie.csv").format(path))
+            ("{}/manager_csv/manager_df_year_pie.csv").format(path))
 
         average_kWh = average_df.loc[(
             average_df['type'] == 'yearly')]['avg_energy']
@@ -348,7 +349,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             # df_year_bytype
 
             df_year_pie = pd.read_csv(
-                ("{}\\manager_csv\\manager_df_year_pie.csv").format(path))
+                ("{}/manager_csv/manager_df_year_pie.csv").format(path))
             df_year_bytype = copy.deepcopy(df_year_pie)
 
             x_value = clickData['points'][0]['x']
