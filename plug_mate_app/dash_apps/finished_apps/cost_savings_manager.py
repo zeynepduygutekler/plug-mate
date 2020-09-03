@@ -12,75 +12,80 @@ from django.db import connection
 pio.templates.default = "simple_white"
 
 
-
 last_state = ''
 
 
 app = DjangoDash(name='cost_savings_manager',
-                 external_stylesheets=["https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"],
+                 external_stylesheets=[
+                     "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"],
                  add_bootstrap_links=True)
 
 
 app.layout = html.Div([
+    html.Link(
+        rel='stylesheet',
+        href='/static/assets/custom_style.css'
+    ),
     dbc.Row([
         dbc.Col([
             dbc.Row([
                 dbc.Button('Week', id='week', n_clicks=0, n_clicks_timestamp=0, color="primary",
-                   className="mr-1", active=True),
+                           className="mr-1", active=True),
                 dbc.Button('Month', id='month', n_clicks=0, n_clicks_timestamp=0,
-                   color="primary", className="mr-1"),
+                           color="primary", className="mr-1"),
                 dbc.Button('Year', id='year', n_clicks=0, n_clicks_timestamp=0,
-                   color="primary", className="mr-1")
-    ], style={'margin': 'auto', 'justify-content': 'center'}),
+                           color="primary", className="mr-1")
+            ], style={'margin': 'auto', 'justify-content': 'center'}),
 
-    # Cost savings graph
-    dbc.Spinner(dcc.Graph(id='cost-savings', config={'displayModeBar': False}), color="primary",
-                spinner_style={"width": "3rem", "height": "3rem"}),
-    dcc.Interval(id='interval-trigger', max_intervals=1, interval=1000),
-    html.P(id='placeholder'),
+            # Cost savings graph
+            dbc.Spinner(dcc.Graph(id='cost-savings', config={'displayModeBar': False}), color="primary",
+                        spinner_style={"width": "3rem", "height": "3rem"}),
+            dcc.Interval(id='interval-trigger',
+                         max_intervals=1, interval=1000),
+            html.P(id='placeholder'),
 
-    ]),
-    # Toggle button
-    dbc.Col([
-        dbc.Row([
-            dbc.Col([
-                html.H4('Strategies', style={'padding-top':'10px'}),
-                dcc.Checklist(
-                options=[
-                    {'label': 'Implement plug-mate to an additional office level in the building', 'value': 1200},
-                    {'label': 'Increase the adoption of presence-based controls by 15%', 'value': 1000},
-                    {'label': 'Remind building occupants to switch off their plug loads at the end of the day and over the weekends', 'value': 800},
-                    {'label': 'Upgrade existing monitors to more energy-efficient models that bear the “Energy Label"', 'value': 600},
-                    {'label': 'Increase the variety of redeemable rewards in the rewards page to increase user engagement rate by 20% ', 'value': 500}
-            ],
-            className='cschecklist',
-            inputClassName='cscheckbox',
-            labelClassName='cslabel',
-            value=[1200],
-            style={'display':'grid', 'grid-auto-rows':'90px'},
-            id='checklist'
-            )
-
-            ], width=8),
-            dbc.Col([
-            html.H4('Estimated Cost', style={'padding-top':'10px'}),
-            html.Div([
-                html.P('$1,200 - $1,500 / month'),
-                html.P('$1,000 / month'),
-                html.P('$800 - $1,000 / month'),
-                html.P('$600 - $800 / month'),
-                html.P('$500 - $800 / month'),
-            ], style={'display':'grid','grid-auto-rows':'90px'})
-            
-            ])
-            
         ]),
+        # Toggle button
+        dbc.Col([
+            dbc.Row([
+                dbc.Col([
+                    html.H4('Strategies', style={'padding-top': '10px'}),
+                    dcc.Checklist(
+                        options=[
+                            {'label': 'Implement plug-mate to an additional office level in the building', 'value': 1200},
+                            {'label': 'Increase the adoption of presence-based controls by 15%', 'value': 1000},
+                            {'label': 'Remind building occupants to switch off their plug loads at the end of the day and over the weekends', 'value': 800},
+                            {'label': 'Upgrade existing monitors to more energy-efficient models that bear the “Energy Label"', 'value': 600},
+                            {'label': 'Increase the variety of redeemable rewards in the rewards page to increase user engagement rate by 20% ', 'value': 500}
+                        ],
+                        className='cschecklist',
+                        inputClassName='cscheckbox',
+                        labelClassName='cslabel',
+                        value=[1200],
+                        style={'display': 'grid', 'grid-auto-rows': '90px'},
+                        id='checklist'
+                    )
+
+                ], width=8),
+                dbc.Col([
+                    html.H4('Estimated Cost', style={'padding-top': '10px'}),
+                    html.Div([
+                        html.P('$1,200 - $1,500 / month'),
+                        html.P('$1,000 / month'),
+                        html.P('$800 - $1,000 / month'),
+                        html.P('$600 - $800 / month'),
+                        html.P('$500 - $800 / month'),
+                    ], style={'display': 'grid', 'grid-auto-rows': '90px'})
+
+                ])
+
+            ]),
 
 
 
+        ])
     ])
-    ])
-  
+
 
 ], style={'width': '100%', 'display': 'inline-block', 'vertical-align': 'middle'})
 
@@ -95,9 +100,9 @@ app.layout = html.Div([
      dash.dependencies.Input('month', 'n_clicks'),
      dash.dependencies.Input('year', 'n_clicks'),
      dash.dependencies.Input('interval-trigger', 'n_intervals'),
-     dash.dependencies.Input('checklist', 'value'),]
+     dash.dependencies.Input('checklist', 'value'), ]
 )
-def update_bar_chart(n1, n2,n3, int, ls):
+def update_bar_chart(n1, n2, n3, int, ls):
     '''This function checks whether user is looking for month/week view, and whether user requires simulation feature
    and outputs a bar graph of the cost savings.
    Variables:
@@ -111,13 +116,14 @@ def update_bar_chart(n1, n2,n3, int, ls):
     monthly_increase = sum(ls)
     yearly_increase = monthly_increase*12
     weekly_increase = monthly_increase/4
-    
 
     if (n1 == 0 and n2 == 0):  # default
         view = 'Week'
     else:
-        changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]  # Checking which button was the last pressed
-        view = changed_id.split('.')[0].capitalize()  # button's n_clicks acts as state toggle between week and month
+        # Checking which button was the last pressed
+        changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]
+        # button's n_clicks acts as state toggle between week and month
+        view = changed_id.split('.')[0].capitalize()
         if view == 'Checklist':
             view = last_state
 
@@ -127,17 +133,17 @@ def update_bar_chart(n1, n2,n3, int, ls):
         increase = monthly_increase
     else:
         increase = yearly_increase
-    
-    df = pd.read_csv(f'plug_mate_app/dash_apps/finished_apps/tables_csv/cost_savings_manager_{view.lower()}.csv')
+
+    df = pd.read_csv(
+        f'plug_mate_app/dash_apps/finished_apps/tables_csv/cost_savings_manager_{view.lower()}.csv')
     df.index = df.time
     df = df.drop(columns=['time'])
     df = df.groupby('time').sum()
     series = df['total'] + increase
     series.index = df.index
 
-
     def currency_format(value):
-        if value > 0:
+        if value >= 0:
             return '${:,.2f}'.format(value)
         else:
             return '-${:,.2f}'.format(abs(value))
@@ -157,19 +163,18 @@ def update_bar_chart(n1, n2,n3, int, ls):
 
         for time in ser.index:
             string = ''
-            rooms = {'Room 1':0.5, 'Room 2':0.3,'Room 3':0.2}
+            rooms = {'Room 1': 0.5, 'Room 2': 0.3, 'Room 3': 0.2}
             for room in ['Room 1', 'Room 2', 'Room 3']:
                 value = rooms[room] * ser[time]
                 string = string + '<b>' + room.capitalize() + '</b>: ' + currency_format(
-                        value) + '<br>'
-            
+                    value) + '<br>'
+            string += f'<span style="color:blue"><b>Savings from strategies</b>: {currency_format(increase)}</span><br>'
             string = string + '<b>' + 'Total' + '</b>' + ': ' + currency_format(
                 ser[time]) + '<br>'
             if ser[time] >= 0:
                 hovertext1.append(string)
             else:
                 hovertext2.append(string)
-
 
         positive = go.Bar(x=pos.index,
                           y=pos,
@@ -196,14 +201,14 @@ def update_bar_chart(n1, n2,n3, int, ls):
         if min(ser) > 0:
             layout = go.Layout(yaxis=dict(range=[0, max(ser) * 1.4]))
         else:
-            layout = go.Layout(yaxis=dict(range=[min(ser) * 1.4, max(ser) * 1.4]))
+            layout = go.Layout(yaxis=dict(
+                range=[min(ser) * 1.4, max(ser) * 1.4]))
         return positive, negative, layout
 
     # def create_frame(discount):
     #     return go.Frame({'data': create_trace(discount)[:2]}, layout=create_trace(discount)[-1])
 
     positive_trace, negative_trace = create_trace(increase)[:2]
-
 
     if min(series) > 0:
         range = [0, max(series) * 1.4]
@@ -215,12 +220,13 @@ def update_bar_chart(n1, n2,n3, int, ls):
                         go.Layout(
                             yaxis=dict(range=range),
                         ),
-                    ),
-                )
+    ),
+    )
 
     # Graph formating
     fig.update_traces(texttemplate='%{y:$.2f}',
                       textposition='auto')
+
     def f7(seq):
         seen = set()
         seen_add = seen.add
@@ -252,4 +258,3 @@ def update_bar_chart(n1, n2,n3, int, ls):
         return fig, '', True, False, False
     else:
         return fig, '', False, True, False
-
