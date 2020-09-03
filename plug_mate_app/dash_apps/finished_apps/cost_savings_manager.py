@@ -111,14 +111,16 @@ def update_bar_chart(n1, n2,n3, int, ls):
     monthly_increase = sum(ls)
     yearly_increase = monthly_increase*12
     weekly_increase = monthly_increase/4
-    changed_id = [p['prop_id'] for p in dash.callback_context.triggered][
-        0]  # Checking which button was the last pressed
-    view = changed_id.split('.')[0].capitalize()  # button's n_clicks acts as state toggle between week and month
+    
+
     if (n1 == 0 and n2 == 0):  # default
         view = 'Week'
-    if view == 'Checklist':
-        view = last_state
-    
+    else:
+        changed_id = [p['prop_id'] for p in dash.callback_context.triggered][0]  # Checking which button was the last pressed
+        view = changed_id.split('.')[0].capitalize()  # button's n_clicks acts as state toggle between week and month
+        if view == 'Checklist':
+            view = last_state
+
     if view == 'Week':
         increase = weekly_increase
     elif view == 'Month':
@@ -126,11 +128,13 @@ def update_bar_chart(n1, n2,n3, int, ls):
     else:
         increase = yearly_increase
     
-    df = pd.read_csv(f'manager_costsavings_{view.lower()}.csv')
+    df = pd.read_csv(f'plug_mate_app/dash_apps/finished_apps/tables_csv/cost_savings_manager_{view.lower()}.csv')
     df.index = df.time
-
-    series = df['cost_savings'] + increase
+    df = df.drop(columns=['time'])
+    df = df.groupby('time').sum()
+    series = df['total'] + increase
     series.index = df.index
+
 
     def currency_format(value):
         if value > 0:
