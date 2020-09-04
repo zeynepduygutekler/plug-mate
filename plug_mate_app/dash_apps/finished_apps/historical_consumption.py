@@ -162,14 +162,22 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     user_id = kwargs['user'].id
 
     # Import Average Values
-    average_df = pd.read_csv(
-        ("{}/finished_apps/users_csv/users_AverageDailyWeeklyMonthlyYearly.csv").format(BASE_DIR))
+    # average_df = pd.read_csv(
+    #     ("{}/finished_apps/users_csv/users_AverageDailyWeeklyMonthlyYearly.csv").format(BASE_DIR))
+
+    with connection.cursor() as cursor:
+        query = "SELECT * FROM users_consumption_summary"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        colnames = [desc[0] for desc in cursor.description]
+    average_df = pd.DataFrame(results, columns=colnames)
+
     mask = (average_df['user_id'] == user_id)
 
     # Delete these row indexes from dataFrame
     average_df = average_df.loc[mask]
     average_df.reset_index(drop=True, inplace=True)
-    print(average_df)
+
     if 'hour' in changed_id:
 
         # df_hour
@@ -188,11 +196,12 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         df_hour_pie = pd.DataFrame(results, columns=['user_id', 'date', 'hours', 'device_type',
                                                      'power', 'month', 'time', 'year', 'power_kWh', 'cost', 'date_AMPM'])
         df_hour_pie.drop(columns=['user_id'], inplace=True)
-        df_hour.to_csv(('df_hour_line_{}.csv').format(user_id))
+        # df_hour.to_csv(('df_hour_line_{}.csv').format(user_id))
 
         # Pie Chart values
         values_pie = df_hour_pie['power_kWh']
         pie_middletext = 'Today'
+        hovertype = 'Hourly'
 
         # For changing units
         df3 = copy.deepcopy(df_hour)
@@ -241,6 +250,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         # Pie Chart
         values_pie = df_day_pie['power_kWh']
         pie_middletext = 'last 7 Days'
+        hovertype = 'Daily'
 
         # For changing units
 
@@ -286,6 +296,9 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         df_to_sort = df_to_sort.reset_index(drop=True)
         values_pie = df_week_pie['power_kWh']
         pie_middletext = 'Last 4 weeks'
+
+        hovertype = 'Weekly'
+
         # For changing units
         df3 = df_to_sort
         df4 = df_week_pie
@@ -327,6 +340,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         # 3) For changing units of layout later on
         df3 = df_month
         df4 = df_month_pie
+        hovertype = 'Monthly'
 
         dayActive = False
         weekActive = False
@@ -366,6 +380,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             df_to_process.reset_index(drop=True, inplace=True)
             df4 = df_to_process
             pie_middletext = x_value
+            hovertype = 'Hourly'
 
             if btnkwhdollars == False:
                 values_pie = df4['cost']
@@ -400,6 +415,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             df4 = df_to_process
 
             pie_middletext = x_value
+            hovertype = 'Monthly'
 
             if btnkwhdollars == False:
                 values_pie = df4['cost']
@@ -431,6 +447,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             df_to_process.reset_index(drop=True, inplace=True)
             df4 = df_to_process
             pie_middletext = "Week of {}".format(x_value)
+            hovertype = 'Weekly'
 
             if btnkwhdollars == False:
                 values_pie = df4['cost']
@@ -463,6 +480,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             df_to_process = df_to_process.loc[mask]
             df_to_process.reset_index(drop=True, inplace=True)
             df4 = df_to_process
+            hovertype = 'Daily'
 
             pie_middletext = x_value
 
@@ -496,6 +514,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             df_week_bytype.reset_index(drop=True, inplace=True)
             df4 = df_week_bytype
             pie_middletext = "Week of {}".format(x_value)
+            hovertype = 'Weekly'
 
             if btnkwhdollars == False:
                 values_pie = df4['cost']
@@ -540,6 +559,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             # For changing units
             df3 = df_to_sort
             df4 = df_week_pie
+            hovertype = 'Weekly'
 
             dayActive = False
             weekActive = True
@@ -714,7 +734,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         line=dict(width=0.5, color='#ffea92'),
         fill='tozeroy',
         text=['<span style="font-size:20sp">{}<br></span><span><b>Historical Average: </b>{}<br></span><span style="color:blue"></span>'.format(
-            "", (str(round(average_value[i], 4))+'kWh' if units == 'Energy' and len(average_value) > 1 else '$' + str(round(average_value[i], 4))if units == '$' and len(average_value) > 1 else 'NO VALUE'))for i in range(len(x.to_list()))],
+            "", hovertype, (str(round(average_value[i], 4))+'kWh' if units == 'Energy' and len(average_value) > 1 else '$' + str(round(average_value[i], 4))if units == '$' and len(average_value) > 1 else 'NO VALUE'))for i in range(len(x.to_list()))],
         hovertemplate=hovertemplate_average,
 
     )
@@ -752,7 +772,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
         return pointsColorList
     pointsColorList = SetColor(y, average_value)
-    print(pointsColorList)
+
     # For Orange Markers
     fig2.add_trace(go.Scatter(
         mode='markers',

@@ -63,7 +63,7 @@ app.layout = \
                                    color="primary", className="mr-1", active=True),
                         dbc.Button('Months', id='month', n_clicks=0, n_clicks_timestamp=0,
                                    color="primary", className="mr-1"),
-                        dbc.Button('Year', id='year', n_clicks=0,
+                        dbc.Button('Years', id='year', n_clicks=0,
                                    n_clicks_timestamp=0, color="primary", className="mr-1"),
 
                         html.Div([
@@ -154,8 +154,14 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
     user_id = 1
 
     # Import Average Values
-    average_df = pd.read_csv(
-        ("{}/finished_apps/manager_csv/AverageDailyWeeklyMonthlyYearly.csv").format(BASE_DIR))
+    # average_df = pd.read_csv(
+    #     ("{}/finished_apps/manager_csv/manager_AverageDailyWeeklyMonthlyYearly.csv").format(BASE_DIR))
+    with connection.cursor() as cursor:
+        query = "SELECT * FROM building_consumption_summary"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        colnames = [desc[0] for desc in cursor.description]
+    average_df = pd.DataFrame(results, columns=colnames)
 
     # print(average_df)
     if 'year' in changed_id:
@@ -177,6 +183,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         weekActive = False
         monthActive = False
         yearActive = True
+        hovertype = 'Yearly'
 
         average_kWh = average_df.loc[(
             average_df['type'] == 'yearly')]['avg_energy']
@@ -213,17 +220,21 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         df_day.reset_index(drop=True, inplace=True)
 
         # df_day_pie
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT * FROM historical_days_pie WHERE user_id=%s", [user_id])
-            results = cursor.fetchall()
-        df_day_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'date', 'power', 'month',
-                                                    'time', 'year', 'power_kWh', 'cost'])
+        # with connection.cursor() as cursor:
+        #     cursor.execute(
+        #         "SELECT * FROM historical_days_pie WHERE user_id=%s", [user_id])
+        #     results = cursor.fetchall()
+        # df_day_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'date', 'power', 'month',
+        #                                             'time', 'year', 'power_kWh', 'cost'])
+        df_day_pie = pd.read_csv(
+            ("{}/finished_apps/manager_csv/manager_daily_piechart.csv").format(BASE_DIR))
+
         df_day_pie.drop(columns=['user_id'], inplace=True)
 
         # Pie Chart
         values_pie = df_day_pie['power_kWh']
         pie_middletext = 'last 7 Days'
+        hovertype = 'Daily'
 
         # For changing units
 
@@ -243,12 +254,17 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
 
     elif 'week' in changed_id:
         # df_week_pie
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [user_id])
-            results = cursor.fetchall()
-        df_week_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'week', 'power',
-                                                     'month', 'time', 'year', 'power_kWh', 'cost'])
+        # with connection.cursor() as cursor:
+        #     cursor.execute(
+        #         "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [user_id])
+        #     results = cursor.fetchall()
+        # df_week_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'week', 'power',
+        #                                              'month', 'time', 'year', 'power_kWh', 'cost'])
+        # df_week_pie.drop(columns=['user_id'], inplace=True)
+
+        df_week_pie = pd.read_csv(
+            ("{}/finished_apps/manager_csv/manager_weekly_piechart.csv").format(BASE_DIR))
+
         df_week_pie.drop(columns=['user_id'], inplace=True)
 
         # df_week_bytype
@@ -283,6 +299,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         # For changing units
         df3 = df_to_sort
         df4 = df_week_pie
+        hovertype = 'Weekly'
 
         dayActive = False
         weekActive = True
@@ -319,16 +336,21 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         df_month.reset_index(drop=True, inplace=True)
 
         # df_month_pie
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "SELECT * FROM historical_months_pie WHERE user_id=%s", [user_id])
-            results = cursor.fetchall()
-        df_month_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'power', 'time',
-                                                      'month', 'year', 'power_kWh', 'cost'])
+        # with connection.cursor() as cursor:
+        #     cursor.execute(
+        #         "SELECT * FROM historical_months_pie WHERE user_id=%s", [user_id])
+        #     results = cursor.fetchall()
+        # df_month_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'power', 'time',
+        #                                               'month', 'year', 'power_kWh', 'cost'])
+        # df_month_pie.drop(columns=['user_id'], inplace=True)
+        df_month_pie = pd.read_csv(
+            ("{}/finished_apps/manager_csv/manager_monthly_piechart.csv").format(BASE_DIR))
+
         df_month_pie.drop(columns=['user_id'], inplace=True)
 
         values_pie = df_month_pie['power_kWh']
         pie_middletext = 'last 6 Months'
+        hovertype = 'Monthly'
 
         # 3) For changing units of layout later on
         df3 = df_month
@@ -385,12 +407,16 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         elif monthbtn > weekbtn and monthbtn > daybtn and monthbtn > yearbtn:
 
             # df_month_pie
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT * FROM historical_months_pie WHERE user_id=%s", [user_id])
-                results = cursor.fetchall()
-            df_month_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'month', 'time', 'power',
-                                                          'year', 'power_kWh', 'cost'])
+            # with connection.cursor() as cursor:
+            #     cursor.execute(
+            #         "SELECT * FROM historical_months_pie WHERE user_id=%s", [user_id])
+            #     results = cursor.fetchall()
+            # df_month_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'month', 'time', 'power',
+            #                                               'year', 'power_kWh', 'cost'])
+            # df_month_pie.drop(columns=['user_id'], inplace=True)
+            df_month_pie = pd.read_csv(
+                ("{}/finished_apps/manager_csv/manager_weekly_piechart.csv").format(BASE_DIR))
+
             df_month_pie.drop(columns=['user_id'], inplace=True)
 
             # df_month_bytype
@@ -419,12 +445,16 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         elif weekbtn > monthbtn and weekbtn > daybtn and weekbtn > yearbtn:
 
             # df_week_pie
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [user_id])
-                results = cursor.fetchall()
-            df_week_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'week', 'power',
-                                                         'month', 'time', 'year', 'power_kWh', 'cost'])
+            # with connection.cursor() as cursor:
+            #     cursor.execute(
+            #         "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [user_id])
+            #     results = cursor.fetchall()
+            # df_week_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'week', 'power',
+            #                                              'month', 'time', 'year', 'power_kWh', 'cost'])
+            # df_week_pie.drop(columns=['user_id'], inplace=True)
+            df_week_pie = pd.read_csv(
+                ("{}/finished_apps/manager_csv/manager_weekly_piechart.csv").format(BASE_DIR))
+
             df_week_pie.drop(columns=['user_id'], inplace=True)
 
             # df_week_bytype
@@ -450,12 +480,16 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         elif daybtn > monthbtn and daybtn > weekbtn and daybtn > yearbtn:
 
             # df_day_pie
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT * FROM historical_days_pie WHERE user_id=%s", [user_id])
-                results = cursor.fetchall()
-            df_day_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'date', 'power', 'month',
-                                                        'time', 'year', 'power_kWh', 'cost'])
+            # with connection.cursor() as cursor:
+            #     cursor.execute(
+            #         "SELECT * FROM historical_days_pie WHERE user_id=%s", [user_id])
+            #     results = cursor.fetchall()
+            # df_day_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'date', 'power', 'month',
+            #                                             'time', 'year', 'power_kWh', 'cost'])
+            # df_day_pie.drop(columns=['user_id'], inplace=True)
+            df_day_pie = pd.read_csv(
+                ("{}/finished_apps/manager_csv/manager_daily_piechart.csv").format(BASE_DIR))
+
             df_day_pie.drop(columns=['user_id'], inplace=True)
 
             # df_day_bytype
@@ -522,12 +556,16 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         else:
 
             # df_week_pie
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [user_id])
-                results = cursor.fetchall()
-            df_week_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'week', 'power',
-                                                         'month', 'time', 'year', 'power_kWh', 'cost'])
+            # with connection.cursor() as cursor:
+            #     cursor.execute(
+            #         "SELECT * FROM historical_weeks_pie WHERE user_id=%s", [user_id])
+            #     results = cursor.fetchall()
+            # df_week_pie = pd.DataFrame(results, columns=['user_id', 'device_type', 'week', 'power',
+            #                                              'month', 'time', 'year', 'power_kWh', 'cost'])
+            # df_week_pie.drop(columns=['user_id'], inplace=True)
+            df_week_pie = pd.read_csv(
+                ("{}/finished_apps/manager_csv/manager_weekly_piechart.csv").format(BASE_DIR))
+
             df_week_pie.drop(columns=['user_id'], inplace=True)
 
             # df_week_bytype
@@ -629,27 +667,34 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         if monthbtn > weekbtn and monthbtn > daybtn and monthbtn > yearbtn:
             x = df3['month']
             y = df3['cost']
+            hovertype = 'Monthly'
             values_pie = df4['cost']
 
         elif weekbtn > monthbtn and weekbtn > daybtn and weekbtn > yearbtn:
             x = df3['date'].dt.strftime('%b %d')  # df3['week']
             y = df3['cost']
+            hovertype = 'Weekly'
+
             values_pie = df4['cost']
 
         elif daybtn > monthbtn and daybtn > weekbtn and daybtn > yearbtn:
             x = df3['date_withoutYear']
             y = df3['cost']
+            hovertype = 'Daily'
+
             values_pie = df4['cost']
 
         elif yearbtn > monthbtn and yearbtn > weekbtn and yearbtn > daybtn:
             x = df3['year'].astype(str)
             y = df3['cost']
             values_pie = df4['cost']
+            hovertype = 'Yearly'
 
         else:
             x = df3['date'].dt.strftime('%b %d')  # df3['week']
             y = df3['cost']
             values_pie = df4['cost']
+            hovertype = 'Weekly'
 
         # Change to $ for pie and line graph
 
@@ -674,26 +719,31 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
             x = df3['month']
             y = df3['power_kWh']
             values_pie = df4['power_kWh']
+            hovertype = 'Monthly'
 
         elif weekbtn > monthbtn and weekbtn > daybtn and weekbtn > yearbtn:
             x = df3['date'].dt.strftime('%b %d')
             y = df3['power_kWh']
             values_pie = df4['power_kWh']
+            hovertype = 'Weekly'
 
         elif daybtn > monthbtn and daybtn > weekbtn and daybtn > yearbtn:
             x = df3['date_withoutYear']
             y = df3['power_kWh']
             values_pie = df4['power_kWh']
+            hovertype = 'Daily'
 
         elif yearbtn > monthbtn and yearbtn > weekbtn and yearbtn > daybtn:
             x = df3['year'].astype(str)  # Actually HOURS_AMPM
             y = df3['power_kWh']
             values_pie = df4['power_kWh']
+            hovertype = 'Yearly'
 
         else:
             x = df3['date'].dt.strftime('%b %d')
             y = df3['power_kWh']
             values_pie = df4['power_kWh']
+            hovertype = 'Weekly'
 
         # Change to kWh for pie and line graph
 
@@ -720,8 +770,8 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         x=x,
         line=dict(width=0.5, color='#ffea92'),
         fill='tozeroy',
-        text=['<span style="font-size:20sp">{}<br></span><span><b>Historical Average: </b>{}<br></span><span style="color:blue"></span>'.format(
-            "", (str(round(average_value[i], 4))+'kWh' if units == 'Energy' and len(average_value) > 1 else '$' + str(round(average_value[i], 4)) if units == '$' and len(average_value) > 1 else 'NO VALUE'))for i in range(len(x.to_list()))],
+        text=['<span style="font-size:20sp">{}<br></span><span><b>Historical {} Average: </b><br>{}<br></span><span style="color:blue"></span>'.format("", hovertype, (str(round(average_value[i], 4))+'kWh' if units == 'kWh' and len(
+            average_value) > 1 else '$' + str(round(average_value[i], 4)) if units == '$' and len(average_value) > 1 else 'NO VALUE'))for i in range(len(x.to_list()))],
         hovertemplate=hovertemplate_average,
 
     )
@@ -767,7 +817,7 @@ def update_graph_DayMonthYear(btn1_click, btn2_click, btn3_click, btn4_click, bt
         y=y,
         hovertemplate=hovertemplate,
         text=['<span style="font-size:20sp">{}<br></span><span><b>Total: </b>{}<br></span><span style="color:blue">Click to see the <br>plug load breakdown!</span>'.format(
-            x[i], (str(round(y[i], 4))+'kWh' if units == 'Energy' and len(y) > 1 else '$' + str(round(y[i], 4)) if units == '$' and len(y) > 1 else 'NO VALUE')) for i in range(len(x.to_list()))],
+            x[i], (str(round(y[i], 4))+'kWh' if units == 'kWh' and len(y) > 1 else '$' + str(round(y[i], 4)) if units == '$' and len(y) > 1 else 'NO VALUE')) for i in range(len(x.to_list()))],
 
         hoverlabel=dict(bgcolor="white"),
         marker=dict(
