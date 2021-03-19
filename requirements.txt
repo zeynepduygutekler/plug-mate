@@ -26,7 +26,7 @@ Django==3.0.8
 django-bootstrap4==2.2.0
 django-inspectdb-refactor==0.4
 django-plotly-dash==1.4.2
-djangorestframework==3.11.0
+djangorestframework==3.11.2
 dpd-components==0.1.0
 dpd-static-support==0.0.5
 Flask==1.1.2
