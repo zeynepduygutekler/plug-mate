@@ -22,7 +22,7 @@ dash-html-components==1.0.3
 dash-renderer==1.5.0
 dash-table==4.8.1
 dj-database-url==0.5.0
-Django==3.0.8
+Django==3.1.13
 django-bootstrap4==2.2.0
 django-inspectdb-refactor==0.4
 django-plotly-dash==1.4.2
