@@ -48,7 +48,7 @@ memory-profiler==0.57.0
 msgpack==1.0.0
 numpy==1.19.0
 pandas==1.0.5
-Pillow==2.2.2
+Pillow==9.0.1
 plotly==4.8.2
 psutil==5.7.2
 psycopg2==2.8.5
